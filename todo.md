@@ -1,0 +1,7 @@
+# To Do
+
+- [] complete map page
+- [] complete sidebar/header
+- [] complete result detail page
+- [] display map from johan's project in the map page
+- [] create functionnal filtering UI elements
