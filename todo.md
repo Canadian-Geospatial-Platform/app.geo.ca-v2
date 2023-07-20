@@ -5,3 +5,5 @@
 - [] complete result detail page
 - [] display map from johan's project in the map page
 - [] create functionnal filtering UI elements
+- [] add a store for search and filtering
+- [] add sign in functionnality
