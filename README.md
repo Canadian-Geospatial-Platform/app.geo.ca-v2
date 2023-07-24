@@ -25,9 +25,11 @@ npm run dev
 npm run dev -- --open
 ```
 
-## Building
+## Building and deployinh
 
-To create a production version of your app:
+1. Ensure aws cdk is properly configured
+
+2. To create and release your app:
 
 ```bash
 npm run build
