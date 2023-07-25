@@ -1,5 +1,5 @@
 <script>
-    export let data;
+	export let data;
 </script>
 
 <h1>This page will display a detailed view of a specific result.</h1>

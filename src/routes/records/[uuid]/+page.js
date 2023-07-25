@@ -1,5 +1,5 @@
 export const load = ({ params }) => {
-    return {
-        uuid: params.uuid
-    }
-}
+	return {
+		uuid: params.uuid
+	};
+};

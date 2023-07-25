@@ -1,2 +1,15 @@
+<script lang="ts">
+	import Filters from '$lib/components/filters/filters.svelte';
+</script>
+
 <h1>This page will contain the map based search.</h1>
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d359540.03802411986!2d-76.12987459676734!3d45.249682499852184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cce05b25f5113af%3A0x8a6a51e131dd15ed!2sOttawa%2C%20ON!5e0!3m2!1sen!2sca!4v1689882069216!5m2!1sen!2sca" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<Filters />
+<iframe
+	src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d359540.03802411986!2d-76.12987459676734!3d45.249682499852184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cce05b25f5113af%3A0x8a6a51e131dd15ed!2sOttawa%2C%20ON!5e0!3m2!1sen!2sca!4v1689882069216!5m2!1sen!2sca"
+	width="600"
+	height="450"
+	style="border:0;"
+	allowfullscreen=""
+	loading="lazy"
+	referrerpolicy="no-referrer-when-downgrade"
+/>
