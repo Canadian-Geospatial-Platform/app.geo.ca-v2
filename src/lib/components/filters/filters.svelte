@@ -1,11 +1,11 @@
 <script>
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import  Organisations from './organisations.svelte';
-	import  Other from './other.svelte';
-	import  SpatioTemporal from './spatio-temporal.svelte';
-	import  Themes from './themes.svelte';
-	import  Types from './types.svelte';
+	import Organisations from './organisations.svelte';
+	import Other from './other.svelte';
+	import SpatioTemporal from './spatio-temporal.svelte';
+	import Themes from './themes.svelte';
+	import Types from './types.svelte';
 
 	let keyword = $page.url.searchParams.get('keyword');
 
@@ -21,11 +21,11 @@
 </script>
 
 <form on:submit|preventDefault={update}>
-	<Organisations/>
-	<Other/>
-	<SpatioTemporal/>
-	<Themes/>
-	<Types/>
+	<Organisations />
+	<Other />
+	<SpatioTemporal />
+	<Themes />
+	<Types />
 	<input bind:value={keyword} />
 	<button type="submit"> Please save me! </button>
 </form>
