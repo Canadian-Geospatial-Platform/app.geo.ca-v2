@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
-	let collapse = false;
+	let collapse = true;
 	let organisations = [
 		'Agence Canadienne de Développement économique du Nord',
 		"Agence d'évaluation d'impact du Canada",
@@ -44,7 +44,7 @@
 	}
 </script>
 
-<h2 on:click={() => (collapse = !collapse)}>Organisations</h2>
+<button on:click={() => (collapse = !collapse)}>Organisations</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each organisations as x}

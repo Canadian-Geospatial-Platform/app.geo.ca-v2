@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
-	let collapse = false;
+	let collapse = true;
 	let others = ['Données de base du Canada'];
 	function init(key) {
 		return $page.url.searchParams.get(key) == 'on';
@@ -12,7 +12,7 @@
 	}
 </script>
 
-<h2 on:click={() => (collapse = !collapse)}>Other</h2>
+<button on:click={() => (collapse = !collapse)}>Other</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each others as x}

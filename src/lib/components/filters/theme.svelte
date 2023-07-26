@@ -22,7 +22,7 @@
 	}
 </script>
 
-<h2 on:click={() => (collapse = !collapse)}>Themes</h2>
+<button on:click={() => (collapse = !collapse)}>Themes</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each themes as x}

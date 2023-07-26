@@ -22,11 +22,17 @@
 </script>
 
 <form>
+	<br />
 	<Organisation />
+	<br />
 	<Other />
+	<br />
 	<SpatioTemporal />
+	<br />
 	<Theme />
+	<br />
 	<Type />
+	<br />
 	<input bind:value={keyword} />
 	<button type="submit"> Please save me! </button>
 </form>

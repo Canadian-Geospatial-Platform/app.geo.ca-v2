@@ -12,7 +12,7 @@
 	}
 </script>
 
-<h2 on:click={() => (collapse = !collapse)}>Types</h2>
+<button on:click={() => (collapse = !collapse)}>Types</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each types as x}
