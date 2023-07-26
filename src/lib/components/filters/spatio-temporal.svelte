@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import Temporal from './inputs/temporal.svelte';
 
-	let collapse = false;
+	let collapse = true;
 
 	function getId(key) {
 		return 'filters-types-' + key.toLowerCase().replace(/\s/g, '-');

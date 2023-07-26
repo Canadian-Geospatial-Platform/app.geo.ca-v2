@@ -22,9 +22,9 @@
 <form data-sveltekit-noscroll>
 	<br />
 	<Text id="filters-search-terms" name="Search" />
+	<button type="submit"> Submit! </button>
 	<br />
-	<button type="submit"> Please save me! </button>
-	<br />
+	<h2>Filters</h2>
 	<Organisation />
 	<br />
 	<Other />

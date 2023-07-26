@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
 	import Checkbox from './inputs/checkbox.svelte';
-	let collapse = false;
+	let collapse = true;
 	let others = ['Données de base du Canada'];
 
 	function getId(key) {
