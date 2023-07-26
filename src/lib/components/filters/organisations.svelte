@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
+	let collapse = false;
 	let organisations = [
 		'Agence Canadienne de Développement économique du Nord',
 		"Agence d'évaluation d'impact du Canada",
@@ -32,7 +33,6 @@
 		'Statistique Canada',
 		'Transports Canada'
 	];
-	let collapse = false;
 </script>
 
 <h2 on:click={() => (collapse = !collapse)}>Organisations</h2>

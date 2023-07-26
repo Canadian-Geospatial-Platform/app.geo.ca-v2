@@ -1,1 +1,5 @@
-<h2>Types</h2>
+<script lang="ts">
+	import { slide } from 'svelte/transition';
+	let collapse = false;
+</script>
+<h2 on:click={() => (collapse = !collapse)}>Types</h2>

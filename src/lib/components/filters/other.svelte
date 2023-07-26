@@ -1,1 +1,5 @@
-<h2>Other</h2>
+<script lang="ts">
+	import { slide } from 'svelte/transition';
+	let collapse = false;
+</script>
+<h2 on:click={() => (collapse = !collapse)}>Other</h2>
