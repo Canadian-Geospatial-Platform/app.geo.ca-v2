@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
-	let collapse = true;
+	import Checkbox from './inputs/checkbox.svelte';
+	let collapse = false;
 	let others = ['Données de base du Canada'];
-	function init(key) {
-		return $page.url.searchParams.get(key) == 'on';
-	}
 
 	function getId(key) {
 		return 'filters-others-' + key.toLowerCase().replace(/\s/g, '-');
@@ -17,8 +15,7 @@
 	<ul transition:slide>
 		{#each others as x}
 			<li>
-				<input checked={init(getId(x))} type="checkbox" id={getId(x)} name={getId(x)} />
-				<label for={getId(x)}>{x}</label>
+				<Checkbox id={getId(x)} name={x} />
 			</li>
 		{/each}
 	</ul>

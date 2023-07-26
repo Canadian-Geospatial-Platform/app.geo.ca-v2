@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
+	import Checkbox from './inputs/checkbox.svelte';
 	let collapse = false;
 	let types = ['API', 'Application', 'Collection', 'Communauté', 'Jeu de données', 'Service'];
 	function init(key) {
@@ -17,8 +18,7 @@
 	<ul transition:slide>
 		{#each types as x}
 			<li>
-				<input checked={init(getId(x))} type="checkbox" id={getId(x)} name={getId(x)} />
-				<label for={getId(x)}>{x}</label>
+				<Checkbox id={getId(x)} name={x} />
 			</li>
 		{/each}
 	</ul>
