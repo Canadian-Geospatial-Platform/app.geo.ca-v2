@@ -2,20 +2,20 @@
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
 	let collapse = false;
-	let others = ['Données de base du Canada'];
+	let types = ['API', 'Application', 'Collection', 'Communauté', 'Jeu de données', 'Service'];
 	function init(key) {
 		return $page.url.searchParams.get(key) == 'on';
 	}
 
 	function getId(key) {
-		return 'filters-others-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'filters-types-' + key.toLowerCase().replace(/\s/g, '-');
 	}
 </script>
 
-<h2 on:click={() => (collapse = !collapse)}>Other</h2>
+<h2 on:click={() => (collapse = !collapse)}>Types</h2>
 {#if !collapse}
 	<ul transition:slide>
-		{#each others as x}
+		{#each types as x}
 			<li>
 				<input checked={init(getId(x))} type="checkbox" id={getId(x)} name={getId(x)} />
 				<label for={getId(x)}>{x}</label>

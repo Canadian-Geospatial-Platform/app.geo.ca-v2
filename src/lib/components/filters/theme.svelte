@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
 	let collapse = false;
 	let themes = [
@@ -12,15 +13,22 @@
 		'Société',
 		'Urgences'
 	];
+	function init(key) {
+		return $page.url.searchParams.get(key) == 'on';
+	}
+
+	function getId(key) {
+		return 'filters-themes-' + key.toLowerCase().replace(/\s/g, '-');
+	}
 </script>
 
 <h2 on:click={() => (collapse = !collapse)}>Themes</h2>
-{#if collapse}
+{#if !collapse}
 	<ul transition:slide>
-		{#each themes as t}
+		{#each themes as x}
 			<li>
-				<input type="checkbox" id="themes-filter-{t}" name="themes-filter-{t}" />
-				<label for="themes-filter-{t}">{t}</label>
+				<input checked={init(getId(x))} type="checkbox" id={getId(x)} name={getId(x)} />
+				<label for={getId(x)}>{x}</label>
 			</li>
 		{/each}
 	</ul>

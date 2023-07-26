@@ -35,23 +35,22 @@
 		'Statistique Canada',
 		'Transports Canada'
 	];
-
 	function init(key) {
 		return $page.url.searchParams.get(key) == 'on';
 	}
 
 	function getId(key) {
-		return 'organisations-filter-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'filters-organisations-' + key.toLowerCase().replace(/\s/g, '-');
 	}
 </script>
 
 <h2 on:click={() => (collapse = !collapse)}>Organisations</h2>
 {#if !collapse}
 	<ul transition:slide>
-		{#each organisations as o}
+		{#each organisations as x}
 			<li>
-				<input checked={init(getId(o))} type="checkbox" id={getId(o)} name={getId(o)} />
-				<label for={getId(o)}>{o}</label>
+				<input checked={init(getId(x))} type="checkbox" id={getId(x)} name={getId(x)} />
+				<label for={getId(x)}>{x}</label>
 			</li>
 		{/each}
 	</ul>
