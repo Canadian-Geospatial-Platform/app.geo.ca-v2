@@ -6,11 +6,9 @@
 	import SpatioTemporal from './spatio-temporal.svelte';
 	import Theme from './theme.svelte';
 	import Type from './type.svelte';
+	import Text from './inputs/text.svelte';
 
-	let keyword = $page.url.searchParams.get('keyword');
-
-	function update(event) {
-		console.log(event);
+	function update() {
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('keywords', keyword);
 		let opts = {
@@ -21,7 +19,11 @@
 	}
 </script>
 
-<form>
+<form data-sveltekit-noscroll>
+	<br />
+	<Text id="filters-search-terms" name="Search" />
+	<br />
+	<button type="submit"> Please save me! </button>
 	<br />
 	<Organisation />
 	<br />
@@ -32,7 +34,4 @@
 	<Theme />
 	<br />
 	<Type />
-	<br />
-	<input bind:value={keyword} />
-	<button type="submit"> Please save me! </button>
 </form>
