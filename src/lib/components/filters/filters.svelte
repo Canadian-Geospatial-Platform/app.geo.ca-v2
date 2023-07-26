@@ -9,7 +9,8 @@
 
 	let keyword = $page.url.searchParams.get('keyword');
 
-	function update() {
+	function update(event) {
+		console.log(event);
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('keywords', keyword);
 		let opts = {
@@ -20,7 +21,7 @@
 	}
 </script>
 
-<form on:submit|preventDefault={update}>
+<form>
 	<Organisations />
 	<Other />
 	<SpatioTemporal />
