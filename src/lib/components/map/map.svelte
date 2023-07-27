@@ -5,7 +5,7 @@
 			interaction: 'dynamic',
 			viewSettings: {
 				zoom: 4,
-				center: [60, -100],
+				center: [100, 60],
 				projection: 3978
 			},
 			basemapOptions: {
@@ -34,30 +34,8 @@
 		corePackages: [],
 		suportedLanguages: ['en']
 	};
+	$: sConfig = JSON.stringify(config);
 
-	// function refresh() {
-	//    cgpv.api.map('mapOne').loadConfig({
-	//        map: {
-	//            interaction: 'dynamic',
-	//            viewSettings: {
-	//                zoom: 12,
-	//                center: [45, 75],
-	//                projection: 3978
-	//            },
-	//            basemapOptions: {
-	//                basemapId: 'transport',
-	//                shaded: true,
-	//                labeled: true,
-	//            },
-	//            listOfGeoviewLayerConfig: [],
-	//        },
-	//        theme: 'dark',
-	//        components: ['north-arrow', 'overview-map'],
-	//        corePackages: ['basemap-panel', 'layers-panel', 'details-panel'],
-	//        externalPackages: [],
-	//        suportedLanguages: ['en', 'fr'],
-	//    });
-	// }
 	onMount(async () => {
 		cgpv.init();
 	});
@@ -66,4 +44,6 @@
 <svelte:head>
 	<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
-<div id="mapOne" class="llwp-map" style="height: 100vh;" data-lang="en" data-config={config} />
+
+<!--for now, we pass data config in the html as javascript configuration is more bug prone.-->
+<div id="mapTwo" class="llwp-map" style="height: 100vh;" data-lang="en" data-config={sConfig} />
