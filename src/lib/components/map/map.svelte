@@ -5,7 +5,7 @@
 			interaction: 'dynamic',
 			viewSettings: {
 				zoom: 4,
-				center: [100, 60],
+				center: [-100, 60],
 				projection: 3978
 			},
 			basemapOptions: {
@@ -13,21 +13,7 @@
 				shaded: true,
 				labeled: true
 			},
-			listOfGeoviewLayerConfig: [
-				{
-					geoviewLayerId: 'esriDynamicLYR2',
-					geoviewLayerName: {
-						en: 'Energy',
-						fr: 'Energy'
-					},
-					metadataAccessPath: {
-						en: 'https://maps-cartes.ec.gc.ca/arcgis/rest/services/CESI/MapServer',
-						fr: 'https://maps-cartes.ec.gc.ca/arcgis/rest/services/CESI/MapServer'
-					},
-					geoviewLayerType: 'esriDynamic',
-					listOfLayerEntryConfig: [{ layerId: '0' }, { layerId: '6' }]
-				}
-			]
+			listOfGeoviewLayerConfig: []
 		},
 		theme: 'dark',
 		components: ['north-arrow', 'overview-map'],
@@ -35,6 +21,19 @@
 		suportedLanguages: ['en']
 	};
 	$: sConfig = JSON.stringify(config);
+
+	function addPolyline() {
+		console.log(cgpv);
+		console.log(cgpv.api.maps);
+		console.log(cgpv.api.map('mapTwo'));
+		cgpv.api.map('mapTwo').layer.vector.addPolyline(
+			[
+				[-120, 50],
+				[-125, 55]
+			],
+			undefined
+		);
+	}
 
 	onMount(async () => {
 		cgpv.init();
@@ -44,6 +43,6 @@
 <svelte:head>
 	<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
-
+<button on:click={addPolyline}>fdasf</button>
 <!--for now, we pass data config in the html as javascript configuration is more bug prone.-->
 <div id="mapTwo" class="llwp-map" style="height: 100vh;" data-lang="en" data-config={sConfig} />
