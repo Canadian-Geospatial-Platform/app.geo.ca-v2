@@ -5,7 +5,7 @@
 	$: otherLang = lang == 'en-ca' ? 'fr-ca' : 'en-ca';
 	$: otherLangPathName = $page.url.pathname.replace(lang, otherLang);
 	function switchLang() {
-		goto(otherLangPathName)
+		goto(otherLangPathName);
 		lang = otherLang;
 	}
 </script>
