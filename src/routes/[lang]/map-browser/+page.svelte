@@ -5,6 +5,7 @@
 	import Map from '$lib/components/map/map.svelte';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
+	let results = $page.data.results.Items;
 	let mapComponentAddPolyline;
 
 	function addPolyline(polyline) {
@@ -13,7 +14,7 @@
 
 	onMount(async () => {
 		await new Promise((r) => setTimeout(r, 2000));
-		$page.data.results.Items.forEach((e) => {
+		results.forEach((e) => {
 			console.log('eis:\n:', e.coordinates);
 			let c = JSON.parse(e.coordinates);
 			console.log(c[0]);
@@ -25,5 +26,5 @@
 <h1>This page will contain the map based search.</h1>
 <Filters />
 <button on:click={addPolyline}>Draw polygon.</button>
-<SearchResults />
+<SearchResults {results} />
 <Map bind:addPolyline={mapComponentAddPolyline} />
