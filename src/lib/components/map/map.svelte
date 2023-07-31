@@ -23,9 +23,6 @@
 	$: sConfig = JSON.stringify(config);
 
 	export const addPolyline = function (polyline) {
-		console.log(cgpv);
-		console.log(cgpv.api.maps);
-		console.log(cgpv.api.map('mapTwo'));
 		cgpv.api.map('mapTwo').layer.vector.addPolyline(polyline, undefined);
 	};
 
