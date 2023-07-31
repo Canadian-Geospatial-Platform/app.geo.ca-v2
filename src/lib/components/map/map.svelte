@@ -22,14 +22,7 @@
 	};
 	$: sConfig = JSON.stringify(config);
 
-	export const addPolyline = function () {
-		let polyline = [
-			[-99, 50],
-			[-99, 54],
-			[-92, 54],
-			[-92, 50],
-			[-99, 51]
-		];
+	export const addPolyline = function (polyline) {
 		console.log(cgpv);
 		console.log(cgpv.api.maps);
 		console.log(cgpv.api.map('mapTwo'));
