@@ -13,5 +13,6 @@
 		date={x.date}
 		organization={x.organisation}
 		id={x.id}
+		on:viewFootPrintEvent
 	/>
 {/each}
