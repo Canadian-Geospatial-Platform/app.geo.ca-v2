@@ -21,22 +21,26 @@
 		suportedLanguages: ['en']
 	};
 	$: sConfig = JSON.stringify(config);
+	let c;
 
-	function addPolyline() {
+	async function addPolyline() {
 		console.log(cgpv);
 		console.log(cgpv.api.maps);
 		console.log(cgpv.api.map('mapTwo'));
 		cgpv.api.map('mapTwo').layer.vector.addPolyline(
 			[
-				[-120, 50],
-				[-125, 55]
-			],
+              [-99, 50],
+              [-99, 54],
+              [-92, 54],
+              [-92, 50],
+              [-99, 51],
+				],
 			undefined
 		);
 	}
 
 	onMount(async () => {
-		cgpv.init();
+		c = cgpv.init();
 	});
 </script>
 
