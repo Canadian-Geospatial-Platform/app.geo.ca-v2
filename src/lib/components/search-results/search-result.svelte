@@ -1,6 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';
+
+	$: footprint = $page.data.lang == 'en-ca' ? 'VIEW FOOTPRINT' : "AFFICHER L'EMPREINTE";
+	$: viewRecord = $page.data.lang == 'en-ca' ? 'VIEW RECORD' : "AFFICHER L'ENREGISTREMENT";
 
 	const dispatch = createEventDispatcher();
 
@@ -20,6 +24,6 @@
 	{organization}
 	{date}
 	{description}
-	<button on:click={emitViewFootprintEvent}>VIEW FOOTPRINT</button>
-	<a href={'records/' + id}>VIEW RECORD</a>
+	<button on:click={emitViewFootprintEvent}>{footprint}</button>
+	<a href={'records/' + id}>{viewRecord}</a>
 </li>
