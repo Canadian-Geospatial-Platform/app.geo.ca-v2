@@ -4,7 +4,7 @@
 	import Checkbox from './inputs/checkbox.svelte';
 	let collapse = true;
 
-	let organisations = [
+	const organisations = [
 		{
 			'fr-ca': 'Agence Canadienne de Développement économique du Nord',
 			'en-ca': 'Canadian Northern Economic Development Agency'
@@ -87,7 +87,7 @@
 	<ul transition:slide>
 		{#each organisations as x}
 			<li>
-				<Checkbox id={getId(x['en-ca'])} name={x['fr-ca']} />
+				<Checkbox id={getId(x['en-ca'])} name={x[$page.data.lang]} />
 			</li>
 		{/each}
 	</ul>

@@ -5,6 +5,11 @@
 
 	let collapse = true;
 
+	const spatioTemporalFilters = [
+		{ 'fr-ca': 'Date de début', 'en-ca': 'Start date' },
+		{ 'fr-ca': 'Date de fin', 'en-ca': 'End date' }
+	];
+
 	function getId(key) {
 		return 'types-' + key.toLowerCase().replace(/\s/g, '-');
 	}
@@ -13,7 +18,7 @@
 <button on:click={() => (collapse = !collapse)}>Spatio-temporal</button>
 {#if !collapse}
 	<ul transition:slide>
-		<li><Temporal id={getId('start')} name="Start date" /></li>
-		<li><Temporal id={getId('end')} name="End date" /></li>
+		<li><Temporal id={getId('start')} name={spatioTemporalFilters[0][$page.data.lang]} /></li>
+		<li><Temporal id={getId('end')} name={spatioTemporalFilters[1][$page.data.lang]} /></li>
 	</ul>
 {/if}
