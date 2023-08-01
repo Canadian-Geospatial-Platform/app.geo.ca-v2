@@ -3,6 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import Temporal from './inputs/temporal.svelte';
 
+	let title = $page.data.lang == 'en-ca' ? 'Spatiotemporal' : 'Spatio temporelle';
 	let collapse = true;
 
 	const spatioTemporalFilters = [
@@ -15,7 +16,7 @@
 	}
 </script>
 
-<button on:click={() => (collapse = !collapse)}>Spatio-temporal</button>
+<button on:click={() => (collapse = !collapse)}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		<li><Temporal id={getId('start')} name={spatioTemporalFilters[0][$page.data.lang]} /></li>

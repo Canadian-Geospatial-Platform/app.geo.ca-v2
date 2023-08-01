@@ -3,6 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import Checkbox from './inputs/checkbox.svelte';
 
+	let title = $page.data.lang == 'en-ca' ? 'Others' : 'Autres';
 	let collapse = true;
 
 	const types = [
@@ -23,7 +24,7 @@
 	}
 </script>
 
-<button on:click={() => (collapse = !collapse)}>Types</button>
+<button on:click={() => (collapse = !collapse)}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each types as x}

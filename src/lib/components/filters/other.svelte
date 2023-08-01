@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
 	import Checkbox from './inputs/checkbox.svelte';
+	let title = $page.data.lang == 'en-ca' ? 'Others' : 'Autres';
 	let collapse = true;
 	const others = [{ 'fr-ca': 'Données de base du Canada', 'en-ca': 'Foundation Data' }];
 
@@ -10,7 +11,7 @@
 	}
 </script>
 
-<button on:click={() => (collapse = !collapse)}>Other</button>
+<button on:click={() => (collapse = !collapse)}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each others as x}
