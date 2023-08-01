@@ -6,7 +6,7 @@
 	let others = ['Données de base du Canada'];
 
 	function getId(key) {
-		return 'filters-others-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'others-' + key.toLowerCase().replace(/\s/g, '-');
 	}
 </script>
 

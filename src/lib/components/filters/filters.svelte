@@ -21,7 +21,7 @@
 
 <form data-sveltekit-noscroll>
 	<br />
-	<Text id="filters-search-terms" name="Search" />
+	<Text id="search-terms" name="Search" />
 	<button type="submit"> Submit! </button>
 	<br />
 	<h2>Filters</h2>

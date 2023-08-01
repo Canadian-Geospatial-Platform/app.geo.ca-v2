@@ -19,7 +19,7 @@
 	}
 
 	function getId(key) {
-		return 'filters-themes-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'themes-' + key.toLowerCase().replace(/\s/g, '-');
 	}
 </script>
 

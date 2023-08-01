@@ -11,7 +11,7 @@
 	}
 
 	function getId(key) {
-		return 'filters-types-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'types-' + key.toLowerCase().replace(/\s/g, '-');
 	}
 </script>
 

@@ -41,7 +41,7 @@
 	}
 
 	function getId(key) {
-		return 'filters-organisations-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'organisations-' + key.toLowerCase().replace(/\s/g, '-');
 	}
 </script>
 
