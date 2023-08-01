@@ -7,7 +7,9 @@
 	import Theme from './theme.svelte';
 	import Type from './type.svelte';
 	import Text from './inputs/text.svelte';
-	const t = function update() {
+	const title = $page.data.lang == 'en-ca' ? 'filters' : 'filtres';
+	const search = $page.data.lang == 'en-ca' ? 'Search' : 'Rechercher';
+	function update() {
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('keywords', keyword);
 		let opts = {
@@ -15,15 +17,15 @@
 			keepfocus: true
 		};
 		goto(`?${query.toString()}`, opts);
-	};
+	}
 </script>
 
 <form data-sveltekit-noscroll>
 	<br />
-	<Text id="search-terms" name="Search" />
-	<button type="submit"> Submit! </button>
+	<Text id="search-terms" name={search} />
+	<button type="submit"> {search} </button>
 	<br />
-	<h2>{$page.data.lang == 'en-ca' ? 'filters' : 'filtres'}</h2>
+	<h2>{title}</h2>
 	<Organisation />
 	<br />
 	<Other />
