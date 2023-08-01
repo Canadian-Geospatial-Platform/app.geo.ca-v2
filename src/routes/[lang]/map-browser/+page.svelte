@@ -5,7 +5,7 @@
 	import Map from '$lib/components/map/map.svelte';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
-	let results = $page.data.results.Items;
+	$: results = $page.data.results.Items;
 	let mapComponentAddPolyline;
 
 	function addPolyline(polyline) {

@@ -1,8 +1,9 @@
 export const load = async ({ fetch, params, url }) => {
-	const response = await generateUrl(fetch, url.searchParams, params.lang);
+	let response = await generateUrl(fetch, url.searchParams, params.lang);
+	let parsedResponse = response.json();
 	return {
 		lang: params.lang,
-		results: await response.json()
+		results: parsedResponse
 	};
 };
 
@@ -10,7 +11,6 @@ function generateUrl(fetch, searchParams, lang) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
 	const params = mapSearchParams(searchParams, lang);
 	url.search = new URLSearchParams(params).toString();
-	console.log(url);
 	return fetch(url);
 }
 
@@ -32,7 +32,6 @@ function mapSearchParams(searchParams, lang) {
 function mapOrganisations(searchParams) {
 	let ret = '';
 	searchParams.forEach((key, value) => {
-		console.log(`${key}: ${value}`);
 		let prefix = 'organisations-';
 		if (value.startsWith(prefix) && key == 'on') {
 			if (ret) ret += '|';
