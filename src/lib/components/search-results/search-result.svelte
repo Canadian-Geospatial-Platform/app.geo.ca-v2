@@ -11,7 +11,6 @@
 	export let id = 'xxx';
 
 	function emitViewFootprintEvent() {
-		console.log('emiting..');
 		dispatch('viewFootPrintEvent', { id: id });
 	}
 </script>
