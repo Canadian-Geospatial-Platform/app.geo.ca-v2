@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import Temporal from './inputs/temporal.svelte';
 
-	let title = $page.data.lang == 'en-ca' ? 'Spatiotemporal' : 'Spatio temporelle';
+	$: title = $page.data.lang == 'en-ca' ? 'Spatiotemporal' : 'Spatio temporelle';
 	let collapse = true;
 
 	const spatioTemporalFilters = [

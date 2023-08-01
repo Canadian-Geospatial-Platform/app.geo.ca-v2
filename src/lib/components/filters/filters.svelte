@@ -7,8 +7,8 @@
 	import Theme from './theme.svelte';
 	import Type from './type.svelte';
 	import Text from './inputs/text.svelte';
-	const title = $page.data.lang == 'en-ca' ? 'filters' : 'filtres';
-	const search = $page.data.lang == 'en-ca' ? 'Search' : 'Rechercher';
+	$: title = $page.data.lang == 'en-ca' ? 'filters' : 'filtres';
+	$: search = $page.data.lang == 'en-ca' ? 'Search' : 'Rechercher';
 	function update() {
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('keywords', keyword);

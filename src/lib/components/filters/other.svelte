@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
 	import Checkbox from './inputs/checkbox.svelte';
-	let title = $page.data.lang == 'en-ca' ? 'Others' : 'Autres';
+	$: title = $page.data.lang == 'en-ca' ? 'Others' : 'Autres';
 	let collapse = true;
 	const others = [{ 'fr-ca': 'Données de base du Canada', 'en-ca': 'Foundation Data' }];
 

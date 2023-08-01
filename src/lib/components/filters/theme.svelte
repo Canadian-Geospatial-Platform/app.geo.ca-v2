@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import Checkbox from './inputs/checkbox.svelte';
 
-	let title = $page.data.lang == 'en-ca' ? 'Themes' : 'Thèmes';
+	$: title = $page.data.lang == 'en-ca' ? 'Themes' : 'Thèmes';
 	let collapse = true;
 
 	const themes = [
