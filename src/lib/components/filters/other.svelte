@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import Checkbox from './inputs/checkbox.svelte';
 	let collapse = true;
-	let others = ['Données de base du Canada'];
+	let others = [{'fr-ca': 'Données de base du Canada', 'en-ca': 'Foundation Data'}];
 
 	function getId(key) {
 		return 'others-' + key.toLowerCase().replace(/\s/g, '-');
@@ -15,7 +15,7 @@
 	<ul transition:slide>
 		{#each others as x}
 			<li>
-				<Checkbox id={getId(x)} name={x} />
+				<Checkbox id={getId(x['en-ca'])} name={x['fr-ca']} />
 			</li>
 		{/each}
 	</ul>
