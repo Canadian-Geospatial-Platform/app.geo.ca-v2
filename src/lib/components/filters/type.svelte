@@ -20,7 +20,7 @@
 	}
 
 	function getId(key) {
-		return 'types-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'types-' + key.toLowerCase();
 	}
 </script>
 

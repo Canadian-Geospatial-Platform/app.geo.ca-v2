@@ -7,7 +7,7 @@
 	const others = [{ 'fr-ca': 'Données de base du Canada', 'en-ca': 'Foundation Data' }];
 
 	function getId(key) {
-		return 'others-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'others-' + key.toLowerCase();
 	}
 </script>
 

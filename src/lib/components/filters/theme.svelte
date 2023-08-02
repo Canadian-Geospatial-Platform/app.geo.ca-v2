@@ -23,7 +23,7 @@
 	}
 
 	function getId(key) {
-		return 'themes-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'themes-' + key.toLowerCase();
 	}
 </script>
 
