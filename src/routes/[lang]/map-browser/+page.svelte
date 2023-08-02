@@ -21,7 +21,9 @@
 	}
 </script>
 
-<h1 class="text-3xl font-bold underline bg-red-100">This page will contain the map based search.</h1>
+<h1 class="text-3xl font-bold underline bg-red-100">
+	This page will contain the map based search.
+</h1>
 <Filters />
 <button on:click={addPolyline}>Draw polygon.</button>
 <SearchResults {results} on:viewFootPrintEvent={handleViewFootprintEvent} />

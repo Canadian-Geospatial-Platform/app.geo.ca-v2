@@ -15,23 +15,27 @@ function generateUrl(fetch, searchParams, lang) {
 }
 
 function mapSearchParams(searchParams, lang) {
+	console.log(searchParams.get('others-foundational'));
 	let cKeys = concatKeys(searchParams);
-	return {
-		north: 69.8698915662856,
+	let ret = {
+		north: 72.04683989379397,
 		east: 44.6484375,
-		south: 46.01222384063236,
+		south: 41.244772343082076,
 		west: -180,
 		keyword: searchParams.get('search-terms'),
 		org: cKeys.org,
 		type: cKeys.type,
 		theme: cKeys.theme,
 		bbox: cKeys.bbox,
-		foundational: searchParams.get('others-foundational') == 'on' ? '' : 'true',
+		foundational: searchParams.get('others-foundational') === 'on' ? 'true' : '',
+		begin: new Date(searchParams.get('spatio-temporal-start')).toISOString(),
+		end: new Date(searchParams.get('spatio-temporal-end')).toISOString(),
 		lang: lang.split('-')[0],
 		min: 1,
 		max: 10,
 		sort: 'title'
 	};
+	return ret;
 }
 
 function concatKeys(searchParams) {

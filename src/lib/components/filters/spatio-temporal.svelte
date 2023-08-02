@@ -12,7 +12,7 @@
 	];
 
 	function getId(key) {
-		return 'types-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'spatio-temporal-' + key.toLowerCase().replace(/\s/g, '-');
 	}
 </script>
 
