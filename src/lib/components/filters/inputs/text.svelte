@@ -7,4 +7,4 @@
 </script>
 
 <label for={id}>{name}:</label>
-<input {id} name={id} bind:value />
+<input {id} name={id} bind:value class="bg-yellow-100"/>
