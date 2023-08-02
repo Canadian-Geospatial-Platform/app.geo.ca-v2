@@ -33,11 +33,16 @@ function mapOrganisations(searchParams) {
 	let ret = '';
 	searchParams.forEach((key, value) => {
 		let prefix = 'organisations-';
-		if (value.startsWith(prefix) && key == 'on') {
-			if (ret) ret += '|';
-			let sv = value.slice(14);
-			ret += sv;
-		}
+		ret = conditionalConcat(prefix, key, value, ret);
 	});
+	return ret;
+}
+
+function conditionalConcat(prefix, key, value, ret) {
+	if (value.startsWith(prefix) && key == 'on') {
+		if (ret) ret += '|';
+		let sv = value.slice(prefix.length);
+		ret += sv;
+	}
 	return ret;
 }

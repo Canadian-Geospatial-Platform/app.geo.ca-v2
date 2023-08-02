@@ -80,7 +80,7 @@
 	}
 
 	function getId(key) {
-		return 'organisations-' + key.toLowerCase().replace(/\s/g, '-');
+		return 'organisations-' + key.toLowerCase();
 	}
 </script>
 
