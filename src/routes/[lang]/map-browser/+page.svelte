@@ -25,6 +25,6 @@
 	This page will contain the map based search.
 </h1>
 <Filters />
-<button on:click={addPolyline}>Draw polygon.</button>
+<button on:click|preventDefault={addPolyline}>Draw polygon.</button>
 <SearchResults {results} on:viewFootPrintEvent={handleViewFootprintEvent} />
 <Map bind:addPolyline={mapComponentAddPolyline} />

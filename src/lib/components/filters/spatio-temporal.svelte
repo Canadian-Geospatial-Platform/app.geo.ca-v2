@@ -16,7 +16,7 @@
 	}
 </script>
 
-<button on:click={() => (collapse = !collapse)}>{title}</button>
+<button on:click|preventDefault={() => (collapse = !collapse)}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		<li><Temporal id={getId('start')} name={spatioTemporalFilters[0][$page.data.lang]} /></li>

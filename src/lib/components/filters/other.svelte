@@ -11,7 +11,7 @@
 	}
 </script>
 
-<button on:click={() => (collapse = !collapse)}>{title}</button>
+<button on:click|preventDefault={() => (collapse = !collapse)}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each others as x}

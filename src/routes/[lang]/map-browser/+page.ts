@@ -28,8 +28,12 @@ function mapSearchParams(searchParams, lang) {
 		theme: cKeys.theme,
 		bbox: cKeys.bbox,
 		foundational: searchParams.get('others-foundational') === 'on' ? 'true' : '',
-		begin: searchParams.get('spatio-temporal-start')? new Date(searchParams.get('spatio-temporal-start')).toISOString():'',
-		end: searchParams.get('spatio-temporal-end')? new Date(searchParams.get('spatio-temporal-end')).toISOString():'',
+		begin: searchParams.get('spatio-temporal-start')
+			? new Date(searchParams.get('spatio-temporal-start')).toISOString()
+			: '',
+		end: searchParams.get('spatio-temporal-end')
+			? new Date(searchParams.get('spatio-temporal-end')).toISOString()
+			: '',
 		lang: lang.split('-')[0],
 		min: 1,
 		max: 10,
