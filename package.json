@@ -30,7 +30,6 @@
 	"type": "module",
 	"dependencies": {
 		"aws-cdk": "^2.88.0",
-		"bootstrap": "^5.3.0",
 		"sveltekit-adapter-aws": "^4.5.1"
 	}
 }
