@@ -23,10 +23,10 @@ function mapSearchParams(searchParams, lang) {
 		west: -180,
 		keyword: searchParams.get('search-terms'),
 		org: cKeys.org,
-		others: cKeys.others,
 		type: cKeys.type,
 		theme: cKeys.theme,
 		bbox: cKeys.bbox,
+		foundational: searchParams.get('others-foundational') == 'on' ? '' : 'true',
 		lang: lang.split('-')[0],
 		min: 1,
 		max: 10,
@@ -36,7 +36,6 @@ function mapSearchParams(searchParams, lang) {
 
 function concatKeys(searchParams) {
 	let ret = {
-		others: '',
 		org: '',
 		type: '',
 		theme: '',
