@@ -29,7 +29,7 @@
 		cgpv.api.map('mapTwo').layer.vector.addPolyline(polyline, undefined);
 	};
 
-	afterUpdate(async () => {
+	onMount(async () => {
 		cgpv.init();
 	});
 </script>
