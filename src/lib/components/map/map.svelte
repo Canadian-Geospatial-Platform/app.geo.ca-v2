@@ -1,5 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
+	import {
+		beforeUpdate,
+		afterUpdate
+	} from 'svelte';
+
 	export let config = {
 		map: {
 			interaction: 'dynamic',
@@ -26,7 +33,7 @@
 		cgpv.api.map('mapTwo').layer.vector.addPolyline(polyline, undefined);
 	};
 
-	onMount(async () => {
+	afterUpdate(async () => {
 		cgpv.init();
 	});
 </script>
