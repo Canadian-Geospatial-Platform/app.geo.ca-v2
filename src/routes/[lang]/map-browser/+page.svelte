@@ -24,7 +24,10 @@
 <h1 class="text-3xl font-bold underline bg-red-100">
 	This page will contain the map based search.
 </h1>
+<div class="flex flex-wrap md:flex-nowrap">
 <Filters />
-<button on:click|preventDefault={addPolyline}>Draw polygon.</button>
+	<div>
 <SearchResults {results} on:viewFootPrintEvent={handleViewFootprintEvent} />
 <Map bind:addPolyline={mapComponentAddPolyline} />
+</div>
+</div>

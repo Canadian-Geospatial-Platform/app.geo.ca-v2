@@ -4,6 +4,6 @@
 </script>
 
 <Header />
-<div class="container">
+<div class="container mx-auto bg-green-100">
 	<slot />
 </div>

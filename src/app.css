@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.button-1{
+  @apply bg-green-200;
+  @apply p-3;
+  @apply m-2;
+  @apply rounded-lg;
+  @apply drop-shadow-lg;
+}
+
+ input {
+  @apply rounded-lg;
+  @apply drop-shadow-lg;
+}

@@ -24,6 +24,6 @@
 	{organization}
 	{date}
 	{description}
-	<button on:click={emitViewFootprintEvent}>{footprint}</button>
-	<a href={'records/' + id}>{viewRecord}</a>
+	<button class="button-1" on:click={emitViewFootprintEvent}>{footprint}</button>
+	<a href={'records/' + id}><button class="button-1">{viewRecord}</button></a>
 </li>
