@@ -37,11 +37,11 @@
 			<div class="flex flex-col ">
 			<div class="p-1 m-1 text-2xl"><Text id="search-terms" name={keywords} class="p-2 m-2" /></div>
 			<h2 class="p-2 m-2 text-2xl" >{title}</h2>
-			<div class="p-1 m-1"> <Organisation /></div>
-			<div class="p-1 m-1"> <Other class="p-2 m-2" /></div>
-			<div class="p-1 m-1"> <SpatioTemporal class="p-2 m-2" /></div>
-			<div class="p-1 m-1"> <Theme class="p-2 m-2" /></div>
-			<div class="p-1 m-1"> <Type class="p-2 m-2" /></div>
+			<div class="p-2 mx-2 text-xl"> <Organisation /></div>
+			<div class="p-2 mx-2 text-xl"> <Other class="p-2 m-2" /></div>
+			<div class="p-2 mx-2 text-xl"> <SpatioTemporal class="p-2 m-2" /></div>
+			<div class="p-2 mx-2 text-xl"> <Theme class="p-2 m-2" /></div>
+			<div class="p-2 mx-2 text-xl"> <Type class="p-2 m-2" /></div>
 			<button type="submit" class="p-2 m-2 button-1" > {search} </button>
 				</div>
 		</form>
