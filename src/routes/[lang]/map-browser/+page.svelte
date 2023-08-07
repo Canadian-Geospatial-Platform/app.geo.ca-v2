@@ -26,7 +26,7 @@
 </h1>
 <div class="flex flex-wrap md:flex-nowrap">
 	<Filters />
-	<div>
+	<div class="grow">
 		<SearchResults {results} on:viewFootPrintEvent={handleViewFootprintEvent} />
 		<Map bind:addPolyline={mapComponentAddPolyline} />
 	</div>
