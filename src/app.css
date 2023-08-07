@@ -11,6 +11,8 @@
 }
 
 input {
-	@apply rounded-lg;
+	@apply rounded-md;
 	@apply drop-shadow-lg;
+	@apply my-2;
+	@apply p-2;
 }
