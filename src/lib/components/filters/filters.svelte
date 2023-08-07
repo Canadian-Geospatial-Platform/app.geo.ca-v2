@@ -10,6 +10,7 @@
 	import Text from './inputs/text.svelte';
 	$: title = $page.data.lang == 'en-ca' ? 'filters' : 'filtres';
 	$: search = $page.data.lang == 'en-ca' ? 'Search' : 'Rechercher';
+	$: keywords = $page.data.lang == 'en-ca' ? 'Keywords' : 'Motsr-clés';
 	let collapse = true;
 	$: icon = collapse ? 'X' : '|||';
 	function update() {
@@ -23,7 +24,7 @@
 	}
 </script>
 
-<div class="p-4">
+<div class="p-2 m-2 bg-orange-100 rounded-lg drop-shadow-lg">
 	<button
 		class="button-1 m-2 p-2"
 		on:click={() => {
@@ -33,20 +34,16 @@
 	>
 	{#if collapse}
 		<form data-sveltekit-noscroll transition:fade>
-			<br />
-			<Text id="search-terms" name={search} />
-			<button type="submit"> {search} </button>
-			<br />
-			<h2>{title}</h2>
-			<Organisation />
-			<br />
-			<Other />
-			<br />
-			<SpatioTemporal />
-			<br />
-			<Theme />
-			<br />
-			<Type />
+			<div class="flex flex-col ">
+			<div class="p-1 m-1 text-2xl"><Text id="search-terms" name={keywords} class="p-2 m-2" /></div>
+			<h2 class="p-2 m-2 text-2xl" >{title}</h2>
+			<div class="p-1 m-1"> <Organisation /></div>
+			<div class="p-1 m-1"> <Other class="p-2 m-2" /></div>
+			<div class="p-1 m-1"> <SpatioTemporal class="p-2 m-2" /></div>
+			<div class="p-1 m-1"> <Theme class="p-2 m-2" /></div>
+			<div class="p-1 m-1"> <Type class="p-2 m-2" /></div>
+			<button type="submit" class="p-2 m-2 button-1" > {search} </button>
+				</div>
 		</form>
 	{/if}
 </div>
