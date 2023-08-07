@@ -3,9 +3,7 @@
 	import SearchResult from './search-result.svelte';
 
 	$: noResults = $page.data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
-	export let results = [
-		{ id: 'xxxx', title: 'abc', description: 'def', date: '2025-03-22', organization: 'dddd' }
-	];
+	export let results = [];
 </script>
 
 {#each results as x}

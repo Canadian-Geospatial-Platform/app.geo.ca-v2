@@ -15,7 +15,6 @@ function generateUrl(fetch, searchParams, lang) {
 }
 
 function mapSearchParams(searchParams, lang) {
-	console.log(searchParams.get('others-foundational'));
 	let cKeys = concatKeys(searchParams);
 	let ret = {
 		north: 72.04683989379397,
