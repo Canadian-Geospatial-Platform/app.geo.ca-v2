@@ -10,7 +10,7 @@
 	import Text from './inputs/text.svelte';
 	$: title = $page.data.lang == 'en-ca' ? 'filters' : 'filtres';
 	$: search = $page.data.lang == 'en-ca' ? 'Search' : 'Rechercher';
-	$: keywords = $page.data.lang == 'en-ca' ? 'Keywords' : 'Motsr-clés';
+	$: keywords = $page.data.lang == 'en-ca' ? 'Keywords' : 'Mots-clés';
 	let collapse = true;
 	$: icon = collapse ? 'X' : '|||';
 	function update() {
@@ -34,11 +34,11 @@
 	>
 	{#if collapse}
 		<form data-sveltekit-noscroll transition:fade>
-			<div class="flex flex-col">
+			<div class="flex flex-col text-2xl">
 				<div class="p-1 m-1 text-2xl">
 					<Text id="search-terms" name={keywords} class="p-2 m-2" />
 				</div>
-				<h2 class="p-2 m-2 text-2xl">{title}</h2>
+				<h2 class="p-2 m-2">{title}</h2>
 				<div class="p-2 mx-2 text-xl"><Organisation /></div>
 				<div class="p-2 mx-2 text-xl"><Other class="p-2 m-2" /></div>
 				<div class="p-2 mx-2 text-xl"><SpatioTemporal class="p-2 m-2" /></div>

@@ -21,7 +21,7 @@
 	}
 </script>
 
-<h1 class="text-3xl font-bold underline bg-red-100">
+<h1 class="p-2 m-2 rounded-lg drop-shadow-lg text-3xl font-bold underline bg-red-100">
 	This page will contain the map based search.
 </h1>
 <div class="flex flex-wrap md:flex-nowrap">
