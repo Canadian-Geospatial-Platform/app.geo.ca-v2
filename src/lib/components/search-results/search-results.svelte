@@ -6,13 +6,15 @@
 	];
 </script>
 
-{#each results as x}
-	<SearchResult
-		title={x.title}
-		description={x.description}
-		date={x.date}
-		organization={x.organisation}
-		id={x.id}
-		on:viewFootPrintEvent
-	/>
-{/each}
+<ol>
+	{#each results as x}
+		<SearchResult
+			title={x.title}
+			description={x.description}
+			date={x.date}
+			organization={x.organisation}
+			id={x.id}
+			on:viewFootPrintEvent
+		/>
+	{/each}
+</ol>

@@ -3,7 +3,7 @@
 - [] complete map page
 - [] complete sidebar/header
 - [] complete result detail page
-- [] fix any bug related to geoview. talk to johan about returning the object(self) on init. this would likely fix the issue. 
+- [] fix any bug related to geoview. talk to johan about returning the object(self) on init. this would likely fix the issue.
 - [] add sign in functionnality
 - [] implement microdata
   - [sample](https://open.canada.ca/data/en/dataset/85cb7fc7-5847-4f76-9417-96a4f5d50702)

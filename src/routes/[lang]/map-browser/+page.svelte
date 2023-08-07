@@ -25,9 +25,9 @@
 	This page will contain the map based search.
 </h1>
 <div class="flex flex-wrap md:flex-nowrap">
-<Filters />
+	<Filters />
 	<div>
-<SearchResults {results} on:viewFootPrintEvent={handleViewFootprintEvent} />
-<Map bind:addPolyline={mapComponentAddPolyline} />
-</div>
+		<SearchResults {results} on:viewFootPrintEvent={handleViewFootprintEvent} />
+		<Map bind:addPolyline={mapComponentAddPolyline} />
+	</div>
 </div>
