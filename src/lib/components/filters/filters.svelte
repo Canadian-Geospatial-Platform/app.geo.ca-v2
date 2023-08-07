@@ -24,7 +24,7 @@
 	}
 </script>
 
-<div class="p-2 m-2 bg-orange-100 rounded-lg drop-shadow-lg">
+<div class="p-4 m-4 bg-orange-100 rounded-lg drop-shadow-lg">
 	<button
 		class="button-1 m-2 p-2"
 		on:click={() => {

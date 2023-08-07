@@ -19,12 +19,15 @@
 	}
 </script>
 
-<li class="bg-yellow-100 rounded-lg p-2 m-2 drop-shadow-lg">
+<li class="bg-yellow-100 rounded-lg p-4 m-4 drop-shadow-lg">
 	<h2 class="text-2xl">{title}</h2>
 	<p>{organization}</p>
 	<p>{date}</p>
 	<br />
 	<p class="overflow-hidden text-ellipsis h-48">{description}</p>
-	<button class="button-1" on:click={emitViewFootprintEvent}>{footprint}</button>
-	<a href={'records/' + id}><button class="button-1">{viewRecord}</button></a>
+	<div class="flex p-2 m-2">
+		<div class="grow" />
+		<button class="button-1" on:click={emitViewFootprintEvent}>{footprint}</button>
+		<a href={'records/' + id}><button class="button-1">{viewRecord}</button></a>
+	</div>
 </li>
