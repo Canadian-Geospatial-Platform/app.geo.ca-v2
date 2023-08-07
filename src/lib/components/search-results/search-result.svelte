@@ -23,7 +23,7 @@
 	<h2 class="text-2xl">{title}</h2>
 	<p>{organization}</p>
 	<p>{date}</p>
-	<br/>
+	<br />
 	<p class="overflow-hidden text-ellipsis h-48">{description}</p>
 	<button class="button-1" on:click={emitViewFootprintEvent}>{footprint}</button>
 	<a href={'records/' + id}><button class="button-1">{viewRecord}</button></a>
