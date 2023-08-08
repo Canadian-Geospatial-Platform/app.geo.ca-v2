@@ -6,7 +6,7 @@
 	$: noResults = $page.data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
 	export let results = [];
 
-	onMount(async () => {
+	onMount(() => {
 		cgpv.init();
 	});
 </script>

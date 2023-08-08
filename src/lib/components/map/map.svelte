@@ -20,22 +20,18 @@
 			listOfGeoviewLayerConfig: []
 		},
 		theme: 'dark',
-		components: ['north-arrow', 'overview-map'],
+		components: [],
 		corePackages: [],
 		suportedLanguages: ['en']
 	};
 	$: sConfig = JSON.stringify(config);
-
-	export const addPolyline = function (polyline) {
-		cgpv.api.map(id).layer.vector.addPolyline(polyline, undefined);
-	};
 </script>
 
 <!--for now, we pass data config in the html as javascript configuration is more bug prone.-->
 <div
 	{id}
 	class="llwp-map bg-purple-100 rounded-lg"
-	style="height: 100%; width: 100%;"
+	style="min-height: 20em; width: 100%;"
 	data-lang="en"
 	data-config={sConfig}
 />
