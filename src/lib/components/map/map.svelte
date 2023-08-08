@@ -1,52 +1,41 @@
 <script lang="ts">
-	// 	import { onMount } from 'svelte';
-	// 	import { page } from '$app/stores';
-	// 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 
-	// 	export let config = {
-	// 		map: {
-	// 			interaction: 'dynamic',
-	// 			viewSettings: {
-	// 				zoom: 4,
-	// 				center: [-100, 60],
-	// 				projection: 3978
-	// 			},
-	// 			basemapOptions: {
-	// 				basemapId: 'transport',
-	// 				shaded: true,
-	// 				labeled: true
-	// 			},
-	// 			listOfGeoviewLayerConfig: []
-	// 		},
-	// 		theme: 'dark',
-	// 		components: ['north-arrow', 'overview-map'],
-	// 		corePackages: [],
-	// 		suportedLanguages: ['en']
-	// 	};
-	// 	$: sConfig = JSON.stringify(config);
+	export let id;
+	export let config = {
+		map: {
+			interaction: 'static',
+			viewSettings: {
+				zoom: 4,
+				center: [-100, 60],
+				projection: 3978
+			},
+			basemapOptions: {
+				basemapId: 'transport',
+				shaded: true,
+				labeled: true
+			},
+			listOfGeoviewLayerConfig: []
+		},
+		theme: 'dark',
+		components: ['north-arrow', 'overview-map'],
+		corePackages: [],
+		suportedLanguages: ['en']
+	};
+	$: sConfig = JSON.stringify(config);
 
-	// 	export const addPolyline = function (polyline) {
-	// 		cgpv.api.map('mapTwo').layer.vector.addPolyline(polyline, undefined);
-	// 	};
-
-	// 	onMount(async () => {
-	// 		cgpv.init();
-	// 	});
-	//
+	export const addPolyline = function (polyline) {
+		cgpv.api.map(id).layer.vector.addPolyline(polyline, undefined);
+	};
 </script>
 
-// // <svelte:head>
-	// <script
-		src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"
-	></script>
-	//
-</svelte:head>
-// <!--for now, we pass data config in the html as javascript configuration is more bug prone.-->
-//
+<!--for now, we pass data config in the html as javascript configuration is more bug prone.-->
 <div
 	{id}
-	class="llwp-map m-2"
-	style="height: 50%; width: 50%;"
+	class="llwp-map bg-purple-100 rounded-lg"
+	style="height: 100%; width: 100%;"
 	data-lang="en"
 	data-config={sConfig}
 />
