@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Filters from '$lib/components/filters/filters.svelte';
-	import Map from '$lib/components/map/map.svelte';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
 	$: results = $page.data.results.Items;
@@ -28,6 +27,5 @@
 	<Filters />
 	<div class="grow">
 		<SearchResults {results} on:viewFootPrintEvent={handleViewFootprintEvent} />
-		<Map bind:addPolyline={mapComponentAddPolyline} />
 	</div>
 </div>

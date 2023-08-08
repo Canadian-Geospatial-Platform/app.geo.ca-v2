@@ -36,14 +36,14 @@
 		<form data-sveltekit-noscroll transition:fade>
 			<div class="flex flex-col text-2xl">
 				<div class="p-1 m-1 text-2xl">
-					<Text id="search-terms" name={keywords} class="p-2 m-2" />
+					<Text id="search-terms" name={keywords} />
 				</div>
 				<h2 class="p-2 m-2">{title}</h2>
 				<div class="p-2 mx-2 text-xl"><Organisation /></div>
-				<div class="p-2 mx-2 text-xl"><Other class="p-2 m-2" /></div>
-				<div class="p-2 mx-2 text-xl"><SpatioTemporal class="p-2 m-2" /></div>
-				<div class="p-2 mx-2 text-xl"><Theme class="p-2 m-2" /></div>
-				<div class="p-2 mx-2 text-xl"><Type class="p-2 m-2" /></div>
+				<div class="p-2 mx-2 text-xl"><Other /></div>
+				<div class="p-2 mx-2 text-xl"><SpatioTemporal /></div>
+				<div class="p-2 mx-2 text-xl"><Theme /></div>
+				<div class="p-2 mx-2 text-xl"><Type /></div>
 				<button type="submit" class="p-2 m-2 button-1"> {search} </button>
 			</div>
 		</form>
