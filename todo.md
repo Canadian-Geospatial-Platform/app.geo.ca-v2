@@ -1,6 +1,7 @@
 # To Do
 
 - [] complete map page
+- [] bug: map initialisation makes the view record button disapear
 - [] complete sidebar/header
 - [] complete result detail page
 - [] fix any bug related to geoview. talk to johan about returning the object(self) on init. this would likely fix the issue.
