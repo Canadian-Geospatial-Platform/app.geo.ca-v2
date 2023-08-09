@@ -73,7 +73,7 @@
 		{ 'fr-ca': 'Ressources naturelles Canada', 'en-ca': 'Natural Resources Canada' },
 		{ 'fr-ca': 'Services aux Autochtones Canada', 'en-ca': 'Indigenous Services Canada' },
 		{ 'fr-ca': 'Statistique Canada', 'en-ca': 'Statistics Canada' },
-		{ 'fr-ca': 'Transports Canada', 'en-ca': 'Transport Canada	' }
+		{ 'fr-ca': 'Transports Canada', 'en-ca': 'Transport Canada' }
 	];
 	function init(key) {
 		return $page.url.searchParams.get(key) == 'on';

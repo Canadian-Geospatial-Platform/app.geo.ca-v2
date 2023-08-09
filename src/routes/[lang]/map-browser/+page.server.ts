@@ -1,6 +1,12 @@
 export const load = async ({ fetch, params, url }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang);
-	let parsedResponse = response.json();
+	let parsedResponse;
+	try {
+		parsedResponse = response.json();
+	} catch (e) {
+		console.error(e);
+		console.log(e);
+	}
 	return {
 		lang: params.lang,
 		results: parsedResponse
@@ -34,8 +40,8 @@ function mapSearchParams(searchParams, lang) {
 			? new Date(searchParams.get('spatio-temporal-end')).toISOString()
 			: '',
 		lang: lang.split('-')[0],
-		min: 1,
-		max: 10,
+		min: searchParams.get('min') ? searchParams.get('min') : 1,
+		max: searchParams.get('max') ? searchParams.get('max') : 10,
 		sort: 'title'
 	};
 	return ret;

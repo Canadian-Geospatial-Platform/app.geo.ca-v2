@@ -5,7 +5,7 @@
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 	import Offset from '$lib/components/filters/offset.svelte';
 
-	$: results = $page.data.results.Items;
+	$: results = $page.data.results?.['Items'] ? $page.data.results.Items : [];
 </script>
 
 <h1 class="p-4 m-4 rounded-lg drop-shadow-lg text-3xl font-bold underline bg-red-100">
