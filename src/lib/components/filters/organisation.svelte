@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
+	import { organisationCollapse, organisation } from './store.ts';
 	import Checkbox from './inputs/checkbox.svelte';
 
 	$: title = $page.data.lang == 'en-ca' ? 'Organisations' : 'Organisations';
 	let collapse = true;
+
+	organisation.subscribe((value) => {
+		collapse = value;
+	});
 
 	const organisations = [
 		{
@@ -84,7 +89,7 @@
 	}
 </script>
 
-<button on:click|preventDefault={() => (collapse = !collapse)}>{title}</button>
+<button on:click|preventDefault={organisationCollapse}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each organisations as x}

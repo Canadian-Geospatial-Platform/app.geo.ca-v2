@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
+	import { spatioTemporalCollapse, spatioTemporal } from './store.ts';
 	import Temporal from './inputs/temporal.svelte';
 
 	$: title = $page.data.lang == 'en-ca' ? 'Spatiotemporal' : 'Spatio temporelle';
 	let collapse = true;
+
+	spatioTemporal.subscribe((value) => {
+		collapse = value;
+	});
 
 	const spatioTemporalFilters = [
 		{ 'fr-ca': 'Date de début', 'en-ca': 'Start date' },
@@ -16,7 +21,7 @@
 	}
 </script>
 
-<button on:click|preventDefault={() => (collapse = !collapse)}>{title}</button>
+<button on:click|preventDefault={spatioTemporalCollapse}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		<li><Temporal id={getId('start')} name={spatioTemporalFilters[0][$page.data.lang]} /></li>

@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
+	import { themeCollapse, theme } from './store.ts';
 	import Checkbox from './inputs/checkbox.svelte';
 
 	$: title = $page.data.lang == 'en-ca' ? 'Themes' : 'Thèmes';
 	let collapse = true;
+
+	theme.subscribe((value) => {
+		collapse = value;
+	});
 
 	const themes = [
 		{ 'fr-ca': 'Administration', 'en-ca': 'Administration' },
@@ -27,7 +32,7 @@
 	}
 </script>
 
-<button on:click|preventDefault={() => (collapse = !collapse)}>{title}</button>
+<button on:click|preventDefault={themeCollapse}>{title}</button>
 {#if !collapse}
 	<ul transition:slide>
 		{#each themes as x}
