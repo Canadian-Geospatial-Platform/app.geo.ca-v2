@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	export let pageCount = 10;
 	export let resultsPerPage = 10;
-	$: current = $page.url.searchParams.get('page-number');
+	$: current = $page.url.searchParams.get('page-number') || 0;
 
 	function navigate(pageNumber) {
 		let url = $page.url;
@@ -14,13 +14,14 @@
 </script>
 
 <div class="p-4 m-4 rounded-lg drop-shadow-lg bg-yellow-100 flex justify-center">
-	{current}
 	{#each Array(pageCount) as _, i}
 		<button
 			on:click={() => {
 				navigate(i);
 			}}
-			class="w-12 h-12 m-4 bg-blue-100 rounded-full drop-shadow-lg"
+			class="w-12 h-12 m-4 rounded-full drop-shadow-lg"
+			class:bg-red-100={current == i}
+			class:bg-blue-100={current != i}
 		>
 			<p class="align-bottom">{i + 1}</p>
 		</button>
