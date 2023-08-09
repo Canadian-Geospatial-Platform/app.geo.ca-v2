@@ -40,10 +40,27 @@ function mapSearchParams(searchParams, lang) {
 			? new Date(searchParams.get('spatio-temporal-end')).toISOString()
 			: '',
 		lang: lang.split('-')[0],
-		min: searchParams.get('min') ? searchParams.get('min') : 1,
-		max: searchParams.get('max') ? searchParams.get('max') : 10,
+		min: getMin(searchParams),
+		max: getMax(searchParams),
 		sort: 'title'
 	};
+	console.log(ret);
+	return ret;
+}
+
+function getMin(searchParams) {
+	const pn = searchParams.get('page-number') || 0;
+	const pc = searchParams.get('results-per-page') || 10;
+	const ret = pn * pc;
+	console.log(pn, 'pc: ', pc, 'min:', ret);
+	return ret;
+}
+
+function getMax(searchParams) {
+	const pn = searchParams.get('page-number') || 0;
+	const pc = searchParams.get('results-per-page') || 10;
+	const ret = pn * pc + (pc - 1);
+	console.log(pn, 'pc: ', pc, 'max:', ret);
 	return ret;
 }
 

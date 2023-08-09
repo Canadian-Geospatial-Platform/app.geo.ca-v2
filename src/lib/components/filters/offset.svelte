@@ -2,16 +2,19 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	export let pageCount = 10;
+	export let resultsPerPage = 10;
+	$: current = $page.url.searchParams.get('page-number');
 
 	function navigate(pageNumber) {
 		let url = $page.url;
-		url.searchParams.set('min', pageNumber * 10 + 1);
-		url.searchParams.set('max', pageNumber * 10 + 10);
+		url.searchParams.set('page-number', pageNumber);
+		url.searchParams.set('results-per-page', resultsPerPage);
 		goto(url, { invalidateAll: true });
 	}
 </script>
 
 <div class="p-4 m-4 rounded-lg drop-shadow-lg bg-yellow-100 flex justify-center">
+	{current}
 	{#each Array(pageCount) as _, i}
 		<button
 			on:click={() => {
