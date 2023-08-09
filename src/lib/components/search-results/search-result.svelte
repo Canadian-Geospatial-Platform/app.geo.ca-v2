@@ -12,7 +12,7 @@
 	export let id;
 </script>
 
-<li class="bg-yellow-100 rounded-lg p-4 m-4 drop-shadow-lg grid lg:grid-cols-2 gap-2">
+<li class="bg-yellow-100 rounded-lg p-4 m-4 grid lg:grid-cols-2 gap-2">
 	<Map id={id + '-map'} />
 	<div class="bg-orange-100">
 		<h2 class="text-2xl">{title}</h2>
