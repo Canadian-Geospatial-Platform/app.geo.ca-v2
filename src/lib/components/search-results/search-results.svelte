@@ -15,8 +15,8 @@
 	<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
 
-{#each results as x}
-	<ol>
+<ol>
+	{#each results as x}
 		<SearchResult
 			title={x.title}
 			description={x.description}
@@ -24,7 +24,7 @@
 			organization={x.organisation}
 			id={x.id}
 		/>
-	</ol>
-{:else}
-	<p>{noResults}</p>
-{/each}
+	{:else}
+		<li class="p-4 m-4 bg-red-100 rounded-lg drop-shadow-lg">{noResults}</li>
+	{/each}
+</ol>
