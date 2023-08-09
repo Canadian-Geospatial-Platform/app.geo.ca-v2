@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import Filters from '$lib/components/filters/filters.svelte';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
+	import Offset from '$lib/components/filters/offset.svelte';
 
 	$: results = $page.data.results.Items;
 </script>
@@ -14,5 +15,6 @@
 	<Filters />
 	<div class="grow">
 		<SearchResults {results} />
+		<Offset />
 	</div>
 </div>
