@@ -1,6 +1,5 @@
 import { writable } from 'svelte/store';
 
-let all = false;
 export const organisation = writable(false);
 export const other = writable(false);
 export const spatioTemporal = writable(false);
@@ -27,12 +26,10 @@ export function typeCollapse() {
 	type.update((x) => (x = !x));
 }
 
-export function allCollapse() {
-	console.log('allCollapse');
-	organisation.set(all);
-	other.set(all);
-	spatioTemporal.set(all);
-	theme.set(all);
-	type.set(all);
-	all = !all;
+export function allCollapse(x) {
+	organisation.set(x);
+	other.set(x);
+	spatioTemporal.set(x);
+	theme.set(x);
+	type.set(x);
 }
