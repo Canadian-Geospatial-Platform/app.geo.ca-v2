@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { fade } from 'svelte/transition';
+	import { allCollapse } from './store.ts';
 	import Organisation from './organisation.svelte';
 	import Other from './other.svelte';
 	import SpatioTemporal from './spatio-temporal.svelte';
@@ -38,7 +39,18 @@
 				<div class="p-1 m-1 text-2xl">
 					<Text id="search-terms" name={keywords} />
 				</div>
-				<h2 class="p-2 m-2">{title}</h2>
+				<h2 class="p-2 m-2">
+					{title + ' '}<button
+						on:click={() => {
+							allCollapse(false);
+						}}>↓</button
+					>
+					<button
+						on:click={() => {
+							allCollapse(true);
+						}}>↑</button
+					>
+				</h2>
 				<div class="p-2 mx-2 text-xl"><Organisation /></div>
 				<div class="p-2 mx-2 text-xl"><Other /></div>
 				<div class="p-2 mx-2 text-xl"><SpatioTemporal /></div>

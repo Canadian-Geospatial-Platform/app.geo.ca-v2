@@ -1,7 +1,7 @@
 # To Do
 
 - [] complete map page
-- [] bug: map initialisation makes the view record button disapear
+- [] bug: map initialisation makes the view record button disapear. this css property is the culprit: filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 - [] complete sidebar/header
 - [] complete result detail page
 - [] fix any bug related to geoview. talk to johan about returning the object(self) on init. this would likely fix the issue.

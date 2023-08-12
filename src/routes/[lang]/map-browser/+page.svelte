@@ -3,8 +3,9 @@
 	import { page } from '$app/stores';
 	import Filters from '$lib/components/filters/filters.svelte';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
+	import Offset from '$lib/components/filters/offset.svelte';
 
-	$: results = $page.data.results.Items;
+	$: results = $page.data.results?.['Items'] ? $page.data.results.Items : [];
 </script>
 
 <h1 class="p-4 m-4 rounded-lg drop-shadow-lg text-3xl font-bold underline bg-red-100">
@@ -14,5 +15,6 @@
 	<Filters />
 	<div class="grow">
 		<SearchResults {results} />
+		<Offset />
 	</div>
 </div>
