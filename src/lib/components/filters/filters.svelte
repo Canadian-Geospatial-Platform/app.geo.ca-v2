@@ -25,14 +25,17 @@
 	}
 </script>
 
-<div class="p-4 m-4 w-full lg:w-auto bg-orange-100 rounded-lg drop-shadow-lg">
-	<button
-		class="button-1 m-2 p-2"
-		on:click={() => {
-			collapse = !collapse;
-			console.log(collapse);
-		}}>{icon}</button
-	>
+<div class="p-4 m-4 w-full lg:w-auto bg-custom-5 rounded-lg drop-shadow-lg">
+	<div class="flex">
+		<div class="grow" />
+		<button
+			class="button-1 m-2 p-2"
+			on:click={() => {
+				collapse = !collapse;
+				console.log(collapse);
+			}}>{icon}</button
+		>
+	</div>
 	{#if collapse}
 		<form data-sveltekit-noscroll transition:fade>
 			<div class="flex flex-col text-2xl">

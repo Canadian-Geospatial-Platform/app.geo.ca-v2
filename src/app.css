@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 .button-1 {
-	@apply bg-green-200;
+	@apply text-white;
+	@apply bg-custom-8;
 	@apply p-3;
 	@apply m-2;
 	@apply rounded-lg;

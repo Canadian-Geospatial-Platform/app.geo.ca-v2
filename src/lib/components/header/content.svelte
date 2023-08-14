@@ -7,7 +7,10 @@
 	$: otherLangPathName = $page.url.pathname.replace(lang, otherLang);
 </script>
 
-<nav transition:slide class="flex flex-col lg:flex-row items-center lg:h-24 p-2 m-2 text-2xl">
+<nav
+	transition:slide
+	class="flex flex-col lg:flex-row items-center lg:h-24 p-2 m-2 text-2xl bg-custom-1 rounded-lg"
+>
 	<img
 		class="h-full"
 		src="https://geo.ca/wp-content/uploads/2023/02/geo-ca-logo.svg"
@@ -27,6 +30,6 @@
 	a {
 		@apply p-2;
 		@apply m-2;
-		color: green;
+		@apply text-custom-2;
 	}
 </style>

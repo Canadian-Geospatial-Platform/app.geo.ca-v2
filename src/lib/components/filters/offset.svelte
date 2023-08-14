@@ -30,7 +30,7 @@
 
 <svelte:window bind:innerWidth />
 <div
-	class="p-4 m-4 rounded-lg drop-shadow-lg bg-yellow-100 flex justify-center flex-nowrap overflow-hidden xl:flex"
+	class="p-4 m-4 rounded-lg drop-shadow-lg bg-custom-5 flex justify-center flex-nowrap overflow-hidden xl:flex"
 >
 	{#each numberArray as x}
 		<button
@@ -38,8 +38,9 @@
 				navigate(x);
 			}}
 			class="w-12 h-12 m-4 rounded-full drop-shadow-lg"
-			class:bg-red-100={current == x}
-			class:bg-blue-100={current != x}
+			class:bg-custom-8={current == x}
+			class:text-custom-1={current == x}
+			class:bg-custom-1={current != x}
 		>
 			<p class="align-bottom">{x + 1}</p>
 		</button>
