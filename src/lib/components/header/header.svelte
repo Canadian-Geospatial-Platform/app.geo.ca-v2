@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Content from './content.svelte';
 	let collapse = true;
-	$: icon = collapse ? 'X' : '|||';
+	$: icon = collapse ? '|||' : 'X';
 </script>
 
 <div class="lg:hidden text-right m-4">
