@@ -8,7 +8,7 @@
 	$: results = $page.data.results?.['Items'] ? $page.data.results.Items : [];
 </script>
 
-<h1 class="p-4 m-4 rounded-lg drop-shadow-lg text-3xl font-bold underline bg-red-100">
+<h1 class="p-4 m-4 rounded-lg drop-shadow-lg text-3xl font-bold underline bg-custom-5">
 	This page will contain the map based search.
 </h1>
 <div class="flex flex-wrap lg:flex-nowrap items-start">
