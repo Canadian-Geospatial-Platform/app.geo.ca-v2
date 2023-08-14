@@ -1,4 +1,5 @@
 <script lang="ts">
+    //import ol from '$lib/assets/css/ol.svelte';
     import { onMount } from 'svelte';
     // OpenLayers
     import { Feature, Map } from 'ol';
@@ -64,6 +65,7 @@
 </div>
 
 <style>
+    @import "./ol.css";
     .map {
         height: 300px;
         overflow: hidden;                 

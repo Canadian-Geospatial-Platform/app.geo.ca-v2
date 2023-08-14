@@ -61,13 +61,13 @@
 	<div>	
 	<h1 class="text-4xl">{item.title_en}</h1>
 	</div>
-	<section>
+	<section  class="w-full">
 		<h2 class="text-3xl mb-4 uppercase pt-8">About this dataset</h2>
 		<div>{item.description}</div>
 		<div class="py-6">
 			<p><strong>Keywords:</strong>{item.keywords}</p>
 		</div>
-		<table class="">
+		<table class="w-full">
 			<caption class="text-2xl uppercase">Metadata</caption>
 			<tbody class="divide-y divide-gray-500">
 				<tr>
@@ -107,9 +107,9 @@
 		</table>
 	</section>
 	{#if (data.related.length > 0)}
-		<section id="search-result-related-products" class="sec-search-result sec-search-result-related-products">
-			<table class="">
-				<caption>
+		<section id="search-result-related-products"  class="w-full">
+			<table class="w-full">
+				<caption class="text-2xl uppercase">
 					<button id="related-products-id" type="button">Related products</button>
 				</caption>
 				<tbody id="tbody-related-products" class="divide-y divide-gray-500">
@@ -129,9 +129,9 @@
 			</table>
 		</section>
 	{/if}
-	<section id="search-result-data-resources" class="sec-search-result sec-search-result-data-resources">
-		<table class="divide-y divide-gray-500">
-			<caption><button id="data-resources-id" type="button" class="table-data-toggle collapse" aria-expanded="false" aria-controls="tbody-data-resources">Data Resources</button></caption>
+	<section id="search-result-data-resources" class="w-full pt-6">
+		<table class="w-full">
+			<caption class="text-2xl uppercase cursor-pointer"><button id="data-resources-id" type="button" class="" aria-expanded="false" aria-controls="tbody-data-resources">Data Resources</button></caption>
 			<tbody id="tbody-data-resources" class="divide-y divide-gray-500" aria-labelledby="data-resources-id">
 				<tr>
 				<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Name</th>
@@ -146,15 +146,15 @@
 							</td>
 							<td>{option.type}</td>
 							<td>{option.format}</td>
-							<td>{option.language}</td>
+							<td class="text-center">{option.language}</td>
 						</tr>                                                        
 				{/each}
 			</tbody>
 		</table>
 	</section>
-	<section id="search-result-contact-data">
-		<table class="">
-			<caption class="cursor-pointer"><button id="conatct-data-id" type="button" class="" aria-expanded="false" aria-controls="tbody-contact-data">Contact Data</button></caption>
+	<section id="search-result-contact-data"  class="w-full pt-6">
+		<table class="w-full">
+			<caption class="text-2xl uppercase cursor-pointer"><button id="conatct-data-id" type="button" class="" aria-expanded="false" aria-controls="tbody-contact-data">Contact Data</button></caption>
 			<tbody id="tbody-contact-data" class="divide-y divide-gray-500">
 				<tr>
 				<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Organization</th>
@@ -195,9 +195,9 @@
 			</tbody>
 		</table>
 	</section>
-	<section id="search-result-adv-meta">
-               <table >
-                  <caption><button id="advanced-data-id" type="button" class=""  aria-expanded="false" aria-controls="tbody-adv-meta">Advanced metadata</button></caption>
+	<section id="search-result-adv-meta"  class="w-full pt-6">
+               <table  class="w-full">
+                  <caption class="text-2xl uppercase cursor-pointer"><button id="advanced-data-id" type="button" class=""  aria-expanded="false" aria-controls="tbody-adv-meta">Advanced metadata</button></caption>
                   <tbody id="tbody-adv-meta" class="divide-y divide-gray-500" aria-labelledby="advanced-data-id">
                      <tr>
                         <th scope="row" class="text-left whitespace-nowrap px-6 py-4">Status</th>
@@ -261,57 +261,67 @@
 				This record has no viewable component.
 				{/if}					
 			</p>
-			<div>
-				<button
+			<div class="grid grid-cols-2 gap-3">
+				
+				<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded"
 					type="button"					
-					onClick={
-						activeMap
+						onClick={
+							activeMap
 							? () => viewOnMap(event, item.id)
 							: () => setGreyMap(true)
-					}
+						}
 				>
-					View on Map
-				</button>
-				<button
-					id="addMyMap"
+          
+          			<div class="leading-none uppercase text-sm">view on map</div>
+      			</button>
+				<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded"
 					type="button"					
-					onClick={
+						onClick={
 						activeMap
 							? () => changeMapping(item.id)
 							: () => setGreyMap(true)
 					}
 				>
-					{#if inMapping}
-					Added to MyMap
-					{:else}
-					Add to MyMap
-					{/if}
-				</button>
+          
+          			<div class="leading-none uppercase text-sm">
+						{#if inMapping}
+							Added to MyMap
+							{:else}
+							Add to MyMap
+						{/if}
+					</div>
+      			</button>
+				
 			</div>
 		</section>
 	
 		<section class="pt-8">
 			<h3 class="uppercase text-2xl">Metadata</h3>
 			<p>Our metadata is stored in the geoCore format. A geojson containing all the metadata you see here.</p>
-			<div class="btn-group"><a href="https://geocore.metadata.geo.ca/3a27a918-cf02-18c8-fe2b-bac5a7c4357d.geojson" class="btn btn-search mr-2" rel="noreferrer" target="_blank">Download geoCore</a><a href="https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;outputSchema=csw:IsoRecord&amp;ElementSetName=full&amp;id=3a27a918-cf02-18c8-fe2b-bac5a7c4357d" class="btn btn-search" rel="noreferrer" target="_blank">View HNAP Record</a></div>
+			<div class="grid grid-cols-2 gap-3">
+			<a href="https://geocore.metadata.geo.ca/3a27a918-cf02-18c8-fe2b-bac5a7c4357d.geojson" 
+				class="text-center text-base px-6 py-3 text-blue-100 no-underline bg-blue-500 rounded hover:bg-blue-400 hover:text-blue-200" rel="noreferrer" target="_blank">Download geoCore</a>
+			<a href="https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;outputSchema=csw:IsoRecord&amp;ElementSetName=full&amp;id=3a27a918-cf02-18c8-fe2b-bac5a7c4357d" 
+				class="text-center text-base px-6 py-3 text-blue-100 no-underline bg-blue-500 rounded hover:bg-blue-400  hover:text-blue-200" rel="noreferrer" target="_blank">View HNAP Record</a>
+			</div>
 		</section>
         <section class="pt-8">
 			<h3 class="uppercase text-2xl">
 				Number of Accesses
 			</h3>
-			<div class="card-wrap">
-				<div class="card">
+			<div class="grid grid-cols-2">
+				<div class="p-4 border border-slate-300 rounded m-2">
 					<h4 class="uppercase">Last 30 days</h4>
 					<p class="card-count">
 						{#if isNaN(data.analyticRes["30"])}
 							<span>
-								loading failed,{" "}
-								<button
-									type="button"
-									class="link-button"
-									onClick={() => handleAnalytic(item.id)}
-								>
-									try again
+								Loading number failed,{" "}
+								
+								<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded-lg"
+									type="button"					
+										onClick={() => handleAnalytic(item.id)}
+								>						
+									<div class="leading-none uppercase text-sm">try again</div>
 								</button>
 							</span>
 						{:else}
@@ -319,18 +329,17 @@
 						{/if}
 					</p>
 				</div>
-				<div class="card">
-					<h4 class="card-title">All time</h4>
+				<div class="p-4 border border-slate-300 rounded m-2">
+					<h4 class="uppercase">All time</h4>
 					<p class="card-count">
 						{#if isNaN(data.analyticRes.all)}
 							<span>
 								Loading number failed,{" "}
-								<button
-									type="button"
-									class="link-button"
-									onClick={() => handleAnalytic(item.id)}
-								>
-									try again
+								<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded-lg"
+									type="button"					
+										onClick={() => handleAnalytic(item.id)}
+								>						
+									<div class="leading-none uppercase text-sm">try again</div>
 								</button>
 							</span>
 						{:else}
@@ -341,8 +350,27 @@
 			</div>
 		</section>
 	</div>
-	<div>
+	
+	<div class="flex flex-col h-screen bg-center bg-cover bg-no-repeat">
+		<div class="grid place-items-center mx-auto p-20 sm:my-auto bg-white rounded-3xl space-y-10">
+            <div class="text-2xl font-semibold text-blue-500">Share</div>            
+
+    		<div class="flex items-center justify-center space-x-3">
+
+				<button aria-label="facebook" class=""><svg viewBox="0 0 64 64" width="50" height="50"><circle cx="32" cy="32" r="31" fill="#3b5998"></circle><path d="M34.1,47V33.3h4.6l0.7-5.3h-5.3v-3.4c0-1.5,0.4-2.6,2.6-2.6l2.8,0v-4.8c-0.5-0.1-2.2-0.2-4.1-0.2 c-4.1,0-6.9,2.5-6.9,7V28H24v5.3h4.6V47H34.1z" fill="white"></path></svg>
+				</button>
+				<button aria-label="twitter" class=""><svg viewBox="0 0 64 64" width="50" height="50"><circle cx="32" cy="32" r="31" fill="#00aced"></circle><path d="M48,22.1c-1.2,0.5-2.4,0.9-3.8,1c1.4-0.8,2.4-2.1,2.9-3.6c-1.3,0.8-2.7,1.3-4.2,1.6 C41.7,19.8,40,19,38.2,19c-3.6,0-6.6,2.9-6.6,6.6c0,0.5,0.1,1,0.2,1.5c-5.5-0.3-10.3-2.9-13.5-6.9c-0.6,1-0.9,2.1-0.9,3.3 c0,2.3,1.2,4.3,2.9,5.5c-1.1,0-2.1-0.3-3-0.8c0,0,0,0.1,0,0.1c0,3.2,2.3,5.8,5.3,6.4c-0.6,0.1-1.1,0.2-1.7,0.2c-0.4,0-0.8,0-1.2-0.1 c0.8,2.6,3.3,4.5,6.1,4.6c-2.2,1.8-5.1,2.8-8.2,2.8c-0.5,0-1.1,0-1.6-0.1c2.9,1.9,6.4,2.9,10.1,2.9c12.1,0,18.7-10,18.7-18.7 c0-0.3,0-0.6,0-0.8C46,24.5,47.1,23.4,48,22.1z" fill="white"></path></svg>
+				</button>
+				<button class="cursor-pointer">
+					<svg viewBox="0 0 64 64" width="50" height="50"><circle cx="32" cy="32" r="31" fill="#007fb1"></circle><path d="M20.4,44h5.4V26.6h-5.4V44z M23.1,18c-1.7,0-3.1,1.4-3.1,3.1c0,1.7,1.4,3.1,3.1,3.1 c1.7,0,3.1-1.4,3.1-3.1C26.2,19.4,24.8,18,23.1,18z M39.5,26.2c-2.6,0-4.4,1.4-5.1,2.8h-0.1v-2.4h-5.2V44h5.4v-8.6 c0-2.3,0.4-4.5,3.2-4.5c2.8,0,2.8,2.6,2.8,4.6V44H46v-9.5C46,29.8,45,26.2,39.5,26.2z" fill="white"></path></svg>
+				</button>
+				<button aria-label="email" class="">
+					<svg viewBox="0 0 64 64" width="50" height="50"><circle cx="32" cy="32" r="31" fill="#7f7f7f"></circle><path d="M17,22v20h30V22H17z M41.1,25L32,32.1L22.9,25H41.1z M20,39V26.6l12,9.3l12-9.3V39H20z" fill="white"></path></svg>
+				</button>
+    		</div>
+		</div>
 	</div>
+	
 </aside>
 {/each}
 {:else}
