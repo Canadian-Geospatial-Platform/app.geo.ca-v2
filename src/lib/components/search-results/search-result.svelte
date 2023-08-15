@@ -40,7 +40,7 @@
 			<button class="button-2 text-xl font-bold" on:click={favorite}
 				>{isFavorite ? '♥' : '♡'}</button
 			>
-			<a href={'record/' + id}><button class="button-1">{viewRecord}</button></a>
+			<a class="button-1 truncate overflow-hidden" href={'record/' + id}>{viewRecord}</a>
 		</div>
 	</div>
 </li>
