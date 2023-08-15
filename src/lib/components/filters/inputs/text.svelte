@@ -10,4 +10,4 @@
 {#if label}
 	<label for={id}>{name}:</label>
 {/if}
-<input {id} name={id} bind:value />
+<input {id} name={id} bind:value class="w-full" />

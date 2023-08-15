@@ -25,11 +25,11 @@
 	}
 </script>
 
-<div class="p-4 m-4 w-full lg:w-auto bg-custom-5 rounded-lg drop-shadow-lg">
+<div class="p-4 m-4 w-full lg:w-97 bg-custom-5 rounded-lg drop-shadow-lg">
 	<form data-sveltekit-noscroll transition:fade>
-		<label for="search-terms" class:md:hidden={!collapse}>{keywords}:</label>
+		<label for="search-terms" class:lg:hidden={!collapse}>{keywords}:</label>
 		<div class="flex items-center">
-			<div class="text-2xl" class:md:hidden={!collapse}>
+			<div class="text-2xl" class:lg:hidden={!collapse}>
 				<Text id="search-terms" name={keywords} label={false} />
 			</div>
 			<button
