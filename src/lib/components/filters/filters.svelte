@@ -26,22 +26,22 @@
 </script>
 
 <div class="p-4 m-4 w-full lg:w-auto bg-custom-5 rounded-lg drop-shadow-lg">
-	<div class="flex">
-		<div class="grow" />
-		<button
-			class="button-1 m-2 p-2"
-			on:click={() => {
-				collapse = !collapse;
-				console.log(collapse);
-			}}>{icon}</button
-		>
-	</div>
-	{#if collapse}
-		<form data-sveltekit-noscroll transition:fade>
+	<form data-sveltekit-noscroll transition:fade>
+		<label for="search-terms">{keywords}:</label>
+		<div class="flex items-center">
+			<div class="text-2xl">
+				<Text id="search-terms" name={keywords} label={false} />
+			</div>
+			<button
+				class="button-1"
+				on:click={() => {
+					collapse = !collapse;
+					console.log(collapse);
+				}}>{icon}</button
+			>
+		</div>
+		{#if collapse}
 			<div class="flex flex-col text-2xl">
-				<div class="p-1 m-1 text-2xl">
-					<Text id="search-terms" name={keywords} />
-				</div>
 				<h2 class="p-2 m-2">
 					{title + ' '}<button
 						on:click={() => {
@@ -61,6 +61,6 @@
 				<div class="p-2 mx-2 text-xl"><Type /></div>
 				<button type="submit" class="p-2 m-2 button-1"> {search} </button>
 			</div>
-		</form>
-	{/if}
+		{/if}
+	</form>
 </div>
