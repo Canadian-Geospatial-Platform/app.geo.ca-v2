@@ -1,8 +1,8 @@
 # To Do
 
+- [] see if reliance on svelte:window can be replaced with a combination of tailwind breakpoints and conditional classes. class:md:hidden={!collapse}
 - [] set possible lang values as hardcoded set
 - [] reproduce look from https://xd.adobe.com/view/e68f1fe5-78c9-4531-67f4-1601b12abae3-90be/specs/
-- [] keep searchbar visible at all times
 - [] move translation logic to page.ts
 - [] complete map page
 - [] spatial filter
