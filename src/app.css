@@ -11,6 +11,20 @@
 	@apply drop-shadow-lg;
 }
 
+.button-2 {
+	@apply text-custom-8;
+	@apply hover:text-custom-1;
+	@apply bg-custom-1;
+	@apply hover:bg-custom-8;
+	@apply outline;
+	@apply -outline-offset-2;
+	@apply outline-custom-8;
+	@apply p-3;
+	@apply m-2;
+	@apply rounded-lg;
+	@apply drop-shadow-lg;
+}
+
 input {
 	@apply rounded-md;
 	@apply drop-shadow-lg;

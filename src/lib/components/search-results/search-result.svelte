@@ -10,6 +10,11 @@
 	export let date;
 	export let description;
 	export let id;
+	let isFavorite = false;
+
+	function favorite() {
+		isFavorite = !isFavorite;
+	}
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid lg:grid-cols-2 gap-4">
@@ -22,6 +27,7 @@
 		<p class="overflow-hidden text-ellipsis h-48">{description}</p>
 		<div class="flex p-2 m-2">
 			<div class="grow" />
+			<button class="button-2" on:click={favorite}>{isFavorite ? '-<3' : '<3'}</button>
 			<a href={'record/' + id}><button class="button-1">{viewRecord}</button></a>
 		</div>
 	</div>

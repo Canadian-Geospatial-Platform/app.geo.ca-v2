@@ -2,6 +2,7 @@
 
 - [] add icons for filter, search
 - [] reproduce look from https://xd.adobe.com/view/e68f1fe5-78c9-4531-67f4-1601b12abae3-90be/specs/
+- [] add cart button
 
 - [] complete map page
 - [] spatial filter
