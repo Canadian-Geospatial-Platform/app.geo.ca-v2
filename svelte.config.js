@@ -11,7 +11,10 @@ const config = {
 		adapter: adapter({
 			autoDeploy: true,
 			stackName: 'pascal-aws-sdk-deploy-test'
-		})
+		}),
+		alias: {
+			$stores: 'src/stores/'
+		}
 	}
 };
 

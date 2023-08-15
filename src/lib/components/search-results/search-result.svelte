@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { favorites, addFavorite, removeFavorite } from '$stores/favorites.ts';
 	import Map from '$lib/components/map/map.svelte';
 
 	$: viewRecord = $page.data.lang == 'en-ca' ? 'VIEW RECORD' : "AFFICHER L'ENREGISTREMENT";
@@ -10,10 +11,19 @@
 	export let date;
 	export let description;
 	export let id;
-	let isFavorite = false;
+	let favoritesArr = [];
+	$: isFavorite = favoritesArr.includes(id);
+
+	favorites.subscribe((value) => {
+		favoritesArr = value;
+	});
 
 	function favorite() {
-		isFavorite = !isFavorite;
+		if (isFavorite) {
+			removeFavorite(id);
+		} else {
+			addFavorite(id);
+		}
 	}
 </script>
 
