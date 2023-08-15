@@ -20,9 +20,8 @@
 	/>
 	<div class="grow" />
 
-	<a href="/{lang}/records/12893-12434-fsdf32-q32ef32">record</a>
+	<a href="/{lang}/record/12893-12434-fsdf32-q32ef32">record</a>
 	<a href="/{lang}/map-browser">map-browser</a>
-	<a href="/{lang}/text-browser">text-browser</a>
 	<a href={otherLangPathName + $page.url.search}>{otherLang}</a>
 </nav>
 

@@ -22,7 +22,7 @@
 		<p class="overflow-hidden text-ellipsis h-48">{description}</p>
 		<div class="flex p-2 m-2">
 			<div class="grow" />
-			<a href={'records/' + id}><button class="button-1">{viewRecord}</button></a>
+			<a href={'record/' + id}><button class="button-1">{viewRecord}</button></a>
 		</div>
 	</div>
 </li>
