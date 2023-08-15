@@ -1,9 +1,8 @@
 # To Do
 
 - [] add icons for filter, search
-- [] set possible lang values as hardcoded set
 - [] reproduce look from https://xd.adobe.com/view/e68f1fe5-78c9-4531-67f4-1601b12abae3-90be/specs/
-- [] move translation logic to page.ts
+
 - [] complete map page
 - [] spatial filter
 - [] bug: map initialisation makes the view record button disapear. this css property is the culprit: filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);

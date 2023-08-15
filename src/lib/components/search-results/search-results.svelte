@@ -7,7 +7,11 @@
 	export let results = [];
 
 	onMount(() => {
-		cgpv.init();
+		try {
+			cgpv.init();
+		} catch (e) {
+			console.log('Error initialising cgpv.', e);
+		}
 	});
 </script>
 
