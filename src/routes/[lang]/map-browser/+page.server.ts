@@ -5,6 +5,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	let parsedResponse;
 	try {
 		parsedResponse = response.json();
+		console.log(await parsedResponse);
 	} catch (e) {
 		console.error(e);
 		console.log(e);
@@ -60,7 +61,6 @@ function getMax(searchParams) {
 	const pn = searchParams.get('page-number') || 0;
 	const pc = searchParams.get('results-per-page') || 10;
 	const ret = pn * pc + (pc - 1);
-	console.log(pn, 'pc: ', pc, 'max:', ret);
 	return ret;
 }
 
