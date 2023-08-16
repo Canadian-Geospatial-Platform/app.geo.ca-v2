@@ -8,7 +8,7 @@
 	$: results = $page.data.results?.['Items'] ? $page.data.results.Items : [];
 
 	onMount(async () => {
-		console.log(results);
+		console.log($page);
 	});
 </script>
 

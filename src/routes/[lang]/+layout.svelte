@@ -3,11 +3,13 @@
 	import Header from '$lib/components/header/header.svelte';
 	import Footer from '$lib/components/footer/footer.svelte';
 	import Feedback from '$lib/components/feedback/feedback.svelte';
+	import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
 </script>
 
 <div class="container mx-auto py-1 bg-custom-1">
 	<Header />
 	<Feedback />
+	<Breadcrumbs />
 	<slot />
 	<Footer />
 </div>
