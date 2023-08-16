@@ -36,7 +36,7 @@
 			<button type="submit" class:lg:hidden={!collapse} class="button-1 lg:w-36"> {search} </button>
 			<button
 				class="button-1"
-				on:click={() => {
+				on:click|preventDefault={() => {
 					collapse = !collapse;
 					console.log(collapse);
 				}}>{icon}</button
