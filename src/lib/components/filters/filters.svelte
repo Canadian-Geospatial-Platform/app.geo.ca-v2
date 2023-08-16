@@ -25,7 +25,7 @@
 	}
 </script>
 
-<div class="p-4 m-4 bg-custom-5 rounded-lg drop-shadow-lg grow md:shrink">
+<div class="p-4 m-4 bg-custom-5 rounded-lg drop-shadow-lg">
 	<form data-sveltekit-noscroll transition:fade>
 		<label for="search-terms" class:lg:hidden={!collapse}>{keywords}:</label>
 		<div class="flex items-center gap-1">

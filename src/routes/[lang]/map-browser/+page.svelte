@@ -17,7 +17,7 @@
 	<p class="text-justify">{$page.data.t_description}</p>
 </div>
 <div class="flex flex-wrap lg:flex-nowrap items-start">
-	<Filters class="shrink" />
+	<div class="grow sm:shrink"><Filters /></div>
 	<div class="grow">
 		<SearchResults {results} />
 		<Offset />
