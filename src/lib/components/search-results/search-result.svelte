@@ -35,7 +35,7 @@
 		<p>{date}</p>
 		<br />
 		<p class="overflow-hidden text-ellipsis h-48">{description}</p>
-		<div class="flex p-2 m-2">
+		<div class="flex p-2 m-2 gap-2">
 			<div class="grow" />
 			<button class="button-2 text-xl font-bold" on:click={favorite}
 				>{isFavorite ? '♥' : '♡'}</button

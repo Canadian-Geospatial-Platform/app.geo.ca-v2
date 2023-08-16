@@ -61,7 +61,7 @@
 				<div class="p-2 mx-2 text-xl"><SpatioTemporal /></div>
 				<div class="p-2 mx-2 text-xl"><Theme /></div>
 				<div class="p-2 mx-2 text-xl"><Type /></div>
-				<button type="submit" class="p-2 button-1 md:w-72 xl:w-96"> {search} </button>
+				<button type="submit" class="p-2 button-1 my-2 mx-auto md:w-72 xl:w-96"> {search} </button>
 			</div>
 		{/if}
 	</form>

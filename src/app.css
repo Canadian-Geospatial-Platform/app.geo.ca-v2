@@ -6,7 +6,6 @@
 	@apply text-white;
 	@apply bg-custom-8;
 	@apply p-3;
-	@apply m-2;
 	@apply rounded-lg;
 	@apply drop-shadow-lg;
 }
@@ -20,7 +19,6 @@
 	@apply -outline-offset-2;
 	@apply outline-custom-8;
 	@apply p-3;
-	@apply m-2;
 	@apply rounded-lg;
 	@apply drop-shadow-lg;
 }
