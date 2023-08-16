@@ -28,10 +28,12 @@
 <div class:w-full={collapse} class="p-4 m-4 bg-custom-5 rounded-lg drop-shadow-lg flex-grow">
 	<form data-sveltekit-noscroll transition:fade>
 		<label for="search-terms" class:lg:hidden={!collapse}>{keywords}:</label>
-		<div class="flex items-center">
+		<div class="flex items-center gap-1">
 			<div class="text-2xl" class:lg:hidden={!collapse}>
 				<Text id="search-terms" name={keywords} label={false} />
 			</div>
+			<div class="grow" />
+			<button type="submit" class:lg:hidden={!collapse} class="button-1 lg:w-36"> {search} </button>
 			<button
 				class="button-1"
 				on:click={() => {
