@@ -29,6 +29,6 @@
 			id={x.id}
 		/>
 	{:else}
-		<li class="p-4 m-4 bg-red-100 rounded-lg drop-shadow-lg w-full">{noResults}</li>
+		<li class="p-4 m-4 bg-red-100 rounded-lg drop-shadow-lg">{noResults}</li>
 	{/each}
 </ol>

@@ -16,8 +16,8 @@
 	{$page.data.t_title}
 </h1>
 <div class="flex flex-wrap lg:flex-nowrap items-start">
-	<Filters />
-	<div class="shrink">
+	<Filters class="shrink" />
+	<div class="grow">
 		<SearchResults {results} />
 		<Offset />
 	</div>

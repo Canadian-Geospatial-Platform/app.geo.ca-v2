@@ -25,7 +25,7 @@
 	}
 </script>
 
-<div class:w-full={collapse} class="p-4 m-4 bg-custom-5 rounded-lg drop-shadow-lg flex-grow">
+<div class="p-4 m-4 bg-custom-5 rounded-lg drop-shadow-lg grow md:shrink">
 	<form data-sveltekit-noscroll transition:fade>
 		<label for="search-terms" class:lg:hidden={!collapse}>{keywords}:</label>
 		<div class="flex items-center gap-1">
@@ -61,7 +61,7 @@
 				<div class="p-2 mx-2 text-xl"><SpatioTemporal /></div>
 				<div class="p-2 mx-2 text-xl"><Theme /></div>
 				<div class="p-2 mx-2 text-xl"><Type /></div>
-				<button type="submit" class="p-2 m-2 button-1 grow lg:w-96"> {search} </button>
+				<button type="submit" class="p-2 button-1 md:w-72 xl:w-96"> {search} </button>
 			</div>
 		{/if}
 	</form>

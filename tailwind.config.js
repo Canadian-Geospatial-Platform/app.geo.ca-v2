@@ -15,6 +15,9 @@ export default {
 					8: '#515ba4',
 					9: '#c1c1c1'
 				}
+			},
+			spacing: {
+				144: '36rem'
 			}
 		}
 	},
