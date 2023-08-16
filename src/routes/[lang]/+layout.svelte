@@ -2,10 +2,12 @@
 	import '../../app.css';
 	import Header from '$lib/components/header/header.svelte';
 	import Footer from '$lib/components/footer/footer.svelte';
+	import Feedback from '$lib/components/feedback/feedback.svelte';
 </script>
 
 <div class="container mx-auto py-1 bg-custom-1">
 	<Header />
+	<Feedback />
 	<slot />
 	<Footer />
 </div>
