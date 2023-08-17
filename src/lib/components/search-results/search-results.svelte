@@ -24,7 +24,7 @@
 		<SearchResult
 			title={x.title}
 			description={x.description}
-			date={x.date}
+			date={x.created}
 			organization={x.organisation}
 			id={x.id}
 		/>
