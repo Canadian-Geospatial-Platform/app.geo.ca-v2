@@ -25,7 +25,7 @@ npm run dev
 npm run dev -- --open
 ```
 
-## Building and deployinh
+## Building and deploying
 
 1. Ensure aws cdk is properly configured
 

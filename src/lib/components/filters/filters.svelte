@@ -25,20 +25,25 @@
 	}
 </script>
 
-<div class="p-4 m-4 w-full lg:w-auto bg-orange-100 rounded-lg drop-shadow-lg">
-	<button
-		class="button-1 m-2 p-2"
-		on:click={() => {
-			collapse = !collapse;
-			console.log(collapse);
-		}}>{icon}</button
-	>
-	{#if collapse}
-		<form data-sveltekit-noscroll transition:fade>
+<div class="p-4 m-4 bg-custom-5 rounded-lg drop-shadow-lg">
+	<form data-sveltekit-noscroll transition:fade>
+		<label for="search-terms" class:lg:hidden={!collapse}>{keywords}:</label>
+		<div class="flex items-center gap-1">
+			<div class="text-2xl" class:lg:hidden={!collapse}>
+				<Text id="search-terms" name={keywords} label={false} />
+			</div>
+			<div class="grow" />
+			<button type="submit" class:lg:hidden={!collapse} class="button-1 lg:w-36"> {search} </button>
+			<button
+				class="button-1"
+				on:click|preventDefault={() => {
+					collapse = !collapse;
+					console.log(collapse);
+				}}>{icon}</button
+			>
+		</div>
+		{#if collapse}
 			<div class="flex flex-col text-2xl">
-				<div class="p-1 m-1 text-2xl">
-					<Text id="search-terms" name={keywords} />
-				</div>
 				<h2 class="p-2 m-2">
 					{title + ' '}<button
 						on:click={() => {
@@ -56,8 +61,8 @@
 				<div class="p-2 mx-2 text-xl"><SpatioTemporal /></div>
 				<div class="p-2 mx-2 text-xl"><Theme /></div>
 				<div class="p-2 mx-2 text-xl"><Type /></div>
-				<button type="submit" class="p-2 m-2 button-1"> {search} </button>
+				<button type="submit" class="p-2 button-1 my-2 mx-auto md:w-72 xl:w-96"> {search} </button>
 			</div>
-		</form>
-	{/if}
+		{/if}
+	</form>
 </div>

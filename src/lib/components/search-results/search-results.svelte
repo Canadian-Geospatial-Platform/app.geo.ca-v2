@@ -7,7 +7,11 @@
 	export let results = [];
 
 	onMount(() => {
-		cgpv.init();
+		try {
+			cgpv.init();
+		} catch (e) {
+			console.log('Error initialising cgpv.', e);
+		}
 	});
 </script>
 
@@ -20,7 +24,7 @@
 		<SearchResult
 			title={x.title}
 			description={x.description}
-			date={x.date}
+			date={x.created}
 			organization={x.organisation}
 			id={x.id}
 		/>

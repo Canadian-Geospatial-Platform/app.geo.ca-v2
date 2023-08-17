@@ -1,8 +1,11 @@
-export const load = async ({ fetch, params, url }) => {
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang);
 	let parsedResponse;
 	try {
 		parsedResponse = response.json();
+		console.log(await parsedResponse);
 	} catch (e) {
 		console.error(e);
 		console.log(e);
@@ -44,7 +47,6 @@ function mapSearchParams(searchParams, lang) {
 		max: getMax(searchParams),
 		sort: 'title'
 	};
-	console.log(ret);
 	return ret;
 }
 
@@ -52,7 +54,6 @@ function getMin(searchParams) {
 	const pn = searchParams.get('page-number') || 0;
 	const pc = searchParams.get('results-per-page') || 10;
 	const ret = pn * pc;
-	console.log(pn, 'pc: ', pc, 'min:', ret);
 	return ret;
 }
 
@@ -60,7 +61,6 @@ function getMax(searchParams) {
 	const pn = searchParams.get('page-number') || 0;
 	const pc = searchParams.get('results-per-page') || 10;
 	const ret = pn * pc + (pc - 1);
-	console.log(pn, 'pc: ', pc, 'max:', ret);
 	return ret;
 }
 

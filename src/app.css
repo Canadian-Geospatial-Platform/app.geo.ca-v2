@@ -3,9 +3,22 @@
 @tailwind utilities;
 
 .button-1 {
-	@apply bg-green-200;
+	@apply text-white;
+	@apply bg-custom-8;
 	@apply p-3;
-	@apply m-2;
+	@apply rounded-lg;
+	@apply drop-shadow-lg;
+}
+
+.button-2 {
+	@apply text-custom-8;
+	@apply hover:text-custom-1;
+	@apply bg-custom-1;
+	@apply hover:bg-custom-8;
+	@apply outline;
+	@apply -outline-offset-2;
+	@apply outline-custom-8;
+	@apply p-3;
 	@apply rounded-lg;
 	@apply drop-shadow-lg;
 }
