@@ -57,7 +57,7 @@
 	{@const web=!!contact[0].onlineresource && !!contact[0].onlineresource.onlineresource && contact[0].onlineresource.onlineresource !== 'null' ? `<a href={contact[0].onlineresource.onlineresource} className="table-cell-link" target="_blank">{contact[0].onlineresource.onlineresource}</a>` : 'N/A'}
 	{@const desc=!!contact[0].onlineresource && !!contact[0].onlineresource.onlineresource_description && contact[0].onlineresource.onlineresource_description !== 'null' ? contact[0].onlineresource.onlineresource_description : 'N/A'}
 	
-<main class="col-span-8 bg-blue-300">	
+<main class="col-span-12 md:col-span-8 bg-blue-300">	
 	<div>	
 	<h1 class="text-4xl">{item.title_en}</h1>
 	</div>
@@ -244,7 +244,7 @@
             </section>
 
 </main>
-<aside class="col-span-4 bg-white">
+<aside class="col-span-12 md:col-span-4 bg-white">
 	<div>
 		<section>
 			<Maplet mapId="metamap"
