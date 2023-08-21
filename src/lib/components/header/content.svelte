@@ -7,7 +7,7 @@
 	$: otherLangPathName = $page.url.pathname.replace(lang, otherLang);
 </script>
 
-<a transition:slide href="/{lang}/record/12893-12434-fsdf32-q32ef32">record</a>
+<a transition:slide href="/{lang}/favorites">favorites</a>
 <a transition:slide href="/{lang}/map-browser">map-browser</a>
 <a transition:slide href={otherLangPathName + $page.url.search}>{otherLang}</a>
 

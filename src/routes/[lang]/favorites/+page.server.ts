@@ -1,19 +1,15 @@
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
-	let response = await getRecord(url.searchParams.get('id'), params.lang, fetch);
-	let parsedResponse;
-	try {
-		parsedResponse = await response.json();
-	} catch (e) {
-		console.error(e);
-		console.log(e);
-	}
-	console.log(parsedResponse.body);
+	let response = await getRecords(url.searchParams.values('id'), params.lang, fetch);
+
+	let x = await response;
+
+	console.log(x);
 	return {
 		lang: params.lang,
 		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',
-		results: parsedResponse.body
+		results: x
 	};
 };
 
@@ -25,4 +21,23 @@ function getRecord(id, lang, fetch) {
 	};
 	url.search = new URLSearchParams(params).toString();
 	return fetch(url);
+}
+
+async function getRecords(idIterator, lang, fetch) {
+	let promises = [];
+
+	for (const id of idIterator) {
+		promises.push(getRecord(id, lang, fetch));
+	}
+
+	const results = await Promise.all(promises);
+	const values = [...results];
+
+	let ret = await Promise.all(
+		values.map(async (v) => {
+			const contents = await v.json();
+			return contents.body.Items[0];
+		})
+	);
+	return ret;
 }
