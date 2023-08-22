@@ -9,7 +9,6 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		console.error(e);
 		console.log(e);
 	}
-	console.log(parsedResponse);
 	return {
 		lang: params.lang,
 		results: parsedResponse

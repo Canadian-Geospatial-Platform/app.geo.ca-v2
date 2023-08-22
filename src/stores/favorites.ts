@@ -20,8 +20,6 @@ export function addFavorite(id) {
 }
 
 export function removeFavorite(id) {
-	favorites.update((items) => items.filter((idx) => 
-		idx !== id
-	))
+	favorites.update((items) => items.filter((idx) => idx !== id));
 	if (browser) localStorage.setItem('favorites', JSON.stringify(get(favorites)));
 }

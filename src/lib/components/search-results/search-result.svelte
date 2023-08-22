@@ -15,7 +15,6 @@
 	$: favoritesArr = [];
 	$: isFavorite = favoritesArr.includes(id);
 
-
 	function favorite() {
 		if (isFavorite) {
 			removeFavorite(id);
@@ -24,10 +23,9 @@
 		}
 	}
 	onMount(() => {
-	favorites.subscribe((value) => {
-		favoritesArr = value;
-	});
-	console.log(favoritesArr, isFavorite)
+		favorites.subscribe((value) => {
+			favoritesArr = value;
+		});
 	});
 </script>
 

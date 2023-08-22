@@ -1,15 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Filters from '$lib/components/filters/filters.svelte';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 	import Offset from '$lib/components/filters/offset.svelte';
 
 	$: results = $page.data.results?.['Items'] ? $page.data.results.Items : [];
-
-	onMount(async () => {
-		console.log($page);
-	});
 </script>
 
 <div class="p-4 m-4 rounded-lg drop-shadow-lg bg-custom-5">
