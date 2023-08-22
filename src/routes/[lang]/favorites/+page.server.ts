@@ -4,6 +4,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	let response = await getRecords(url.searchParams.values('id'), params.lang, fetch);
 
 	let x = await response;
+	x = normaliseData(params.lang, x);
 
 	console.log(x);
 	return {
@@ -40,4 +41,12 @@ async function getRecords(idIterator, lang, fetch) {
 		})
 	);
 	return ret;
+}
+
+function normaliseData(lang, records) {
+	for (const r of records) {
+		r.title = r['title_' + lang.split('-')[0]];
+		r.description = r['title_' + lang.split('-')[0]];
+	}
+	return records;
 }

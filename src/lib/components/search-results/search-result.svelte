@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { favorites, addFavorite, removeFavorite } from '$stores/favorites.ts';
@@ -11,12 +12,9 @@
 	export let date;
 	export let description;
 	export let id;
-	let favoritesArr = [];
+	$: favoritesArr = [];
 	$: isFavorite = favoritesArr.includes(id);
 
-	favorites.subscribe((value) => {
-		favoritesArr = value;
-	});
 
 	function favorite() {
 		if (isFavorite) {
@@ -25,13 +23,19 @@
 			addFavorite(id);
 		}
 	}
+	onMount(() => {
+	favorites.subscribe((value) => {
+		favoritesArr = value;
+	});
+	console.log(favoritesArr, isFavorite)
+	});
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid xl:grid-cols-2 gap-4">
 	<Map id={id + '-map'} />
 	<div class="bg-custom-5 rounded-lg p-2">
 		<h2 class="text-2xl">{title}</h2>
-		<p>{organization}</p>
+		<p>{organization ?? ''}</p>
 		<p>{date}</p>
 		<br />
 		<p class="overflow-hidden text-ellipsis h-48">{description}</p>

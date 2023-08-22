@@ -5,11 +5,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	let parsedResponse;
 	try {
 		parsedResponse = await response.json();
-		console.log(await parsedResponse);
 	} catch (e) {
 		console.error(e);
 		console.log(e);
 	}
+	console.log(parsedResponse);
 	return {
 		lang: params.lang,
 		results: parsedResponse
