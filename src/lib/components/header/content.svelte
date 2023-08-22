@@ -8,14 +8,16 @@
 
 	$: catalogText = lang == 'en-ca' ? 'catalog' : 'catalogue';
 	$: favoritesText = lang == 'en-ca' ? 'favorites' : 'favoris';
+	$: signInText = lang == 'en-ca' ? 'sign in' : 'connexion';
 </script>
 
-<a transition:slide href="/{lang}/favorites">{favoritesText}</a>
-<a transition:slide href="/{lang}/map-browser">{catalogText}</a>
-<a transition:slide href={otherLangPathName + $page.url.search}>{otherLang}</a>
+<a transition:slide class="a" href="/{lang}/favorites">{favoritesText}</a>
+<a transition:slide class="a" href="/{lang}/map-browser">{catalogText}</a>
+<a transition:slide class="a" href={otherLangPathName + $page.url.search}>{otherLang}</a>
+<a transition:slide class="button-1" href="/{lang}/sign-in">{signInText}</a>
 
 <style>
-	a {
+	.a {
 		@apply p-2;
 		@apply m-2;
 		@apply text-custom-2;
