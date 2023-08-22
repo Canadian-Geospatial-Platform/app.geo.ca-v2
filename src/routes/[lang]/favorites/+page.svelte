@@ -22,7 +22,7 @@
 			console.log(x);
 			url.searchParams.append('id', x);
 		}
-
+		// this is a hack that allows me to shift most of the data loading to the server. this should simplify switching to server side favorites instead of a store.
 		goto(url, { invalidateAll: true });
 	});
 </script>
