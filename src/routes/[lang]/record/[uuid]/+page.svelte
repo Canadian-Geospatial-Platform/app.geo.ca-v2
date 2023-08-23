@@ -11,7 +11,7 @@
 	function changeMapping(){}
 	function handleAnalytic(){}
 </script>
-<div class="grid grid-cols-12 gap-3">
+<div class="grid grid-cols-12 gap-3 p-2 m-2">
 {#if data.result.body.Items && data.result.body.Items.length>0}
 
 {#each data.result.body.Items as item}
@@ -57,7 +57,7 @@
 	{@const web=!!contact[0].onlineresource && !!contact[0].onlineresource.onlineresource && contact[0].onlineresource.onlineresource !== 'null' ? `<a href={contact[0].onlineresource.onlineresource} className="table-cell-link" target="_blank">{contact[0].onlineresource.onlineresource}</a>` : 'N/A'}
 	{@const desc=!!contact[0].onlineresource && !!contact[0].onlineresource.onlineresource_description && contact[0].onlineresource.onlineresource_description !== 'null' ? contact[0].onlineresource.onlineresource_description : 'N/A'}
 	
-<main class="col-span-12 md:col-span-8 bg-blue-300">	
+<main class="col-span-12 md:col-span-8 bg-custom-8 text-custom-1 rounded-lg p-4">	
 	<div>	
 	<h1 class="text-4xl">{item.title_en}</h1>
 	</div>
@@ -244,7 +244,7 @@
             </section>
 
 </main>
-<aside class="col-span-12 md:col-span-4 bg-white">
+<aside class="col-span-12 md:col-span-4 bg-white pl-2 pr-2 place-items-center">
 	<div>
 		<section>
 			<Maplet mapId="metamap"
@@ -352,7 +352,7 @@
 	</div>
 	
 	<div class="flex flex-col h-screen bg-center bg-cover bg-no-repeat">
-		<div class="grid place-items-center mx-auto p-20 sm:my-auto bg-white rounded-3xl space-y-10">
+		<div class="grid place-items-center my-auto bg-white rounded-3xl space-y-10">
             <div class="text-2xl font-semibold text-blue-500">Share</div>            
 
     		<div class="flex items-center justify-center space-x-3">

@@ -33,6 +33,8 @@ export const load = async ({ params }) => {
 	}
 
 	return {
+		t_title:
+			params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
 		lang: params.lang,
 		uuid: params.uuid,
 		result: parsedIDResponse,
