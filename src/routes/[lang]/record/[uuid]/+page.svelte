@@ -61,13 +61,13 @@
 	<div>	
 	<h1 class="text-4xl">{item.title_en}</h1>
 	</div>
-	<section  class="w-full">
+	<section  class="w-full relative overflow-x-auto">
 		<h2 class="text-3xl mb-4 uppercase pt-8">About this dataset</h2>
 		<div>{item.description}</div>
 		<div class="py-6">
 			<p><strong>Keywords:</strong>{item.keywords}</p>
 		</div>
-		<table class="w-full">
+		<table>
 			<caption class="text-2xl uppercase">Metadata</caption>
 			<tbody class="divide-y divide-gray-500">
 				<tr>
@@ -108,7 +108,7 @@
 	</section>
 	{#if (data.related.length > 0)}
 		<section id="search-result-related-products"  class="w-full">
-			<table class="w-full">
+			<table>
 				<caption class="text-2xl uppercase">
 					<button id="related-products-id" type="button">Related products</button>
 				</caption>
@@ -129,8 +129,8 @@
 			</table>
 		</section>
 	{/if}
-	<section id="search-result-data-resources" class="w-full pt-6">
-		<table class="w-full">
+	<section id="search-result-data-resources" class="w-full pt-6 relative overflow-x-auto">
+		<table>
 			<caption class="text-2xl uppercase cursor-pointer"><button id="data-resources-id" type="button" class="" aria-expanded="false" aria-controls="tbody-data-resources">Data Resources</button></caption>
 			<tbody id="tbody-data-resources" class="divide-y divide-gray-500" aria-labelledby="data-resources-id">
 				<tr>
@@ -153,7 +153,7 @@
 		</table>
 	</section>
 	<section id="search-result-contact-data"  class="w-full pt-6">
-		<table class="w-full">
+		<table>
 			<caption class="text-2xl uppercase cursor-pointer"><button id="conatct-data-id" type="button" class="" aria-expanded="false" aria-controls="tbody-contact-data">Contact Data</button></caption>
 			<tbody id="tbody-contact-data" class="divide-y divide-gray-500">
 				<tr>
@@ -196,7 +196,7 @@
 		</table>
 	</section>
 	<section id="search-result-adv-meta"  class="w-full pt-6">
-               <table  class="w-full">
+               <table>
                   <caption class="text-2xl uppercase cursor-pointer"><button id="advanced-data-id" type="button" class=""  aria-expanded="false" aria-controls="tbody-adv-meta">Advanced metadata</button></caption>
                   <tbody id="tbody-adv-meta" class="divide-y divide-gray-500" aria-labelledby="advanced-data-id">
                      <tr>
@@ -378,3 +378,9 @@
 {/if}
 </div>
 
+<style>
+	table {
+		@apply w-full;
+		@apply table-auto; 
+	}
+</style>
