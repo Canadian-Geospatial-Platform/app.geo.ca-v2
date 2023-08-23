@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { requireLogin, getToken } from '$lib/APIs/authorization.js';
 	import { favorites, addFavorite, removeFavorite } from '$stores/favorites.ts';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
@@ -9,7 +10,9 @@
 
 	$: results = $page.data.results ? $page.data.results : [];
 
-	onMount(() => {
+	onMount(async () => {
+		await requireLogin(getToken(), $page.url.origin + '/sign-in', $page.url.href);
+
 		favorites.subscribe((value) => {
 			favoritesArr = value;
 		});
