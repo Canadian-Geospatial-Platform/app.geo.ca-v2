@@ -6,10 +6,11 @@
 	import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
 </script>
 
-<div class="container mx-auto py-1 bg-custom-1">
+<div class="container flex flex-col mx-auto py-1 bg-custom-1 h-screen">
 	<Header />
 	<Feedback />
 	<Breadcrumbs />
-	<slot />
+	<slot/>
+	<div class="grow"/>
 	<Footer />
 </div>
