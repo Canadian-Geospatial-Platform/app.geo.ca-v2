@@ -1,15 +1,16 @@
 <script>
 	import Maplet from '$lib/components/maplet/maplet.svelte';
 	import { page } from '$app/stores';
-
+    import InfoModal from '$lib/components/modal/info-modal.svelte';
 	// @ts-ignore
 	export let data;
+	let showModal=false;
 	$: noResults = data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
 	function handleRowClick(){}
 	function resourceClick(){}
 	function handleRelatedClick(){}	
 	function viewOnMap(){}
-	function setGreyMap(){}
+	function setGreyMap(){showModal=true}
 	function changeMapping(){}
 	function handleAnalytic(){}
 	function handleViewSimilarRecords(){
@@ -35,6 +36,12 @@
 	
 	$: similarRec=true;
 </script>
+<InfoModal bind:showModal>
+	<h2 slot="header" class="text-xl text-custom-10">No Viewable Content</h2>
+	<div>
+		<p>This record has no viewable component.</p>
+	</div>
+</InfoModal>
 <div class="grid grid-cols-12 gap-3 p-2 m-2">
 {#if data.result.body.Items && data.result.body.Items.length>0}
 
@@ -285,9 +292,9 @@
 				This record has no viewable component.
 				{/if}					
 			</p>
-			<div class="grid grid-cols-2 gap-3">
+			<div class="grid grid-cols-2 gap-3 pt-5">
 				
-				<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded"
+				<button class={activeMap?"bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded":"bg-custom-10 opacity-60 text-white px-6 py-4 rounded"}
 					type="button"					
 						on:click={
 							activeMap
@@ -298,7 +305,7 @@
           
           			<div class="leading-none uppercase text-sm">view on map</div>
       			</button>
-				<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded"
+				<button class={activeMap?"bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded":"bg-custom-10 opacity-60 text-white px-6 py-4 rounded"}
 					type="button"					
 						on:click={
 						activeMap
