@@ -1,6 +1,8 @@
 <script>
 	import Maplet from '$lib/components/maplet/maplet.svelte';
+	import { page } from '$app/stores';
 
+	// @ts-ignore
 	export let data;
 	$: noResults = data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
 	function handleRowClick(){}
@@ -10,6 +12,28 @@
 	function setGreyMap(){}
 	function changeMapping(){}
 	function handleAnalytic(){}
+	function handleViewSimilarRecords(){
+		similarRec=!similarRec;
+		if(similarRec){
+			// @ts-ignore
+			showSimilarRecords=similarRecords.slice(0,5);
+		}else{
+			// @ts-ignore
+			showSimilarRecords=[...similarRecords];
+		}
+	}
+    // @ts-ignore
+	let similarRecords=[];
+	// @ts-ignore
+	let showSimilarRecords=[];
+	if(data.result.body.Items && data.result.body.Items.length>0){
+		similarRecords =data.result.body.Items[0].similarity;
+		if(similarRecords){
+			showSimilarRecords=similarRecords.slice(0,5);
+		}
+	}
+	
+	$: similarRec=true;
 </script>
 <div class="grid grid-cols-12 gap-3 p-2 m-2">
 {#if data.result.body.Items && data.result.body.Items.length>0}
@@ -118,9 +142,9 @@
 						<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Type</th>
 					</tr>
 					{#each data.related as relatedp}						
-							<tr class="table-row-link" onClick={(e) => handleRelatedClick(e, relatedp.id)}>
+							<tr class="table-row-link" on:click={(e) => handleRelatedClick(e, relatedp.id)}>
 								<td>
-									<a class="table-cell-link" onClick={(e) => handleRelatedClick(e, relatedp.id)}>{relatedp[`description_${language}`]}</a>
+									<a class="table-cell-link" on:click={(e) => handleRelatedClick(e, relatedp.id)}>{relatedp[`description_${language}`]}</a>
 								</td>
 								<td></td>
 							</tr>					
@@ -265,7 +289,7 @@
 				
 				<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded"
 					type="button"					
-						onClick={
+						on:click={
 							activeMap
 							? () => viewOnMap(event, item.id)
 							: () => setGreyMap(true)
@@ -276,7 +300,7 @@
       			</button>
 				<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded"
 					type="button"					
-						onClick={
+						on:click={
 						activeMap
 							? () => changeMapping(item.id)
 							: () => setGreyMap(true)
@@ -294,7 +318,30 @@
 				
 			</div>
 		</section>
-	
+	    {#if (showSimilarRecords.length > 0) }
+			<section class="pt-8">
+				<h3 class="uppercase text-2xl">Similar Records</h3>
+				<div class="pt-5">
+					<ul>
+						{#each showSimilarRecords as si, index }
+						     {@const uri=encodeURI(si.features_properties_id.trim())}
+							 {@const url='/'+$page.data.lang+'/record/'+uri}
+							 {@const txt=$page.data.lang === 'en-ca' ? si.features_properties_title_en : si.features_properties_title_fr}
+							<li class="list-disc list-inside"><a target="_blank" class="text-custom-8 hover:underline" 
+								href={url}>{txt}</a></li>
+						{/each}
+					</ul>
+				</div>
+				<div class="grid grid-cols-2 gap-3 pt-5">
+				<button class="bg-blue-500 hover:bg-blue-400 text-white px-6 py-4 rounded"
+					type="button"
+					on:click={handleViewSimilarRecords}>
+					<div class="leading-none uppercase text-sm">
+					{similarRec ? 'View More' : 'Show Less'}</div>
+				</button>
+				</div>
+			</section>
+		{/if}
 		<section class="pt-8">
 			<h3 class="uppercase text-2xl">Metadata</h3>
 			<p>Our metadata is stored in the geoCore format. A geojson containing all the metadata you see here.</p>

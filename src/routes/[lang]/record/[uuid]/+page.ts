@@ -2,7 +2,7 @@ export const load = async ({ params }) => {
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	const [idResponse, collectionsResponse, analyticResponse] =
-		await Promise.all([fetch(`https://geocore.api.geo.ca/id?id=${params.uuid}&lang=${lang}`),
+		await Promise.all([fetch(`https://geocore.api.geo.ca/id/v2?id=${params.uuid}&lang=${lang}`),
 		fetch(`https://geocore.api.geo.ca/collections?id=${params.uuid}`),
 		fetch(`https://geocore.api.geo.ca/analytics/10?uuid=${params.uuid}&lang=${lang}`),]);
 	if (!idResponse.ok) {
