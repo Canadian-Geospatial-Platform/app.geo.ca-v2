@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import item from './sample-item.json';
 
-	export let item;
+	$: lang = $page.data.lang == 'en-ca' ? 'en' : 'fr';
 
 	onMount(() => {
-	console.log(item)
+		console.log(item);
 	});
 </script>
 
@@ -24,15 +25,15 @@
 
 		<span
 			property="description"
-			value="This catalog contains metadata records describing open datasets available from the Government of Canada"
+			value="This catalog contains open datasets available on the Geo.ca platform."
 		/>
-		<span property="datePublished" value={item.datePublished}>
+		<span property="datePublished" value={item.published}>
 			<span property="dateModified" value="" />
 			<span property="inLanguage" value="en-CA" />
 			<span property="sameAs" value="http://open.canada.ca" />
 
 			<span property="publisher" typeof="Organization">
-				<span property="name" value="Government of Canada, Treasury Board of Canada Secretariat" />
+				<span property="name" value={item.organisation} />
 				<span property="email" value="open-ouvert@tbs-sct.gc.ca" />
 			</span>
 			<span property="genre" value="Information and Communications Government and Politics" />
@@ -48,8 +49,8 @@
 		</span>
 	</div>
 
-	<span property="name">{item.title}</span>
-	<span property="description">item.description</span>
+	<span property="name">{item['title_' + lang]}</span>
+	<span property="description">{item.description}</span>
 
 	<span property="dateModified">2023-08-28</span>
 	<span property="publisher" typeof="Organization">
