@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import SearchResult from './search-result.svelte';
+	import MicroData from '$lib/components/microdata/microdata.svelte';
 
 	$: noResults = $page.data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
 	export let results = [];
@@ -21,6 +22,7 @@
 
 <ol>
 	{#each results as x}
+		<MicroData item={x} />
 		<SearchResult
 			title={x.title}
 			description={x.description}
