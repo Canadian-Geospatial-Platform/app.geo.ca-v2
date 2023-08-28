@@ -1,0 +1,198 @@
+{
+	"id": "3a27a918-cf02-18c8-fe2b-bac5a7c4357d",
+	"coordinates": "[[[-136.47, 60], [-102, 60], [-102, 78.76], [-136.47, 78.76], [-136.47, 60]]]",
+	"title_en": "\"Rivers of Change\" Story Map Visualization Tool",
+	"title_fr": "Outil de visualisation de cartes narratif \u00ab Rivers of Change \u00bb",
+	"description": "\"Rivers of Change\" Story Map Visualization Tool",
+	"published": "0001-01-01",
+	"keywords": "Northwest Territories Open Data, Government information",
+	"topicCategory": "environment",
+	"created": "0001-01-01",
+	"spatialRepresentation": "vector; vecteur",
+	"type": "dataset; jeuDonn\u00e9es",
+	"temporalExtent": {
+		"begin": "0001-01-01",
+		"end": "Present"
+	},
+	"refSys": "unknown",
+	"refSys_version": "unknown",
+	"status": "onGoing; enContinue",
+	"maintenance": "unknown; inconnu",
+	"metadataStandard": "North American Profile of ISO 19115:2003 - Geographic information - Metadata",
+	"metadataStandardVersion": "HNAP ISO:19115 - 2003",
+	"distributionFormat_name": "HTML",
+	"distributionFormat_format": "unknown",
+	"useLimits": "Open Government Licence - Northwest Territories (https://www.gov.nt.ca/en/open-government-licence-northwest-territories)",
+	"accessConstraints": "license; licence",
+	"otherConstraints": null,
+	"dateStamp": null,
+	"dataSetURI": null,
+	"locale": {
+		"language": "French; Fran\u00e7ais",
+		"country": "Canada; Canada",
+		"encoding": "utf8; utf8"
+	},
+	"language": "eng; CAN",
+	"characterSet": "utf8; utf8",
+	"environmentDescription": null,
+	"supplementalInformation": null,
+	"graphicOverview": [
+		{
+			"overviewFileName": "https://raw.githubusercontent.com/federal-geospatial-platform/fgp-metadata-proxy/master/images/resampled/nt/nt.png",
+			"overviewFileDescription": "null",
+			"overviewFileTupe": "null"
+		}
+	],
+	"contact": [
+		{
+			"individual": "null",
+			"position": {
+				"en": "null",
+				"fr": "null"
+			},
+			"organisation": {
+				"en": "Government of Northwest Territories; Government of Northwest Territories; NWT Centre for Geomatics",
+				"fr": "Gouvernement des Territoires du Nord-Ouest; Gouvernement des Territoires du Nord-Ouest; Centre de g\u00e9omatique des TNO"
+			},
+			"telephone": {
+				"en": "null",
+				"fr": "null"
+			},
+			"fax": "null",
+			"address": {
+				"en": "null",
+				"fr": "null"
+			},
+			"city": "null",
+			"pt": {
+				"en": "null",
+				"fr": "null"
+			},
+			"postalcode": "null",
+			"country": {
+				"en": "null",
+				"fr": "null"
+			},
+			"email": {
+				"en": "geonwt@gov.nt.ca",
+				"fr": "geonwt@gov.nt.ca"
+			},
+			"onlineresource": {
+				"onlineresource": "https://www.geomatics.gov.nt.ca/en/resources",
+				"onlineresource_name": "null",
+				"onlineresource_protocol": "null",
+				"onlineresource_description": "null"
+			},
+			"hoursOfService": "null",
+			"role": "pointOfContact; contact"
+		}
+	],
+	"distributor": [
+		{
+			"individual": "null",
+			"position": {
+				"en": "null",
+				"fr": "null"
+			},
+			"organisation": {
+				"en": "Government of Northwest Territories; Government of Northwest Territories; NWT Centre for Geomatics",
+				"fr": "Gouvernement des Territoires du Nord-Ouest; Gouvernement des Territoires du Nord-Ouest; Centre de g\u00e9omatique des TNO"
+			},
+			"telephone": {
+				"en": "null",
+				"fr": "null"
+			},
+			"fax": "null",
+			"address": {
+				"en": "null",
+				"fr": "null"
+			},
+			"city": "null",
+			"pt": {
+				"en": "null",
+				"fr": "null"
+			},
+			"postalcode": "null",
+			"country": {
+				"en": "null",
+				"fr": "null"
+			},
+			"email": {
+				"en": "geonwt@gov.nt.ca",
+				"fr": "geonwt@gov.nt.ca"
+			},
+			"onlineResource": {
+				"onlineResource": "https://www.geomatics.gov.nt.ca/en/resources",
+				"onlineResource_Name": "null",
+				"onlineResource_Protocol": "null",
+				"onlineResource_Description": "null"
+			},
+			"hoursOfService": "null",
+			"role": "pointOfContact; contact"
+		}
+	],
+	"credits": [],
+	"options": [],
+	"similarity": [
+		{
+			"sim": "sim1",
+			"features_properties_id": "f76830ee-dc7e-da9f-3c1c-9cd6e7bf7ec4",
+			"features_properties_title_en": "Long-Term Change Detection Story Map",
+			"features_properties_title_fr": "Cartographie de la d\u00e9tection des changements \u00e0 long terme"
+		},
+		{
+			"sim": "sim2",
+			"features_properties_id": "ad36056b-550e-4a7a-ac82-6a5df6376d2f",
+			"features_properties_title_en": "Make a Topographic Map application",
+			"features_properties_title_fr": "L\u2019application Faire une carte topographique"
+		},
+		{
+			"sim": "sim3",
+			"features_properties_id": "46e01a13-332e-06a3-42c2-6150effbaa95",
+			"features_properties_title_en": "Yukon First Nation Information",
+			"features_properties_title_fr": "Renseignements sur les Premi\u00e8res nations du Yukon"
+		},
+		{
+			"sim": "sim4",
+			"features_properties_id": "ac108ef2-0095-d5fb-5ce0-e45b214d61c0",
+			"features_properties_title_en": "Fire History",
+			"features_properties_title_fr": "Historique des incendies"
+		},
+		{
+			"sim": "sim5",
+			"features_properties_id": "0c2daee6-af2e-e019-a235-594d97399118",
+			"features_properties_title_en": "NWT Cumulative Impact Monitoring Program (CIMP) Inventory of Landscape Change Web Viewer",
+			"features_properties_title_fr": "Visualiseur Web de l'inventaire des changements paysagers dans le cadre du Programme de surveillance des impacts cumulatifs (CIMP) des Territoires du Nord-Ouest"
+		},
+		{
+			"sim": "sim6",
+			"features_properties_id": "1f2065a4-314f-4740-b091-43ac9e9e7019",
+			"features_properties_title_en": "Geographic and administrative database",
+			"features_properties_title_fr": "Base de donn\u00e9es g\u00e9ographiques et administratives"
+		},
+		{
+			"sim": "sim7",
+			"features_properties_id": "a13a2575-5bda-4bfd-a9b1-5bd2dd583f09",
+			"features_properties_title_en": "Canada Flood Map Inventory (CFM)",
+			"features_properties_title_fr": "Inventaire des Cartes de zones inondables du Canada (CZIC)"
+		},
+		{
+			"sim": "sim8",
+			"features_properties_id": "11205c59-5cc1-4fea-29aa-905c7834a0eb",
+			"features_properties_title_en": "EcoRegions",
+			"features_properties_title_fr": "\u00c9cor\u00e9gions"
+		},
+		{
+			"sim": "sim9",
+			"features_properties_id": "bc51fccf-5e8f-9ef5-b633-873d5668bf4a",
+			"features_properties_title_en": "Yukon Parks and Protected Areas Information",
+			"features_properties_title_fr": "Renseignements sur les parcs et les aires prot\u00e9g\u00e9es du Yukon"
+		},
+		{
+			"sim": "sim10",
+			"features_properties_id": "233a9982-7b03-4441-220d-8b76a1c3f940",
+			"features_properties_title_en": "Physiographic Annotation - 1M",
+			"features_properties_title_fr": "Annotation physiographique - 1M"
+		}
+	]
+}
