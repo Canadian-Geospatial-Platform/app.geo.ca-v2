@@ -4,6 +4,8 @@
 	import item from './sample-item.json';
 
 	$: lang = $page.data.lang == 'en-ca' ? 'en' : 'fr';
+	$: catalogDescription = $page.data.lang == 'en-ca' ? 'This catalog contains open datasets available on the Geo.ca platform.' : 'Ce catalogue contient des données ouvertes disponibles sur la plateforme Geo.ca.';
+	$: catalogTitle = $page.data.lang == 'en-ca' ? 'Government Of Canada Geo.ca Data Catalog.' : 'Catalogue de données de la plateforme Geo.ca du gouvernement du Canada.';
 
 	onMount(() => {
 		console.log(item);
@@ -12,7 +14,7 @@
 
 <div vocab="http://schema.org/" typeof="Dataset" style="display:none;">
 	<div property="includedInDataCatalog" typeof="DataCatalog">
-		<span property="name" value="Government Of Canada Geo.ca Data Catalog"
+		<span property="name" value={catalogTitle}
 			><span property="spatialCoverage" typeof="Place">
 				<span property="geo" typeof="GeoShape">
 					<span property="name" value="Dataset Boundary" /><span
@@ -25,7 +27,7 @@
 
 		<span
 			property="description"
-			value="This catalog contains open datasets available on the Geo.ca platform."
+			value={catalogDescription}
 		/>
 		<span property="datePublished" value={item.published}>
 			<span property="dateModified" value="" />
