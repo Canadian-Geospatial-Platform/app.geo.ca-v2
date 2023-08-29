@@ -132,7 +132,92 @@
 		}
 	],
 	"credits": [],
-	"options": [],
+	"options": [
+		{
+			"url": "https://opendata.nfis.org/mapserver/nfis-change_eng.html",
+			"protocol": "HTTPS",
+			"name": {
+				"en": "Satellite Forest Information for Canada (English)",
+				"fr": "Information sur les forêts du Canada provenant d'images satellitaires"
+			},
+			"description": {
+				"en": "Application;HTML;eng",
+				"fr": "Application;HTML;eng"
+			}
+		},
+		{
+			"url": "https://opendata.nfis.org/mapserver/nfis-change_fra.html",
+			"protocol": "HTTPS",
+			"name": {
+				"en": "Satellite Forest Information for Canada (French)",
+				"fr": "Information sur les forêts du Canada provenant d'images satellitaires"
+			},
+			"description": {
+				"en": "Application;HTML;fra",
+				"fr": "Application;HTML;fra"
+			}
+		},
+		{
+			"url": "https://opendata.nfis.org/mapserver/cgi-bin/wms_change.cgi?service=wms&version=1.3.0&request=GetCapabilities&layers=eco100&legend_format=image/png&feature_info_type=text/html",
+			"protocol": "OGC:WMS",
+			"name": {
+				"en": "ecoDomain100",
+				"fr": "ecoDomain100"
+			},
+			"description": {
+				"en": "Web Service;WMS;fra",
+				"fr": "Service Web;WMS;fra"
+			}
+		},
+		{
+			"url": "https://opendata.nfis.org/downloads/forest_change/CA_EcozoneDomain.zip",
+			"protocol": "HTTPS",
+			"name": {
+				"en": "CA_EcozoneDomain.zip",
+				"fr": "CA_EcozoneDomain.zip"
+			},
+			"description": {
+				"en": "Dataset;ZIP;zxx",
+				"fr": "Données;ZIP;zxx"
+			}
+		},
+		{
+			"url": "https://opendata.nfis.org/mapserver/cgi-bin/wms_change.cgi?service=wms&version=1.3.0&request=GetCapabilities&layers=eco100&legend_format=image/png&feature_info_type=text/html",
+			"protocol": "OGC:WMS",
+			"name": {
+				"en": "ecoDomain100",
+				"fr": "ecoDomain100"
+			},
+			"description": {
+				"en": "Web Service;WMS;eng",
+				"fr": "Service Web;WMS;eng"
+			}
+		},
+		{
+			"url": "https://doi.org/10.1016/j.ecolind.2008.01.007",
+			"protocol": "HTTPS",
+			"name": {
+				"en": "An environmental domain classification of Canada using earth observation data for biodiversity assessment",
+				"fr": "An environmental domain classification of Canada using earth observation data for biodiversity assessment"
+			},
+			"description": {
+				"en": "Supporting Document;PDF;eng",
+				"fr": "Document de soutien;PDF;eng"
+			}
+		},
+		{
+			"url": "https://www.sciencedirect.com/science/article/pii/S1470160X08000071",
+			"protocol": "HTTPS",
+			"name": {
+				"en": "The development of a Canadian dynamic habitat index using multi-temporal satellite estimates of canopy light absorbance",
+				"fr": "The development of a Canadian dynamic habitat index using multi-temporal satellite estimates of canopy light absorbance"
+			},
+			"description": {
+				"en": "Dataset;PDF;eng",
+				"fr": "Données;PDF;eng"
+			}
+		}
+	],
 	"similarity": [
 		{
 			"sim": "sim1",
