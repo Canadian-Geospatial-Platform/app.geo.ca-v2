@@ -9,7 +9,7 @@
 <span property="name">{item['title_' + lang]}</span>
 <span property="description">{item.description}</span>
 <Organisations {item} {lang} />
-<span property="temporalCoverage" value="2013-06-19/" />
+<span property="temporalCoverage" value={item.temporalExtent.begin + '/' + (item.temporalExtent.end ?? '..')} />
 <span property="genre">Information and Communications</span>
 <span property="keywords">analytics</span>
 <span property="keywords">metrics</span>

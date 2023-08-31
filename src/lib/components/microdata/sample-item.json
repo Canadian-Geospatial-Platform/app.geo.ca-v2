@@ -12,7 +12,7 @@
 	"type": "dataset; jeuDonn\u00e9es",
 	"temporalExtent": {
 		"begin": "0001-01-01",
-		"end": "Present"
+		"end": null
 	},
 	"refSys": "unknown",
 	"refSys_version": "unknown",
