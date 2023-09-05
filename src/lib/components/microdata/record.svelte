@@ -6,14 +6,19 @@
 	export let lang;
 </script>
 
-<span property="name">{item['title_' + lang]}</span>
-<span property="description">{item.description}</span>
+<span property="name">{item.features[0].properties.title[lang]}</span>
+<span property="description">{item.features[0].properties.description[lang]}</span>
 <Organisations {item} {lang} />
-<span property="temporalCoverage" value={item.temporalExtent.begin + '/' + (item.temporalExtent.end ?? '..')} />
+<span
+	property="temporalCoverage"
+	value={item.features[0].properties.extent.temporalExtent.start +
+		'/' +
+		(item.features[0].properties.extent.temporalExtent.end ?? '..')}
+/>
 <span property="genre">Information and Communications</span>
 <span property="keywords">analytics</span>
 <span property="keywords">metrics</span>
 <span property="sameAs" value="/data/en/dataset/2916fad5-ebcc-4c86-b0f3-4f619b29f412" />
-{#each item.options as option}
+{#each item.features[0].properties.options as option}
 	<Download {option} />
 {/each}
