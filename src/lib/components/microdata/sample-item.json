@@ -1,283 +1,417 @@
 {
-	"id": "3a27a918-cf02-18c8-fe2b-bac5a7c4357d",
-	"coordinates": "[[[-136.47, 60], [-102, 60], [-102, 78.76], [-136.47, 78.76], [-136.47, 60]]]",
-	"title_en": "\"Rivers of Change\" Story Map Visualization Tool",
-	"title_fr": "Outil de visualisation de cartes narratif \u00ab Rivers of Change \u00bb",
-	"description": "\"Rivers of Change\" Story Map Visualization Tool",
-	"published": "0001-01-01",
-	"keywords": "Northwest Territories Open Data, Government information",
-	"topicCategory": "environment",
-	"created": "0001-01-01",
-	"spatialRepresentation": "vector; vecteur",
-	"type": "dataset; jeuDonn\u00e9es",
-	"temporalExtent": {
-		"begin": "0001-01-01",
-		"end": null
-	},
-	"refSys": "unknown",
-	"refSys_version": "unknown",
-	"status": "onGoing; enContinue",
-	"maintenance": "unknown; inconnu",
-	"metadataStandard": "North American Profile of ISO 19115:2003 - Geographic information - Metadata",
-	"metadataStandardVersion": "HNAP ISO:19115 - 2003",
-	"distributionFormat_name": "HTML",
-	"distributionFormat_format": "unknown",
-	"useLimits": "Open Government Licence - Northwest Territories (https://www.gov.nt.ca/en/open-government-licence-northwest-territories)",
-	"accessConstraints": "license; licence",
-	"otherConstraints": null,
-	"dateStamp": null,
-	"dataSetURI": null,
-	"locale": {
-		"language": "French; Fran\u00e7ais",
-		"country": "Canada; Canada",
-		"encoding": "utf8; utf8"
-	},
-	"language": "eng; CAN",
-	"characterSet": "utf8; utf8",
-	"environmentDescription": null,
-	"supplementalInformation": null,
-	"graphicOverview": [
+	"type": "FeatureCollection",
+	"features": [
 		{
-			"overviewFileName": "https://raw.githubusercontent.com/federal-geospatial-platform/fgp-metadata-proxy/master/images/resampled/nt/nt.png",
-			"overviewFileDescription": "null",
-			"overviewFileTupe": "null"
+			"type": "Feature",
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						["-66.5", "43.3"],
+						["-59.5", "43.3"],
+						["-59.5", "47.3"],
+						["-66.5", "47.3"],
+						["-66.5", "43.3"]
+					]
+				]
+			},
+			"properties": {
+				"id": "000a51f1-3781-a262-35f2-ff83df4898d9",
+				"title": {
+					"en": "Licensed Lenders in Nova Scotia",
+					"fr": "Prêteurs agréés en Nouvelle-Écosse"
+				},
+				"description": {
+					"en": "Businesses licensed to extend credit or provide financing in Nova Scotia",
+					"fr": "Entreprises autorisées à accorder du crédit ou à fournir du financement en Nouvelle-Écosse"
+				},
+				"keywords": [
+					{
+						"en": "lender",
+						"fr": "prêteur"
+					},
+					{
+						"en": "credit",
+						"fr": "crédit"
+					},
+					{
+						"en": "borrowing",
+						"fr": "emprunt"
+					},
+					{
+						"en": "financing",
+						"fr": "financement"
+					},
+					{
+						"en": "Government information",
+						"fr": "Information gouvernementale"
+					}
+				],
+				"topicCategory": [
+					{
+						"code": "economy",
+						"label": {
+							"en": "Economy",
+							"fr": "Economie"
+						},
+						"description": {
+							"en": "Economy",
+							"fr": "Economie"
+						}
+					}
+				],
+				"options": [
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.csv?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (CSV)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (CSV)"
+						},
+						"description": {
+							"en": "Dataset;CSV;eng",
+							"fr": "Données;CSV;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.csv?accessType=DOWNLOAD&bom=true&format=true",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (CSV Excel)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (CSV Excel)"
+						},
+						"description": {
+							"en": "Dataset;CSV;eng",
+							"fr": "Données;CSV;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.csv?accessType=DOWNLOAD&bom=true&format=true&delimiter=%3B",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (CSV Excel (EU))",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (CSV Excel (EU))"
+						},
+						"description": {
+							"en": "Dataset;CSV;eng",
+							"fr": "Données;CSV;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=GeoJSON",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (Geojson)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (Geojson)"
+						},
+						"description": {
+							"en": "Dataset;GEOJSON;eng",
+							"fr": "Données;GEOJSON;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/datasets/hwep-2s8y",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Nova Scotia original metadata (https://data.novascotia.ca)",
+							"fr": "Métadonnées originales de la Nouvelle-Écosse (https://data.novascotia.ca)"
+						},
+						"description": {
+							"en": "Dataset;HTML;eng",
+							"fr": "Données;HTML;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=KML",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (KML)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (KML)"
+						},
+						"description": {
+							"en": "Dataset;KML;eng",
+							"fr": "Données;KML;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=KMZ",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (KMZ)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (KMZ)"
+						},
+						"description": {
+							"en": "Dataset;KMZ;eng",
+							"fr": "Données;KMZ;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.rss?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (RSS)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (RSS)"
+						},
+						"description": {
+							"en": "Dataset;RSS;eng",
+							"fr": "Données;RSS;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=Shapefile",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (Shapefile)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (Shapefile)"
+						},
+						"description": {
+							"en": "Dataset;SHP;eng",
+							"fr": "Données;SHP;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.xml?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (XML)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (XML)"
+						},
+						"description": {
+							"en": "Dataset;XML;eng",
+							"fr": "Données;XML;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.tsv?accessType=DOWNLOAD&bom=true&format=true&delimiter=%3B",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (TSV)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (TSV)"
+						},
+						"description": {
+							"en": "Dataset;other;eng",
+							"fr": "Données;other;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.rdf?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (RDF)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (RDF)"
+						},
+						"description": {
+							"en": "Dataset;other;eng",
+							"fr": "Données;other;eng"
+						}
+					}
+				],
+				"date": [
+					{
+						"dateType": {
+							"en": "publication",
+							"fr": "publication"
+						},
+						"date": "2019-02-05"
+					},
+					{
+						"dateType": {
+							"en": "creation",
+							"fr": "création"
+						},
+						"date": "2017-01-23"
+					}
+				],
+				"spatialRepresentation": {
+					"en": "textTable",
+					"fr": "texteTable"
+				},
+				"type": {
+					"en": "dataset",
+					"fr": "jeuDonnées"
+				},
+				"extent": {
+					"temporalExtent": {
+						"start": "0001-01-01",
+						"end": null
+					},
+					"geographicExtent": {
+						"north": "47.3",
+						"south": "43.3",
+						"east": "-59.5",
+						"west": "-66.5"
+					}
+				},
+				"refSys": [
+					{
+						"code": "unknown",
+						"version": "unknown"
+					}
+				],
+				"status": {
+					"en": "planned",
+					"fr": "planifié"
+				},
+				"maintenance": {
+					"en": "quarterly",
+					"fr": "trimestriel"
+				},
+				"metadataStandard": {
+					"text": {
+						"en": "North American Profile of ISO 19115:2003 - Geographic information - Metadata",
+						"fr": "Profil nord-américain de la norme ISO 19115:2003 - Information géographique - Métadonnées"
+					},
+					"version": "HNAP ISO:19115 - 2003"
+				},
+				"graphicOverview": [
+					{
+						"name": "https://raw.githubusercontent.com/federal-geospatial-platform/fgp-metadata-proxy/master/images/resampled/ns/ns.png"
+					}
+				],
+				"distributionFormat": [
+					{
+						"name": "CSV",
+						"format": "unknown"
+					},
+					{
+						"name": "GEOJSON",
+						"format": "unknown"
+					},
+					{
+						"name": "HTML",
+						"format": "unknown"
+					},
+					{
+						"name": "KML",
+						"format": "unknown"
+					},
+					{
+						"name": "KMZ",
+						"format": "unknown"
+					},
+					{
+						"name": "RSS",
+						"format": "unknown"
+					},
+					{
+						"name": "SHP",
+						"format": "unknown"
+					},
+					{
+						"name": "XML",
+						"format": "unknown"
+					},
+					{
+						"name": "other",
+						"format": "unknown"
+					}
+				],
+				"constraints": {
+					"legal": {
+						"en": "Open Government Licence – Nova Scotia (https://novascotia.ca/opendata/licence.asp)",
+						"fr": "Licence du gouvernement ouvert – Nouvelle-Écosse (https://novascotia.ca/opendata/licence.asp)"
+					},
+					"access": {
+						"en": "license",
+						"fr": "licence"
+					},
+					"use": {
+						"en": "license",
+						"fr": "licence"
+					}
+				},
+				"locale": {
+					"language": {
+						"en": "French",
+						"fr": "Français"
+					},
+					"country": {
+						"en": "Canada",
+						"fr": "Canada"
+					},
+					"encoding": {
+						"en": "utf8",
+						"fr": "utf8"
+					}
+				},
+				"language": "eng; CAN",
+				"characterSet": {
+					"en": "utf8",
+					"fr": "utf8"
+				},
+				"contact": [
+					{
+						"organisation": {
+							"en": "Government of Nova Scotia; Government of Nova Scotia; Service Nova Scotia",
+							"fr": "Gouvernement de la Nouvelle-Écosse; Gouvernement de la Nouvelle-Écosse; Service Nova Scotia"
+						},
+						"email": {
+							"en": "https://novascotia.ca/opendata/contact-us",
+							"fr": "https://novascotia.ca/opendata/contact-us"
+						},
+						"onlineResource": {
+							"url": null,
+							"protocol": "HTTPS",
+							"description": "Open geographic data for the Province of Nova Scotia"
+						},
+						"role": {
+							"en": "pointOfContact",
+							"fr": "contact"
+						}
+					}
+				],
+				"credits": [],
+				"cited": [
+					{
+						"organisation": {
+							"en": "Government of Nova Scotia; Government of Nova Scotia; Service Nova Scotia",
+							"fr": "Gouvernement de la Nouvelle-Écosse; Gouvernement de la Nouvelle-Écosse; Service Nova Scotia"
+						},
+						"email": {
+							"en": "https://novascotia.ca/opendata/contact-us",
+							"fr": "https://novascotia.ca/opendata/contact-us"
+						},
+						"onlineResource": {
+							"url": null,
+							"protocol": "HTTPS",
+							"description": "Open geographic data for the Province of Nova Scotia"
+						},
+						"role": {
+							"en": "pointOfContact",
+							"fr": "contact"
+						}
+					}
+				],
+				"distributor": [
+					{
+						"organisation": {
+							"en": "Government of Nova Scotia; Government of Nova Scotia; Service Nova Scotia",
+							"fr": "Gouvernement de la Nouvelle-Écosse; Gouvernement de la Nouvelle-Écosse; Service Nova Scotia"
+						},
+						"email": {
+							"en": "https://novascotia.ca/opendata/contact-us",
+							"fr": "https://novascotia.ca/opendata/contact-us"
+						},
+						"onlineResource": {
+							"url": null,
+							"protocol": "HTTPS",
+							"description": "Open geographic data for the Province of Nova Scotia"
+						},
+						"role": {
+							"en": "pointOfContact",
+							"fr": "contact"
+						}
+					}
+				]
+			}
 		}
 	],
-	"contact": [
-		{
-			"individual": "null",
-			"position": {
-				"en": "null",
-				"fr": "null"
-			},
-			"organisation": {
-				"en": "Government of Northwest Territories; Government of Northwest Territories; NWT Centre for Geomatics",
-				"fr": "Gouvernement des Territoires du Nord-Ouest; Gouvernement des Territoires du Nord-Ouest; Centre de g\u00e9omatique des TNO"
-			},
-			"telephone": {
-				"en": "null",
-				"fr": "null"
-			},
-			"fax": "null",
-			"address": {
-				"en": "null",
-				"fr": "null"
-			},
-			"city": "null",
-			"pt": {
-				"en": "null",
-				"fr": "null"
-			},
-			"postalcode": "null",
-			"country": {
-				"en": "null",
-				"fr": "null"
-			},
-			"email": {
-				"en": "geonwt@gov.nt.ca",
-				"fr": "geonwt@gov.nt.ca"
-			},
-			"onlineresource": {
-				"onlineresource": "https://www.geomatics.gov.nt.ca/en/resources",
-				"onlineresource_name": "null",
-				"onlineresource_protocol": "null",
-				"onlineresource_description": "null"
-			},
-			"hoursOfService": "null",
-			"role": "pointOfContact; contact"
-		}
-	],
-	"distributor": [
-		{
-			"individual": "null",
-			"position": {
-				"en": "null",
-				"fr": "null"
-			},
-			"organisation": {
-				"en": "Government of Northwest Territories; Government of Northwest Territories; NWT Centre for Geomatics",
-				"fr": "Gouvernement des Territoires du Nord-Ouest; Gouvernement des Territoires du Nord-Ouest; Centre de g\u00e9omatique des TNO"
-			},
-			"telephone": {
-				"en": "null",
-				"fr": "null"
-			},
-			"fax": "null",
-			"address": {
-				"en": "null",
-				"fr": "null"
-			},
-			"city": "null",
-			"pt": {
-				"en": "null",
-				"fr": "null"
-			},
-			"postalcode": "null",
-			"country": {
-				"en": "null",
-				"fr": "null"
-			},
-			"email": {
-				"en": "geonwt@gov.nt.ca",
-				"fr": "geonwt@gov.nt.ca"
-			},
-			"onlineResource": {
-				"onlineResource": "https://www.geomatics.gov.nt.ca/en/resources",
-				"onlineResource_Name": "null",
-				"onlineResource_Protocol": "null",
-				"onlineResource_Description": "null"
-			},
-			"hoursOfService": "null",
-			"role": "pointOfContact; contact"
-		}
-	],
-	"credits": [],
-	"options": [
-		{
-			"url": "https://opendata.nfis.org/mapserver/nfis-change_eng.html",
-			"protocol": "HTTPS",
-			"name": {
-				"en": "Satellite Forest Information for Canada (English)",
-				"fr": "Information sur les forêts du Canada provenant d'images satellitaires"
-			},
-			"description": {
-				"en": "Application;HTML;eng",
-				"fr": "Application;HTML;eng"
+	"when": {
+		"timespans": [
+			{
+				"start": "0001-01-01T00:00:00.000Z",
+				"end": null
 			}
-		},
-		{
-			"url": "https://opendata.nfis.org/mapserver/nfis-change_fra.html",
-			"protocol": "HTTPS",
-			"name": {
-				"en": "Satellite Forest Information for Canada (French)",
-				"fr": "Information sur les forêts du Canada provenant d'images satellitaires"
-			},
-			"description": {
-				"en": "Application;HTML;fra",
-				"fr": "Application;HTML;fra"
-			}
-		},
-		{
-			"url": "https://opendata.nfis.org/mapserver/cgi-bin/wms_change.cgi?service=wms&version=1.3.0&request=GetCapabilities&layers=eco100&legend_format=image/png&feature_info_type=text/html",
-			"protocol": "OGC:WMS",
-			"name": {
-				"en": "ecoDomain100",
-				"fr": "ecoDomain100"
-			},
-			"description": {
-				"en": "Web Service;WMS;fra",
-				"fr": "Service Web;WMS;fra"
-			}
-		},
-		{
-			"url": "https://opendata.nfis.org/downloads/forest_change/CA_EcozoneDomain.zip",
-			"protocol": "HTTPS",
-			"name": {
-				"en": "CA_EcozoneDomain.zip",
-				"fr": "CA_EcozoneDomain.zip"
-			},
-			"description": {
-				"en": "Dataset;ZIP;zxx",
-				"fr": "Données;ZIP;zxx"
-			}
-		},
-		{
-			"url": "https://opendata.nfis.org/mapserver/cgi-bin/wms_change.cgi?service=wms&version=1.3.0&request=GetCapabilities&layers=eco100&legend_format=image/png&feature_info_type=text/html",
-			"protocol": "OGC:WMS",
-			"name": {
-				"en": "ecoDomain100",
-				"fr": "ecoDomain100"
-			},
-			"description": {
-				"en": "Web Service;WMS;eng",
-				"fr": "Service Web;WMS;eng"
-			}
-		},
-		{
-			"url": "https://doi.org/10.1016/j.ecolind.2008.01.007",
-			"protocol": "HTTPS",
-			"name": {
-				"en": "An environmental domain classification of Canada using earth observation data for biodiversity assessment",
-				"fr": "An environmental domain classification of Canada using earth observation data for biodiversity assessment"
-			},
-			"description": {
-				"en": "Supporting Document;PDF;eng",
-				"fr": "Document de soutien;PDF;eng"
-			}
-		},
-		{
-			"url": "https://www.sciencedirect.com/science/article/pii/S1470160X08000071",
-			"protocol": "HTTPS",
-			"name": {
-				"en": "The development of a Canadian dynamic habitat index using multi-temporal satellite estimates of canopy light absorbance",
-				"fr": "The development of a Canadian dynamic habitat index using multi-temporal satellite estimates of canopy light absorbance"
-			},
-			"description": {
-				"en": "Dataset;PDF;eng",
-				"fr": "Données;PDF;eng"
-			}
-		}
-	],
-	"similarity": [
-		{
-			"sim": "sim1",
-			"features_properties_id": "f76830ee-dc7e-da9f-3c1c-9cd6e7bf7ec4",
-			"features_properties_title_en": "Long-Term Change Detection Story Map",
-			"features_properties_title_fr": "Cartographie de la d\u00e9tection des changements \u00e0 long terme"
-		},
-		{
-			"sim": "sim2",
-			"features_properties_id": "ad36056b-550e-4a7a-ac82-6a5df6376d2f",
-			"features_properties_title_en": "Make a Topographic Map application",
-			"features_properties_title_fr": "L\u2019application Faire une carte topographique"
-		},
-		{
-			"sim": "sim3",
-			"features_properties_id": "46e01a13-332e-06a3-42c2-6150effbaa95",
-			"features_properties_title_en": "Yukon First Nation Information",
-			"features_properties_title_fr": "Renseignements sur les Premi\u00e8res nations du Yukon"
-		},
-		{
-			"sim": "sim4",
-			"features_properties_id": "ac108ef2-0095-d5fb-5ce0-e45b214d61c0",
-			"features_properties_title_en": "Fire History",
-			"features_properties_title_fr": "Historique des incendies"
-		},
-		{
-			"sim": "sim5",
-			"features_properties_id": "0c2daee6-af2e-e019-a235-594d97399118",
-			"features_properties_title_en": "NWT Cumulative Impact Monitoring Program (CIMP) Inventory of Landscape Change Web Viewer",
-			"features_properties_title_fr": "Visualiseur Web de l'inventaire des changements paysagers dans le cadre du Programme de surveillance des impacts cumulatifs (CIMP) des Territoires du Nord-Ouest"
-		},
-		{
-			"sim": "sim6",
-			"features_properties_id": "1f2065a4-314f-4740-b091-43ac9e9e7019",
-			"features_properties_title_en": "Geographic and administrative database",
-			"features_properties_title_fr": "Base de donn\u00e9es g\u00e9ographiques et administratives"
-		},
-		{
-			"sim": "sim7",
-			"features_properties_id": "a13a2575-5bda-4bfd-a9b1-5bd2dd583f09",
-			"features_properties_title_en": "Canada Flood Map Inventory (CFM)",
-			"features_properties_title_fr": "Inventaire des Cartes de zones inondables du Canada (CZIC)"
-		},
-		{
-			"sim": "sim8",
-			"features_properties_id": "11205c59-5cc1-4fea-29aa-905c7834a0eb",
-			"features_properties_title_en": "EcoRegions",
-			"features_properties_title_fr": "\u00c9cor\u00e9gions"
-		},
-		{
-			"sim": "sim9",
-			"features_properties_id": "bc51fccf-5e8f-9ef5-b633-873d5668bf4a",
-			"features_properties_title_en": "Yukon Parks and Protected Areas Information",
-			"features_properties_title_fr": "Renseignements sur les parcs et les aires prot\u00e9g\u00e9es du Yukon"
-		},
-		{
-			"sim": "sim10",
-			"features_properties_id": "233a9982-7b03-4441-220d-8b76a1c3f940",
-			"features_properties_title_en": "Physiographic Annotation - 1M",
-			"features_properties_title_fr": "Annotation physiographique - 1M"
-		}
-	]
+		]
+	}
 }

@@ -1,5 +1,7 @@
 # To Do
 
+- [] show data on map
+- [] add microdata
 - [] add sign in functionnality
 - [] load favorites from the backend.
 - [] shorten page count based on total result count

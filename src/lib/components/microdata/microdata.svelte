@@ -13,6 +13,6 @@
 	//	<Catalog item lang />
 </script>
 
-<div vocab="http://schema.org/" typeof="Dataset" style="display:none;">
+<div vocab="http://schema.org/" typeof="Dataset">
 	<Record {item} {lang} />
 </div>
