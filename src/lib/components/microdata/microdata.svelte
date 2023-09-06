@@ -13,7 +13,7 @@
 	// todo: add catalog metadata
 </script>
 
-<div vocab="http://schema.org/" typeof="Dataset">
+<div vocab="http://schema.org/" typeof="Dataset" class="hidden">
 	<Record {item} {lang} />
 	<Catalog {item} {lang} />
 </div>
