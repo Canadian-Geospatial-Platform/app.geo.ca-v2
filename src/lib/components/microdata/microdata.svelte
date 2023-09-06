@@ -10,7 +10,7 @@
 	onMount(() => {
 		console.log(item);
 	});
-	//	<Catalog item lang />
+	// todo: add catalog metadata
 </script>
 
 <div vocab="http://schema.org/" typeof="Dataset">
