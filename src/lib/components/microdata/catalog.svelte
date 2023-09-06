@@ -12,6 +12,18 @@
 		$page.data.lang == 'en-ca'
 			? 'Government Of Canada Geo.ca Data Catalog.'
 			: 'Catalogue de données de la plateforme Geo.ca du gouvernement du Canada.';
+	// polygon suit wkt
+	function boundaryMultiPolygon() {
+		let jsonPolygon = item.features[0].geometry.coordinates[0];
+		let wktPolygonString = '';
+		for (const xy of jsonPolygon) {
+			wktPolygonString += xy[0] + ' ' + xy[1] + ',';
+		}
+		if (wktPolygonString) {
+			wktPolygonString = wktPolygonString.slice(0, -1);
+		}
+		return wktPolygonString;
+	}
 </script>
 
 <div property="includedInDataCatalog" typeof="DataCatalog">
@@ -20,18 +32,18 @@
 			<span property="geo" typeof="GeoShape">
 				<span property="name" value="Dataset Boundary" /><span
 					property="MULTIPOLYGON"
-					value="(((-68.5000000000000000 83.1063220000000058)))"
+					value={boundaryMultiPolygon()}
 				/>
 			</span>
 		</span>
 	</span>
 
 	<span property="description" value={catalogDescription} />
-	<span property="datePublished" value={item.published}>
+	<span property="datePublished" value={''}>
 		<span property="dateModified" value="" />
-		<span property="inLanguage" value={lang + "-CA"} />
+		<span property="inLanguage" value={lang + '-CA'} />
 		<span property="publisher" typeof="Organization">
-			<span property="name" value={item.organisation} />
+			<!--			<span property="name" value={item.organisation} /> -->
 			<span property="email" value="" />
 		</span>
 		<span property="genre" value="Information and Communications Government and Politics" />

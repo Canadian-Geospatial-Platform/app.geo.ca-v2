@@ -17,7 +17,7 @@
 		(item.features[0].properties.extent.temporalExtent.end ?? '..')}
 />
 <span property="genre">{item.features[0].properties.type[lang]}</span>
-<Keywords {item} {lang}/>
+<Keywords {item} {lang} />
 {#each item.features[0].properties.options as option}
 	<Download {option} />
 {/each}

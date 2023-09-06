@@ -15,4 +15,5 @@
 
 <div vocab="http://schema.org/" typeof="Dataset">
 	<Record {item} {lang} />
+	<Catalog {item} {lang} />
 </div>
