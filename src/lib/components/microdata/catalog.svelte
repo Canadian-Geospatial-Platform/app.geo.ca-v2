@@ -3,6 +3,7 @@
 	export let item;
 	export let lang;
 
+	// todo: this component needs to be reworked to get the values from the item with the new schema and handle it correctly. The current HTML is just for reference.
 	$: catalogDescription =
 		$page.data.lang == 'en-ca'
 			? 'This catalog contains open datasets available on the Geo.ca platform.'
@@ -28,9 +29,7 @@
 	<span property="description" value={catalogDescription} />
 	<span property="datePublished" value={item.published}>
 		<span property="dateModified" value="" />
-		<span property="inLanguage" value="en-CA" />
-		<span property="sameAs" value="http://open.canada.ca" />
-
+		<span property="inLanguage" value={lang + "-CA"} />
 		<span property="publisher" typeof="Organization">
 			<span property="name" value={item.organisation} />
 			<span property="email" value="" />

@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import Download from './download.svelte';
 	import Organisations from './organisations.svelte';
+	import Keywords from './keywords.svelte';
 	export let item;
 	export let lang;
 </script>
@@ -15,10 +16,8 @@
 		'/' +
 		(item.features[0].properties.extent.temporalExtent.end ?? '..')}
 />
-<span property="genre">Information and Communications</span>
-<span property="keywords">analytics</span>
-<span property="keywords">metrics</span>
-<span property="sameAs" value="/data/en/dataset/2916fad5-ebcc-4c86-b0f3-4f619b29f412" />
+<span property="genre">{item.features[0].properties.type[lang]}</span>
+<Keywords {item} {lang}/>
 {#each item.features[0].properties.options as option}
 	<Download {option} />
 {/each}
