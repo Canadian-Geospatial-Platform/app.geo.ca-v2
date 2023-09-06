@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Organisations from './organisations.svelte';
 	export let item;
 	export let lang;
 
@@ -43,18 +44,12 @@
 		<span property="dateModified" value="" />
 		<span property="inLanguage" value={lang + '-CA'} />
 		<span property="publisher" typeof="Organization">
-			<!--			<span property="name" value={item.organisation} /> -->
-			<span property="email" value="" />
+			<Organisations {item} {lang} />
 		</span>
-		<span property="genre" value="Information and Communications Government and Politics" />
+		<span property="genre" value="" />
 
 		<span property="license" typeof="CreativeWork"
-			><span property="name" value="Open Government Licence - Canada" />
-			<span property="sameAs" value="http://open.canada.ca/en/open-government-licence-canada" />
-			<span
-				property="text"
-				value="Rights under which the catalog can be reused are outlined in the Open Government Licence - Canada"
-			/>
+			><span property="name" value={item.features[0].properties.constraints.legal[lang]} />
 		</span>
 	</span>
 </div>
