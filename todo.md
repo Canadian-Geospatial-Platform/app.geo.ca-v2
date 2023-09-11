@@ -1,9 +1,9 @@
 # To Do
 
-- [] show data on map
-- [] add sign in functionnality
+- [] add sign in functionnality.
+- [] show data on map.
 - [] load favorites from the backend.
-- [] add microdata
+- [] fetch microdata from backend instead of relying on hardcoded value.
 
 # Backlog
 
