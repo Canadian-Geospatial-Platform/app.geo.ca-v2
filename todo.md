@@ -1,17 +1,22 @@
 # To Do
 
-- [] add icons for filter, search
-- [] reproduce look from https://xd.adobe.com/view/e68f1fe5-78c9-4531-67f4-1601b12abae3-90be/specs/
-- [] add cart button
-- [] shorten page count based on total result count
+- [] show data on map
+- [] add sign in functionnality
+- [] load favorites from the backend.
+- [] add microdata
 
-- [] complete map page
+# Backlog
+
+- [] shorten page count based on total result count
+- [] add icons for filter, search
 - [] spatial filter
 - [] bug: map initialisation makes the view record button disapear. this css property is the culprit: filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-- [] complete sidebar/header
-- [] complete result detail page
-- [] fix any bug related to geoview. talk to johan about returning the object(self) on init. this would likely fix the issue.
-- [] add sign in functionnality
+- [] fix any bug related to geoview. talk to johan about returning the object(self) on init. this would likely fix the issue. this can potentially be circumvente by setting configuration json in a variable.
+- [] reproduce look from https://xd.adobe.com/view/e68f1fe5-78c9-4531-67f4-1601b12abae3-90be/specs/
+
+# Assigned to john
+
+- [] complete record detail page
 - [] implement microdata
   - [sample](https://open.canada.ca/data/en/dataset/85cb7fc7-5847-4f76-9417-96a4f5d50702)
   - [reference](https://geocacgp.slack.com/archives/D049MDN976J/p1690986602605469)

@@ -38,7 +38,6 @@
 				class="button-1"
 				on:click|preventDefault={() => {
 					collapse = !collapse;
-					console.log(collapse);
 				}}>{icon}</button
 			>
 		</div>

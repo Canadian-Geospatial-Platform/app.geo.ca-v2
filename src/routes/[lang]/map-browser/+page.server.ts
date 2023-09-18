@@ -4,8 +4,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang);
 	let parsedResponse;
 	try {
-		parsedResponse = response.json();
-		console.log(await parsedResponse);
+		parsedResponse = await response.json();
 	} catch (e) {
 		console.error(e);
 		console.log(e);

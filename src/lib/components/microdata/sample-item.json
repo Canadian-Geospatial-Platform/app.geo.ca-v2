@@ -1,0 +1,417 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						["-66.5", "43.3"],
+						["-59.5", "43.3"],
+						["-59.5", "47.3"],
+						["-66.5", "47.3"],
+						["-66.5", "43.3"]
+					]
+				]
+			},
+			"properties": {
+				"id": "000a51f1-3781-a262-35f2-ff83df4898d9",
+				"title": {
+					"en": "Licensed Lenders in Nova Scotia",
+					"fr": "Prêteurs agréés en Nouvelle-Écosse"
+				},
+				"description": {
+					"en": "Businesses licensed to extend credit or provide financing in Nova Scotia",
+					"fr": "Entreprises autorisées à accorder du crédit ou à fournir du financement en Nouvelle-Écosse"
+				},
+				"keywords": [
+					{
+						"en": "lender",
+						"fr": "prêteur"
+					},
+					{
+						"en": "credit",
+						"fr": "crédit"
+					},
+					{
+						"en": "borrowing",
+						"fr": "emprunt"
+					},
+					{
+						"en": "financing",
+						"fr": "financement"
+					},
+					{
+						"en": "Government information",
+						"fr": "Information gouvernementale"
+					}
+				],
+				"topicCategory": [
+					{
+						"code": "economy",
+						"label": {
+							"en": "Economy",
+							"fr": "Economie"
+						},
+						"description": {
+							"en": "Economy",
+							"fr": "Economie"
+						}
+					}
+				],
+				"options": [
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.csv?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (CSV)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (CSV)"
+						},
+						"description": {
+							"en": "Dataset;CSV;eng",
+							"fr": "Données;CSV;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.csv?accessType=DOWNLOAD&bom=true&format=true",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (CSV Excel)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (CSV Excel)"
+						},
+						"description": {
+							"en": "Dataset;CSV;eng",
+							"fr": "Données;CSV;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.csv?accessType=DOWNLOAD&bom=true&format=true&delimiter=%3B",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (CSV Excel (EU))",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (CSV Excel (EU))"
+						},
+						"description": {
+							"en": "Dataset;CSV;eng",
+							"fr": "Données;CSV;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=GeoJSON",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (Geojson)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (Geojson)"
+						},
+						"description": {
+							"en": "Dataset;GEOJSON;eng",
+							"fr": "Données;GEOJSON;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/datasets/hwep-2s8y",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Nova Scotia original metadata (https://data.novascotia.ca)",
+							"fr": "Métadonnées originales de la Nouvelle-Écosse (https://data.novascotia.ca)"
+						},
+						"description": {
+							"en": "Dataset;HTML;eng",
+							"fr": "Données;HTML;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=KML",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (KML)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (KML)"
+						},
+						"description": {
+							"en": "Dataset;KML;eng",
+							"fr": "Données;KML;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=KMZ",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (KMZ)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (KMZ)"
+						},
+						"description": {
+							"en": "Dataset;KMZ;eng",
+							"fr": "Données;KMZ;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.rss?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (RSS)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (RSS)"
+						},
+						"description": {
+							"en": "Dataset;RSS;eng",
+							"fr": "Données;RSS;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/geospatial/hwep-2s8y?method=export&format=Shapefile",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (Shapefile)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (Shapefile)"
+						},
+						"description": {
+							"en": "Dataset;SHP;eng",
+							"fr": "Données;SHP;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.xml?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (XML)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (XML)"
+						},
+						"description": {
+							"en": "Dataset;XML;eng",
+							"fr": "Données;XML;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.tsv?accessType=DOWNLOAD&bom=true&format=true&delimiter=%3B",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (TSV)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (TSV)"
+						},
+						"description": {
+							"en": "Dataset;other;eng",
+							"fr": "Données;other;eng"
+						}
+					},
+					{
+						"url": "https://data.novascotia.ca/api/views/hwep-2s8y/rows.rdf?accessType=DOWNLOAD",
+						"protocol": "HTTPS",
+						"name": {
+							"en": "Licensed Lenders in Nova Scotia (RDF)",
+							"fr": "Prêteurs agréés en Nouvelle-Écosse (RDF)"
+						},
+						"description": {
+							"en": "Dataset;other;eng",
+							"fr": "Données;other;eng"
+						}
+					}
+				],
+				"date": [
+					{
+						"dateType": {
+							"en": "publication",
+							"fr": "publication"
+						},
+						"date": "2019-02-05"
+					},
+					{
+						"dateType": {
+							"en": "creation",
+							"fr": "création"
+						},
+						"date": "2017-01-23"
+					}
+				],
+				"spatialRepresentation": {
+					"en": "textTable",
+					"fr": "texteTable"
+				},
+				"type": {
+					"en": "dataset",
+					"fr": "jeuDonnées"
+				},
+				"extent": {
+					"temporalExtent": {
+						"start": "0001-01-01",
+						"end": null
+					},
+					"geographicExtent": {
+						"north": "47.3",
+						"south": "43.3",
+						"east": "-59.5",
+						"west": "-66.5"
+					}
+				},
+				"refSys": [
+					{
+						"code": "unknown",
+						"version": "unknown"
+					}
+				],
+				"status": {
+					"en": "planned",
+					"fr": "planifié"
+				},
+				"maintenance": {
+					"en": "quarterly",
+					"fr": "trimestriel"
+				},
+				"metadataStandard": {
+					"text": {
+						"en": "North American Profile of ISO 19115:2003 - Geographic information - Metadata",
+						"fr": "Profil nord-américain de la norme ISO 19115:2003 - Information géographique - Métadonnées"
+					},
+					"version": "HNAP ISO:19115 - 2003"
+				},
+				"graphicOverview": [
+					{
+						"name": "https://raw.githubusercontent.com/federal-geospatial-platform/fgp-metadata-proxy/master/images/resampled/ns/ns.png"
+					}
+				],
+				"distributionFormat": [
+					{
+						"name": "CSV",
+						"format": "unknown"
+					},
+					{
+						"name": "GEOJSON",
+						"format": "unknown"
+					},
+					{
+						"name": "HTML",
+						"format": "unknown"
+					},
+					{
+						"name": "KML",
+						"format": "unknown"
+					},
+					{
+						"name": "KMZ",
+						"format": "unknown"
+					},
+					{
+						"name": "RSS",
+						"format": "unknown"
+					},
+					{
+						"name": "SHP",
+						"format": "unknown"
+					},
+					{
+						"name": "XML",
+						"format": "unknown"
+					},
+					{
+						"name": "other",
+						"format": "unknown"
+					}
+				],
+				"constraints": {
+					"legal": {
+						"en": "Open Government Licence – Nova Scotia (https://novascotia.ca/opendata/licence.asp)",
+						"fr": "Licence du gouvernement ouvert – Nouvelle-Écosse (https://novascotia.ca/opendata/licence.asp)"
+					},
+					"access": {
+						"en": "license",
+						"fr": "licence"
+					},
+					"use": {
+						"en": "license",
+						"fr": "licence"
+					}
+				},
+				"locale": {
+					"language": {
+						"en": "French",
+						"fr": "Français"
+					},
+					"country": {
+						"en": "Canada",
+						"fr": "Canada"
+					},
+					"encoding": {
+						"en": "utf8",
+						"fr": "utf8"
+					}
+				},
+				"language": "eng; CAN",
+				"characterSet": {
+					"en": "utf8",
+					"fr": "utf8"
+				},
+				"contact": [
+					{
+						"organisation": {
+							"en": "Government of Nova Scotia; Government of Nova Scotia; Service Nova Scotia",
+							"fr": "Gouvernement de la Nouvelle-Écosse; Gouvernement de la Nouvelle-Écosse; Service Nova Scotia"
+						},
+						"email": {
+							"en": "https://novascotia.ca/opendata/contact-us",
+							"fr": "https://novascotia.ca/opendata/contact-us"
+						},
+						"onlineResource": {
+							"url": null,
+							"protocol": "HTTPS",
+							"description": "Open geographic data for the Province of Nova Scotia"
+						},
+						"role": {
+							"en": "pointOfContact",
+							"fr": "contact"
+						}
+					}
+				],
+				"credits": [],
+				"cited": [
+					{
+						"organisation": {
+							"en": "Government of Nova Scotia; Government of Nova Scotia; Service Nova Scotia",
+							"fr": "Gouvernement de la Nouvelle-Écosse; Gouvernement de la Nouvelle-Écosse; Service Nova Scotia"
+						},
+						"email": {
+							"en": "https://novascotia.ca/opendata/contact-us",
+							"fr": "https://novascotia.ca/opendata/contact-us"
+						},
+						"onlineResource": {
+							"url": null,
+							"protocol": "HTTPS",
+							"description": "Open geographic data for the Province of Nova Scotia"
+						},
+						"role": {
+							"en": "pointOfContact",
+							"fr": "contact"
+						}
+					}
+				],
+				"distributor": [
+					{
+						"organisation": {
+							"en": "Government of Nova Scotia; Government of Nova Scotia; Service Nova Scotia",
+							"fr": "Gouvernement de la Nouvelle-Écosse; Gouvernement de la Nouvelle-Écosse; Service Nova Scotia"
+						},
+						"email": {
+							"en": "https://novascotia.ca/opendata/contact-us",
+							"fr": "https://novascotia.ca/opendata/contact-us"
+						},
+						"onlineResource": {
+							"url": null,
+							"protocol": "HTTPS",
+							"description": "Open geographic data for the Province of Nova Scotia"
+						},
+						"role": {
+							"en": "pointOfContact",
+							"fr": "contact"
+						}
+					}
+				]
+			}
+		}
+	],
+	"when": {
+		"timespans": [
+			{
+				"start": "0001-01-01T00:00:00.000Z",
+				"end": null
+			}
+		]
+	}
+}

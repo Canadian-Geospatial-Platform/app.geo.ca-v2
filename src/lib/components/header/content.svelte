@@ -5,10 +5,13 @@
 	$: lang = $page.data.lang;
 	$: otherLang = lang == 'en-ca' ? 'fr-ca' : 'en-ca';
 	$: otherLangPathName = $page.url.pathname.replace(lang, otherLang);
+
+	$: catalogText = lang == 'en-ca' ? 'catalog' : 'catalogue';
+	$: favoritesText = lang == 'en-ca' ? 'favorites' : 'favoris';
 </script>
 
-<a transition:slide href="/{lang}/record/12893-12434-fsdf32-q32ef32">record</a>
-<a transition:slide href="/{lang}/map-browser">map-browser</a>
+<a transition:slide href="/{lang}/favorites">{favoritesText}</a>
+<a transition:slide href="/{lang}/map-browser">{catalogText}</a>
 <a transition:slide href={otherLangPathName + $page.url.search}>{otherLang}</a>
 
 <style>
