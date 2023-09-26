@@ -1,9 +1,9 @@
 # To Do
 
+- [] store / get favorites from server. (might as well get all user info in one shot from dynamodb on sign in).
+- [] handle jwt expiration and refresh
 - [] show data on map
-- [] add sign in functionnality
-- [] load favorites from the backend.
-- [] add microdata
+- [] fetch microdata from backend instead of relying on hardcoded value.
 
 # Backlog
 
