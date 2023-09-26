@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Maplet from '$lib/components/maplet/maplet.svelte';
+	import Map from '$lib/components/map/map.svelte'
 	import { page } from '$app/stores';
 	import InfoModal from '$lib/components/modal/info-modal.svelte';
 	import { openShareDialog } from '$lib/components/share/share-button.svelte';
@@ -383,7 +384,7 @@
 			<aside class="col-span-12 md:col-span-4 bg-white pl-2 pr-2 place-items-center">
 				<div>
 					<section>
-						<Maplet mapId="metamap" {center} {zoom} {coordinates} />
+						<Maplet id="metadata" {center} {zoom} {coordinates}/>
 					</section>
 					<section class="pt-8">
 						<h3 class="uppercase text-2xl">Add to map</h3>

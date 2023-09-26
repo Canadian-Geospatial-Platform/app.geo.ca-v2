@@ -34,7 +34,6 @@
 	"type": "module",
 	"dependencies": {
 		"aws-cdk": "^2.88.0",
-		"ol": "^7.4.0",
 		"sveltekit-adapter-aws": "^4.5.1"
 	}
 }
