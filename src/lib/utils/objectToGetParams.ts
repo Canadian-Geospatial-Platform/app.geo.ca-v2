@@ -1,3 +1,6 @@
+/*
+deconstruct from object key value to compose a query params string
+*/
 export default function objectToGetParams(object: {
 	[key: string]: string | number | undefined | null;
 }) {
