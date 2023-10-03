@@ -1,7 +1,12 @@
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
-	let response = await getRecords(url.searchParams.values('id'), params.lang, fetch);
+	let response = []
+	try{
+	response = await getRecords(url.searchParams.values('id'), params.lang, fetch);
+	} catch(e) {
+	console.error("error fetching records: \n", e)
+	}
 
 	let x = await response;
 	x = normaliseData(params.lang, x);
