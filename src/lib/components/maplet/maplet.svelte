@@ -33,7 +33,8 @@
 			cgpv.init(function(){
                 const mapInstance=cgpv.api.maps['metadata'];
                 console.log(mapInstance);
-                mapInstance.layer.geometry.addPolygon(
+                if(mapInstance)
+				mapInstance.layer.geometry.addPolygon(
                 coordinates,
                 {
                     style: {

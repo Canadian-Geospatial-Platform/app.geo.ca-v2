@@ -1,8 +1,8 @@
 <script lang="ts">
 	import  Record  from '$lib/components/record/record.svelte';
-
-	export let data;
+	import { page } from '$app/stores';
+	//export let data;
 	
 </script>
 
-<Record {data} />
+<Record data={$page.data} />

@@ -384,7 +384,7 @@
 			<aside class="col-span-12 md:col-span-4 bg-white pl-2 pr-2 place-items-center">
 				<div>
 					<section>
-						<Maplet id="metadata" {center} {zoom} {coordinates}/>
+						<Maplet {center} {zoom} {coordinates}/>
 					</section>
 					<section class="pt-8">
 						<h3 class="uppercase text-2xl">Add to map</h3>
