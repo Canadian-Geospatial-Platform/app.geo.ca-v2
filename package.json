@@ -32,13 +32,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-<<<<<<< Updated upstream
-		"aws-cdk": "^2.88.0",
-=======
 		"@aws-sdk/client-dynamodb": "^3.421.0",
 		"@aws-sdk/lib-dynamodb": "^3.421.0",
 		"aws-cdk": "^2.99.0",
->>>>>>> Stashed changes
 		"sveltekit-adapter-aws": "^4.5.1"
 	}
 }

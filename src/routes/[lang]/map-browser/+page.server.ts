@@ -89,8 +89,6 @@ function conditionalConcat(prefix, key, value, ret) {
 	}
 	return ret;
 }
-<<<<<<< Updated upstream
-=======
 
 export const actions = {
 	putData: async ({ cookies, request, event }) => {
@@ -107,4 +105,3 @@ export const actions = {
 		return { success: true };
 	}
 } satisfies Actions;
->>>>>>> Stashed changes

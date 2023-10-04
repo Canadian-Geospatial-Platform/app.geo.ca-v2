@@ -1,20 +1,20 @@
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
-	let response = []
-	try{
-	response = await getRecords(url.searchParams.values('id'), params.lang, fetch);
-	} catch(e) {
-	console.error("error fetching records: \n", e)
-	}
+	// let response = []
+	// try{
+	// response = await getRecords(url.searchParams.values('id'), params.lang, fetch);
+	// } catch(e) {
+	// console.error("error fetching records: \n", e)
+	// }
 
-	let x = await response;
-	x = normaliseData(params.lang, x);
+	// let x = await response;
+	// x = normaliseData(params.lang, x);
 
 	return {
 		lang: params.lang,
 		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',
-		results: x
+		results: []
 	};
 };
 
