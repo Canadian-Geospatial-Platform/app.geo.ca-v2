@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { favorites, addFavorite, removeFavorite } from '$stores/favorites.ts';
 	import Map from '$lib/components/map/map.svelte';
 
 	$: viewRecord = $page.data.lang == 'en-ca' ? 'VIEW RECORD' : "AFFICHER L'ENREGISTREMENT";
@@ -16,11 +15,7 @@
 	$: isFavorite = favoritesArr.includes(id);
 
 	function favorite() {
-		if (isFavorite) {
-			removeFavorite(id);
-		} else {
-			addFavorite(id);
-		}
+		console.warn("todo: handle favorite adding/removing.")
 	}
 	onMount(() => {
 		favorites.subscribe((value) => {
