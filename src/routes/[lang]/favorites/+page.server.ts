@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import { Config } from 'sst/node/config';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	// let response = []
@@ -10,7 +11,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 
 	// let x = await response;
 	// x = normaliseData(params.lang, x);
-
+	console.log(Config);
 	return {
 		lang: params.lang,
 		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',

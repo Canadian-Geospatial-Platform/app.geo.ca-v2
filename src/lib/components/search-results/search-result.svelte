@@ -16,9 +16,9 @@
 
 	function favorite() {
 		if (isFavorite) {
-			console.warn("todo: add favorite feature")
+			console.warn('todo: add favorite feature');
 		} else {
-			console.warn("todo: remove favorite feature")
+			console.warn('todo: remove favorite feature');
 		}
 	}
 </script>

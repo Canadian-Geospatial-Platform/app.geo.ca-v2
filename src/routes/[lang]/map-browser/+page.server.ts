@@ -105,15 +105,15 @@ function conditionalConcat(prefix, key, value, ret) {
 
 export const actions = {
 	putData: async ({ cookies, request, event }) => {
-	console.log('cookies token is:\n', cookies.get('token'))
-	console.log('requestis:\n', request)
-	console.log('eventis:\n', event)
-	console.log('userData is:\n', userData)
+		console.log('cookies token is:\n', cookies.get('token'));
+		console.log('requestis:\n', request);
+		console.log('eventis:\n', event);
+		console.log('userData is:\n', userData);
 		console.log('put data called');
 		const data = {
 			userId: 'Sign-in-Canada_face0d40-d216-4d0b-8791-dde676b18053',
-		mapCart: ['xxx', 'zzz']
-		}
+			mapCart: ['xxx', 'zzz']
+		};
 		putUserData(data);
 		return { success: true };
 	}

@@ -24,10 +24,10 @@ const getUserData = async () => {
 };
 
 const putUserData = async (data) => {
-	console.log('put user data received: \n', data)
+	console.log('put user data received: \n', data);
 	await docClient.send(
 		new PutCommand({
-		TableName: 'users',
+			TableName: 'users',
 			Item: data
 		})
 	);
