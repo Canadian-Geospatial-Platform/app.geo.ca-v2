@@ -7,6 +7,7 @@
 	export let results = [];
 
 	onMount(() => {
+		console.log($page.url);
 		try {
 			cgpv.init();
 		} catch (e) {

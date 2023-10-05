@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { requireLogin, getToken } from '$lib/APIs/authorization.js';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
 	$: favoritesArr = [];

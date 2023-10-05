@@ -15,13 +15,12 @@
 	$: isFavorite = favoritesArr.includes(id);
 
 	function favorite() {
-		console.warn("todo: handle favorite adding/removing.")
+		if (isFavorite) {
+			console.warn("todo: add favorite feature")
+		} else {
+			console.warn("todo: remove favorite feature")
+		}
 	}
-	onMount(() => {
-		favorites.subscribe((value) => {
-			favoritesArr = value;
-		});
-	});
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid xl:grid-cols-2 gap-4">

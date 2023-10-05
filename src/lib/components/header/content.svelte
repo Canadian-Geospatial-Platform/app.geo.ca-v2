@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import SignIn from './sign-in.svelte';
 	$: lang = $page.data.lang;
 	$: otherLang = lang == 'en-ca' ? 'fr-ca' : 'en-ca';
 	$: otherLangPathName = $page.url.pathname.replace(lang, otherLang);
@@ -14,7 +15,7 @@
 <a transition:slide class="a" href="/{lang}/favorites">{favoritesText}</a>
 <a transition:slide class="a" href="/{lang}/map-browser">{catalogText}</a>
 <a transition:slide class="a" href={otherLangPathName + $page.url.search}>{otherLang}</a>
-<a transition:slide class="button-1" href="/{lang}/sign-in">{signInText}</a>
+<SignIn />
 
 <style>
 	.a {

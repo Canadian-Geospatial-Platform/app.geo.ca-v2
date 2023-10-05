@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params, url }) => {
-	let response = await generateUrl(fetch, url.searchParams, params.lang);
+export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
+	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('token'));
 	let parsedResponse;
 	try {
 		parsedResponse = await response.json();
@@ -15,11 +15,24 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	};
 };
 
-function generateUrl(fetch, searchParams, lang) {
+function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
 	const params = mapSearchParams(searchParams, lang);
 	url.search = new URLSearchParams(params).toString();
-	return fetch(url);
+	console.log('Bearer ' + parseToken(token));
+	return fetch(url, {
+		headers: { Authentication: 'Bearer ' + parseToken(token) }
+	});
+}
+
+function parseToken(token) {
+	let jwt = null;
+	try {
+		jwt = JSON.parse();
+	} catch (error) {
+		console.error('no valid token could be read. user is not logged in.');
+	}
+	return jwt;
 }
 
 function mapSearchParams(searchParams, lang) {

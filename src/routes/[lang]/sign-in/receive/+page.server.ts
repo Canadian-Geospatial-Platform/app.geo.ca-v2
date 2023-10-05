@@ -9,21 +9,13 @@ const CUSTOM_DOMAIN = env.VITE_CUSTOM_DOMAIN;
 export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 	let jwt = null;
 
-	console.log(1)
 	try {
-	console.log(2)
 		jwt = await getJWT(url.searchParams.get('code'), url.origin + url.pathname, fetch);
-	console.log(3)
 	} catch (error) {
-	console.log(4)
-		console.warn('error fetching jwt');
-	console.log(5)
+		console.error('error fetching jwt');
 	}
-	console.log(6)
-	cookies.set('token', JSON.stringify(jwt?.id_token), { path: '/' });
-	console.log(7);
-	console.log('state is: \n', url.searchParams.get('state'))
-	console.log(8);
+
+	cookies.set('token', JSON.stringify(jwt.id_token), { path: '/' });
 	throw redirect(303, url.searchParams.get('state'));
 };
 

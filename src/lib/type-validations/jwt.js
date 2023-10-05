@@ -1,3 +1,4 @@
+// todo: unused code. remove if useless.
 const jwtIsValid = function (jwt) {
 	if (
 		!jwt?.id_token ||
