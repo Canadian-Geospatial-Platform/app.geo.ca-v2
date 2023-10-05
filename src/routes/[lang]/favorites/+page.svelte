@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { favorites, addFavorite, removeFavorite } from '$stores/favorites';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
 	$: favoritesArr = [];
@@ -10,9 +9,6 @@
 	$: results = $page.data.results ? $page.data.results : [];
 
 	onMount(async () => {
-		favorites.subscribe((value) => {
-			favoritesArr = value;
-		});
 		let url = new URL($page.url.origin);
 		url.pathname = $page.url.pathname;
 		for (const x of favoritesArr) {
