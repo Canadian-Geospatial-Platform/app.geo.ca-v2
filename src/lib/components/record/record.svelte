@@ -5,6 +5,7 @@
 	import InfoModal from '$lib/components/modal/info-modal.svelte';
 	import { openShareDialog } from '$lib/components/share/share-button.svelte';
 	import Accordion from '$lib/components/share/accordion.svelte';
+	import RelatedProduct from './related-product.svelte';
 	// @ts-ignore
 	export let data;
 	let showModal = false;
@@ -228,29 +229,7 @@
 					</table>
 				</section>
 				{#if data.related.length > 0}
-					<Accordion id="search-result-related-products" title="Related Products">
-						<table>
-							<caption class="invisible"> Related products </caption>
-							<tbody id="tbody-related-products" class="divide-y divide-gray-500">
-								<tr>
-									<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Name</th>
-									<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Type</th>
-								</tr>
-								{#each data.related as relatedp}
-									<tr class="table-row-link" on:click={(e) => handleRelatedClick(e, relatedp.id)}>
-										<td>
-											<a
-												class="table-cell-link"
-												on:click={(e) => handleRelatedClick(e, relatedp.id)}
-												>{relatedp[`description_${language}`]}</a
-											>
-										</td>
-										<td />
-									</tr>
-								{/each}
-							</tbody>
-						</table>
-					</Accordion>
+					<RelatedProduct relatedItems={data.related} {language} />
 				{/if}
 				<Accordion id="search-result-data-resources" title="Data Resources">
 					<table>
