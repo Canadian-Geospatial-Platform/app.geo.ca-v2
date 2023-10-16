@@ -1,10 +1,10 @@
 import type { PageServerLoad } from './$types';
-import { env } from '$env/dynamic/private';
+import { Config } from 'sst/node/config';
 import { redirect } from '@sveltejs/kit';
 import { urlEncode } from '$lib/utils/url-encode';
 
-const CLIENT_ID = env.VITE_CLIENT_ID;
-const CUSTOM_DOMAIN = env.VITE_CUSTOM_DOMAIN;
+const CLIENT_ID = Config.OIDC_CLIENT_ID;
+const CUSTOM_DOMAIN = Config.OIDC_CUSTOM_DOMAIN;
 
 export const load: PageServerLoad = async ({ params, url }) => {
 	const authUrl = CUSTOM_DOMAIN + '/oauth2/authorize?';

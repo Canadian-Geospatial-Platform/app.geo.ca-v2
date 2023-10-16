@@ -11,14 +11,15 @@ export default {
 	stacks(app) {
 		app.stack(function Site({ stack }) {
 			const OIDC_CLIENT_ID = new Config.Parameter(stack, 'OIDC_CLIENT_ID', {
-				value: '7b4mbo0osnfb6cer4f980kob0t'
+				value: '53br9dirl7io6qoolkf6afjsj5'
 			});
-
+			const OIDC_CLIENT_SECRET = new Config.Secret(stack, 'OIDC_CLIENT_SECRET');
 			const OIDC_CUSTOM_DOMAIN = new Config.Parameter(stack, 'OIDC_CUSTOM_DOMAIN', {
 				value: 'https://auth-dev.geo.ca'
 			});
+
 			const site = new SvelteKitSite(stack, 'site', {
-				bind: [OIDC_CLIENT_ID, OIDC_CUSTOM_DOMAIN]
+				bind: [OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_CUSTOM_DOMAIN]
 			});
 			stack.addOutputs({
 				url: site.url

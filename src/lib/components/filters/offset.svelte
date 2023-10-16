@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	export let pageCount = 10;
+	let pageCount = 10;
 	export let resultsPerPage = 10;
 	$: current = parseInt($page.url.searchParams.get('page-number')) || 0;
 	$: numberArray = calculateScreenSize(current);
