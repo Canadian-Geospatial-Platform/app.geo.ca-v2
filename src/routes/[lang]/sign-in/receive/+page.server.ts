@@ -9,15 +9,11 @@ const CLIENT_SECRET = Config.OIDC_CLIENT_SECRET;
 
 export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 	let jwt = null;
-	console.log('deploy test')
-
 	try {
-		console.log('pre logMovies:\n');
-		const x = await logMovies(fetch)
-		console.log('post logMovies:\n');
 		jwt = await getJWT(url.searchParams.get('code'), url.origin + url.pathname, fetch);
-		console.log('jwt is:\n', jwt);
-		cookies.set('token', jwt, { path: '/' });
+		cookies.set('id_token', jwt.id_token, { path: '/' });
+		cookies.set('access_token', jwt.access_token, { path: '/' });
+		cookies.set('refresh_token', jwt.refresh_token, { path: '/' });
 	} catch (error) {
 		console.warn('error fetching and setting jwt');
 	}
@@ -25,40 +21,8 @@ export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 	throw redirect(303, url.searchParams.get('state'));
 };
 
-// const getJWT = async function (code: String, signInPageUrl: String, fetch) {
-// 	console.log('getJwt');
-// 	const data = {
-// 		grant_type: 'authorization_code',
-// 		code: code,
-// 		redirect_uri: signInPageUrl,
-// 		client_id: CLIENT_ID,
-// 		client_secret: CLIENT_SECRET
-// 	};
-// 	const url = CUSTOM_DOMAIN + '/oauth2/token';
-// 	return fetch(url, {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-// 		},
-// 		body: urlEncode(data)
-// 	})
-// 		.then((response) => {
-// 			response.json();
-// 		})
-// 		.then((data) => {
-// 			const res = data;
-// 			if (!res) throw 'Falsy Jwt returned.';
-// 			if (res.error) throw 'Error message returned from authorization server:\n' + res.error;
-// 			return res;
-// 		})
-// 		.catch((error) => {
-// 			console.warn('Error:', error);
-// 			throw 'Error:' + error;
-// 		});
-// };
-
-const getJWT = async function (code: String, signInPageUrl: String, fetch) {
-	console.log('getJWT2')
+// todo: error handling
+const getJWT = async function (code: String, signInPageUrl: String) {
 	var myHeaders = new Headers();
 	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -74,10 +38,8 @@ const getJWT = async function (code: String, signInPageUrl: String, fetch) {
 		body: urlencoded,
 		redirect: 'follow'
 	};
-	const res = fetch(CUSTOM_DOMAIN + '/oauth2/token', requestOptions)
-		.then((response) => {response.json()})
+	const res = await fetch(CUSTOM_DOMAIN + '/oauth2/token', requestOptions)
 		.then((result) => {
-			console.log(result);
 			return result;
 		})
 		.catch((error) => {
@@ -85,12 +47,6 @@ const getJWT = async function (code: String, signInPageUrl: String, fetch) {
 		return {'error': 'there was an error fetching the code'}
 		}
 	);
-	console.log('res is: \n', await res)
-	return await res;
+	const jsonRes = await res.json();
+	return jsonRes;
 };
-
-async function logMovies(fetch) {
-  const response = await fetch("https://gist.githubusercontent.com/saniyusuf/406b843afdfb9c6a86e25753fe2761f4/raw/523c324c7fcc36efab8224f9ebb7556c09b69a14/Film.JSON");
-  const movies = await response.json();
-  console.log('movies is:\n', movies);
-}
