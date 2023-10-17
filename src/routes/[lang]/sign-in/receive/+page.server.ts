@@ -43,10 +43,9 @@ const getJWT = async function (code: String, signInPageUrl: String) {
 			return result;
 		})
 		.catch((error) => {
-		console.warn('error', error)
-		return {'error': 'there was an error fetching the code'}
-		}
-	);
+			console.warn('error', error);
+			return { error: 'there was an error fetching the code' };
+		});
 	const jsonRes = await res.json();
 	return jsonRes;
 };

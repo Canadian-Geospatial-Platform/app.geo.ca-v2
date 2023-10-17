@@ -8,7 +8,7 @@ const getUserData = async () => {
 	const command = new GetCommand({
 		TableName: 'users',
 		Key: {
-			userId: 'Sign-in-Canada_face0d40-d216-4d0b-8791-dde676b18053'
+			userId: sessionStorage.getItem('id_token').parseJwtChainable()
 		}
 	});
 

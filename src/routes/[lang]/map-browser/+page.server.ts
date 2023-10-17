@@ -1,4 +1,6 @@
 import type { PageServerLoad } from './$types';
+import { putUserData } from '$lib/utils/user-db.ts';
+import { parseJwt } from '$lib/utils/parse-jwt';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('token'));
@@ -105,15 +107,10 @@ function conditionalConcat(prefix, key, value, ret) {
 
 export const actions = {
 	putData: async ({ cookies, request, event }) => {
-		console.log('cookies token is:\n', cookies.get('token'));
-		console.log('requestis:\n', request);
-		console.log('eventis:\n', event);
-		console.log('userData is:\n', userData);
-		console.log('put data called');
-		const data = {
-			userId: 'Sign-in-Canada_face0d40-d216-4d0b-8791-dde676b18053',
-			mapCart: ['xxx', 'zzz']
-		};
+		let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
+		let data = { userId: userId, mapCart: ['x', 'z'] };
+		const fd = await request.formData();
+		data.mapCart.push(fd.get('id'));
 		putUserData(data);
 		return { success: true };
 	}

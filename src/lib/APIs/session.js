@@ -2,7 +2,7 @@ const getSession = async function () {
 	console.log('getSession');
 	const ret = await fetch('/api/session', {
 		headers: {
-			Authorization: 'Bearer ' + JSON.parse(sessionStorage.getItem('token')).access_token
+			Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
 		}
 	})
 		.then((response) => response.json())
@@ -18,7 +18,7 @@ const putSession = async function (session) {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + JSON.parse(sessionStorage.getItem('token')).access_token
+			Authorization: 'Bearer ' + sessionStorage.getItem('access_token')
 		},
 		body: JSON.stringify(data)
 	})
