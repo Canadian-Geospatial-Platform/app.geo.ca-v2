@@ -1,5 +1,5 @@
 import type { SSTConfig } from 'sst';
-import { Config, SvelteKitSite } from 'sst/constructs';
+import { Config, SvelteKitSite, Table } from 'sst/constructs';
 
 export default {
 	config(_input) {
@@ -18,8 +18,15 @@ export default {
 				value: 'https://auth-dev.geo.ca'
 			});
 
+			const USER_TABLE = new Table(stack, 'app_users', {
+				fields: {
+					uuid: 'string'
+				},
+				primaryIndex: { partitionKey: 'uuid' }
+			});
+
 			const site = new SvelteKitSite(stack, 'site', {
-				bind: [OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_CUSTOM_DOMAIN]
+				bind: [USER_TABLE, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_CUSTOM_DOMAIN]
 			});
 			stack.addOutputs({
 				url: site.url

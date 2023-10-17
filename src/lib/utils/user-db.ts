@@ -1,3 +1,4 @@
+import { Table } from 'sst/node/table';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 
@@ -27,7 +28,7 @@ const putUserData = async (data) => {
 	console.log('put user data received: \n', data);
 	await docClient.send(
 		new PutCommand({
-			TableName: 'users',
+			TableName: Table.app_users.tableName,
 			Item: data
 		})
 	);

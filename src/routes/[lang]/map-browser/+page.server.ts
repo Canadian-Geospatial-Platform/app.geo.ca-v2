@@ -108,7 +108,7 @@ function conditionalConcat(prefix, key, value, ret) {
 export const actions = {
 	putData: async ({ cookies, request, event }) => {
 		let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
-		let data = { userId: userId, mapCart: ['x', 'z'] };
+		let data = { uuid: userId, mapCart: ['x', 'z'] };
 		const fd = await request.formData();
 		data.mapCart.push(fd.get('id'));
 		putUserData(data);
