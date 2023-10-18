@@ -1,15 +1,17 @@
 import { Table } from 'sst/node/table';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
+import { parseJwt } from '$lib/utils/parse-jwt';
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const getUserData = async () => {
+const getUserData = async (cookies) => {
+	let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
 	const command = new GetCommand({
-		TableName: 'users',
+		TableName: Table.users.tableName,
 		Key: {
-			userId: sessionStorage.getItem('id_token').parseJwtChainable()
+			uuid: userId
 		}
 	});
 
@@ -20,7 +22,6 @@ const getUserData = async () => {
 		console.error('Error fetching data in getUserData');
 		console.error(error);
 	}
-	console.log(response);
 	return response;
 };
 
@@ -28,7 +29,7 @@ const putUserData = async (data) => {
 	console.log('put user data received: \n', data);
 	await docClient.send(
 		new PutCommand({
-			TableName: Table.app_users.tableName,
+			TableName: Table.users.tableName,
 			Item: data
 		})
 	);

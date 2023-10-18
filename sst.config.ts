@@ -18,7 +18,7 @@ export default {
 				value: 'https://auth-dev.geo.ca'
 			});
 
-			const USER_TABLE = new Table(stack, 'app_users', {
+			const USER_TABLE = new Table(stack, 'users', {
 				fields: {
 					uuid: 'string'
 				},

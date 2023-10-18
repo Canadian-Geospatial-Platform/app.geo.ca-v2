@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { getContext } from 'svelte';
@@ -12,8 +13,9 @@
 	export let date;
 	export let description;
 	export let id;
-	let favoritesArr = getContext('userData').favorites;
+	let favoritesArr = $page.data.userData.mapCart;
 	let isFavorite = favoritesArr.includes(id);
+	console.log(isFavorite, favoritesArr);
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid xl:grid-cols-2 gap-4">
@@ -26,10 +28,17 @@
 		<p class="overflow-hidden text-ellipsis h-48">{description}</p>
 		<div class="flex p-2 m-2 gap-2">
 			<div class="grow" />
-			<form method="POST" action="?/putData">
-				<input type="text" name="id" value={id} />
-				<button class="button-2 text-xl font-bold" type="submit">{isFavorite ? '♥' : '♡'}</button>
-			</form>
+			{#if isFavorite}
+				<form method="POST" action="?/removeFromMapCart">
+					<input type="text" name="id" value={id} class="hidden" />
+					<button class="button-2 text-xl font-bold" type="submit">♥</button>
+				</form>
+			{:else}
+				<form method="POST" action="?/addToMapCart">
+					<input type="text" name="id" value={id} class="hidden" />
+					<button class="button-2 text-xl font-bold" type="submit">♡</button>
+				</form>
+			{/if}
 			<a class="button-1 truncate overflow-hidden" href={'record/' + id}>{viewRecord}</a>
 		</div>
 	</div>

@@ -1,6 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { putUserData } from '$lib/utils/user-db.ts';
 import { parseJwt } from '$lib/utils/parse-jwt';
+import { page } from '$app/stores';
+import { getUserData } from '$lib/utils/user-db.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('token'));
@@ -106,12 +108,24 @@ function conditionalConcat(prefix, key, value, ret) {
 }
 
 export const actions = {
-	putData: async ({ cookies, request, event }) => {
+	addToMapCart: async ({ cookies, request, event }) => {
 		let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
-		let data = { uuid: userId, mapCart: ['x', 'z'] };
+		let userData = await getUserData(cookies);
+		userData = userData.Item;
 		const fd = await request.formData();
-		data.mapCart.push(fd.get('id'));
-		putUserData(data);
+		userData.mapCart.push(fd.get('id'));
+		putUserData(userData);
+		return { success: true };
+	},
+	removeFromMapCart: async ({ cookies, request, event }) => {
+		let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
+		let userData = await getUserData(cookies);
+		userData = userData.Item;
+		const fd = await request.formData();
+		let x = userData.mapCart.filter((x) => x !== fd.get('id'));
+		userData.mapCart = userData.mapCart.filter((x) => x !== fd.get('id'));
+		console.log(x);
+		putUserData(userData);
 		return { success: true };
 	}
 } satisfies Actions;

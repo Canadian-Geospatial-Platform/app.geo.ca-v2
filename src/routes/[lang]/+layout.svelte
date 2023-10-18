@@ -6,11 +6,6 @@
 	import Footer from '$lib/components/footer/footer.svelte';
 	import Feedback from '$lib/components/feedback/feedback.svelte';
 	import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
-
-	setContext('userData', {
-		favorites: ['xxxx', 'yyyyy', 'a3edf193-5c56-4b38-bcc5-c8708c60ce38'],
-		darkmode: true
-	});
 </script>
 
 <div
