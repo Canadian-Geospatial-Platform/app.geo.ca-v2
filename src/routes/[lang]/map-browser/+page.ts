@@ -10,6 +10,7 @@ export const load: PageLoad = ({ params, data }) => {
 	return {
 		results: data.results,
 		lang: params.lang,
+		userData: data.userData,
 		t_title:
 			params.lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
 		t_description: params.lang == 'en-ca' ? description.en : description.fr

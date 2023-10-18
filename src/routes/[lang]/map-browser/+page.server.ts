@@ -13,9 +13,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		console.error(e);
 		console.log(e);
 	}
+	let userData = await getUserData(cookies);
 	return {
 		lang: params.lang,
-		results: parsedResponse
+		results: parsedResponse,
+		userData: userData.Item
 	};
 };
 

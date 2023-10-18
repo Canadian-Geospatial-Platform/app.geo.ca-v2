@@ -13,8 +13,8 @@
 	export let date;
 	export let description;
 	export let id;
-	let favoritesArr = $page.data.userData.mapCart;
-	let isFavorite = favoritesArr.includes(id);
+	$: favoritesArr = $page.data.userData.mapCart;
+	$: isFavorite = favoritesArr.includes(id);
 	console.log(isFavorite, favoritesArr);
 </script>
 
