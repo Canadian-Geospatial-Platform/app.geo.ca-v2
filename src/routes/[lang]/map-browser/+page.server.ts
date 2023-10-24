@@ -7,13 +7,20 @@ import { getUserData } from '$lib/utils/user-db.ts';
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('token'));
 	let parsedResponse;
+	let userData = { Item: { mapCart: [] } };
 	try {
 		parsedResponse = await response.json();
 	} catch (e) {
 		console.error(e);
 		console.log(e);
 	}
-	let userData = await getUserData(cookies);
+
+	try {
+		userData = await getUserData(cookies);
+	} catch (e) {
+		console.warn(e);
+	}
+
 	return {
 		lang: params.lang,
 		results: parsedResponse,

@@ -1,19 +1,32 @@
 import type { PageServerLoad } from './$types';
+import { getUserData } from '$lib/utils/user-db.ts';
 
-export const load: PageServerLoad = async ({ fetch, params, url }) => {
+export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = [];
+	let userData = { Item: { mapCart: [] } };
 	try {
-		response = await getRecords(url.searchParams.values('id'), params.lang, fetch);
+		userData = await getUserData(cookies);
+	} catch (e) {
+		console.error('error fetching records: \n', e);
+	}
+	try {
+		response = await getRecords(userData.Item.mapCart, params.lang, fetch);
 	} catch (e) {
 		console.error('error fetching records: \n', e);
 	}
 
 	let x = await response;
-	x = normaliseData(params.lang, x);
+	try {
+		x = normaliseData(params.lang, x);
+	} catch (e) {
+		console.error('error fetching records: \n', e);
+		x = [];
+	}
 	return {
 		lang: params.lang,
 		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',
-		results: []
+		results: x,
+		userData: userData.Item
 	};
 };
 
@@ -39,8 +52,13 @@ async function getRecords(idIterator, lang, fetch) {
 
 	let ret = await Promise.all(
 		values.map(async (v) => {
-			const contents = await v.json();
-			return contents.body.Items[0];
+			try {
+				const contents = await v.json();
+				console.log(contents.Items[0]);
+				if (contents.Items[0]) return contents.Items[0];
+			} catch {
+				(error) => console.log(error);
+			}
 		})
 	);
 	return ret;
@@ -48,6 +66,7 @@ async function getRecords(idIterator, lang, fetch) {
 
 function normaliseData(lang, records) {
 	for (const r of records) {
+		console.log(r);
 		r.title = r['title_' + lang.split('-')[0]];
 		r.description = r['title_' + lang.split('-')[0]];
 	}
