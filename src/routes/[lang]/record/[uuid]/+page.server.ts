@@ -12,7 +12,5 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
 function filterFieldsByLanguage(item, lang: String) {
 	let ret = item.features[0];
-	console.log(ret.properties.title);
-	// ret.properties.title = ret.properties.title[lang];
 	return ret;
 }

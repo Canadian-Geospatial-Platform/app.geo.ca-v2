@@ -54,7 +54,6 @@ async function getRecords(idIterator, lang, fetch) {
 		values.map(async (v) => {
 			try {
 				const contents = await v.json();
-				console.log(contents.Items[0]);
 				if (contents.Items[0]) return contents.Items[0];
 			} catch {
 				(error) => console.log(error);
@@ -66,7 +65,6 @@ async function getRecords(idIterator, lang, fetch) {
 
 function normaliseData(lang, records) {
 	for (const r of records) {
-		console.log(r);
 		r.title = r['title_' + lang.split('-')[0]];
 		r.description = r['title_' + lang.split('-')[0]];
 	}

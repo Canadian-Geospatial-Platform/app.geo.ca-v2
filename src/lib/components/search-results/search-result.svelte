@@ -14,6 +14,7 @@
 	export let description;
 	export let id;
 	$: favoritesArr = $page.data.userData.mapCart;
+	console.log('favoritesis', favoritesArr);
 	$: isFavorite = favoritesArr.includes(id);
 	console.log(isFavorite, favoritesArr);
 </script>

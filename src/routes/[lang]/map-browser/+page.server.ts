@@ -1,7 +1,6 @@
 import type { PageServerLoad } from './$types';
-import { putUserData } from '$lib/utils/user-db.ts';
-import { parseJwt } from '$lib/utils/parse-jwt';
 import { page } from '$app/stores';
+import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/utils/user-db.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
@@ -12,7 +11,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		parsedResponse = await response.json();
 	} catch (e) {
 		console.error(e);
-		console.log(e);
 	}
 
 	try {
@@ -32,7 +30,6 @@ function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
 	const params = mapSearchParams(searchParams, lang);
 	url.search = new URLSearchParams(params).toString();
-	console.log('Bearer ' + parseToken(token));
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + parseToken(token) }
 	});
@@ -117,24 +114,6 @@ function conditionalConcat(prefix, key, value, ret) {
 }
 
 export const actions = {
-	addToMapCart: async ({ cookies, request, event }) => {
-		let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
-		let userData = await getUserData(cookies);
-		userData = userData.Item;
-		const fd = await request.formData();
-		userData.mapCart.push(fd.get('id'));
-		putUserData(userData);
-		return { success: true };
-	},
-	removeFromMapCart: async ({ cookies, request, event }) => {
-		let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
-		let userData = await getUserData(cookies);
-		userData = userData.Item;
-		const fd = await request.formData();
-		let x = userData.mapCart.filter((x) => x !== fd.get('id'));
-		userData.mapCart = userData.mapCart.filter((x) => x !== fd.get('id'));
-		console.log(x);
-		putUserData(userData);
-		return { success: true };
-	}
+	addToMapCart: addToMapCart,
+	removeFromMapCart: removeFromMapCart
 } satisfies Actions;

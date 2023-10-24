@@ -7,9 +7,7 @@
 
 	$: lang = $page.data.lang == 'en-ca' ? 'en' : 'fr';
 
-	onMount(() => {
-		console.log(item);
-	});
+	onMount(() => {});
 	// todo: add catalog metadata
 </script>
 
