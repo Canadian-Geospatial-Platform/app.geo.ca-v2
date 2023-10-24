@@ -1,4 +1,5 @@
 <script>
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { fade } from 'svelte/transition';
@@ -26,7 +27,7 @@
 </script>
 
 <div class="p-4 m-4 bg-custom-5 rounded-lg drop-shadow-lg">
-	<form data-sveltekit-noscroll transition:fade>
+	<form data-sveltekit-noscroll transition:fade use:enhance>
 		<label for="search-terms" class:lg:hidden={!collapse}>{keywords}:</label>
 		<div class="flex items-center gap-1">
 			<div class="text-2xl" class:lg:hidden={!collapse}>

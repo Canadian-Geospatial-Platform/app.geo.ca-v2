@@ -28,12 +28,12 @@
 		<div class="flex p-2 m-2 gap-2">
 			<div class="grow" />
 			{#if isFavorite}
-				<form method="POST" action="?/removeFromMapCart" use:enhance >
+				<form method="POST" action="?/removeFromMapCart" use:enhance>
 					<input type="text" name="id" value={id} class="hidden" />
 					<button class="button-2 text-xl font-bold" type="submit">♥</button>
 				</form>
 			{:else}
-				<form method="POST" action="?/addToMapCart">
+				<form method="POST" action="?/addToMapCart" use:enhance>
 					<input type="text" name="id" value={id} class="hidden" />
 					<button class="button-2 text-xl font-bold" type="submit">♡</button>
 				</form>
