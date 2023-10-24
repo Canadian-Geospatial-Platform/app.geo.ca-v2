@@ -1,5 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { getUserData } from '$lib/utils/user-db.ts';
+import { removeFromMapCart } from '$lib/actions.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = [];
@@ -15,17 +16,18 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		console.error('error fetching records: \n', e);
 	}
 
-	let x = await response;
+	let results = [];
 	try {
-		x = normaliseData(params.lang, x);
+		results = await response;
+		results = normaliseData(params.lang, results);
 	} catch (e) {
 		console.error('error fetching records: \n', e);
-		x = [];
+		results = [];
 	}
 	return {
 		lang: params.lang,
 		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',
-		results: x,
+		results: results,
 		userData: userData.Item
 	};
 };
@@ -70,3 +72,7 @@ function normaliseData(lang, records) {
 	}
 	return records;
 }
+
+export const actions = {
+	removeFromMapCart: removeFromMapCart
+} satisfies Actions;

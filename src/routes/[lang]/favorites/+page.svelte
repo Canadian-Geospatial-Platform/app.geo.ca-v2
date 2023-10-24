@@ -6,7 +6,7 @@
 
 	$: favoritesArr = [];
 
-	$: results = $page.data.results ? $page.data.results : [];
+	$: results = $page.data.results;
 </script>
 
 <h1 class="text-3xl p-2 m-2">{$page.data.t_title}</h1>

@@ -14,9 +14,7 @@
 	export let description;
 	export let id;
 	$: favoritesArr = $page.data.userData.mapCart;
-	console.log('favoritesis', favoritesArr);
 	$: isFavorite = favoritesArr.includes(id);
-	console.log(isFavorite, favoritesArr);
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid xl:grid-cols-2 gap-4">
@@ -30,7 +28,7 @@
 		<div class="flex p-2 m-2 gap-2">
 			<div class="grow" />
 			{#if isFavorite}
-				<form method="POST" action="?/removeFromMapCart">
+				<form method="POST" action="?/removeFromMapCart" use:enhance >
 					<input type="text" name="id" value={id} class="hidden" />
 					<button class="button-2 text-xl font-bold" type="submit">♥</button>
 				</form>
