@@ -11,6 +11,11 @@
 }
 
 .button-2 {
+	@apply disabled:bg-gray-100;
+	@apply disabled:outline-gray-400;
+	@apply disabled:text-gray-500;
+	@apply hover:disabled:bg-gray-500;
+	@apply hover:disabled:text-gray-100;
 	@apply text-custom-8;
 	@apply hover:text-custom-1;
 	@apply bg-custom-1;

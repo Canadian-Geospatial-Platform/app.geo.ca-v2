@@ -5,7 +5,7 @@
 	$: signInText = lang == 'en-ca' ? 'sign in' : 'connexion';
 </script>
 
-{#if !$page.data.jwt}
+{#if !$page.data.signedIn}
 	<a transition:slide class="button-1" href={'/' + lang + '/sign-in/send?state=' + $page.url.href}
 		>{signInText}</a
 	>

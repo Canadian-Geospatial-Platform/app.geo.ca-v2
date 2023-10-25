@@ -10,7 +10,7 @@
 </script>
 
 <h1 class="text-3xl p-2 m-2">{$page.data.t_title}</h1>
-{#if $page.data.jwt}
+{#if $page.data.signedIn}
 	<div class="grid grid-cols-12">
 		<div class="col-span-4 bg-yellow-100" />
 		<div class="col-span-8 bg-green-100">
