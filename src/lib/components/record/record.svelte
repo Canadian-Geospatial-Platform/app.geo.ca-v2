@@ -6,6 +6,7 @@
 	import { openShareDialog } from '$lib/components/share/share-button.svelte';
 	import Accordion from '$lib/components/share/accordion.svelte';
 	import RelatedProduct from './related-product.svelte';
+	import { t } from '../i18n/i18n';
 	// @ts-ignore
 	export let data;
 	let showModal = false;
@@ -183,24 +184,24 @@
 					<h1 class="text-4xl">{item.title_en}</h1>
 				</div>
 				<section class="w-full relative overflow-x-auto">
-					<h2 class="text-3xl mb-4 uppercase pt-8">About this dataset</h2>
+					<h2 class="text-3xl mb-4 uppercase pt-8">{$t("page.aboutthisdataset")}</h2>
 					<div>{item.description}</div>
 					<div class="py-6">
-						<p><strong>Keywords:</strong>{item.keywords}</p>
+						<p><strong>{$t("page.keywords")}:</strong>{item.keywords}</p>
 					</div>
 					<table>
-						<caption class="text-2xl text-left uppercase">Metadata</caption>
+						<caption class="text-2xl text-left uppercase">{$t("page.metadata")}</caption>
 						<tbody class="divide-y divide-gray-500">
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Date created:</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.datecreated")}</th>
 								<td>{item.created}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Date published:</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.datepublished")}</th>
 								<td>{item.published}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Temporal Coverage</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.temporalcoverage")}</th>
 								<td
 									>{#each tcRange as tc}
 										<span>{tc} </span>
@@ -208,11 +209,11 @@
 								</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Source(s)</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.source")}</th>
 								<td>{contact[0].organisation[language]}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Use Limitations</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.uselimits")}</th>
 								<td>
 									{#if useL === null}
 										{item.useLimits}
@@ -231,19 +232,19 @@
 				{#if data.related.length > 0}
 					<RelatedProduct relatedItems={data.related} {language} />
 				{/if}
-				<Accordion id="search-result-data-resources" title="Data Resources">
+				<Accordion id="search-result-data-resources" title={$t("page.dataresources")}>
 					<table>
-						<caption class="invisible">Data Resources</caption>
+						<caption class="invisible">{$t("page.dataresources")}</caption>
 						<tbody
 							id="tbody-data-resources"
 							class="divide-y divide-gray-500"
 							aria-labelledby="data-resources-id"
 						>
 							<tr>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Name</th>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Type</th>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Format</th>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">Languages</th>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$t('page.name')}</th>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$t('page.type')}</th>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$t("page.format")}</th>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$t("page.languages")}</th>
 							</tr>
 							{#each options as option}
 								<tr class="table-row-link" onClick={() => handleRowClick(option.url)}>
@@ -263,96 +264,96 @@
 						</tbody>
 					</table>
 				</Accordion>
-				<Accordion id="search-result-contact-data" title="Contact Data">
+				<Accordion id="search-result-contact-data" title={$t("page.contactdata")}>
 					<table>
-						<caption class="invisible">Contact Data </caption>
+						<caption class="invisible">{$t("page.contactdata")}</caption>
 						<tbody id="tbody-contact-data" class="divide-y divide-gray-500">
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Organization</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.organization")}</th>
 								<td>{org}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Address</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.address")}</th>
 								<td>{addr}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Individual Name</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.individualname")}</th>
 								<td>{indname}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Role</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.role")}le</th>
 								<td>{role}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Telephone</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.telephone")}</th>
 								<td>{telephone}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Fax</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.fax")}</th>
 								<td>{fax}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Email</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.email")}</th>
 								<td>{email}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Web</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.web")}</th>
 								<td>{web}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Description</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.description")}</th>
 								<td>{desc}</td>
 							</tr>
 						</tbody>
 					</table>
 				</Accordion>
-				<Accordion id="search-result-adv-meta" title="Advanced metadata">
+				<Accordion id="search-result-adv-meta" title={$t("page.advancedmetadata")}>
 					<table>
-						<caption class="invisible">Advanced metadata </caption>
+						<caption class="invisible">{$t("page.advancedmetadata")}</caption>
 						<tbody
 							id="tbody-adv-meta"
 							class="divide-y divide-gray-500"
 							aria-labelledby="advanced-data-id"
 						>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Status</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.status")}</th>
 								<td>{status}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Maintenance</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.maintenance")}</th>
 								<td>{maintenance}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">ID</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.id")}</th>
 								<td>{item.id}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Topic Category</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.topiccategory")}</th>
 								<td>{item.topicCategory}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">Type</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.type")}</th>
 								<td>{type}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">North</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.north")}</th>
 								<td>{coordinates[0][2][1].toString()}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">East</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.east")}</th>
 								<td>{coordinates[0][1][0].toString()}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">West</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.west")}</th>
 								<td>{coordinates[0][0][0].toString()}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">South</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$t("page.south")}</th>
 								<td>{coordinates[0][0][1].toString()}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>Spatial Representation</th
+									>{$t("page.spatialrepresentation")}</th
 								>
 								<td>{spatialRepresentation}</td>
 							</tr>
@@ -403,7 +404,7 @@
 					</section>
 					{#if showSimilarRecords.length > 0}
 						<section class="pt-8">
-							<h3 class="uppercase text-2xl">Similar Records</h3>
+							<h3 class="uppercase text-2xl">{$t("page.similarrecords")}</h3>
 							<div class="pt-5">
 								<ul>
 									{#each showSimilarRecords as si, index}
@@ -426,49 +427,48 @@
 									on:click={handleViewSimilarRecords}
 								>
 									<div class="leading-none uppercase text-sm">
-										{similarRec ? 'View More' : 'Show Less'}
+										{similarRec ? $t("page.viewmore") : $t("page.showless")}
 									</div>
 								</button>
 							</div>
 						</section>
 					{/if}
 					<section class="pt-8">
-						<h3 class="uppercase text-2xl">Metadata</h3>
+						<h3 class="uppercase text-2xl">{$t("page.metadata")}</h3>
 						<p>
-							Our metadata is stored in the geoCore format. A geojson containing all the metadata
-							you see here.
+							{$t("page.ourmetadatais")}
 						</p>
 						<div class="grid grid-cols-2 gap-3 pt-5">
 							<a
 								href="https://geocore.metadata.geo.ca/3a27a918-cf02-18c8-fe2b-bac5a7c4357d.geojson"
 								class="text-center text-base px-6 py-3 text-blue-100 no-underline bg-custom-10 rounded hover:bg-blue-400 hover:text-blue-200"
 								rel="noreferrer"
-								target="_blank">Download geoCore</a
+								target="_blank">{$t("page.downloadgeocore")}</a
 							>
 
 							<a
 								href="https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;outputSchema=csw:IsoRecord&amp;ElementSetName=full&amp;id=3a27a918-cf02-18c8-fe2b-bac5a7c4357d"
 								class="text-center text-base px-6 py-3 text-blue-100 no-underline bg-custom-10 rounded hover:bg-blue-400 hover:text-blue-200"
 								rel="noreferrer"
-								target="_blank">View HNAP Record</a
+								target="_blank">{$t("page.viewhnaprecord")}</a
 							>
 						</div>
 					</section>
 					<section class="pt-8">
-						<h3 class="uppercase text-2xl">Number of Accesses</h3>
+						<h3 class="uppercase text-2xl">{$t("page.numberofacesses")}</h3>
 						<div class="grid grid-cols-2 gap-1 pt-2">
 							<div class="p-3 border border-slate-300 rounded">
-								<h4 class="uppercase text-center">Last 30 days</h4>
+								<h4 class="uppercase text-center">{$t("page.last30")}</h4>
 								<p class="text-center text-custom-10 text-xl">
 									{#if isNaN(data.analyticRes['30'])}
-										<span> Loading number failed </span>
+										<span>{$t("analytic.loadingfailed")}</span>
 
 										<button
 											class="bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded-lg"
 											type="button"
-											onClick={() => handleAnalytic(item.id)}
+											on:click={() => handleAnalytic(item.id)}
 										>
-											<div class="leading-none uppercase text-sm">try again</div>
+											<div class="leading-none uppercase text-sm">{$t("analytic.tryagain")}</div>
 										</button>
 									{:else}
 										{data.analyticRes['30']}
@@ -476,16 +476,16 @@
 								</p>
 							</div>
 							<div class="p-3 border border-slate-300 rounded">
-								<h4 class="uppercase text-center">All time</h4>
+								<h4 class="uppercase text-center">{$t("page.alltime")}</h4>
 								<p class="text-center text-custom-10 text-xl">
 									{#if isNaN(data.analyticRes.all)}
-										<span> Loading number failed </span>
+										<span>{$t("analytic.loadingfailed")}</span>
 										<button
 											class="bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded-lg"
 											type="button"
-											onClick={() => handleAnalytic(item.id)}
+											on:click={() => handleAnalytic(item.id)}
 										>
-											<div class="leading-none uppercase text-sm">try again</div>
+											<div class="leading-none uppercase text-sm">{$t("analytic.tryagain")}</div>
 										</button>
 									{:else}
 										{data.analyticRes.all}
