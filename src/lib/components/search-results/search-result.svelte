@@ -30,14 +30,17 @@
 			{#if isFavorite}
 				<form method="POST" action="?/removeFromMapCart" use:enhance>
 					<input type="text" name="id" value={id} class="hidden" />
-					<button class="button-2 text-xl font-bold" type="submit">♥</button
-					>
+					<button class="button-2 text-xl font-bold" type="submit">♥</button>
 				</form>
 			{:else}
 				<form method="POST" action="?/addToMapCart" use:enhance>
 					<input type="text" name="id" value={id} class="hidden" />
-					<button class="button-2 text-xl font-bold" type="submit" disabled={!$page.data.signedIn}
-						title={$page.data.signedIn ? 'Add to favorites' : 'Please sign in to use favorites.'}>♡</button
+					<button
+						class="button-2 text-xl font-bold"
+						type="submit"
+						disabled={!$page.data.signedIn}
+						title={$page.data.signedIn ? 'Add to favorites' : 'Please sign in to use favorites.'}
+						>♡</button
 					>
 				</form>
 			{/if}

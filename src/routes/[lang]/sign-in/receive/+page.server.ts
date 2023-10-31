@@ -9,13 +9,14 @@ const CLIENT_SECRET = Config.OIDC_CLIENT_SECRET;
 
 export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 	let jwt = null;
+	cookies.set('test', 'test cookie set', { path: '/' });
 	try {
 		jwt = await getJWT(url.searchParams.get('code'), url.origin + url.pathname, fetch);
 		cookies.set('id_token', jwt.id_token, { path: '/' });
 		cookies.set('access_token', jwt.access_token, { path: '/' });
 		cookies.set('refresh_token', jwt.refresh_token, { path: '/' });
 	} catch (error) {
-		console.warn('error fetching and setting jwt');
+		console.warn('error fetching and setting jwt', error);
 	}
 
 	throw redirect(303, url.searchParams.get('state'));
@@ -23,6 +24,7 @@ export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 
 // todo: error handling
 const getJWT = async function (code: String, signInPageUrl: String) {
+	console.log('starting get jwt');
 	var myHeaders = new Headers();
 	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -32,6 +34,7 @@ const getJWT = async function (code: String, signInPageUrl: String) {
 	urlencoded.append('redirect_uri', signInPageUrl);
 	urlencoded.append('client_id', CLIENT_ID);
 	urlencoded.append('client_secret', CLIENT_SECRET);
+	console.log('urlencodedis:\n', urlencoded);
 	var requestOptions = {
 		method: 'POST',
 		headers: myHeaders,
@@ -46,6 +49,8 @@ const getJWT = async function (code: String, signInPageUrl: String) {
 			console.warn('error', error);
 			return { error: 'there was an error fetching the code' };
 		});
+	console.log('res is:\n', await res);
 	const jsonRes = await res.json();
+	console.log('resjson is:\n', jsonRes);
 	return jsonRes;
 };

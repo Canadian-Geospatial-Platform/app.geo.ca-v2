@@ -22,6 +22,8 @@ const getUserData = async (cookies) => {
 		console.error('Error fetching data in getUserData');
 		console.error(error);
 	}
+	if (response.Item == undefined) response = { Item: { uuid: userId, mapCart: [] } };
+	console.log('userdatais:\n', response);
 	return response;
 };
 
