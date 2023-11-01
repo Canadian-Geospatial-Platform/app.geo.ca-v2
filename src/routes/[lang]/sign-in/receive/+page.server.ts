@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 };
 
 // todo: error handling
-const getJWT = async function (code: String, signInPageUrl: String) {
+const getJWT = async function (code: String, signInPageUrl: String, fetch) {
 	console.log('starting get jwt');
 	var myHeaders = new Headers();
 	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
