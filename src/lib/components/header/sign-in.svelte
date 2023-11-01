@@ -10,7 +10,10 @@
 		>{signInText}</a
 	>
 {:else}
-	<a transition:slide data-sveltekit-reload class="button-1" href={'/' + lang + '/sign-in/oidc-logout'}
-		>Sign Out</a
+	<a
+		transition:slide
+		data-sveltekit-reload
+		class="button-1"
+		href={'/' + lang + '/sign-in/oidc-logout'}>Sign Out</a
 	>
 {/if}

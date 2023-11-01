@@ -11,6 +11,15 @@ Once you've created a project and installed dependencies with `npm install`, sta
 - open a new terminal
 - install dependencies: `npm i`
 - enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured.
+- enshure your login and logout url's are configured correctly in aws cognito.
+
+  - Allowed callback URLs
+    - http://localhost:5173/en-ca/sign-in/receive
+    - http://localhost:5173/fr-ca/sign-in/receive
+  - Allowed sign-out URLs
+    - http://localhost:5173/en-ca/sign-in/logout
+    - http://localhost:5173/fr-ca/sign-in/logout
+
 - run `sst:dev` to deploy the required code to the cloud.
 - open another terminal
 - `npm run dev` to bind the the previously deployed infrastructure
@@ -20,4 +29,13 @@ Once you've created a project and installed dependencies with `npm install`, sta
 
 - setup your aws credentials for prod. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured.
+- enshure your login and logout url's are configured correctly in aws cognito.
+
+  - Allowed callback URLs
+    - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/receive
+    - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/receive
+  - Allowed sign-out URLs
+    - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/logout
+    - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/logout
+
 - deploy: `npm run sst:deploy`
