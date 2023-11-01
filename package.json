@@ -41,7 +41,6 @@
 	"dependencies": {
 		"@aws-sdk/client-dynamodb": "^3.421.0",
 		"@aws-sdk/lib-dynamodb": "^3.421.0",
-		"@esbuild/win32-x64": "^0.19.4",
 		"aws-cdk": "^2.88.0",
 		"svelte-kit-sst": "2.29.2"
 	}

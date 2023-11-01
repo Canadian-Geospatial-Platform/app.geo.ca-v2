@@ -1,8 +1,8 @@
 # To Do
 
 - [] add sign in functionnality.
-- [] store / get favorites from server. (might as well get all user info in one shot from dynamodb on sign in).
-- [] handle jwt expiration and refresh
+  - [] handle token expiration and refresh
+  - [] call cognito logout endpoint on logout
 - [] show data on map
 - [] fetch microdata from backend instead of relying on hardcoded value.
 
