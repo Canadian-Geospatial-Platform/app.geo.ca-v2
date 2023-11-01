@@ -5,11 +5,13 @@ import { removeFromMapCart } from '$lib/actions.ts';
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = [];
 	let userData;
+
 	try {
 		userData = await getUserData(cookies);
 	} catch (e) {
 		console.error('error fetching user data in records: \n', e);
 	}
+
 	try {
 		response = await getRecords(userData.Item.mapCart, params.lang, fetch);
 	} catch (e) {
@@ -24,6 +26,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		console.error('error fetching records: \n', e);
 		results = [];
 	}
+
 	return {
 		lang: params.lang,
 		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',

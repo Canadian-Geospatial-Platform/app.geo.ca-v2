@@ -4,7 +4,7 @@ import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/utils/user-db.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('token'));
+	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
 	let parsedResponse = [];
 	let userData = { Item: { mapCart: [] } };
 	try {
@@ -31,18 +31,8 @@ function generateUrl(fetch, searchParams, lang, token) {
 	const params = mapSearchParams(searchParams, lang);
 	url.search = new URLSearchParams(params).toString();
 	return fetch(url, {
-		headers: { Authentication: 'Bearer ' + parseToken(token) }
+		headers: { Authentication: 'Bearer ' + token }
 	});
-}
-
-function parseToken(token) {
-	let jwt = null;
-	try {
-		jwt = JSON.parse();
-	} catch (error) {
-		console.error('no valid token could be read. user is not logged in.');
-	}
-	return jwt;
 }
 
 function mapSearchParams(searchParams, lang) {
