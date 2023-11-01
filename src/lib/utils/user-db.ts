@@ -7,7 +7,15 @@ const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
 const getUserData = async (cookies) => {
-	let userId = parseJwt(cookies.get('id_token')).identities[0].userId;
+	let userId;
+	try {
+		userId = parseJwt(cookies.get('id_token')).identities[0].userId;
+	} catch (error) {
+		console.error(
+			'Error fetching user id. User might not be logged in. Returning empty result set.'
+		);
+		return { Item: { uuid: null, mapCart: [] } };
+	}
 	const command = new GetCommand({
 		TableName: Table.users.tableName,
 		Key: {
@@ -15,11 +23,11 @@ const getUserData = async (cookies) => {
 		}
 	});
 
-	let response = null;
+	let response;
 	try {
 		response = await docClient.send(command);
 	} catch (error) {
-		console.error('Error fetching data in getUserData');
+		console.error('Error fetching user data.');
 		console.error(error);
 	}
 	if (response.Item == undefined) response = { Item: { uuid: userId, mapCart: [] } };
