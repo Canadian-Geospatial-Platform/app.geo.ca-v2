@@ -13,6 +13,9 @@ export default {
 			const OIDC_CLIENT_ID = new Config.Parameter(stack, 'OIDC_CLIENT_ID', {
 				value: '53br9dirl7io6qoolkf6afjsj5'
 			});
+			const COGNITO_USERPOOL_ID = new Config.Parameter(stack, 'COGNITO_USERPOOL_ID', {
+				value: 'ca-central-1_7DZIA1rpl'
+			});
 			const OIDC_CLIENT_SECRET = new Config.Secret(stack, 'OIDC_CLIENT_SECRET');
 			const OIDC_CUSTOM_DOMAIN = new Config.Parameter(stack, 'OIDC_CUSTOM_DOMAIN', {
 				value: 'https://auth-dev.geo.ca'
@@ -26,7 +29,13 @@ export default {
 			});
 
 			const site = new SvelteKitSite(stack, 'site', {
-				bind: [USER_TABLE, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_CUSTOM_DOMAIN]
+				bind: [
+					USER_TABLE,
+					OIDC_CLIENT_ID,
+					COGNITO_USERPOOL_ID,
+					OIDC_CLIENT_SECRET,
+					OIDC_CUSTOM_DOMAIN
+				]
 			});
 			stack.addOutputs({
 				url: site.url

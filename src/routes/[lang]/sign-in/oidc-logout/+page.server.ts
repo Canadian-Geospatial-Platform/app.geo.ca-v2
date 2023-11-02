@@ -6,7 +6,6 @@ const CLIENT_ID = Config.OIDC_CLIENT_ID;
 const CUSTOM_DOMAIN = Config.OIDC_CUSTOM_DOMAIN;
 
 export const load: PageServerLoad = ({ url, cookies, params, fetch }) => {
-	console.log(url);
 	throw redirect(
 		303,
 		CUSTOM_DOMAIN +

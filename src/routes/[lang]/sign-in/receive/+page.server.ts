@@ -24,7 +24,6 @@ export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 
 // todo: error handling
 const getJWT = async function (code: String, signInPageUrl: String, fetch) {
-	console.log('starting get jwt');
 	var myHeaders = new Headers();
 	myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -34,7 +33,6 @@ const getJWT = async function (code: String, signInPageUrl: String, fetch) {
 	urlencoded.append('redirect_uri', signInPageUrl);
 	urlencoded.append('client_id', CLIENT_ID);
 	urlencoded.append('client_secret', CLIENT_SECRET);
-	console.log('urlencodedis:\n', urlencoded);
 	var requestOptions = {
 		method: 'POST',
 		headers: myHeaders,
@@ -49,8 +47,6 @@ const getJWT = async function (code: String, signInPageUrl: String, fetch) {
 			console.warn('error', error);
 			return { error: 'there was an error fetching the code' };
 		});
-	console.log('res is:\n', await res);
 	const jsonRes = await res.json();
-	console.log('resjson is:\n', jsonRes);
 	return jsonRes;
 };

@@ -42,6 +42,7 @@
 		"@aws-sdk/client-dynamodb": "^3.421.0",
 		"@aws-sdk/lib-dynamodb": "^3.421.0",
 		"aws-cdk": "^2.88.0",
+		"aws-jwt-verify": "^4.0.0",
 		"svelte-kit-sst": "2.29.2"
 	}
 }

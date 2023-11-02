@@ -1,25 +1,18 @@
 import { Table } from 'sst/node/table';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
-import { parseJwt } from '$lib/utils/parse-jwt';
+import { getToken } from '$lib/utils/parse-jwt';
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
 const getUserData = async (cookies) => {
-	let userId;
-	try {
-		userId = parseJwt(cookies.get('id_token')).identities[0].userId;
-	} catch (error) {
-		console.error(
-			'Error fetching user id. User might not be logged in. Returning empty result set.'
-		);
-		return { Item: { uuid: null, mapCart: [] } };
-	}
+	let token = getToken(cookies);
+	if (!token.ok) return { Item: { uuid: null, mapCart: [] } };
 	const command = new GetCommand({
 		TableName: Table.users.tableName,
 		Key: {
-			uuid: userId
+			uuid: token.value.username
 		}
 	});
 
@@ -34,14 +27,17 @@ const getUserData = async (cookies) => {
 	return response;
 };
 
-const putUserData = async (data) => {
-	console.log('put user data received: \n', data);
+const putUserData = async (data: Object, cookies) => {
+	let token = getToken(cookies);
+	if (!token.ok) return { ok: false };
+	data.uuid = token.value.username;
 	await docClient.send(
 		new PutCommand({
 			TableName: Table.users.tableName,
 			Item: data
 		})
 	);
+	return { ok: true };
 };
 
 export { getUserData, putUserData };
