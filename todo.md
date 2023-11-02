@@ -1,7 +1,5 @@
 # To Do
 
-- [] add sign in functionnality.
-  - [] handle token expiration and refresh
 - [] show data on map
 - [] fetch microdata from backend instead of relying on hardcoded value.
 
