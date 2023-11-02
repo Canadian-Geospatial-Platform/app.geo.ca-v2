@@ -4,7 +4,7 @@ import { Config } from 'sst/node/config';
 const COGNITO_USERPOOL_ID = Config.COGNITO_USERPOOL_ID;
 
 const verifier = CognitoJwtVerifier.create({
-	userPoolId: COGNITO_USERPOOL_ID ,
+	userPoolId: COGNITO_USERPOOL_ID,
 	tokenUse: 'access',
 	clientId: Config.OIDC_CLIENT_ID
 });
