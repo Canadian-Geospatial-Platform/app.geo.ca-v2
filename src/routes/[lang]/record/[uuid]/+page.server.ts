@@ -1,4 +1,4 @@
-import type { PageServerLoad } from "../../../$types";
+import type { PageServerLoad } from './$types';
 
 
 export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
@@ -9,7 +9,6 @@ export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const fetchResult=async (id, lang)=>{
 		const idResponse= await fetch(`https://geocore.api.geo.ca/id/v2?id=${id}&lang=${lang}`);
 		const parsedIDResponse = await idResponse.json();
-		console.log('idresponseis\n', JSON.stringify(parsedIDResponse) )
 		return parsedIDResponse;
 	}
 	const fetchRelated=async (id)=>{
@@ -29,7 +28,6 @@ export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
 				related.push({ ...s, ...{ type: 'member' } });
 			});
 		}
-		console.log('rel is\n', related)
 		return related;
 	}
 	const fetchAnalytics=async (id, lang)=>{	
@@ -42,6 +40,7 @@ export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		t_title: params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
 		lang: params.lang,
 		uuid: params.uuid,
+		test: 'test',
 		result: fetchResult(params.uuid, lang),
 		related: fetchRelated(params.uuid),
 		analyticRes: fetchAnalytics(params.uuid, lang)

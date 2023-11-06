@@ -37,8 +37,8 @@
 	let similarRecords = [];
 	// @ts-ignore
 	let showSimilarRecords = [];
-	if (data?.result?.body?.Items && data?.result?.body?.Items?.length > 0) {
-		similarRecords = data?.result?.body?.Items[0]?.similarity;
+	if (data.result.body.Items && data.result.body.Items.length > 0) {
+		similarRecords = data.result.body.Items[0].similarity;
 		if (similarRecords) {
 			showSimilarRecords = similarRecords.slice(0, 5);
 		}
@@ -79,7 +79,7 @@
 	</div>
 </InfoModal>
 <div class="grid grid-cols-12 gap-3 p-2 m-2">
-	{#if data?.result?.body?.Items && data?.result?.body?.Items?.length > 0}
+	{#if data.result.body.Items && data.result.body.Items.length > 0}
 		{#each data.result.body.Items as item}
 			{@const inMapping = false}
 			{@const coordinates = JSON.parse(item.coordinates)}
