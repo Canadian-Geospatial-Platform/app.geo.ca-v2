@@ -4,7 +4,6 @@
 	import Accordion from "./share/accordion.svelte";
     import { onMount } from 'svelte';
 	import { page } from '$app/stores'
-	import {t} from './i18n/i18n';
 
 	export let relatedItems: any[]=[];
 	export let language:string;
@@ -28,13 +27,13 @@
     }
 </script>
 
-	<Accordion id="search-result-related-products" title={$t("page.relatedproducts")}>
+	<Accordion id="search-result-related-products" title={$page.data.t.relatedproducts}>
 		<table>
-			<caption class="invisible">{$t("page.relatedproducts")}</caption>
+			<caption class="invisible">{$page.data.t.relatedproducts}</caption>
 			<tbody id="tbody-related-products" class="divide-y divide-gray-500">
 				<tr>
-					<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$t("page.name")}</th>
-					<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$t("page.type")}</th>
+					<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.name}</th>
+					<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.type}</th>
 				</tr>
 				{#each paginatedItems as relatedp}
 					<tr class="table-row-link">

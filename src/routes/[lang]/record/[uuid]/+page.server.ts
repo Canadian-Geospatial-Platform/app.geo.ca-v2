@@ -1,5 +1,6 @@
 import type { PageServerLoad } from './$types';
-
+import enLabels from "$lib/components/record/i18n/en.json";
+import frLabels from "$lib/components/record/i18n/fr.json";
 
 export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	console.log("loading data in server...");
@@ -35,7 +36,8 @@ export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		const parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
 		return parsedAnalyticResponse;
 	}
-	
+	let t = params.lang == 'en-ca' ? enLabels : frLabels;
+	console.log(t)
 	return {
 		t_title: params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
 		lang: params.lang,
@@ -43,6 +45,7 @@ export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		test: 'test',
 		result: fetchResult(params.uuid, lang),
 		related: fetchRelated(params.uuid),
-		analyticRes: fetchAnalytics(params.uuid, lang)
+		analyticRes: fetchAnalytics(params.uuid, lang),
+		t: t
 	};
 };
