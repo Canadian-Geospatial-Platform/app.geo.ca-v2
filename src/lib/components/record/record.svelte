@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Maplet from '$lib/components/record/maplet/maplet.svelte';
-	import Map from '$lib/components/map/map.svelte'
+	import Map from '$lib/components/map/map.svelte';
 	import { page } from '$app/stores';
 	import InfoModal from '$lib/components/record/modal/info-modal.svelte';
 	import { openShareDialog } from '$lib/components/record/share/share-button.svelte';
@@ -192,15 +192,21 @@
 						<caption class="text-2xl text-left uppercase">{$page.data.t.metadata}</caption>
 						<tbody class="divide-y divide-gray-500">
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.datecreated}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.datecreated}</th
+								>
 								<td>{item.created}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.datepublished}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.datepublished}</th
+								>
 								<td>{item.published}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.temporalcoverage}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.temporalcoverage}</th
+								>
 								<td
 									>{#each tcRange as tc}
 										<span>{tc} </span>
@@ -208,11 +214,15 @@
 								</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.source}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.source}</th
+								>
 								<td>{contact[0].organisation[language]}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.uselimits}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.uselimits}</th
+								>
 								<td>
 									{#if useL === null}
 										{item.useLimits}
@@ -240,10 +250,18 @@
 							aria-labelledby="data-resources-id"
 						>
 							<tr>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.page.name}</th>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.page.type}</th>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.format}</th>
-								<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.languages}</th>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.page.name}</th
+								>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.page.type}</th
+								>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.format}</th
+								>
+								<th scope="col" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.languages}</th
+								>
 							</tr>
 							{#each options as option}
 								<tr class="table-row-link" onClick={() => handleRowClick(option.url)}>
@@ -268,39 +286,55 @@
 						<caption class="invisible">{$page.data.t.contactdata}</caption>
 						<tbody id="tbody-contact-data" class="divide-y divide-gray-500">
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.organization}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.organization}</th
+								>
 								<td>{org}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.address}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.address}</th
+								>
 								<td>{addr}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.individualname}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.individualname}</th
+								>
 								<td>{indname}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.role}le</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.role}le</th
+								>
 								<td>{role}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.telephone}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.telephone}</th
+								>
 								<td>{telephone}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.fax}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.fax}</th
+								>
 								<td>{fax}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.email}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.email}</th
+								>
 								<td>{email}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.web}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.web}</th
+								>
 								<td>{web}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.description}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.description}</th
+								>
 								<td>{desc}</td>
 							</tr>
 						</tbody>
@@ -315,11 +349,15 @@
 							aria-labelledby="advanced-data-id"
 						>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.status}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.status}</th
+								>
 								<td>{status}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.maintenance}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.maintenance}</th
+								>
 								<td>{maintenance}</td>
 							</tr>
 							<tr>
@@ -327,27 +365,39 @@
 								<td>{item.id}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.topiccategory}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.topiccategory}</th
+								>
 								<td>{item.topicCategory}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.type}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.type}</th
+								>
 								<td>{type}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.north}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.north}</th
+								>
 								<td>{coordinates[0][2][1].toString()}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.east}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.east}</th
+								>
 								<td>{coordinates[0][1][0].toString()}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.west}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.west}</th
+								>
 								<td>{coordinates[0][0][0].toString()}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.south}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.south}</th
+								>
 								<td>{coordinates[0][0][1].toString()}</td>
 							</tr>
 							<tr>
@@ -363,7 +413,7 @@
 			<aside class="col-span-12 md:col-span-4 bg-white pl-2 pr-2 place-items-center">
 				<div>
 					<section>
-						<Maplet {center} {zoom} {coordinates}/>
+						<Maplet {center} {zoom} {coordinates} />
 					</section>
 					<section class="pt-8">
 						<h3 class="uppercase text-2xl">Add to map</h3>

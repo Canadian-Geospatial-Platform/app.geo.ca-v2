@@ -1,279 +1,279 @@
 {
-    "app": {
-        "language": "en"
-    },
-    "nav": {
-        "home": "Home",
-        "search": "Search",
-        "mymap": "MyMap",
-        "language": {
-            "htmllangcode": "fr",
-            "key": "fr-CA",
-            "name": "Français"
-        },
-        "nomap": "Your map is empty, please add data to map",
-        "logotext": "logo for the GEO.CA",
-        "logoLinktext": "GEO.CA homepage",
-        "logout": "Logout",
-        "login": "Login"
-    },
-    "mapnav": {
-        "ariaNavbar": "vertical button group for map navigation",
-        "fullscreen": "Full Screen",
-        "home": "Home",
-        "zoomIn": "Zoom in",
-        "zoomOut": "Zoom out"
-    },
-    "mapctrl": {
-        "mouseposition": {
-            "east": "E",
-            "west": "W",
-            "north": "N",
-            "south": "S"
-        },
-        "lccurl": "https://maps-cartes.services.geo.ca/server2_serveur2/rest/services/BaseMaps/CBMT_TXT_3978/MapServer/WMTS/tile/1.0.0/CBMT_TXT_3978/default/default028mm/{z}/{y}/{x}.jpg",
-        "wburl": "https://maps-cartes.services.geo.ca/server2_serveur2/rest/services/BaseMaps/CBMT_TXT_3857/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT_TXT_3857/default/default028mm/{z}/{y}/{x}.png",
-        "attribution": "&copy His Majesty the King in Right of Canada, as represented by the Minister of Natural Resources Canada, 2023"
-    },
-    "appbar": {
-        "drawer": "Drawer",
-        "close": "Close",
-        "export": "Export",
-        "fullscreen": "Full Screen",
-        "help": "Help",
-        "layers": "Layers",
-        "search": "Search",
-        "keywordsearch": "Keyword Search",
-        "keywordonly": "Keyword only",
-        "filters": "Filters",
-        "analytics": "Analytics",
-        "account": "Account",
-        "howto": "How To",
-        "share": "Share",
-        "version": "Access GitHub repo",
-        "opendrawer": "Open search toolbox",
-        "searchoperators": "Search Operators",
-        "sortby": {
-            "label": "Sort by",
-            "select": "Select",
-            "relevance": "Relevance",
-            "date": {
-                "desc": "Date",
-                "asc": "Date"
-            },
-            "popularity": {
-                "desc": "Popularity",
-                "asc": "Popularity"
-            },
-            "title": "Title"
-        }
-    },
-    "filter": {
-        "filterby": "Filter by",
-        "organisations": "Organizations",
-        "types": "Types",
-        "themes": "Themes",
-        "foundational": "Foundation Data",
-        "spatial": "Viewable on a Map",
-        "stac": "Metadata Standard",
-        "spatemp": {
-            "title": "SPATIO-TEMPORAL",
-            "temporal": "All times in Coordinated Universal Time (UTC).",
-            "startdate": "Start Date",
-            "enddate": "End Date"
-        },
-        "otherfilters": "Other Filters",
-        "applyfilters": "Apply Filters",
-        "clearall": "Clear All",
-        "label": {
-            "spatial": {
-                "viewable-on-map": "Viewable({{param}})",
-                "not-viewable-on-map": "Non-viewable({{param}})",
-                "opt": "Freeze spatial filtering",
-                "opt-tooltip": "Freeze the spatial filtering when panning or zooming map"
-            },
-            "stac": {
-                "HNAP": "Harmonized North American Profile (HNAP) ({{param}} records)",
-                "STAC": "Spatio Temporal Asset Catalog (STAC) ({{param}} records)"
-            },
-            "spatemp": {
-                "SPATIALEXTENT": "Spatial Extent",
-                "TEMPORALEXTENT": "Temporal Extent",
-                "selectprovince": "Search provinces or territories",
-                "or": "or",
-                "search-extent": "Search extents...",
-                "select-extent": "Alternative search extents"
-            }
-        }
-    },
-    "analytic": {
-        "title": "Analytics",
-        "summary": "Summary",
-        "searchthismonth": "Number of searches this month",
-        "searchlastmonth": "Number of searches last month",
-        "accessthismonth": "Number of accesses this month",
-        "accesslastmonth": "Number of accesses last month",
-        "topsearcheslastmonth": "Top 10 Searches in the Last 30 Days",
-        "topaccesslastmonth": "Top 10 Accessed Content in the Last 30 Days",
-        "topaccessalltime": "Top 10 Accessed Content all time",
-        "topaccessbyorg": "Top 10 Accessed Content by Contributor",
-        "loadingfailed": "Loading number failed",
-        "norecord": "No record",
-        "tryagain": "try again",
-        "selectorg": "Please select contributor",
-        "submit": "Submit",
-        "headerrank": "Rank",
-        "headertitle": "Title",
-        "headertotal": "Total Access"
-    },
-    "howto": {
-        "geosearchdescription": "The search application uses a map to search data over the area shown. Pan and zoom the map to filter the content based on your area of interest. The results will refresh based on the area of the map. If you are not interested in a given geographic area. Click on the Keyword Only toggle, enter a keyword, and filter the results based on our advanced filters.",
-        "keywordsearchdescription": "The keyword search page can be used if you are not interested in a given geographic area. Enter a keyword, and filter the results based on our advanced filters.",
-        "filtersdescription": "The advanced filters can filter data based on organization, type, theme, and foundational layers. You can add as many filters as you need and remove them if they are not given you the result you need.",
-        "searchoperators": "GEO.ca supports a series of search operators which can help you find the data you need faster. If you are looking for an exact match to your search term, enclose it in quotation marks. This will return only the results that exactly match your term. E.g. \"My Search Term\". If you require the record to contain multiple search terms, include AND within the search box. E.g. - ‘My Search AND Term’. Finally, if you want to include multiple search terms such as ‘Search OR Term’, include a space between the terms and our system will automatically include records with one or the other search term."
-    },
-    "page": {
-        "ctrl": {
-            "total": "{{index}} of {{total}} records",
-            "currentpage": "Current Page",
-            "previouspage": "Previous Page",
-            "previouspages": "Previous page group",
-            "nextpage": "Next Page",
-            "nextpages": "Next page group",
-            "paginationlabel": "Search results pagination"
-        },
-        "changesearch": "Change the input to search ...",
-        "noresult": "No result.",
-        "organisation": "Organization",
-        "published": "Published",
-        "viewmore": "View More",
-        "viewmorenotice": "New filters will be placed before this button",
-        "showless": "Show Less",
-        "showlessnotice": "Some filters appearing before this button will be removed",
-        "search": "Search ...",
-        "advancedsearchfilters": "Advanced Search Filters",
-        "gotogeosearchpage": "Back to search",
-        "backtorelated": "Back to related",
-        "viewrecord": "View Record",
-        "viewfootprint": "View Footprint",
-        "removefootprint": "Remove Footprint",
-        "aboutthisdataset": "About this dataset",
-        "relatedproducts": "Related Products",
-        "dataresources": "Data Resources",
-        "contactdata": "Contact Data",
-        "advancedmetadata": "Advanced metadata",
-        "parent": "Parent",
-        "member": "Member",
-        "keywords": "Keywords",
-        "metadata": "Metadata",
-        "similarrecords": "Similar Records",
-        "datecreated": "Date Created",
-        "datepublished": "Date Published",
-        "temporalcoverage": "Temporal Coverage",
-        "source": "Source(s)",
-        "uselimits": "Use Limitations",
-        "disclaimer": "Disclaimer",
-        "dcheader": "Made available by the Government of ",
-        "dcp1": "These resources are not under the control of the Government of Canada and the link is provided solely for the convenience of our website visitors. We are not responsible for the accuracy, currency or reliability of the content of this website. The Government of Canada does not offer any guarantee in that regard and is not responsible for the information found through this link.",
-        "dcp2": {
-            "text1": "Visitors should also be aware that information offered by this non-Government of Canada site is not subject to the ",
-            "link1": {
-                "url": "http://laws-lois.justice.gc.ca/eng/acts/P-21/index.html",
-                "text": "Privacy Act"
-            },
-            "text2": " or the ",
-            "link2": {
-                "url": "http://laws-lois.justice.gc.ca/eng/acts/O-3.01/",
-                "text": "Official Languages Act"
-            },
-            "text3": " and may not be accessible to persons with disabilities. The information offered may be available only in the language used by the site. With respect to privacy, visitors should research the privacy policies of this non-government website before providing personal information."
-        },
-        "dwhheader": "Made available by the Canadian Geospatial Data Infrastructure Web Harvester ",
-        "dwh0": "This web service is generated from a geospatial web services harvester developed for the Canadian Geospatial Data Infrastructure. It is in continual development and updated weekly. These records are subject to change based on the availability of the service endpoint maintained by external parties.",
-        "dwh1": "These resources are not under the control of the Government of Canada and the link is provided solely for the convenience of our website visitors. We are not responsible for the accuracy, currency or reliability of the content of this website. The Government of Canada does not offer any guarantee in that regard and is not responsible for the information found through this link.",
-        "dwh2": {
-            "text1": "Visitors should also be aware that information offered by this non-Government of Canada site is not subject to the ",
-            "link1": {
-                "url": "http://laws-lois.justice.gc.ca/eng/acts/P-21/index.html",
-                "text": "Privacy Act"
-            },
-            "text2": " or the ",
-            "link2": {
-                "url": "http://laws-lois.justice.gc.ca/eng/acts/O-3.01/",
-                "text": "Official Languages Act"
-            },
-            "text3": " and may not be accessible to persons with disabilities. The information offered may be available only in the language used by the site. With respect to privacy, visitors should research the privacy policies of this non-government website before providing personal information."
-        },
-        "name": "Name",
-        "type": "Type",
-        "format": "Format",
-        "languages": "Languages",
-        "language": "English",
-        "eng": "English",
-        "fra": "French",
-        "engfra": "English and French",
-        "unk": "Unknown",
-        "zxx": "'No linguistic content",
-        "organization": "Organization",
-        "address": "Address",
-        "individualname": "Individual Name",
-        "role": "Role",
-        "telephone": "Telephone",
-        "fax": "Fax",
-        "email": "Email",
-        "web": "Web",
-        "description": "Description",
-        "status": "Status",
-        "maintenance": "Maintenance",
-        "topiccategory": "Topic Category",
-        "north": "North",
-        "east": "East",
-        "west": "West",
-        "south": "South",
-        "spatialrepresentation": "Spatial Representation",
-        "addtomap": "Add to Map",
-        "viewthedata": "View the data in depth by adding it to a map.",
-        "viewonmap": "View on Map",
-        "addedtomymap": "Added to MyMap",
-        "addtomymap": "Add to MyMap",
-        "ourmetadatais": "Our metadata is stored in the geoCore format. A geojson containing all the metadata you see here.",
-        "downloadgeocore": "Download geoCore",
-        "viewhnaprecord": "View HNAP Record",
-        "numberofacesses": "Number of Accesses",
-        "last30": "Last 30 days",
-        "alltime": "All time",
-        "share": "Share",
-        "id": "ID",
-        "greymaptitle": "No viewable content",
-        "greymapinfo": "This record has no viewable component."
-    },
-    "modal": {
-        "buttonlabel": "Close",
-        "home": {
-            "title": "About the search application",
-            "description": "The search application uses a map to search data over the area shown. Pan and zoom the map to filter the content based on your area of interest. The results will refresh based on the area of the map."
-        },
-        "mapping": {
-            "title": "Added to MyMap",
-            "noadded": "No result added",
-            "gotomymap": "Go To MyMap",
-            "cancel": "Cancel"
-        }
-    },
-    "province": {
-        "AB": "Alberta",
-        "BC": "British Columbia",
-        "ON": "Ontario",
-        "QC": "Quebec",
-        "MB": "Manitoba",
-        "PEI": "Prince Edward Island",
-        "SK": "Saskatchewan",
-        "NL": "Newfoundland and Labrador",
-        "NS": "Nova Scotia",
-        "NB": "New Brunswick",
-        "NU": "Nunavut",
-        "NT": "Northwest Territories",
-        "YT": "Yukon",
-        "DEFAULT": "Please select one"
-    }
+	"app": {
+		"language": "en"
+	},
+	"nav": {
+		"home": "Home",
+		"search": "Search",
+		"mymap": "MyMap",
+		"language": {
+			"htmllangcode": "fr",
+			"key": "fr-CA",
+			"name": "Français"
+		},
+		"nomap": "Your map is empty, please add data to map",
+		"logotext": "logo for the GEO.CA",
+		"logoLinktext": "GEO.CA homepage",
+		"logout": "Logout",
+		"login": "Login"
+	},
+	"mapnav": {
+		"ariaNavbar": "vertical button group for map navigation",
+		"fullscreen": "Full Screen",
+		"home": "Home",
+		"zoomIn": "Zoom in",
+		"zoomOut": "Zoom out"
+	},
+	"mapctrl": {
+		"mouseposition": {
+			"east": "E",
+			"west": "W",
+			"north": "N",
+			"south": "S"
+		},
+		"lccurl": "https://maps-cartes.services.geo.ca/server2_serveur2/rest/services/BaseMaps/CBMT_TXT_3978/MapServer/WMTS/tile/1.0.0/CBMT_TXT_3978/default/default028mm/{z}/{y}/{x}.jpg",
+		"wburl": "https://maps-cartes.services.geo.ca/server2_serveur2/rest/services/BaseMaps/CBMT_TXT_3857/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT_TXT_3857/default/default028mm/{z}/{y}/{x}.png",
+		"attribution": "&copy His Majesty the King in Right of Canada, as represented by the Minister of Natural Resources Canada, 2023"
+	},
+	"appbar": {
+		"drawer": "Drawer",
+		"close": "Close",
+		"export": "Export",
+		"fullscreen": "Full Screen",
+		"help": "Help",
+		"layers": "Layers",
+		"search": "Search",
+		"keywordsearch": "Keyword Search",
+		"keywordonly": "Keyword only",
+		"filters": "Filters",
+		"analytics": "Analytics",
+		"account": "Account",
+		"howto": "How To",
+		"share": "Share",
+		"version": "Access GitHub repo",
+		"opendrawer": "Open search toolbox",
+		"searchoperators": "Search Operators",
+		"sortby": {
+			"label": "Sort by",
+			"select": "Select",
+			"relevance": "Relevance",
+			"date": {
+				"desc": "Date",
+				"asc": "Date"
+			},
+			"popularity": {
+				"desc": "Popularity",
+				"asc": "Popularity"
+			},
+			"title": "Title"
+		}
+	},
+	"filter": {
+		"filterby": "Filter by",
+		"organisations": "Organizations",
+		"types": "Types",
+		"themes": "Themes",
+		"foundational": "Foundation Data",
+		"spatial": "Viewable on a Map",
+		"stac": "Metadata Standard",
+		"spatemp": {
+			"title": "SPATIO-TEMPORAL",
+			"temporal": "All times in Coordinated Universal Time (UTC).",
+			"startdate": "Start Date",
+			"enddate": "End Date"
+		},
+		"otherfilters": "Other Filters",
+		"applyfilters": "Apply Filters",
+		"clearall": "Clear All",
+		"label": {
+			"spatial": {
+				"viewable-on-map": "Viewable({{param}})",
+				"not-viewable-on-map": "Non-viewable({{param}})",
+				"opt": "Freeze spatial filtering",
+				"opt-tooltip": "Freeze the spatial filtering when panning or zooming map"
+			},
+			"stac": {
+				"HNAP": "Harmonized North American Profile (HNAP) ({{param}} records)",
+				"STAC": "Spatio Temporal Asset Catalog (STAC) ({{param}} records)"
+			},
+			"spatemp": {
+				"SPATIALEXTENT": "Spatial Extent",
+				"TEMPORALEXTENT": "Temporal Extent",
+				"selectprovince": "Search provinces or territories",
+				"or": "or",
+				"search-extent": "Search extents...",
+				"select-extent": "Alternative search extents"
+			}
+		}
+	},
+	"analytic": {
+		"title": "Analytics",
+		"summary": "Summary",
+		"searchthismonth": "Number of searches this month",
+		"searchlastmonth": "Number of searches last month",
+		"accessthismonth": "Number of accesses this month",
+		"accesslastmonth": "Number of accesses last month",
+		"topsearcheslastmonth": "Top 10 Searches in the Last 30 Days",
+		"topaccesslastmonth": "Top 10 Accessed Content in the Last 30 Days",
+		"topaccessalltime": "Top 10 Accessed Content all time",
+		"topaccessbyorg": "Top 10 Accessed Content by Contributor",
+		"loadingfailed": "Loading number failed",
+		"norecord": "No record",
+		"tryagain": "try again",
+		"selectorg": "Please select contributor",
+		"submit": "Submit",
+		"headerrank": "Rank",
+		"headertitle": "Title",
+		"headertotal": "Total Access"
+	},
+	"howto": {
+		"geosearchdescription": "The search application uses a map to search data over the area shown. Pan and zoom the map to filter the content based on your area of interest. The results will refresh based on the area of the map. If you are not interested in a given geographic area. Click on the Keyword Only toggle, enter a keyword, and filter the results based on our advanced filters.",
+		"keywordsearchdescription": "The keyword search page can be used if you are not interested in a given geographic area. Enter a keyword, and filter the results based on our advanced filters.",
+		"filtersdescription": "The advanced filters can filter data based on organization, type, theme, and foundational layers. You can add as many filters as you need and remove them if they are not given you the result you need.",
+		"searchoperators": "GEO.ca supports a series of search operators which can help you find the data you need faster. If you are looking for an exact match to your search term, enclose it in quotation marks. This will return only the results that exactly match your term. E.g. \"My Search Term\". If you require the record to contain multiple search terms, include AND within the search box. E.g. - ‘My Search AND Term’. Finally, if you want to include multiple search terms such as ‘Search OR Term’, include a space between the terms and our system will automatically include records with one or the other search term."
+	},
+	"page": {
+		"ctrl": {
+			"total": "{{index}} of {{total}} records",
+			"currentpage": "Current Page",
+			"previouspage": "Previous Page",
+			"previouspages": "Previous page group",
+			"nextpage": "Next Page",
+			"nextpages": "Next page group",
+			"paginationlabel": "Search results pagination"
+		},
+		"changesearch": "Change the input to search ...",
+		"noresult": "No result.",
+		"organisation": "Organization",
+		"published": "Published",
+		"viewmore": "View More",
+		"viewmorenotice": "New filters will be placed before this button",
+		"showless": "Show Less",
+		"showlessnotice": "Some filters appearing before this button will be removed",
+		"search": "Search ...",
+		"advancedsearchfilters": "Advanced Search Filters",
+		"gotogeosearchpage": "Back to search",
+		"backtorelated": "Back to related",
+		"viewrecord": "View Record",
+		"viewfootprint": "View Footprint",
+		"removefootprint": "Remove Footprint",
+		"aboutthisdataset": "About this dataset",
+		"relatedproducts": "Related Products",
+		"dataresources": "Data Resources",
+		"contactdata": "Contact Data",
+		"advancedmetadata": "Advanced metadata",
+		"parent": "Parent",
+		"member": "Member",
+		"keywords": "Keywords",
+		"metadata": "Metadata",
+		"similarrecords": "Similar Records",
+		"datecreated": "Date Created",
+		"datepublished": "Date Published",
+		"temporalcoverage": "Temporal Coverage",
+		"source": "Source(s)",
+		"uselimits": "Use Limitations",
+		"disclaimer": "Disclaimer",
+		"dcheader": "Made available by the Government of ",
+		"dcp1": "These resources are not under the control of the Government of Canada and the link is provided solely for the convenience of our website visitors. We are not responsible for the accuracy, currency or reliability of the content of this website. The Government of Canada does not offer any guarantee in that regard and is not responsible for the information found through this link.",
+		"dcp2": {
+			"text1": "Visitors should also be aware that information offered by this non-Government of Canada site is not subject to the ",
+			"link1": {
+				"url": "http://laws-lois.justice.gc.ca/eng/acts/P-21/index.html",
+				"text": "Privacy Act"
+			},
+			"text2": " or the ",
+			"link2": {
+				"url": "http://laws-lois.justice.gc.ca/eng/acts/O-3.01/",
+				"text": "Official Languages Act"
+			},
+			"text3": " and may not be accessible to persons with disabilities. The information offered may be available only in the language used by the site. With respect to privacy, visitors should research the privacy policies of this non-government website before providing personal information."
+		},
+		"dwhheader": "Made available by the Canadian Geospatial Data Infrastructure Web Harvester ",
+		"dwh0": "This web service is generated from a geospatial web services harvester developed for the Canadian Geospatial Data Infrastructure. It is in continual development and updated weekly. These records are subject to change based on the availability of the service endpoint maintained by external parties.",
+		"dwh1": "These resources are not under the control of the Government of Canada and the link is provided solely for the convenience of our website visitors. We are not responsible for the accuracy, currency or reliability of the content of this website. The Government of Canada does not offer any guarantee in that regard and is not responsible for the information found through this link.",
+		"dwh2": {
+			"text1": "Visitors should also be aware that information offered by this non-Government of Canada site is not subject to the ",
+			"link1": {
+				"url": "http://laws-lois.justice.gc.ca/eng/acts/P-21/index.html",
+				"text": "Privacy Act"
+			},
+			"text2": " or the ",
+			"link2": {
+				"url": "http://laws-lois.justice.gc.ca/eng/acts/O-3.01/",
+				"text": "Official Languages Act"
+			},
+			"text3": " and may not be accessible to persons with disabilities. The information offered may be available only in the language used by the site. With respect to privacy, visitors should research the privacy policies of this non-government website before providing personal information."
+		},
+		"name": "Name",
+		"type": "Type",
+		"format": "Format",
+		"languages": "Languages",
+		"language": "English",
+		"eng": "English",
+		"fra": "French",
+		"engfra": "English and French",
+		"unk": "Unknown",
+		"zxx": "'No linguistic content",
+		"organization": "Organization",
+		"address": "Address",
+		"individualname": "Individual Name",
+		"role": "Role",
+		"telephone": "Telephone",
+		"fax": "Fax",
+		"email": "Email",
+		"web": "Web",
+		"description": "Description",
+		"status": "Status",
+		"maintenance": "Maintenance",
+		"topiccategory": "Topic Category",
+		"north": "North",
+		"east": "East",
+		"west": "West",
+		"south": "South",
+		"spatialrepresentation": "Spatial Representation",
+		"addtomap": "Add to Map",
+		"viewthedata": "View the data in depth by adding it to a map.",
+		"viewonmap": "View on Map",
+		"addedtomymap": "Added to MyMap",
+		"addtomymap": "Add to MyMap",
+		"ourmetadatais": "Our metadata is stored in the geoCore format. A geojson containing all the metadata you see here.",
+		"downloadgeocore": "Download geoCore",
+		"viewhnaprecord": "View HNAP Record",
+		"numberofacesses": "Number of Accesses",
+		"last30": "Last 30 days",
+		"alltime": "All time",
+		"share": "Share",
+		"id": "ID",
+		"greymaptitle": "No viewable content",
+		"greymapinfo": "This record has no viewable component."
+	},
+	"modal": {
+		"buttonlabel": "Close",
+		"home": {
+			"title": "About the search application",
+			"description": "The search application uses a map to search data over the area shown. Pan and zoom the map to filter the content based on your area of interest. The results will refresh based on the area of the map."
+		},
+		"mapping": {
+			"title": "Added to MyMap",
+			"noadded": "No result added",
+			"gotomymap": "Go To MyMap",
+			"cancel": "Cancel"
+		}
+	},
+	"province": {
+		"AB": "Alberta",
+		"BC": "British Columbia",
+		"ON": "Ontario",
+		"QC": "Quebec",
+		"MB": "Manitoba",
+		"PEI": "Prince Edward Island",
+		"SK": "Saskatchewan",
+		"NL": "Newfoundland and Labrador",
+		"NS": "Nova Scotia",
+		"NB": "New Brunswick",
+		"NU": "Nunavut",
+		"NT": "Northwest Territories",
+		"YT": "Yukon",
+		"DEFAULT": "Please select one"
+	}
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
-	export let showModal; // boolean    
+	export let showModal; // boolean
 	let dialog; // HTMLDialogElement
-    
+
 	$: if (dialog && showModal) dialog.showModal();
 </script>
 
@@ -13,21 +13,25 @@
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click|stopPropagation>
-		<slot name="header"/>
+		<slot name="header" />
 		<hr />
 		<slot />
 		<hr />
 		<!-- svelte-ignore a11y-autofocus -->
 		<div class="pt-3 flex justify-end">
-            <button class="bg-custom-10 rounded text-white pt-1 pb-1 pl-3 pr-3 float-right" autofocus on:click={() => dialog.close()}>Close</button>
-        </div>
+			<button
+				class="bg-custom-10 rounded text-white pt-1 pb-1 pl-3 pr-3 float-right"
+				autofocus
+				on:click={() => dialog.close()}>Close</button
+			>
+		</div>
 	</div>
 </dialog>
 
 <style>
-    hr {
-        @apply my-4;
-    }
+	hr {
+		@apply my-4;
+	}
 	dialog {
 		max-width: 32em;
 		border-radius: 0.2em;

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	
-    export let center:number[];
-    export let zoom: number;
-    export let coordinates: [][][];
-        
+
+	export let center: number[];
+	export let zoom: number;
+	export let coordinates: [][][];
+
 	export let config = {
 		map: {
 			interaction: 'static',
@@ -27,27 +27,25 @@
 		suportedLanguages: ['en']
 	};
 	$: sConfig = JSON.stringify(config);
-    onMount(() => {
+	onMount(() => {
 		console.log($page.url);
 		try {
-			cgpv.init(function(){
-                const mapInstance=cgpv.api.maps['metadata'];
-                console.log(mapInstance);
-                if(mapInstance)
-				mapInstance.layer.geometry.addPolygon(
-                coordinates,
-                {
-                    style: {
-                    strokeColor: 'blue',
-                    },
-                }
-                );
-                });            
+			cgpv.init(function () {
+				const mapInstance = cgpv.api.maps['metadata'];
+				console.log(mapInstance);
+				if (mapInstance)
+					mapInstance.layer.geometry.addPolygon(coordinates, {
+						style: {
+							strokeColor: 'blue'
+						}
+					});
+			});
 		} catch (e) {
 			console.log('Error initialising cgpv.', e);
 		}
 	});
 </script>
+
 <svelte:head>
 	<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
