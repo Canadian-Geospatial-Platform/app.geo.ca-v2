@@ -30,8 +30,7 @@
 <!--for now, we pass data config in the html as javascript configuration is more bug prone.-->
 <div
 	{id}
-	class="llwp-map bg-purple-100 rounded-lg"
-	style="min-height: 20em; width: 100%;"
+	class="llwp-map bg-purple-100 rounded-lg w-full h-96 xl:h-full"
 	data-lang="en"
 	data-config={sConfig}
 />

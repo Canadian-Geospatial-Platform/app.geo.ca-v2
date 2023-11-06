@@ -6,7 +6,7 @@
 
 <nav class="flex place-items-center p-2 m-2 text-2xl bg-custom-1 rounded-lg">
 	<img
-		class="h-24 object-scale shrink mr-auto"
+		class="h-20 md:h-24 object-scale shrink mr-auto"
 		src="https://geo.ca/wp-content/uploads/2023/02/geo-ca-logo.svg"
 		alt="GEO.CA logo, blue and green globe / Logo de GEO.CA, globe bleu et vert"
 		decoding="async"
