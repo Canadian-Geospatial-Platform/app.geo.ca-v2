@@ -1,16 +1,49 @@
-import type { PageServerLoad } from './$types';
-import item from '$lib/components/microdata/sample-item.json';
+import type { PageServerLoad } from "../../../$types";
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+
+export const load:PageServerLoad = async ({ fetch, params, url, cookies }) => {
+	console.log("loading data in server...");
+	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
+	
+	// @ts-ignore
+	const fetchResult=async (id, lang)=>{
+		const idResponse= await fetch(`https://geocore.api.geo.ca/id/v2?id=${id}&lang=${lang}`);
+		const parsedIDResponse = await idResponse.json();
+		console.log('idresponseis\n', JSON.stringify(parsedIDResponse) )
+		return parsedIDResponse;
+	}
+	const fetchRelated=async (id)=>{
+		const collectionsResponse = await fetch(`https://geocore.api.geo.ca/collections?id=${id}`);
+		const parsedCollectionsResponse = await collectionsResponse.json();
+		const related = [];
+		if (parsedCollectionsResponse.parent !== null) {
+			related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
+		}
+		if (parsedCollectionsResponse.sibling_count > 0) {
+			parsedCollectionsResponse.sibling.forEach((s) => {
+				related.push({ ...s, ...{ type: 'member' } });
+			});
+		}
+		if (parsedCollectionsResponse.child_count > 0) {
+			parsedCollectionsResponse.child.forEach((s) => {
+				related.push({ ...s, ...{ type: 'member' } });
+			});
+		}
+		console.log('rel is\n', related)
+		return related;
+	}
+	const fetchAnalytics=async (id, lang)=>{	
+		const analyticResponse=await fetch(`https://geocore.api.geo.ca/analytics/10?uuid=${id}&lang=${lang}`);	
+		const parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
+		return parsedAnalyticResponse;
+	}
+	
 	return {
-		uuid: params.uuid,
+		t_title: params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
 		lang: params.lang,
-		item: filterFieldsByLanguage(item, params.lang.split('-').shift()),
-		t_title: item.features[0].properties.title[params.lang.split('-').shift()]
+		uuid: params.uuid,
+		result: fetchResult(params.uuid, lang),
+		related: fetchRelated(params.uuid),
+		analyticRes: fetchAnalytics(params.uuid, lang)
 	};
 };
-
-function filterFieldsByLanguage(item, lang: String) {
-	let ret = item.features[0];
-	return ret;
-}
