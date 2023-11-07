@@ -1,6 +1,9 @@
 import type { PageServerLoad } from './$types';
+import { Config } from 'sst/node/config';
 import enLabels from '$lib/components/record/i18n/en.json';
 import frLabels from '$lib/components/record/i18n/fr.json';
+
+const GEOCORE_API_DOMAIN = Config.GEOCORE_API_DOMAIN ;
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	console.log('loading data in server...');
@@ -8,12 +11,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	// @ts-ignore
 	const fetchResult = async (id, lang) => {
-		const idResponse = await fetch(`https://geocore.api.geo.ca/id/v2?id=${id}&lang=${lang}`);
+		const idResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 		const parsedIDResponse = await idResponse.json();
 		return parsedIDResponse;
 	};
 	const fetchRelated = async (id) => {
-		const collectionsResponse = await fetch(`https://geocore.api.geo.ca/collections?id=${id}`);
+		const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 		const parsedCollectionsResponse = await collectionsResponse.json();
 		const related = [];
 		if (parsedCollectionsResponse.parent !== null) {
@@ -33,7 +36,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	};
 	const fetchAnalytics = async (id, lang) => {
 		const analyticResponse = await fetch(
-			`https://geocore.api.geo.ca/analytics/10?uuid=${id}&lang=${lang}`
+			`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
 		);
 		const parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
 		return parsedAnalyticResponse;

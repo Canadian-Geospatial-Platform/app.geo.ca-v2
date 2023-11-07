@@ -21,6 +21,10 @@ export default {
 				value: 'https://auth-dev.geo.ca'
 			});
 
+			const GEOCORE_API_DOMAIN = new Config.Parameter(stack, 'GEOCORE_API_DOMAIN', {
+				value: 'https://geocore.api.geo.ca'
+			});
+
 			const USER_TABLE = new Table(stack, 'users', {
 				fields: {
 					uuid: 'string'
@@ -34,7 +38,8 @@ export default {
 					OIDC_CLIENT_ID,
 					COGNITO_USERPOOL_ID,
 					OIDC_CLIENT_SECRET,
-					OIDC_CUSTOM_DOMAIN
+					OIDC_CUSTOM_DOMAIN,
+					GEOCORE_API_DOMAIN 
 				]
 			});
 			stack.addOutputs({
