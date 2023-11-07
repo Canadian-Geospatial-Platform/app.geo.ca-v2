@@ -6,16 +6,18 @@ import frLabels from '$lib/components/record/i18n/fr.json';
 const GEOCORE_API_DOMAIN = Config.GEOCORE_API_DOMAIN;
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-	console.log('loading data in server...');
+	console.log('loading data in server...', GEOCORE_API_DOMAIN);
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	// @ts-ignore
 	const fetchResult = async (id, lang) => {
+		console.log('fetchResult\n', `${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 		const idResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 		const parsedIDResponse = await idResponse.json();
 		return parsedIDResponse;
 	};
 	const fetchRelated = async (id) => {
+		console.log('fetchRelated\n', `${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 		const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 		const parsedCollectionsResponse = await collectionsResponse.json();
 		const related = [];
@@ -35,6 +37,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		return related;
 	};
 	const fetchAnalytics = async (id, lang) => {
+		console.log('fetch analytics:\n', `${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`);
 		const analyticResponse = await fetch(
 			`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
 		);
