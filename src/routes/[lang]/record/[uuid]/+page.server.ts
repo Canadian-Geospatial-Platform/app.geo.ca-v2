@@ -3,7 +3,7 @@ import { Config } from 'sst/node/config';
 import enLabels from '$lib/components/record/i18n/en.json';
 import frLabels from '$lib/components/record/i18n/fr.json';
 
-const GEOCORE_API_DOMAIN = Config.GEOCORE_API_DOMAIN ;
+const GEOCORE_API_DOMAIN = Config.GEOCORE_API_DOMAIN;
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	console.log('loading data in server...');
