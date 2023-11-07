@@ -10,7 +10,7 @@ Once you've created a project and installed dependencies with `npm install`, sta
 - set the correct version of npm as indicated by the `.nvmrc` file. see [nvm](https://github.com/nvm-sh/nvm) for macos/linux and [nvm-windows](https://github.com/coreybutler/nvm-windows) for windows.
 - open a new terminal
 - install dependencies: `npm i`
-- enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured.
+- enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured. (Use npx instead of pnpm).
 - enshure your login and logout url's are configured correctly in aws cognito.
 
   - Allowed callback URLs
@@ -28,7 +28,7 @@ Once you've created a project and installed dependencies with `npm install`, sta
 ## Building and deploying
 
 - setup your aws credentials for prod. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-- enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured.
+- enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured. (Use npx instead of pnpm).
 - enshure your login and logout url's are configured correctly in aws cognito.
 
   - Allowed callback URLs

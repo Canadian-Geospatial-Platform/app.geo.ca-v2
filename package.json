@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "sst bind vite dev",
+		"dev": "sst bind vite dev --stage=developpement",
 		"build": "sst bind vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -13,7 +13,7 @@
 		"sst:deploy:developpement": "sst deploy --stage=developpement",
 		"sst:deploy:staging": "sst deploy --stage=staging",
 		"sst:deploy:production": "sst deploy --stage=production",
-		"sst:dev": "sst dev"
+		"sst:dev": "sst dev --stage=developpement"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
