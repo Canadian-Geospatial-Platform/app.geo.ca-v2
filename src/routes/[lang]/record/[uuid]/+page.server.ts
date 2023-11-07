@@ -39,7 +39,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		return parsedAnalyticResponse;
 	};
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
-	console.log(t);
+	console.log('h is', t.nav.home);
 	return {
 		t_title: params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
 		lang: params.lang,

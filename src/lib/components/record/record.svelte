@@ -71,6 +71,7 @@
 	};
 </script>
 
+{$page.data.t.page.aboutthisdataset}
 <InfoModal bind:showModal>
 	<h2 slot="header" class="text-xl text-custom-10">No Viewable Content</h2>
 	<div>
@@ -183,29 +184,29 @@
 					<h1 class="text-4xl">{item.title_en}</h1>
 				</div>
 				<section class="w-full relative overflow-x-auto">
-					<h2 class="text-3xl mb-4 uppercase pt-8">{$page.data.t.aboutthisdataset}</h2>
+					<h2 class="text-3xl mb-4 uppercase pt-8">{$page.data.t.page.aboutthisdataset}</h2>
 					<div>{item.description}</div>
 					<div class="py-6">
-						<p><strong>{$page.data.t.keywords}:</strong>{item.keywords}</p>
+						<p><strong>{$page.data.t.page.keywords}:</strong>{item.keywords}</p>
 					</div>
 					<table>
-						<caption class="text-2xl text-left uppercase">{$page.data.t.metadata}</caption>
+						<caption class="text-2xl text-left uppercase">{$page.data.t.page.metadata}</caption>
 						<tbody class="divide-y divide-gray-500">
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.datecreated}</th
+									>{$page.data.t.page.datecreated}</th
 								>
 								<td>{item.created}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.datepublished}</th
+									>{$page.data.t.page.datepublished}</th
 								>
 								<td>{item.published}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.temporalcoverage}</th
+									>{$page.data.t.page.temporalcoverage}</th
 								>
 								<td
 									>{#each tcRange as tc}
@@ -215,13 +216,13 @@
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.source}</th
+									>{$page.data.t.page.source}</th
 								>
 								<td>{contact[0].organisation[language]}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.uselimits}</th
+									>{$page.data.t.page.uselimits}</th
 								>
 								<td>
 									{#if useL === null}
@@ -241,9 +242,9 @@
 				{#if data.related.length > 0}
 					<RelatedProduct relatedItems={data.related} {language} />
 				{/if}
-				<Accordion id="search-result-data-resources" title={$page.data.t.dataresources}>
+				<Accordion id="search-result-data-resources" title={$page.data.t.page.dataresources}>
 					<table>
-						<caption class="invisible">{$page.data.t.dataresources}</caption>
+						<caption class="invisible">{$page.data.t.page.dataresources}</caption>
 						<tbody
 							id="tbody-data-resources"
 							class="divide-y divide-gray-500"
@@ -281,9 +282,9 @@
 						</tbody>
 					</table>
 				</Accordion>
-				<Accordion id="search-result-contact-data" title={$page.data.t.contactdata}>
+				<Accordion id="search-result-contact-data" title={$page.data.t.page.contactdata}>
 					<table>
-						<caption class="invisible">{$page.data.t.contactdata}</caption>
+						<caption class="invisible">{$page.data.t.page.contactdata}</caption>
 						<tbody id="tbody-contact-data" class="divide-y divide-gray-500">
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
@@ -340,9 +341,9 @@
 						</tbody>
 					</table>
 				</Accordion>
-				<Accordion id="search-result-adv-meta" title={$page.data.t.advancedmetadata}>
+				<Accordion id="search-result-adv-meta" title={$page.data.t.page.advancedmetadata}>
 					<table>
-						<caption class="invisible">{$page.data.t.advancedmetadata}</caption>
+						<caption class="invisible">{$page.data.t.page.advancedmetadata}</caption>
 						<tbody
 							id="tbody-adv-meta"
 							class="divide-y divide-gray-500"
@@ -453,7 +454,7 @@
 					</section>
 					{#if showSimilarRecords.length > 0}
 						<section class="pt-8">
-							<h3 class="uppercase text-2xl">{$page.data.t.similarrecords}</h3>
+							<h3 class="uppercase text-2xl">{$page.data.t.page.similarrecords}</h3>
 							<div class="pt-5">
 								<ul>
 									{#each showSimilarRecords as si, index}
@@ -476,14 +477,14 @@
 									on:click={handleViewSimilarRecords}
 								>
 									<div class="leading-none uppercase text-sm">
-										{similarRec ? $page.data.t.viewmore : $page.data.t.showless}
+										{similarRec ? $page.data.t.page.viewmore : $page.data.t.page.showless}
 									</div>
 								</button>
 							</div>
 						</section>
 					{/if}
 					<section class="pt-8">
-						<h3 class="uppercase text-2xl">{$page.data.t.metadata}</h3>
+						<h3 class="uppercase text-2xl">{$page.data.t.page.metadata}</h3>
 						<p>
 							{$page.data.t.ourmetadatais}
 						</p>

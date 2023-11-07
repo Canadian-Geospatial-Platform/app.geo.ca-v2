@@ -27,9 +27,9 @@
 	}
 </script>
 
-<Accordion id="search-result-related-products" title={$page.data.t.relatedproducts}>
+<Accordion id="search-result-related-products" title={$page.data.t.page.relatedproducts}>
 	<table>
-		<caption class="invisible">{$page.data.t.relatedproducts}</caption>
+		<caption class="invisible">{$page.data.t.page.relatedproducts}</caption>
 		<tbody id="tbody-related-products" class="divide-y divide-gray-500">
 			<tr>
 				<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.name}</th>
