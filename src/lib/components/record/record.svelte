@@ -258,10 +258,10 @@
 									>{$page.data.t.page.type}</th
 								>
 								<th scope="col" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.format}</th
+									>{$page.data.t.page.format}</th
 								>
 								<th scope="col" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.languages}</th
+									>{$page.data.t.page.languages}</th
 								>
 							</tr>
 							{#each options as option}
@@ -288,53 +288,55 @@
 						<tbody id="tbody-contact-data" class="divide-y divide-gray-500">
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.organization}</th
+									>{$page.data.t.page.organization}</th
 								>
 								<td>{org}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.address}</th
+									>{$page.data.t.page.address}</th
 								>
 								<td>{addr}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.individualname}</th
+									>{$page.data.t.page.individualname}</th
 								>
 								<td>{indname}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.role}le</th
+									>{$page.data.t.page.role}le</th
 								>
 								<td>{role}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.telephone}</th
+									>{$page.data.t.page.telephone}</th
 								>
 								<td>{telephone}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.fax}</th
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.page.fax}</th
 								>
 								<td>{fax}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.email}</th
+									>{$page.data.t.page.email}</th
 								>
 								<td>{email}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.web}</th
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.page.web}</th
 								>
 								<td>{web}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.description}</th
+									>{$page.data.t.page.description}</th
 								>
 								<td>{desc}</td>
 							</tr>
@@ -351,59 +353,61 @@
 						>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.status}</th
+									>{$page.data.t.page.status}</th
 								>
 								<td>{status}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.maintenance}</th
+									>{$page.data.t.page.maintenance}</th
 								>
 								<td>{maintenance}</td>
 							</tr>
 							<tr>
-								<th scope="row" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.id}</th>
+								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
+									>{$page.data.t.page.id}</th
+								>
 								<td>{item.id}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.topiccategory}</th
+									>{$page.data.t.page.topiccategory}</th
 								>
 								<td>{item.topicCategory}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.type}</th
+									>{$page.data.t.page.type}</th
 								>
 								<td>{type}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.north}</th
+									>{$page.data.t.page.north}</th
 								>
 								<td>{coordinates[0][2][1].toString()}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.east}</th
+									>{$page.data.t.page.east}</th
 								>
 								<td>{coordinates[0][1][0].toString()}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.west}</th
+									>{$page.data.t.page.west}</th
 								>
 								<td>{coordinates[0][0][0].toString()}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.south}</th
+									>{$page.data.t.page.south}</th
 								>
 								<td>{coordinates[0][0][1].toString()}</td>
 							</tr>
 							<tr>
 								<th scope="row" class="text-left whitespace-nowrap px-6 py-4"
-									>{$page.data.t.spatialrepresentation}</th
+									>{$page.data.t.page.spatialrepresentation}</th
 								>
 								<td>{spatialRepresentation}</td>
 							</tr>
@@ -486,39 +490,41 @@
 					<section class="pt-8">
 						<h3 class="uppercase text-2xl">{$page.data.t.page.metadata}</h3>
 						<p>
-							{$page.data.t.ourmetadatais}
+							{$page.data.t.page.ourmetadatais}
 						</p>
 						<div class="grid grid-cols-2 gap-3 pt-5">
 							<a
 								href="https://geocore.metadata.geo.ca/3a27a918-cf02-18c8-fe2b-bac5a7c4357d.geojson"
 								class="text-center text-base px-6 py-3 text-blue-100 no-underline bg-custom-10 rounded hover:bg-blue-400 hover:text-blue-200"
 								rel="noreferrer"
-								target="_blank">{$page.data.t.downloadgeocore}</a
+								target="_blank">{$page.data.t.page.downloadgeocore}</a
 							>
 
 							<a
 								href="https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&amp;version=2.0.2&amp;request=GetRecordById&amp;outputSchema=csw:IsoRecord&amp;ElementSetName=full&amp;id=3a27a918-cf02-18c8-fe2b-bac5a7c4357d"
 								class="text-center text-base px-6 py-3 text-blue-100 no-underline bg-custom-10 rounded hover:bg-blue-400 hover:text-blue-200"
 								rel="noreferrer"
-								target="_blank">{$page.data.t.viewhnaprecord}</a
+								target="_blank">{$page.data.t.page.viewhnaprecord}</a
 							>
 						</div>
 					</section>
 					<section class="pt-8">
-						<h3 class="uppercase text-2xl">{$page.data.t.numberofacesses}</h3>
+						<h3 class="uppercase text-2xl">{$page.data.t.page.numberofacesses}</h3>
 						<div class="grid grid-cols-2 gap-1 pt-2">
 							<div class="p-3 border border-slate-300 rounded">
-								<h4 class="uppercase text-center">{$page.data.t.last30}</h4>
+								<h4 class="uppercase text-center">{$page.data.t.page.last30}</h4>
 								<p class="text-center text-custom-10 text-xl">
 									{#if isNaN(data.analyticRes['30'])}
-										<span>{t.analytic.loadingfailed}</span>
+										<span>{$page.data.t.analytic.loadingfailed}</span>
 
 										<button
 											class="bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded-lg"
 											type="button"
 											on:click={() => handleAnalytic(item.id)}
 										>
-											<div class="leading-none uppercase text-sm">{t.analytictryagain}</div>
+											<div class="leading-none uppercase text-sm">
+												{$page.data.t.analytic.tryagain}
+											</div>
 										</button>
 									{:else}
 										{data.analyticRes['30']}
@@ -526,16 +532,18 @@
 								</p>
 							</div>
 							<div class="p-3 border border-slate-300 rounded">
-								<h4 class="uppercase text-center">{$page.data.t.alltime}</h4>
+								<h4 class="uppercase text-center">{$page.data.t.page.alltime}</h4>
 								<p class="text-center text-custom-10 text-xl">
 									{#if isNaN(data.analyticRes.all)}
-										<span>{t.analytic.loadingfailed}</span>
+										<span>{$page.data.t.analytic.loadingfailed}</span>
 										<button
 											class="bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded-lg"
 											type="button"
 											on:click={() => handleAnalytic(item.id)}
 										>
-											<div class="leading-none uppercase text-sm">{t.analytic.tryagain}</div>
+											<div class="leading-none uppercase text-sm">
+												{$page.data.t.analytic.tryagain}
+											</div>
 										</button>
 									{:else}
 										{data.analyticRes.all}
