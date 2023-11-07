@@ -32,8 +32,8 @@
 		<caption class="invisible">{$page.data.t.page.relatedproducts}</caption>
 		<tbody id="tbody-related-products" class="divide-y divide-gray-500">
 			<tr>
-				<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.name}</th>
-				<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.type}</th>
+				<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.page.name}</th>
+				<th scope="col" class="text-left whitespace-nowrap px-6 py-4">{$page.data.t.page.type}</th>
 			</tr>
 			{#each paginatedItems as relatedp}
 				<tr class="table-row-link">
