@@ -71,7 +71,6 @@
 	};
 </script>
 
-{$page.data.t.page.aboutthisdataset}
 <InfoModal bind:showModal>
 	<h2 slot="header" class="text-xl text-custom-10">No Viewable Content</h2>
 	<div>
