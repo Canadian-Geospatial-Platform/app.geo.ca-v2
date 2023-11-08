@@ -6,7 +6,6 @@ import frLabels from '$lib/components/record/i18n/fr.json';
 const GEOCORE_API_DOMAIN = Config.GEOCORE_API_DOMAIN;
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-	console.log('loading data in server...', GEOCORE_API_DOMAIN);
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	// @ts-ignore
@@ -45,7 +44,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		return parsedAnalyticResponse;
 	};
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
-	console.log('h is', t.nav.home);
 	return {
 		t_title: params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
 		lang: params.lang,

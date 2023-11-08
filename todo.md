@@ -1,6 +1,9 @@
 # To Do
 
 - [] show data on map
+- [] send notes on improvements to johan
+  - big black loading screen on page load.
+  - responsive issues / overflow
 - [] fetch microdata from backend instead of relying on hardcoded value.
 
 # Backlog

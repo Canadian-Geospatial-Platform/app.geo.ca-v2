@@ -8,8 +8,8 @@
 		map: {
 			interaction: 'static',
 			viewSettings: {
-				zoom: 4,
-				center: [-100, 60],
+				zoom: 3.6,
+				center: [-80, 65],
 				projection: 3978
 			},
 			basemapOptions: {
