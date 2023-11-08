@@ -1,15 +1,24 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { page } from '$app/stores';
 	import SearchResult from './search-result.svelte';
 
 	$: noResults = $page.data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
 	export let results = [];
 
-	onMount(() => {
-		console.log($page.url);
+	onMount(async () => {
 		try {
-			cgpv.init();
+			await tick();
+			cgpv.init(() => {
+				results.forEach((e) => {
+					console.log('eis:', e.coordinates);
+					cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
+						style: {
+							strokeColor: 'blue'
+						}
+					});
+				});
+			});
 		} catch (e) {
 			console.log('Error initialising cgpv.', e);
 		}
@@ -27,6 +36,7 @@
 			description={x.description}
 			date={x.created}
 			organization={x.organisation}
+			coordinates={x.coordinates}
 			id={x.id}
 		/>
 	{:else}

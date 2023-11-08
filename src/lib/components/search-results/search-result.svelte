@@ -12,13 +12,14 @@
 	export let organization;
 	export let date;
 	export let description;
+	export let coordinates;
 	export let id;
 	$: favoritesArr = $page.data.userData.mapCart;
 	$: isFavorite = favoritesArr.includes(id);
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid xl:grid-cols-2 gap-4">
-	<Map id={id + '-map'} />
+	<Map id={id + '-map'} {coordinates} />
 	<div class="bg-custom-5 rounded-lg p-2">
 		<h2 class="text-2xl">{title}</h2>
 		<p>{organization ?? ''}</p>

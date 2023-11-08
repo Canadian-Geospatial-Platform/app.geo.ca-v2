@@ -9,6 +9,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let userData = { Item: { mapCart: [] } };
 	try {
 		parsedResponse = await response.json();
+		fixCoordinatesType(parsedResponse);
 	} catch (e) {
 		console.error(e);
 	}
@@ -25,6 +26,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		userData: userData.Item
 	};
 };
+
+function fixCoordinatesType(parsedResponse) {
+	parsedResponse.Items.forEach((e) => {
+		e.coordinates = JSON.parse(e.coordinates);
+	});
+}
 
 function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
