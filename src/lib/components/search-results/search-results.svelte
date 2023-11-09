@@ -1,22 +1,28 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
+
+	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import SearchResult from './search-result.svelte';
 
 	$: noResults = $page.data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
 	export let results = [];
 
-	onMount(async () => {
+	afterNavigate(async () => {
 		try {
+			console.log('pretick');
 			await tick();
+			console.log('posttick');
 			cgpv.init(() => {
 				results.forEach((e) => {
 					console.log(e.id, e.coordinates);
-					cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
-						style: {
-							strokeColor: 'blue'
-						}
-					});
+					if (cgpv.api.maps[e.id + '-map']) {
+						cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
+							style: {
+								strokeColor: 'blue'
+							}
+						});
+					}
 				});
 			});
 		} catch (e) {
