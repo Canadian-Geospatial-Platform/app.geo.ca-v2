@@ -9,20 +9,17 @@
 
 	afterNavigate(async () => {
 		try {
-			console.log('pretick');
 			await tick();
-			console.log('posttick');
 			cgpv.init(() => {
-				let i = 0;
 				results.forEach((e) => {
-					if (cgpv.api.maps[i + '-map']) {
-						cgpv.api.maps[i + '-map'].layer.geometry.addPolygon(e.coordinates, {
+					if (cgpv.api.maps[e.id + '-map']) {
+						cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
 							style: {
 								strokeColor: 'blue'
 							}
 						});
 					} else {
-						console.warn('Unable to find map in cgpv.api.maps[' + i + " + '-map']");
+						console.warn('Unable to find map in cgpv.api.maps[' + e.id + " + '-map']");
 					}
 					++i;
 				});
@@ -38,14 +35,14 @@
 </svelte:head>
 
 <ol>
-	{#each results as x, index}
+	{#each results as x}
 		<SearchResult
 			title={x.title}
 			description={x.description}
 			date={x.created}
 			organization={x.organisation}
 			coordinates={x.coordinates}
-			id={index}
+			id={x.id}
 		/>
 	{:else}
 		<li class="p-4 m-4 bg-red-100 rounded-lg drop-shadow-lg">{noResults}</li>
