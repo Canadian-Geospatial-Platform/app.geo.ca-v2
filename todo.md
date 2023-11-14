@@ -1,11 +1,8 @@
 # To Do
 
-- show data on map
-- [] send notes on improvements to johan
-  - big black loading screen on page load.
-  - responsive issues / overflow
-  - erreur sur navigation a une autre page: DOMException: Node.removeChild: The node to be removed is not a child of this node
+- [] fix maps breaking on navigation. geoview has an issue and plans on tackling the issue on their side. we can later confirm that it is fixed.
 - [] fetch microdata from backend instead of relying on hardcoded value.
+- [] finish favorites ui.
 
 # Backlog
 

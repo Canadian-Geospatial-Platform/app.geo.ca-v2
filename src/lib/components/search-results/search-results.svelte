@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import SearchResult from './search-result.svelte';
@@ -14,15 +13,18 @@
 			await tick();
 			console.log('posttick');
 			cgpv.init(() => {
+				let i = 0;
 				results.forEach((e) => {
-					console.log(e.id, e.coordinates);
-					if (cgpv.api.maps[e.id + '-map']) {
-						cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
+					if (cgpv.api.maps[i + '-map']) {
+						cgpv.api.maps[i + '-map'].layer.geometry.addPolygon(e.coordinates, {
 							style: {
 								strokeColor: 'blue'
 							}
 						});
+					} else {
+						console.warn('Unable to find map in cgpv.api.maps[' + i + " + '-map']");
 					}
+					++i;
 				});
 			});
 		} catch (e) {
@@ -36,14 +38,14 @@
 </svelte:head>
 
 <ol>
-	{#each results as x}
+	{#each results as x, index}
 		<SearchResult
 			title={x.title}
 			description={x.description}
 			date={x.created}
 			organization={x.organisation}
 			coordinates={x.coordinates}
-			id={x.id}
+			id={index}
 		/>
 	{:else}
 		<li class="p-4 m-4 bg-red-100 rounded-lg drop-shadow-lg">{noResults}</li>
