@@ -11,7 +11,6 @@
 			await tick();
 			cgpv.init(() => {
 				results.forEach((e) => {
-					console.log('eis:', e.coordinates);
 					cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
 						style: {
 							strokeColor: 'blue'
