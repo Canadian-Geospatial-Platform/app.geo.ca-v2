@@ -69,7 +69,7 @@
 	function calculateZoom(coordinates) {
 		let area = calculatePolygonArea(coordinates);
 		if (area > 100) {
-			return 3;
+			return 3.2;
 		}
 		if (area > 50) {
 			return 4;

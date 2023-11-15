@@ -2,6 +2,7 @@ import type { PageServerLoad } from './$types';
 import { page } from '$app/stores';
 import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/utils/user-db.ts';
+import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
@@ -9,7 +10,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let userData = { Item: { mapCart: [] } };
 	try {
 		parsedResponse = await response.json();
-		fixCoordinatesType(parsedResponse);
+		sanitize(parsedResponse);
 	} catch (e) {
 		console.error(e);
 	}
@@ -26,12 +27,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		userData: userData.Item
 	};
 };
-
-function fixCoordinatesType(parsedResponse) {
-	parsedResponse.Items.forEach((e) => {
-		e.coordinates = JSON.parse(e.coordinates);
-	});
-}
 
 function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
