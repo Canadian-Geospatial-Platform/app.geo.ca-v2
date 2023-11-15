@@ -12,7 +12,6 @@
 			await tick();
 			cgpv.init(() => {
 				results.forEach((e) => {
-					console.log(e);
 					if (cgpv.api.maps[e.id + '-map']) {
 						cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
 							style: {

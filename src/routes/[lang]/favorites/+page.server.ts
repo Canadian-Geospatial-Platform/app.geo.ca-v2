@@ -69,9 +69,7 @@ async function getRecords(idIterator, lang, fetch) {
 }
 
 function normaliseData(lang, records) {
-	records = records.filter(function (e) {
-		return e !== undefined;
-	});
+	records = records.filter((e) => e);
 	for (const r of records) {
 		try {
 			r.title = r['title_' + lang.split('-')[0]];
