@@ -69,9 +69,16 @@ async function getRecords(idIterator, lang, fetch) {
 }
 
 function normaliseData(lang, records) {
+	records = records.filter(function (e) {
+		return e !== undefined;
+	});
 	for (const r of records) {
-		r.title = r['title_' + lang.split('-')[0]];
-		r.description = r['title_' + lang.split('-')[0]];
+		try {
+			r.title = r['title_' + lang.split('-')[0]];
+			r.description = r['title_' + lang.split('-')[0]];
+		} catch (e) {
+			console.warn('error normalizing data: \n', e);
+		}
 	}
 	return records;
 }

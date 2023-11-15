@@ -29,6 +29,10 @@
 	$: sConfig = JSON.stringify(config);
 
 	function calculateCenter(coordinates) {
+		if (!coordinates) {
+			console.warn('invalid coordinates, returing default value(1): \n', coordinates);
+			return 0;
+		}
 		let i = 0;
 		let xAccumulator = 0;
 		let yAccumulator = 0;
