@@ -1,7 +1,8 @@
 # To Do
 
-- [] fetch microdata from backend instead of relying on hardcoded value.
 - [] finish favorites ui.
+- [] fetch microdata from backend instead of relying on hardcoded value.
+- [] add spatio filtering
 - [] fix maps breaking on navigation. geoview has an issue and plans on tackling the issue on their side. we can later confirm that it is fixed.
 
 # Backlog

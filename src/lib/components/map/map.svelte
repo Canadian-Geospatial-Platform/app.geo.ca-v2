@@ -29,18 +29,24 @@
 	$: sConfig = JSON.stringify(config);
 
 	function calculateCenter(coordinates) {
+		const defaultValue = [-100, 60];
 		if (!coordinates) {
-			console.warn('invalid coordinates, returing default value(1): \n', coordinates);
-			return 0;
+			console.warn('invalid coordinates, returing default value: \n', coordinates);
+			return defaultValue;
 		}
 		let i = 0;
 		let xAccumulator = 0;
 		let yAccumulator = 0;
-		coordinates.forEach((e) => {
-			xAccumulator += e[0];
-			yAccumulator += e[1];
-			i++;
-		});
+		try {
+			coordinates.forEach((e) => {
+				xAccumulator += e[0];
+				yAccumulator += e[1];
+				i++;
+			});
+		} catch (e) {
+			console.warn('error iterating coordinates, , returing default value2', coordinates);
+			return defaultValue;
+		}
 		return [xAccumulator / i, yAccumulator / i];
 	}
 
@@ -63,7 +69,7 @@
 	function calculateZoom(coordinates) {
 		let area = calculatePolygonArea(coordinates);
 		if (area > 100) {
-			return 3.2;
+			return 3;
 		}
 		if (area > 50) {
 			return 4;
