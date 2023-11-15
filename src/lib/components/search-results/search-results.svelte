@@ -12,6 +12,7 @@
 			await tick();
 			cgpv.init(() => {
 				results.forEach((e) => {
+					console.log(e);
 					if (cgpv.api.maps[e.id + '-map']) {
 						cgpv.api.maps[e.id + '-map'].layer.geometry.addPolygon(e.coordinates, {
 							style: {
@@ -21,11 +22,10 @@
 					} else {
 						console.warn('Unable to find map in cgpv.api.maps[' + e.id + " + '-map']");
 					}
-					++i;
 				});
 			});
 		} catch (e) {
-			console.log('Error initialising cgpv.', e);
+			console.warn('Error initialising cgpv.', e);
 		}
 	});
 </script>
