@@ -1,7 +1,8 @@
 # To Do
 
 - [] finish favorites ui.
-  - [] add filtering to favorites
+  - [] add filtering/custom collections to favorites
+- [] refresh tokens automatically.
 - [] add favorited searches. (just url link since url holds state).
 - [] fetch microdata from backend instead of relying on hardcoded value.
 - [] add spatio filtering
