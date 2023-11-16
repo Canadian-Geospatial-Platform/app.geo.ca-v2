@@ -23,8 +23,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let results = [];
 	try {
 		results = await response;
-		sanitizedResults = sanitize(results);
-		// results = normaliseData(params.lang, sanitizedResults );
+		sanitizedResults = sanitize(results, params.lang);
 	} catch (e) {
 		console.error('error fetching records: \n', e);
 		results = [];
@@ -69,18 +68,6 @@ async function getRecords(idIterator, lang, fetch) {
 		})
 	);
 	return ret;
-}
-
-function normaliseData(lang, records) {
-	for (const r of records) {
-		try {
-			r.title = r['title_' + lang.split('-')[0]];
-			r.description = r['title_' + lang.split('-')[0]];
-		} catch (e) {
-			console.warn('error normalizing data: \n', e);
-		}
-	}
-	return records;
 }
 
 export const actions = {

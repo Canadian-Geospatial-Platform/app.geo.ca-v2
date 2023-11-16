@@ -12,7 +12,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	try {
 		parsedResponse = await response.json();
 		sanitizedResults = sanitize(parsedResponse.Items);
-		console.log('sr:\n', sanitizedResults[0]);
 	} catch (e) {
 		console.error(e);
 	}
