@@ -4,9 +4,10 @@
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 	import Offset from '$lib/components/filters/offset.svelte';
 
-	$: results = $page.data.results?.['Items'] ? $page.data.results.Items : [];
+	$: results = $page.data.results ? $page.data.results : [];
 </script>
 
+{results}
 <div class="p-4 m-4 rounded-lg drop-shadow-lg bg-custom-5">
 	<h1 class="text-3xl font-bold pb-4">{$page.data.t_title}</h1>
 	<p class="text-justify">{$page.data.t_description}</p>

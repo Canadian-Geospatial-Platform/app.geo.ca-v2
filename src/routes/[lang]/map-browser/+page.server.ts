@@ -8,9 +8,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
 	let parsedResponse = [];
 	let userData = { Item: { mapCart: [] } };
+	let sanitizedResults;
 	try {
 		parsedResponse = await response.json();
-		sanitize(parsedResponse);
+		sanitizedResults = sanitize(parsedResponse.Items);
+		console.log('sr:\n', sanitizedResults[0]);
 	} catch (e) {
 		console.error(e);
 	}
@@ -23,7 +25,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	return {
 		lang: params.lang,
-		results: parsedResponse,
+		results: sanitizedResults,
 		userData: userData.Item
 	};
 };

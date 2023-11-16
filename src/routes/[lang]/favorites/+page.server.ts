@@ -1,10 +1,12 @@
 import type { PageServerLoad } from './$types';
 import { getUserData } from '$lib/utils/user-db.ts';
 import { removeFromMapCart } from '$lib/actions.ts';
+import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = [];
 	let userData;
+	let sanitizedResults;
 
 	try {
 		userData = await getUserData(cookies);
@@ -21,7 +23,8 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let results = [];
 	try {
 		results = await response;
-		results = normaliseData(params.lang, results);
+		sanitizedResults = sanitize(results);
+		// results = normaliseData(params.lang, sanitizedResults );
 	} catch (e) {
 		console.error('error fetching records: \n', e);
 		results = [];
@@ -30,13 +33,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	return {
 		lang: params.lang,
 		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',
-		results: results,
+		results: sanitizedResults,
 		userData: userData.Item
 	};
 };
 
 function getRecord(id, lang, fetch) {
-	let url = new URL('https://geocore.api.geo.ca/id');
+	const url = new URL('https://geocore.api.geo.ca/id');
 	const params = {
 		id: id,
 		lang: lang.split('-')[0]
@@ -69,7 +72,6 @@ async function getRecords(idIterator, lang, fetch) {
 }
 
 function normaliseData(lang, records) {
-	records = records.filter((e) => e);
 	for (const r of records) {
 		try {
 			r.title = r['title_' + lang.split('-')[0]];
