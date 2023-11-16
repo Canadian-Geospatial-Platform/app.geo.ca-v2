@@ -15,10 +15,16 @@ function fixCoordinatesType(results) {
 function normaliseLangage(records, lang) {
 	for (const r of records) {
 		try {
-			r.title = r['title_' + lang.split('-')[0]];
-			r.description = r['title_' + lang.split('-')[0]];
+			let t = r?.['title_' + lang.split('-')[0]];
+			if (t) {
+				r.title = t;
+			}
+			let d = r?.['title_' + lang.split('-')[0]];
+			if (d) {
+				r.description = d;
+			}
 		} catch (e) {
-			console.warn('error normalizing data: \n', e);
+			console.warn('error normalizing data: \n', r);
 		}
 	}
 	return records;
