@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import item from '$lib/components/microdata/sample-item.json';
-import { getRecord } from '$lib/io/record.ts';
+import { getRecord } from '$lib/db/record.ts';
 import { Table } from 'sst/node/table';
 import { Bucket } from 'sst/node/bucket';
 
