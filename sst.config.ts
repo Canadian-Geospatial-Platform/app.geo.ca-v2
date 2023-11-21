@@ -1,5 +1,6 @@
 import type { SSTConfig } from 'sst';
-import { Config, SvelteKitSite, Table } from 'sst/constructs';
+import { SvelteKitSite, Config, Bucket, Table } from 'sst/constructs';
+import * as cdk from 'aws-cdk-lib';
 
 export default {
 	config(_input) {
@@ -20,11 +21,17 @@ export default {
 			const OIDC_CUSTOM_DOMAIN = new Config.Parameter(stack, 'OIDC_CUSTOM_DOMAIN', {
 				value: process.env.OIDC_CUSTOM_DOMAIN
 			});
-
 			const GEOCORE_API_DOMAIN = new Config.Parameter(stack, 'GEOCORE_API_DOMAIN', {
 				value: process.env.GEOCORE_API_DOMAIN
 			});
-
+			const BUCKET = new Bucket(stack, 'Bucket', {
+				cdk: {
+					bucket: {
+						autoDeleteObjects: true,
+						removalPolicy: cdk.RemovalPolicy.DESTROY
+					}
+				}
+			});
 			const USER_TABLE = new Table(stack, 'users', {
 				fields: {
 					uuid: 'string'
@@ -34,14 +41,16 @@ export default {
 
 			const site = new SvelteKitSite(stack, 'site', {
 				bind: [
-					USER_TABLE,
 					OIDC_CLIENT_ID,
 					COGNITO_USERPOOL_ID,
 					OIDC_CLIENT_SECRET,
 					OIDC_CUSTOM_DOMAIN,
-					GEOCORE_API_DOMAIN
+					GEOCORE_API_DOMAIN,
+					BUCKET,
+					USER_TABLE
 				]
 			});
+
 			stack.addOutputs({
 				url: site.url
 			});

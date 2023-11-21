@@ -3,17 +3,17 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "sst bind vite dev",
+		"dev": "sst bind vite dev --stage dev",
 		"build": "sst bind vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"sst:deploy:developpement": "sst deploy --stage=developpement",
-		"sst:deploy:staging": "sst deploy --stage=staging",
-		"sst:deploy:production": "sst deploy --stage=production",
-		"sst:dev": "sst dev --stage=local"
+		"sst:deploy:dev": "sst deploy --stage dev",
+		"sst:deploy:stage": "sst deploy --stage stage",
+		"sst:deploy:prod": "sst deploy --stage prod",
+		"sst:dev": "sst dev --stage dev"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -41,6 +41,7 @@
 	"type": "module",
 	"dependencies": {
 		"@aws-sdk/client-dynamodb": "^3.421.0",
+		"@aws-sdk/client-s3": "^3.454.0",
 		"@aws-sdk/lib-dynamodb": "^3.421.0",
 		"aws-cdk": "^2.88.0",
 		"aws-jwt-verify": "^4.0.0",
