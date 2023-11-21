@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { getUserData } from '$lib/utils/user-db.ts';
+import { getUserData } from '$lib/io/user.ts';
 import { removeFromMapCart } from '$lib/actions.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 

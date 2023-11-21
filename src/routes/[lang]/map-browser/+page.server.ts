@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { page } from '$app/stores';
 import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
-import { getUserData } from '$lib/utils/user-db.ts';
+import { getUserData } from '$lib/io/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {

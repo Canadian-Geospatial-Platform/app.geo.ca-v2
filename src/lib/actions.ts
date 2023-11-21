@@ -1,4 +1,4 @@
-import { getUserData, putUserData } from '$lib/utils/user-db.ts';
+import { getUserData, putUserData } from '$lib/io/user.ts';
 import { redirect } from '@sveltejs/kit';
 
 const addToMapCart = async ({ url, cookies, request, event }) => {
