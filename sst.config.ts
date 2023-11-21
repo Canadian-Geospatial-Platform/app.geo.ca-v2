@@ -24,7 +24,7 @@ export default {
 			const GEOCORE_API_DOMAIN = new Config.Parameter(stack, 'GEOCORE_API_DOMAIN', {
 				value: process.env.GEOCORE_API_DOMAIN
 			});
-			const BUCKET = new Bucket(stack, 'Bucket', {
+			const GEOCORE_BUCKET = new Bucket(stack, 'geocore', {
 				cdk: {
 					bucket: {
 						autoDeleteObjects: true,
@@ -46,7 +46,7 @@ export default {
 					OIDC_CLIENT_SECRET,
 					OIDC_CUSTOM_DOMAIN,
 					GEOCORE_API_DOMAIN,
-					BUCKET,
+					GEOCORE_BUCKET,
 					USER_TABLE
 				]
 			});

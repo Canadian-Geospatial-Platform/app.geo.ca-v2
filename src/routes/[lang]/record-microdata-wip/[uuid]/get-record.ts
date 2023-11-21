@@ -8,12 +8,31 @@ const s3Client = new S3Client({});
 const getRecord = async (uuid) => {
 	let key = PREFIX + uuid + '.geojson';
 	// todo: error handling
-	const { Body } = await s3Client.send(
-		new GetObjectCommand({
-			Bucket: Bucket.geocore.bucketName,
-			Key: key
-		})
-	);
-	return Body;
+	return new Promise(async (resolve, reject) => {
+		try {
+			const { Body } = await s3Client.send(
+				new GetObjectCommand({
+					Bucket: Bucket.geocore.bucketName,
+					Key: key
+				})
+			);
+			// Store all of data chunks returned from the response data stream
+			// into an array then use Array#join() to use the returned contents as a String
+			let responseDataChunks = [];
+
+			// Handle an error while streaming the response body
+			Body.once('error', (err) => reject(err));
+
+			// Attach a 'data' listener to add the chunks of data to our array
+			// Each chunk is a Buffer instance
+			Body.on('data', (chunk) => responseDataChunks.push(chunk));
+
+			// Once the stream has no more data, join the chunks into a string and return the string
+			Body.once('end', () => resolve(responseDataChunks.join('')));
+		} catch (err) {
+			// Handle the error or throw
+			return reject(err);
+		}
+	});
 };
 export { getRecord };

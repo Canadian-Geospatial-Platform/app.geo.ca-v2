@@ -1,15 +1,12 @@
 import type { PageServerLoad } from './$types';
 import item from '$lib/components/microdata/sample-item.json';
-// import { getRecord } from './get-record.ts';
+import { getRecord } from './get-record.ts';
 import { Table } from 'sst/node/table';
 import { Bucket } from 'sst/node/bucket';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
-	// let record = await getRecord(params.uuid)
-	console.log(
-		'True Project. The bucket object should contain information on the bound bucket. instead it is an empty object: \n',
-		Bucket
-	);
+	let record = await getRecord(params.uuid);
+	console.log('record is:\n', record);
 	return {
 		uuid: params.uuid,
 		lang: params.lang,
