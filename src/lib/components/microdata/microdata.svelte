@@ -8,7 +8,9 @@
 	$: lang = $page.data.lang == 'en-ca' ? 'en' : 'fr';
 </script>
 
-<div vocab="http://schema.org/" typeof="Dataset" class="hidden">
-	<Record {item} {lang} />
-	<Catalog {item} {lang} />
-</div>
+{#if item}
+	<div vocab="http://schema.org/" typeof="Dataset" class="hidden">
+		<Record {item} {lang} />
+		<Catalog {item} {lang} />
+	</div>
+{/if}

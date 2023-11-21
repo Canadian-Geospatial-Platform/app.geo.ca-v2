@@ -1,5 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { Config } from 'sst/node/config';
+import { getRecord } from '$lib/db/record.ts';
 import enLabels from '$lib/components/record/i18n/en.json';
 import frLabels from '$lib/components/record/i18n/fr.json';
 
@@ -8,15 +9,20 @@ const GEOCORE_API_DOMAIN = Config.GEOCORE_API_DOMAIN;
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
+	let record;
+	try {
+		record = await getRecord(params.uuid);
+	} catch (e) {
+		console.warn('error fetching record for microdata:\n', e);
+	}
+
 	// @ts-ignore
 	const fetchResult = async (id, lang) => {
-		console.log('fetchResult\n', `${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 		const idResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 		const parsedIDResponse = await idResponse.json();
 		return parsedIDResponse;
 	};
 	const fetchRelated = async (id) => {
-		console.log('fetchRelated\n', `${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 		const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 		const parsedCollectionsResponse = await collectionsResponse.json();
 		const related = [];
@@ -36,7 +42,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		return related;
 	};
 	const fetchAnalytics = async (id, lang) => {
-		console.log('fetch analytics:\n', `${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`);
 		const analyticResponse = await fetch(
 			`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
 		);
@@ -52,6 +57,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		result: fetchResult(params.uuid, lang),
 		related: fetchRelated(params.uuid),
 		analyticRes: fetchAnalytics(params.uuid, lang),
-		t: t
+		t: t,
+		item_v2: record?.features[0]
 	};
 };

@@ -6,6 +6,8 @@
 	import { openShareDialog } from '$lib/components/record/share/share-button.svelte';
 	import Accordion from '$lib/components/record/share/accordion.svelte';
 	import RelatedProduct from './related-product.svelte';
+	import MicroData from '$lib/components/microdata/microdata.svelte';
+
 	// @ts-ignore
 	export let data;
 	let showModal = false;
@@ -71,6 +73,7 @@
 	};
 </script>
 
+<MicroData item={$page.data.item_v2} />
 <InfoModal bind:showModal>
 	<h2 slot="header" class="text-xl text-custom-10">No Viewable Content</h2>
 	<div>
