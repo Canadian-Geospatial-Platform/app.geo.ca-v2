@@ -3,12 +3,9 @@
 	import { onMount } from 'svelte';
 	import Catalog from './catalog.svelte';
 	import Record from './record.svelte';
-	import item from './sample-item.json';
 
+	export let item;
 	$: lang = $page.data.lang == 'en-ca' ? 'en' : 'fr';
-
-	onMount(() => {});
-	// todo: add catalog metadata
 </script>
 
 <div vocab="http://schema.org/" typeof="Dataset" class="hidden">

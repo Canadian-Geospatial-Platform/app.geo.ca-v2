@@ -3,6 +3,6 @@
 	export let lang;
 </script>
 
-{#each item.features[0].properties.keywords as k}
+{#each item.properties.keywords as k}
 	<span property="keywords">{k[lang]}</span>
 {/each}

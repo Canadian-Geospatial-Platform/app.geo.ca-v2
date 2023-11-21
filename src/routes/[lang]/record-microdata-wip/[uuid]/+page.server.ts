@@ -4,18 +4,12 @@ import { getRecord } from './get-record.ts';
 import { Table } from 'sst/node/table';
 import { Bucket } from 'sst/node/bucket';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	let record = await getRecord(params.uuid);
-	console.log('record is:\n', record);
 	return {
 		uuid: params.uuid,
 		lang: params.lang,
-		item: filterFieldsByLanguage(item, params.lang.split('-').shift()),
-		t_title: item.features[0].properties.title[params.lang.split('-').shift()]
+		item_v2: record.features[0],
+		t_title: record.features[0].properties.title[params.lang.split('-').shift()]
 	};
 };
-
-function filterFieldsByLanguage(item, lang: String) {
-	let ret = item.features[0];
-	return ret;
-}

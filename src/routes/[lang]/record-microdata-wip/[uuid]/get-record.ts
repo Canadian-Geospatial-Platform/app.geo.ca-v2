@@ -7,7 +7,6 @@ const s3Client = new S3Client({});
 
 const getRecord = async (uuid) => {
 	let key = PREFIX + uuid + '.geojson';
-	// todo: error handling
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { Body } = await s3Client.send(
@@ -28,7 +27,7 @@ const getRecord = async (uuid) => {
 			Body.on('data', (chunk) => responseDataChunks.push(chunk));
 
 			// Once the stream has no more data, join the chunks into a string and return the string
-			Body.once('end', () => resolve(responseDataChunks.join('')));
+			Body.once('end', () => resolve(JSON.parse(responseDataChunks.join(''))));
 		} catch (err) {
 			// Handle the error or throw
 			return reject(err);

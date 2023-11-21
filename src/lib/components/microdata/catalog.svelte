@@ -15,7 +15,7 @@
 			: 'Catalogue de données de la plateforme Geo.ca du gouvernement du Canada.';
 	// polygon suit wkt
 	function boundaryMultiPolygon() {
-		let jsonPolygon = item.features[0].geometry.coordinates[0];
+		let jsonPolygon = item.geometry.coordinates[0];
 		let wktPolygonString = '';
 		for (const xy of jsonPolygon) {
 			wktPolygonString += xy[0] + ' ' + xy[1] + ',';
@@ -49,7 +49,7 @@
 		<span property="genre" value="" />
 
 		<span property="license" typeof="CreativeWork"
-			><span property="name" value={item.features[0].properties.constraints.legal[lang]} />
+			><span property="name" value={item.properties.constraints.legal[lang]} />
 		</span>
 	</span>
 </div>

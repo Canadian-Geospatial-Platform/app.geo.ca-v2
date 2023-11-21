@@ -7,17 +7,17 @@
 	export let lang;
 </script>
 
-<span property="name">{item.features[0].properties.title[lang]}</span>
-<span property="description">{item.features[0].properties.description[lang]}</span>
+<span property="name">{item.properties.title[lang]}</span>
+<span property="description">{item.properties.description[lang]}</span>
 <Organisations {item} {lang} />
 <span
 	property="temporalCoverage"
-	value={item.features[0].properties.extent.temporalExtent.start +
+	value={item.properties.extent.temporalExtent.start +
 		'/' +
-		(item.features[0].properties.extent.temporalExtent.end ?? '..')}
+		(item.properties.extent.temporalExtent.end ?? '..')}
 />
-<span property="genre">{item.features[0].properties.type[lang]}</span>
+<span property="genre">{item.properties.type[lang]}</span>
 <Keywords {item} {lang} />
-{#each item.features[0].properties.options as option}
+{#each item.properties.options as option}
 	<Download {option} />
 {/each}
