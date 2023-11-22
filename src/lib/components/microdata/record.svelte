@@ -18,6 +18,4 @@
 />
 <span property="genre">{item.properties.type[lang]}</span>
 <Keywords {item} {lang} />
-{#each item.properties.options as option}
-	<Download {option} />
-{/each}
+<Download {item} />

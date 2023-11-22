@@ -1,11 +1,9 @@
 # To Do
 
 - [] bbox based spatial filtering.
-- [] favorites ui.
-  - [] add filtering/custom collections to favorites
+- [] add filtering/custom collections to favorites
 - [] refresh tokens automatically.
 - [] add favorited searches. (just url link since url holds state).
-- [] fetch microdata from backend instead of relying on hardcoded value.
 - [] fix maps breaking on navigation. geoview has an issue and plans on tackling the issue on their side. we can later confirm that it is fixed.
 
 # Backlog
