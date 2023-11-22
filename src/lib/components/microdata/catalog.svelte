@@ -31,10 +31,8 @@
 	<span property="name" value={catalogTitle}
 		><span property="spatialCoverage" typeof="Place">
 			<span property="geo" typeof="GeoShape">
-				<span property="name" value="Dataset Boundary" /><span
-					property="MULTIPOLYGON"
-					value={boundaryMultiPolygon()}
-				/>
+				<span property="name" value="Dataset Boundary" />
+				<span property="polygon" value={boundaryMultiPolygon()} />
 			</span>
 		</span>
 	</span>
