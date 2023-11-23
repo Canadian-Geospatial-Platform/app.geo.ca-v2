@@ -1,5 +1,5 @@
 import type { SSTConfig } from 'sst';
-import { SvelteKitSite, Config, Bucket, Table } from 'sst/constructs';
+import { SvelteKitSite, Config, Bucket, Table, Function } from 'sst/constructs';
 import * as cdk from 'aws-cdk-lib';
 
 export default {
@@ -49,6 +49,13 @@ export default {
 					GEOCORE_API_DOMAIN,
 					GEOCORE_BUCKET,
 					USER_TABLE
+				]
+			});
+			
+			const HNAP_BRIDGE = new Function(stack, "hnap-bridge", {
+			  handler: "packages/hnap-bridge/index.handler",
+				bind: [
+					GEOCORE_BUCKET
 				]
 			});
 
