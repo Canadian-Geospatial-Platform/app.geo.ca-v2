@@ -4,7 +4,7 @@
   "description": "A monorepo containing the geo.ca web application and related services.",
   "main": " ",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd packages/web-app/ && npm run dev",
 		"sst:deploy:dev": "sst deploy --stage dev",
 		"sst:deploy:stage": "sst deploy --stage stage",
 		"sst:deploy:prod": "sst deploy --stage prod",
