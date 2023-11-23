@@ -40,7 +40,7 @@ export default {
 			});
 
 			const site = new SvelteKitSite(stack, 'site', {
-				path: "web-app",
+				path: "packages/web-app/",
 				bind: [
 					OIDC_CLIENT_ID,
 					COGNITO_USERPOOL_ID,
