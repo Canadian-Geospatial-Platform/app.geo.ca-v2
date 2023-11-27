@@ -34,7 +34,7 @@ async function writeToOutputBucket(result) {
     };
   } catch (error) {
     error =
-      "Error when parsin UUID: " +
+      "Error when parsing UUID: " +
       result.properties[0].id +
       " with message: " +
       error;
@@ -740,13 +740,20 @@ function collectSubValues(parent, pathToChild) {
   return ret;
 }
 
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+} 
+
 // Get the geojson from the output bucket
 async function getBucketObject(bucket, objectKey) {
+  console.log(bucket, objectKey)
   try {
     const params = {
       Bucket: bucket,
       Key: objectKey,
     };
+    // this is a hack required because of the s3 buckets eventual consistency. todo: something better.
+    await delay(5000);
     const data = await s3.getObject(params).promise();
     return JSON.parse(data.Body.toString("utf-8"));
   } catch (e) {
