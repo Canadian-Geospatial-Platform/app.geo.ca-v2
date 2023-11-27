@@ -1,12 +1,12 @@
 "use strict";
-const aws = require("aws-sdk");
-const { Bucket } = require("sst/node/bucket");
-const codelist = require("./codelists.js"); // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
+import aws from "aws-sdk";
+import { Bucket } from "sst/node/bucket";
+import codelist from "./codelists.js"; // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
 const s3 = new aws.S3();
 const OUTPUT_BUCKET_NAME = Bucket.geocore.bucketName;
 var languageCode; // defined globally as it is widely used and unchanging.
 
-exports.handler = async (event, context, callback) => {
+export const handler = async (event, context, callback) => {
   console.log("Starting handling of entry: ", event.Records[0].s3.object.key);
   const data = await getBucketObject(
     event.Records[0].s3.bucket.name,
