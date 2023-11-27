@@ -41,6 +41,7 @@ export default {
 
 			const HNAP_BRIDGE = new Function(stack, "hnap-bridge", {
 			  handler: "packages/hnap-bridge/index.handler",
+				permissions: ["s3"],
 				bind: [
 					GEOCORE_BUCKET
 				]
