@@ -39,6 +39,13 @@ export default {
 				primaryIndex: { partitionKey: 'uuid' }
 			});
 
+			const HNAP_BRIDGE = new Function(stack, "hnap-bridge", {
+			  handler: "packages/hnap-bridge/index.handler",
+				bind: [
+					GEOCORE_BUCKET
+				]
+			});
+
 			const site = new SvelteKitSite(stack, 'site', {
 				path: "packages/web-app/",
 				bind: [
@@ -52,13 +59,22 @@ export default {
 				]
 			});
 			
-			const HNAP_BRIDGE = new Function(stack, "hnap-bridge", {
-			  handler: "packages/hnap-bridge/index.handler",
-				bind: [
-					GEOCORE_BUCKET
-				]
+			// Bucket containing the import hnap json data from external systems
+			let HNAP_BUCKET = new Bucket(stack, "hnap", {
+			  notifications: {
+			    myNotification1: {
+			      function: HNAP_BRIDGE,
+			      events: ["object_created"],
+			    },
+			  },
+				cdk: {
+					bucket: {
+						autoDeleteObjects: true,
+						removalPolicy: cdk.RemovalPolicy.DESTROY
+					}
+				}
 			});
-
+			
 			stack.addOutputs({
 				url: site.url
 			});
