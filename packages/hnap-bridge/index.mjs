@@ -740,25 +740,18 @@ function collectSubValues(parent, pathToChild) {
   return ret;
 }
 
-function delay(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-} 
-
 // Get the geojson from the output bucket
 async function getBucketObject(bucket, objectKey) {
-  console.log(bucket, objectKey)
+  const params = {
+    Bucket: bucket,
+    Key: objectKey,
+  };
   try {
-    const params = {
-      Bucket: bucket,
-      Key: objectKey,
-    };
-    // this is a hack required because of the s3 buckets eventual consistency. todo: something better.
-    await delay(5000);
     const data = await s3.getObject(params).promise();
     return JSON.parse(data.Body.toString("utf-8"));
   } catch (e) {
     console.log(
-      `Warning: Could not retrieve file from S3: ${e.message}. This can be caused by the bucket having no entry for this specific item or a race condition due to the eventual consistency model of s3.`,
+      `Warning: Could not retrieve file ${objectKey} from ${bucket}: ${e.message}. This can be caused by the bucket having no entry for this specific item or a race condition due to the eventual consistency model of s3. `,
     );
     return null;
   }
@@ -767,7 +760,7 @@ async function getBucketObject(bucket, objectKey) {
 // Config for fetching data from the output bucket
 async function getLatestGeocoreData(id) {
   const bucket = OUTPUT_BUCKET_NAME; // Global variable from process.env
-  const key = id + ".geojson"; // id should contain folder structure. ex: folder1/folder2/000183ed-8864-42f0-ae43-c4313a860720.
+  const key = "records/" + id + ".geojson"; 
   const ret = await getBucketObject(bucket, key);
   return ret;
 }
