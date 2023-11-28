@@ -758,7 +758,7 @@ async function getBucketObject(bucket, objectKey) {
     return JSON.parse(data.Body.toString("utf-8"));
   } catch (e) {
     console.log(
-      `Warning: Could not retrieve file from S3: ${e.message}. This may be normal. It can be caused by the bucket having no entry for this specific item.`,
+      `Warning: Could not retrieve file from S3: ${e.message}. This can be caused by the bucket having no entry for this specific item or a race condition due to the eventual consistency model of s3.`,
     );
     return null;
   }
