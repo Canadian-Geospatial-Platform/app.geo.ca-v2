@@ -8,7 +8,7 @@
     "sst:deploy:dev": "sst deploy --stage dev",
     "sst:deploy:stage": "sst deploy --stage stage",
     "sst:deploy:prod": "sst deploy --stage prod",
-    "sst:dev": "sst dev --stage dev"
+    "sst:dev": "sst dev --stage live-dev"
   },
   "author": "Pascal Vautour",
   "license": "ISC",
