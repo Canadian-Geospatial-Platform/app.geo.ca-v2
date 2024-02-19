@@ -24,6 +24,10 @@ export default {
 			const GEOCORE_API_DOMAIN = new Config.Parameter(stack, 'GEOCORE_API_DOMAIN', {
 				value: process.env.GEOCORE_API_DOMAIN
 			});
+			const FEATURE_SIGN_IN= new Config.Parameter(stack, 'FEATURE_SIGN_IN', {
+				value: "false"
+			});
+
 			const GEOCORE_BUCKET = new Bucket(stack, 'geocore', {
 				cdk: {
 					bucket: {
@@ -57,7 +61,8 @@ export default {
 					OIDC_CUSTOM_DOMAIN,
 					GEOCORE_API_DOMAIN,
 					GEOCORE_BUCKET,
-					USER_TABLE
+					USER_TABLE,
+					FEATURE_SIGN_IN
 				]
 			});
 			

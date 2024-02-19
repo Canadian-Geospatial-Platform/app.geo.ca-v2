@@ -441,21 +441,23 @@
 							>
 								<div class="leading-none uppercase text-sm">view on map</div>
 							</button>
-							<button
-								class={activeMap
-									? 'bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded'
-									: 'bg-custom-10 opacity-60 text-white px-6 py-4 rounded'}
-								type="button"
-								on:click={activeMap ? () => changeMapping(item.id) : () => setGreyMap(true)}
-							>
-								<div class="leading-none uppercase text-sm">
-									{#if inMapping}
-										Added to MyMap
-									{:else}
-										Add to MyMap
-									{/if}
-								</div>
-							</button>
+							{#if $page.data.FEATURE_SIGN_IN}
+								<button
+									class={activeMap
+										? 'bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded'
+										: 'bg-custom-10 opacity-60 text-white px-6 py-4 rounded'}
+									type="button"
+									on:click={activeMap ? () => changeMapping(item.id) : () => setGreyMap(true)}
+								>
+									<div class="leading-none uppercase text-sm">
+										{#if inMapping}
+											Added to MyMap
+										{:else}
+											Add to MyMap
+										{/if}
+									</div>
+								</button>
+							{/if}
 						</div>
 					</section>
 					{#if showSimilarRecords.length > 0}

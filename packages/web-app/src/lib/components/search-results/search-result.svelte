@@ -28,22 +28,24 @@
 		<p class="overflow-hidden text-ellipsis h-48">{description}</p>
 		<div class="flex p-2 m-2 gap-2">
 			<div class="grow" />
-			{#if isFavorite}
-				<form method="POST" action="?/removeFromMapCart" use:enhance>
-					<input type="text" name="id" value={id} class="hidden" />
-					<button class="button-2 text-xl font-bold" type="submit">♥</button>
-				</form>
-			{:else}
-				<form method="POST" action="?/addToMapCart" use:enhance>
-					<input type="text" name="id" value={id} class="hidden" />
-					<button
-						class="button-2 text-xl font-bold"
-						type="submit"
-						disabled={!$page.data.signedIn}
-						title={$page.data.signedIn ? 'Add to favorites' : 'Please sign in to use favorites.'}
-						>♡</button
-					>
-				</form>
+			{#if $page.data.FEATURE_SIGN_IN}
+				{#if isFavorite}
+					<form method="POST" action="?/removeFromMapCart" use:enhance>
+						<input type="text" name="id" value={id} class="hidden" />
+						<button class="button-2 text-xl font-bold" type="submit">♥</button>
+					</form>
+				{:else}
+					<form method="POST" action="?/addToMapCart" use:enhance>
+						<input type="text" name="id" value={id} class="hidden" />
+						<button
+							class="button-2 text-xl font-bold"
+							type="submit"
+							disabled={!$page.data.signedIn}
+							title={$page.data.signedIn ? 'Add to favorites' : 'Please sign in to use favorites.'}
+							>♡</button
+						>
+					</form>
+				{/if}
 			{/if}
 			<a class="button-1 truncate overflow-hidden" href={'record/' + id}>{viewRecord}</a>
 		</div>

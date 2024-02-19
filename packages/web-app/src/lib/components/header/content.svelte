@@ -12,7 +12,9 @@
 	$: signInText = lang == 'en-ca' ? 'sign in' : 'connexion';
 </script>
 
-<a transition:slide class="a" href="/{lang}/favorites">{favoritesText}</a>
+{#if $page.data.FEATURE_SIGN_IN}
+	<a transition:slide class="a" href="/{lang}/favorites">{favoritesText}</a>
+{/if}
 <a transition:slide class="a" href="/{lang}/map-browser">{catalogText}</a>
 <a transition:slide class="a" href={otherLangPathName + $page.url.search}>{otherLang}</a>
 <SignIn />
