@@ -8,23 +8,38 @@
 	$: zoom = calculateZoom(coordinates[0]);
 	$: config = {
 		map: {
-			interaction: 'static',
+			interaction: "static",
 			viewSettings: {
 				zoom: zoom,
 				center: center,
 				projection: 3978
 			},
 			basemapOptions: {
-				basemapId: 'transport',
+				basemapId: "transport",
 				shaded: true,
 				labeled: true
 			},
-			listOfGeoviewLayerConfig: []
+			listOfGeoviewLayerConfig: [
+				{
+					geoviewLayerType: "geoCore",
+					listOfLayerEntryConfig: [
+						{
+							layerId: "ccc75c12-5acc-4a6a-959f-ef6f621147b9",
+							geocoreLayerName: { en: "Commemorative Map" },
+							listOfLayerEntryConfig: [
+								{
+									layerId: "0"
+								}
+							]
+						}
+					]
+				}
+			]
 		},
-		theme: 'dark',
+		theme: "geo.ca",
 		components: [],
 		corePackages: [],
-		suportedLanguages: ['en']
+		suportedLanguages: ["en"]
 	};
 	$: sConfig = JSON.stringify(config);
 

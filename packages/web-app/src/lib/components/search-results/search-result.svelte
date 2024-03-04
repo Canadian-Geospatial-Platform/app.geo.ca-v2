@@ -14,7 +14,7 @@
 	export let description;
 	export let coordinates;
 	export let id;
-	$: favoritesArr = $page.data?.userData?.mapCart ?? [];	// default to empty array to prevent errors when user is not logged in.
+	$: favoritesArr = $page.data?.userData?.mapCart ?? []; // default to empty array to prevent errors when user is not logged in.
 	$: isFavorite = favoritesArr.includes(id);
 </script>
 
