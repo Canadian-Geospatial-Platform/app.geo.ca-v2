@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { tick } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
 	import Map from '$lib/components/map/map.svelte';
 	import { page } from '$app/stores';
 	import InfoModal from '$lib/components/record/modal/info-modal.svelte';
@@ -6,6 +8,15 @@
 	import Accordion from '$lib/components/record/share/accordion.svelte';
 	import RelatedProduct from './related-product.svelte';
 	import MicroData from '$lib/components/microdata/microdata.svelte';
+
+	afterNavigate(async () => {
+		try {
+			await tick();
+			cgpv.init();
+		} catch (e) {
+			console.warn('Error initialising cgpv.', e);
+		}
+	});
 
 	// @ts-ignore
 	export let data;
