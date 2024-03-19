@@ -89,6 +89,6 @@
 		class="geoview-map llwp-map bg-purple-100 rounded-lg w-full h-96 xl:h-full"
 		data-config={sConfig}
 		data-lang="en"
-		data-geocore-keys="12acd145-626a-49eb-b850-0a59c9bc7506,ccc75c12-5acc-4a6a-959f-ef6f621147b9"
+		data-geocore-keys={id}
 	/>
 </div>
