@@ -85,7 +85,6 @@
 <div>
 	<div
 		id={'map-' + id}
-		style="height: full"
 		class="geoview-map llwp-map bg-purple-100 rounded-lg w-full h-96 xl:h-full"
 		data-config={sConfig}
 		data-lang="en"
