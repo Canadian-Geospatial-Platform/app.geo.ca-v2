@@ -27,15 +27,15 @@ Once you've created a project and installed dependencies with `npm install`, sta
 
 ## Building and deploying
 
-- setup your aws credentials for prod. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+- setup your aws credentials for the desired environment. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured. (Use npx instead of pnpm).
 - enshure your login and logout url's are configured correctly in aws cognito.
 
-  - Allowed callback URLs
+  - Example allowed callback URLs
     - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/receive
     - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/receive
-  - Allowed sign-out URLs
+  - Example allowed sign-out URLs
     - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/logout
     - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/logout
 
-- deploy: `npm run sst:deploy`
+- deploy: `npm run sst:deploy:{dev|stage|prod}`
