@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Maplet from '$lib/components/record/maplet/maplet.svelte';
 	import Map from '$lib/components/map/map.svelte';
 	import { page } from '$app/stores';
 	import InfoModal from '$lib/components/record/modal/info-modal.svelte';
@@ -420,7 +419,7 @@
 			<aside class="col-span-12 md:col-span-4 bg-white pl-2 pr-2 place-items-center">
 				<div>
 					<section>
-						<Maplet {center} {zoom} {coordinates} />
+						<Map {coordinates} id={data.uuid} />
 					</section>
 					<section class="pt-8">
 						<h3 class="uppercase text-2xl">Add to map</h3>

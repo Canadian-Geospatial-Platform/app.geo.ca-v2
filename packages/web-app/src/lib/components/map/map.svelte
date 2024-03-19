@@ -6,40 +6,26 @@
 	export let id;
 	$: center = calculateCenter(coordinates[0]);
 	$: zoom = calculateZoom(coordinates[0]);
+	// an empty listOfGeoviewLayerConfig is a required field for now. it may become unnecessary at a later date.
 	$: config = {
 		map: {
-			interaction: "static",
+			interaction: 'static',
 			viewSettings: {
 				zoom: zoom,
 				center: center,
 				projection: 3978
 			},
 			basemapOptions: {
-				basemapId: "transport",
+				basemapId: 'transport',
 				shaded: true,
 				labeled: true
 			},
-			listOfGeoviewLayerConfig: [
-				{
-					geoviewLayerType: "geoCore",
-					listOfLayerEntryConfig: [
-						{
-							layerId: "ccc75c12-5acc-4a6a-959f-ef6f621147b9",
-							geocoreLayerName: { en: "Commemorative Map" },
-							listOfLayerEntryConfig: [
-								{
-									layerId: "0"
-								}
-							]
-						}
-					]
-				}
-			]
+			listOfGeoviewLayerConfig: []
 		},
-		theme: "geo.ca",
+		theme: 'geo.ca',
 		components: [],
 		corePackages: [],
-		suportedLanguages: ["en"]
+		suportedLanguages: ['en']
 	};
 	$: sConfig = JSON.stringify(config);
 
@@ -93,16 +79,16 @@
 	}
 </script>
 
+<svelte:head>
+	<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
+</svelte:head>
 <div>
-<!--for now, we pass data config in the html as javascript configuration is more bug prone.-->
-<div
-	{id}
-	class="llwp-map bg-purple-100 rounded-lg w-full h-96 xl:h-full"
-	data-lang="en"
-	data-config={sConfig}
-/>
-<script>
-  // init functions, takes one parameter as a function callback. Any code inside the callback will run once map has finished rendering.
-  cgpv.init(function () {});
-</script>
+	<div
+		id={'map-' + id}
+		style="height: 35rem"
+		class="geoview-map llwp-map bg-purple-100 rounded-lg w-full h-96 xl:h-full"
+		data-config={sConfig}
+		data-lang="en"
+		data-geocore-keys="12acd145-626a-49eb-b850-0a59c9bc7506,ccc75c12-5acc-4a6a-959f-ef6f621147b9"
+	/>
 </div>
