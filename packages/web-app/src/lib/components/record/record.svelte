@@ -429,7 +429,7 @@
 			</main>
 			<aside class="col-span-12 md:col-span-4 bg-white pl-2 pr-2 place-items-center">
 				<div>
-					<section>
+					<section class="h-64">
 						<Map {coordinates} id={data.uuid} />
 					</section>
 					<section class="pt-8">

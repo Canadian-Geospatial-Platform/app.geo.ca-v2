@@ -19,7 +19,7 @@
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid xl:grid-cols-2 gap-4">
-	<Map id={id} {coordinates} />
+	<Map {id} {coordinates} />
 	<div class="bg-custom-5 rounded-lg p-2">
 		<h2 class="text-2xl">{title}</h2>
 		<p>{organization ?? ''}</p>
