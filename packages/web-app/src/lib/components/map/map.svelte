@@ -82,12 +82,10 @@
 <svelte:head>
 	<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
-<div>
-	<div
-		id={'map-' + id}
-		class="geoview-map llwp-map bg-purple-100 rounded-lg w-full h-96 xl:h-full"
-		data-config={sConfig}
-		data-lang="en"
-		data-geocore-keys={id}
-	/>
-</div>
+<div
+	id={'map-' + id}
+	class="geoview-map llwp-map bg-purple-100 rounded-lg w-full h-96 xl:h-full"
+	data-config={sConfig}
+	data-lang="en"
+	data-geocore-keys={id}
+/>
