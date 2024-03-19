@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { afterNavigate } from '$app/navigation';
+	import { goto, afterNavigate } from '$app/navigation';
 	import Map from '$lib/components/map/map.svelte';
 	import { page } from '$app/stores';
 	import InfoModal from '$lib/components/record/modal/info-modal.svelte';
@@ -28,7 +28,9 @@
 	function handleRowClick() {}
 	function resourceClick() {}
 	function handleRelatedClick() {}
-	function viewOnMap() {}
+	function viewOnMap() {
+		goto('/map/' + data.uuid);
+	}
 	function setGreyMap() {
 		showModal = true;
 	}

@@ -15,7 +15,8 @@
 	<Header />
 	<Feedback />
 	<Breadcrumbs />
-	<slot />
-	<div class="grow" />
+	<div class="grow">
+		<slot />
+	</div>
 	<Footer />
 </div>
