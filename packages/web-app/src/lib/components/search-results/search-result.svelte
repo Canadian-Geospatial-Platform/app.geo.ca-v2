@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { getContext } from 'svelte';
-	import { goto } from '$app/navigation';
 	import Map from '$lib/components/map/map.svelte';
 
 	$: viewRecord = $page.data.lang == 'en-ca' ? 'VIEW RECORD' : "AFFICHER L'ENREGISTREMENT";
@@ -47,7 +46,9 @@
 					</form>
 				{/if}
 			{/if}
-			<a class="button-1 truncate overflow-hidden" href={'record/' + id}>{viewRecord}</a>
+			<a class="button-1 truncate overflow-hidden" href={$page.url.pathname + '/record/' + id}
+				>{viewRecord}</a
+			>
 		</div>
 	</div>
 </li>

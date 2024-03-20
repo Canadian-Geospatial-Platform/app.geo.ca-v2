@@ -16,7 +16,6 @@
 	});
 	$: pn = 1;
 	function handleRelatedClick(e, id) {
-		console.log(id);
 		redirect(302, `/record/${id}`);
 	}
 	$: paginatedItems = relatedItems.slice(0, 10);

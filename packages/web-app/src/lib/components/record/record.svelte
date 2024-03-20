@@ -445,7 +445,7 @@
 						</p>
 						<div class="grid grid-cols-2 gap-3 pt-5">
 							{#if activeMap}
-								<a href={'/' + data.lang + '/map/' + data.uuid}>
+								<a href={$page.url.pathname + '/map'}>
 									<button
 										class={'bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded'}
 										type="button"
