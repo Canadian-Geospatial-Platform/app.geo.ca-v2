@@ -29,7 +29,7 @@
 	function resourceClick() {}
 	function handleRelatedClick() {}
 	function viewOnMap() {
-		goto('/map/' + data.uuid);
+		goto(data.lang + '/map/' + data.uuid);
 	}
 	function setGreyMap() {
 		showModal = true;
@@ -444,15 +444,23 @@
 							{/if}
 						</p>
 						<div class="grid grid-cols-2 gap-3 pt-5">
-							<button
-								class={activeMap
-									? 'bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded'
-									: 'bg-custom-10 opacity-60 text-white px-6 py-4 rounded'}
-								type="button"
-								on:click={activeMap ? () => viewOnMap(event, item.id) : () => setGreyMap(true)}
-							>
-								<div class="leading-none uppercase text-sm">view on map</div>
-							</button>
+							{#if activeMap}
+								<a href={'/' + data.lang + '/map/' + data.uuid}>
+									<button
+										class={'bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded'}
+										type="button"
+									>
+										<div class="leading-none uppercase text-sm">view on map</div>
+									</button>
+								</a>
+							{:else}
+								<button
+									class={'bg-custom-10 opacity-60 text-white px-6 py-4 rounded'}
+									type="button"
+								>
+									<div class="leading-none uppercase text-sm">view on map</div>
+								</button>
+							{/if}
 							{#if $page.data.FEATURE_SIGN_IN}
 								<button
 									class={activeMap
