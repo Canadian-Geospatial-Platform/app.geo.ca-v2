@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class="container flex flex-col mx-auto py-1 space-x-4 space-y-4 bg-custom-1 min-h-screen"
+	class="container flex flex-col mx-auto px-2 space-y-4 bg-custom-1 min-h-screen"
 	data-sveltekit-reload={$updated ? '' : 'off'}
 >
 	<Header />
