@@ -46,8 +46,10 @@
 		</span>
 		<span property="genre" value="" />
 
-		<span property="license" typeof="CreativeWork"
-			><span property="name" value={item.properties.constraints.legal[lang]} />
-		</span>
+		{#if item?.properties?.constraints?.legal?.[lang]}
+			<span property="license" typeof="CreativeWork">
+				<span property="name" value={item.properties.constraints.legal[lang]} />
+			</span>
+		{/if}
 	</span>
 </div>

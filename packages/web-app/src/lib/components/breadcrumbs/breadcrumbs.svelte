@@ -5,7 +5,7 @@
 	$: appGeoCaUrl = '/' + $page.data.lang + '/map-browser';
 </script>
 
-<ol class="p-2 m-2 flex flex-wrap gap-2 text-custom-8">
+<ol class="flex flex-wrap gap-2 text-custom-8">
 	<li><a href={geoCaUrl}>geo.ca</a></li>
 	<li>⯈ <a href={appGeoCaUrl}>app.geo.ca</a></li>
 	<li>⯈ <span class="text-custom-4">{$page.data.t_title}</span></li>

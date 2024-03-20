@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 </script>
 
-<div class="bg-custom-8 text-custom-1 p-4 m-4 rounded-lg drop-shadow-lg">
+<div class="bg-custom-8 text-custom-1 rounded-lg drop-shadow-lg p-3">
 	<p>
 		{#if $page.data.lang == 'en-ca'}
 			<h2>🌟 Welcome to the app.geo.ca Beta! 🌟</h2>

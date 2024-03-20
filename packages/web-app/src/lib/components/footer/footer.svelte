@@ -1,4 +1,4 @@
-<div class="grid grid-cols-2 md:grid-cols-4 gap-10 p-10 m-4 bg-custom-5 rounded-lg drop-shadow-lg">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-10 p-10 bg-custom-5 rounded-lg drop-shadow-lg">
 	<div class="mx-auto">
 		<h3 class="text-2xl">title 1</h3>
 		<ul>

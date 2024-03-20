@@ -14,5 +14,5 @@
 	});
 </script>
 
-<h1>{$page.data.t_title}</h1>
+<h1 class="text-lg">{$page.data.t_title}</h1>
 <Map id={$page.data.uuid} coordinates={$page.data.coordinates} />

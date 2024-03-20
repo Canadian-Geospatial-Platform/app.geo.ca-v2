@@ -1,5 +1,7 @@
 # To Do
 
+- [] switch to use a single s3 bucket
+- [] handle deletion from hnap
 - [] bbox based spatial filtering.
 - [] add filtering/custom collections to favorites
 - [] refresh tokens automatically.
