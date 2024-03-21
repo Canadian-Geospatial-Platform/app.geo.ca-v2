@@ -1,37 +1,33 @@
-<div class="grid grid-cols-2 md:grid-cols-4 gap-10 p-10 bg-custom-5 rounded-lg drop-shadow-lg">
-	<div class="mx-auto">
-		<h3 class="text-2xl">title 1</h3>
+<script lang="ts">
+	import { page } from '$app/stores';
+</script>
+
+<div class="grid grid-cols-2 md:grid-cols-2 gap-10 p-10 bg-custom-5 rounded-lg drop-shadow-lg">
+	<div>
+		<h3 class="text-2xl pb-2">{$page.data.i18nFooterLabels.contactUs}</h3>
 		<ul>
-			<li><a href="www.google.com">link 1-1</a></li>
-			<li><a href="www.google.com">link 1-2</a></li>
-			<li><a href="www.google.com">link 1-3</a></li>
-			<li><a href="www.google.com">link 1-4</a></li>
+			<li>{$page.data.i18nFooterLabels.ccmeo}</li>
+			<li>{$page.data.i18nFooterLabels.nrcan}</li>
+			<li>{$page.data.i18nFooterLabels.goc}</li>
+			<li><a href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a></li>
 		</ul>
 	</div>
-	<div class="mx-auto">
-		<h3 class="text-2xl">title 2</h3>
+	<div class="text-right">
+		<img
+			src="https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png"
+			class="w-40 ml-auto pb-2"
+		/>
 		<ul>
-			<li><a href="www.google.com">link 2-1</a></li>
-			<li><a href="www.google.com">link 2-2</a></li>
-			<li><a href="www.google.com">link 2-3</a></li>
-			<li><a href="www.google.com">link 2-4</a></li>
-			<li><a href="www.google.com">link 2-5</a></li>
-		</ul>
-	</div>
-	<div class="mx-auto">
-		<h3 class="text-2xl">title 3</h3>
-		<ul>
-			<li><a href="www.google.com">link 3-1</a></li>
-			<li><a href="www.google.com">link 3-2</a></li>
-			<li><a href="www.google.com">link 3-3</a></li>
-		</ul>
-	</div>
-	<div class="mx-auto">
-		<h3 class="text-2xl">title 4</h3>
-		<ul>
-			<li><a href="www.google.com">link 4-1</a></li>
-			<li><a href="www.google.com">link 4-2</a></li>
-			<li><a href="www.google.com">link 4-3</a></li>
+			<li>
+				<a href={$page.data.i18nFooterLabels.licenseUrl}>{$page.data.i18nFooterLabels.license}</a>
+			</li>
+			<li>{$page.data.i18nFooterLabels.copyright}</li>
 		</ul>
 	</div>
 </div>
+
+<style>
+	a {
+		@apply underline;
+	}
+</style>
