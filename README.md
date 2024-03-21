@@ -9,7 +9,8 @@ Once you've created a project and installed dependencies with `npm install`, sta
 - setup your aws credentials. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - set the correct version of npm as indicated by the `.nvmrc` file. see [nvm](https://github.com/nvm-sh/nvm) for macos/linux and [nvm-windows](https://github.com/coreybutler/nvm-windows) for windows.
 - open a new terminal
-- install dependencies: `npm i`
+- from `/` run `npm i`.
+- from `/packages/web-app/` run `npm i`. A nodejs version that matches the `.nvmrc` may be required.
 - enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured. (Use npx instead of pnpm).
 - enshure your login and logout url's are configured correctly in aws cognito.
 
@@ -23,12 +24,14 @@ Once you've created a project and installed dependencies with `npm install`, sta
 - run `sst:dev` to deploy the required code to the cloud.
 - open another terminal
 - `npm run dev` to bind the the previously deployed infrastructure
-- you should now be able to work on you local files and have your dev instance seemlessly connect to your aws ressources.
+- you should now be able to work on you local files and have your dev instance seamlessly connect to your aws ressources.
 
 ## Building and deploying
 
 - setup your aws credentials for the desired environment. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured. (Use npx instead of pnpm).
+- from `/` run `npm i`.
+- from `/packages/web-app/` run `npm i`. A nodejs version that matches the `.nvmrc` may be required.
 - enshure your login and logout url's are configured correctly in aws cognito.
 
   - Example allowed callback URLs
@@ -38,4 +41,4 @@ Once you've created a project and installed dependencies with `npm install`, sta
     - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/logout
     - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/logout
 
-- deploy: `npm run sst:deploy:{dev|stage|prod}`
+- deploy from the root of the repository: `npm run sst:deploy:{dev|stage|prod}`
