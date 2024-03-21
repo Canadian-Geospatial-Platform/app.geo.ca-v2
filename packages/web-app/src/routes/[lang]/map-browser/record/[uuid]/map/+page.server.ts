@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		},
 		t_title_2: {
 			text: params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
-			href: url.href
+			href: url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid
 		},
 		t_title_3: {
 			text: lang == 'en-ca' ? properties.title.en : properties.title.fr,
