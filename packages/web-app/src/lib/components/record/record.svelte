@@ -92,7 +92,7 @@
 		<p>This record has no viewable component.</p>
 	</div>
 </InfoModal>
-<div class="grid grid-cols-12 gap-3 p-2 m-2">
+<div class="grid grid-cols-12 gap-3">
 	{#if data.result.body.Items && data.result.body.Items.length > 0}
 		{#each data.result.body.Items as item}
 			{@const inMapping = false}
