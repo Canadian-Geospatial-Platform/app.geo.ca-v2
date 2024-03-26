@@ -538,7 +538,7 @@
 							<div class="p-3 border border-slate-300 rounded">
 								<h4 class="uppercase text-center">{$page.data.t.page.last30}</h4>
 								<p class="text-center text-custom-10 text-xl">
-									{#if isNaN(data.analyticRes['30'])}
+									{#if isNaN(data.analyticRes?.['30'])}
 										<span>{$page.data.t.analytic.loadingfailed}</span>
 
 										<button
@@ -558,7 +558,7 @@
 							<div class="p-3 border border-slate-300 rounded">
 								<h4 class="uppercase text-center">{$page.data.t.page.alltime}</h4>
 								<p class="text-center text-custom-10 text-xl">
-									{#if isNaN(data.analyticRes.all)}
+									{#if isNaN(data?.analyticRes?.all)}
 										<span>{$page.data.t.analytic.loadingfailed}</span>
 										<button
 											class="bg-custom-10 hover:bg-blue-400 text-white px-6 py-4 rounded-lg"

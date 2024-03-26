@@ -45,11 +45,16 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		const analyticResponse = await fetch(
 			`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
 		);
-		const parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
+
+		let parsedAnalyticResponse;
+		try {
+			parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
+		} catch (e) {
+			console.log('error fetching analytics:', e);
+		}
 		return parsedAnalyticResponse;
 	};
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
-	console.log();
 	return {
 		t_title_1: {
 			text:
