@@ -50,7 +50,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		try {
 			parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
 		} catch (e) {
-			console.log('error fetching analytics:', e);
+			console.error(
+				'error fetching analytics from:',
+				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}\nerror message:`,
+				e
+			);
 		}
 		return parsedAnalyticResponse;
 	};
