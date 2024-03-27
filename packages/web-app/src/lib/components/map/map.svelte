@@ -9,7 +9,7 @@
 	// an empty listOfGeoviewLayerConfig is a required field for now. it may become unnecessary at a later date.
 	$: config = {
 		map: {
-			interaction: 'static',
+			interaction: 'dynamic',
 			viewSettings: {
 				zoom: zoom,
 				center: center,
