@@ -20,7 +20,12 @@
 				shaded: true,
 				labeled: true
 			},
-			listOfGeoviewLayerConfig: []
+			listOfGeoviewLayerConfig: [
+				{
+					geoviewLayerType: 'geoCore',
+					geoviewLayerId: id
+				}
+			]
 		},
 		theme: 'geo.ca',
 		components: [],
@@ -89,5 +94,4 @@
 	class="geoview-map llwp-map bg-purple-100 rounded-lg"
 	data-config={sConfig}
 	data-lang="en"
-	data-geocore-keys={id}
 />
