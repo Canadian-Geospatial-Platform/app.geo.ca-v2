@@ -1,5 +1,9 @@
 # To Do
 
+- [] set le icon.
+- [] set le height sur la map
+- [] set un x,y valide par default
+- [] enlever static sur la map
 - [] switch to use a single s3 bucket
 - [] handle deletion from hnap
 - [] bbox based spatial filtering.
