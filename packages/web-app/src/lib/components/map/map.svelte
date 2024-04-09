@@ -4,12 +4,13 @@
 
 	export let coordinates;
 	export let id;
+	export let dynamic;
 	$: center = calculateCenter(coordinates[0]);
 	$: zoom = calculateZoom(coordinates[0]);
 	// an empty listOfGeoviewLayerConfig is a required field for now. it may become unnecessary at a later date.
 	$: config = {
 		map: {
-			interaction: 'dynamic',
+			interaction: dynamic ? 'dynamic' : 'static',
 			viewSettings: {
 				zoom: zoom,
 				center: center,
@@ -90,7 +91,6 @@
 
 <div
 	id={'map-' + id}
-	style="height: 70vh;"
 	class="geoview-map llwp-map bg-purple-100 rounded-lg"
 	data-config={sConfig}
 	data-lang="en"
