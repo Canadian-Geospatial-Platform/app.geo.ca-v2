@@ -35,8 +35,9 @@
 	};
 	$: sConfig = JSON.stringify(config);
 
+	// todo: this currently errors due to receiving [...,[NaN, NaN]] as coordinates. This data quality issue needs to be fixed on import.
 	function calculateCenter(coordinates) {
-		const defaultValue = [-100, 60];
+		const defaultValue = [0, 60];
 		if (!coordinates) {
 			console.warn('invalid coordinates, returing default value: \n', coordinates);
 			return defaultValue;
@@ -45,13 +46,18 @@
 		let xAccumulator = 0;
 		let yAccumulator = 0;
 		try {
-			coordinates.forEach((e) => {
+			// we slice the array to prevent counting the initial value twice.
+			coordinates.slice(0, -1).forEach((e) => {
+			console.log(e)
+				if (isNaN(e[0]) || isNaN(e[1])) {
+					throw new Error('Coordinate is not a number!');
+				}
 				xAccumulator += e[0];
 				yAccumulator += e[1];
 				i++;
 			});
 		} catch (e) {
-			console.warn('error iterating coordinates, , returing default value2', coordinates);
+			console.warn('error iterating coordinates, returing default value2', coordinates, '\n', e);
 			return defaultValue;
 		}
 		return [xAccumulator / i, yAccumulator / i];
