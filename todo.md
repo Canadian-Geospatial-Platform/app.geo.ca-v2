@@ -9,6 +9,7 @@
 - [] refresh tokens automatically.
 - [] add favorited searches. (just url link since url holds state).
 - [] fix maps breaking on navigation. geoview has an issue and plans on tackling the issue on their side. we can later confirm that it is fixed.
+- [] fix data schema. Coordinates should be floats instead of strings.
 
 # Backlog
 

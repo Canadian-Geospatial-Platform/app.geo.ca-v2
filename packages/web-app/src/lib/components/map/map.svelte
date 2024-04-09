@@ -35,7 +35,7 @@
 	};
 	$: sConfig = JSON.stringify(config);
 
-	// todo: this currently errors due to receiving [...,[NaN, NaN]] as coordinates. This data quality issue needs to be fixed on import.
+	// todo: this currently errors due to receiving [..., [String, String]] as coordinates. This data quality issue needs to be fixed on import. Coordinates should be floats instead of Strings.
 	function calculateCenter(coordinates) {
 		const defaultValue = [0, 60];
 		if (!coordinates) {
@@ -48,12 +48,11 @@
 		try {
 			// we slice the array to prevent counting the initial value twice.
 			coordinates.slice(0, -1).forEach((e) => {
-			console.log(e)
 				if (isNaN(e[0]) || isNaN(e[1])) {
 					throw new Error('Coordinate is not a number!');
 				}
-				xAccumulator += e[0];
-				yAccumulator += e[1];
+				xAccumulator += parseFloat(e[0]);
+				yAccumulator += parseFloat(e[1]);
 				i++;
 			});
 		} catch (e) {
