@@ -4,7 +4,7 @@
 
 	export let coordinates;
 	export let id;
-	export let dynamic;
+	export let dynamic = false;
 	$: center = calculateCenter(coordinates[0]);
 	$: zoom = calculateZoom(coordinates[0]);
 	// an empty listOfGeoviewLayerConfig is a required field for now. it may become unnecessary at a later date.
