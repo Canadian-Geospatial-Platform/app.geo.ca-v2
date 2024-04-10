@@ -43,14 +43,33 @@ export default {
 				primaryIndex: { partitionKey: 'uuid' }
 			});
 
-			const HNAP_BRIDGE = new Function(stack, "hnap-bridge", {
+			// Bucket containing the import hnap json data from external systems
+			let HNAP_BUCKET = new Bucket(stack, "hnap", {
+				cdk: {
+					bucket: {
+						autoDeleteObjects: true,
+						removalPolicy: cdk.RemovalPolicy.DESTROY
+					}
+				}
+			});
+
+				const HNAP_BRIDGE = new Function(stack, "hnap-bridge", {
 			  handler: "packages/hnap-bridge/index.handler",
 				timeout: 30,
 				permissions: ["s3"],
 				bind: [
-					GEOCORE_BUCKET
+					GEOCORE_BUCKET,
+					HNAP_BUCKET 
 				]
 			});
+
+			// Attach notifications to the HNAP_BUCKET
+			GEOCORE_BUCKET.addNotifications(stack, {
+    			myNotification1: {
+			      function: HNAP_BRIDGE,
+			      events: ["object_created"],
+			    },
+	    });
 
 			const site = new SvelteKitSite(stack, 'site', {
 				path: "packages/web-app/",
@@ -66,22 +85,7 @@ export default {
 				]
 			});
 			
-			// Bucket containing the import hnap json data from external systems
-			let HNAP_BUCKET = new Bucket(stack, "hnap", {
-			  notifications: {
-			    myNotification1: {
-			      function: HNAP_BRIDGE,
-			      events: ["object_created"],
-			    },
-			  },
-				cdk: {
-					bucket: {
-						autoDeleteObjects: true,
-						removalPolicy: cdk.RemovalPolicy.DESTROY
-					}
-				}
-			});
-			
+		
 			stack.addOutputs({
 				url: site.url
 			});

@@ -18,7 +18,7 @@
 </script>
 
 <li class="bg-custom-6 rounded-lg p-4 m-4 grid xl:grid-cols-2 gap-4">
-	<div class="min-h-64" style="height: 16rem;">
+	<div class="min-h-64 w-full" style="min-height: 16rem; width: 100%;">
 		<Map {id} {coordinates} />
 	</div>
 	<div class="bg-custom-5 rounded-lg p-2">
