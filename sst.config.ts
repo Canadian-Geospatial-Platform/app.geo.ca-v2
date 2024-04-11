@@ -64,7 +64,7 @@ export default {
 			});
 
 			// Attach notifications to the HNAP_BUCKET
-			GEOCORE_BUCKET.addNotifications(stack, {
+			HNAP_BUCKET.addNotifications(stack, {
     			myNotification1: {
 			      function: HNAP_BRIDGE,
 			      events: ["object_created"],
