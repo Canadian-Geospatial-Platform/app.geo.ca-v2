@@ -1,14 +1,11 @@
 # To Do
 
-- [] bug: hnap bridge writes json object to root and geojson under `records/`.
-- [] set un x,y valide par default
 - [] switch to use a single s3 bucket
 - [] handle deletion from hnap
 - [] bbox based spatial filtering.
 - [] add filtering/custom collections to favorites
 - [] refresh tokens automatically.
 - [] add favorited searches. (just url link since url holds state).
-- [] fix maps breaking on navigation. geoview has an issue and plans on tackling the issue on their side. we can later confirm that it is fixed.
 - [] fix data schema. Coordinates should be floats instead of strings.
 
 # Backlog
