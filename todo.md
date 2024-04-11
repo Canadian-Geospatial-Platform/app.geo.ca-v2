@@ -1,6 +1,6 @@
 # To Do
 
-- [] set le icon.
+- [] bug: hnap bridge writes json object to root and geojson under `records/`.
 - [] set un x,y valide par default
 - [] switch to use a single s3 bucket
 - [] handle deletion from hnap
