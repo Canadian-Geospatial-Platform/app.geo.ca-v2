@@ -51,8 +51,8 @@
 				if (isNaN(e[0]) || isNaN(e[1])) {
 					throw new Error('Coordinate is not a number!');
 				}
-				xAccumulator += parseFloat(e[0]);
-				yAccumulator += parseFloat(e[1]);
+				xAccumulator += e[0];
+				yAccumulator += e[1];
 				i++;
 			});
 		} catch (e) {
