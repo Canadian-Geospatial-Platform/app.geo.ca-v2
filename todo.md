@@ -1,12 +1,11 @@
 # To Do
 
-- [] switch to use a single s3 bucket
-- [] handle deletion from hnap
+- [] switch to use a single s3 bucket.
+- [] handle deletion from hnap.
 - [] bbox based spatial filtering.
 - [] add filtering/custom collections to favorites
 - [] refresh tokens automatically.
 - [] add favorited searches. (just url link since url holds state).
-- [] fix data schema. Coordinates should be floats instead of strings.
 
 # Backlog
 
