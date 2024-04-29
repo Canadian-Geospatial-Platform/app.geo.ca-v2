@@ -66,7 +66,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			href: url.origin + '/' + params.lang + '/map-browser'
 		},
 		t_title_2: {
-			text: params.lang == 'en-ca' ? 'metadata' : 'métadonnées',
+			text: params.lang == 'en-ca' ? 'Metadata' : 'Métadonnées',
 			href: url.href
 		},
 		lang: params.lang,
