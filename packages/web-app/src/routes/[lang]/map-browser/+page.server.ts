@@ -22,6 +22,8 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		console.warn(e);
 	}
 
+	console.log(sanitizedResults);
+
 	return {
 		lang: params.lang,
 		results: sanitizedResults,

@@ -31,7 +31,7 @@
 </script>
 
 <div
-	class="p-4 m-4 rounded-lg drop-shadow-lg bg-custom-5 flex justify-center flex-nowrap overflow-hidden xl:flex"
+	class="p-4 rounded-lg drop-shadow-lg bg-custom-5 flex justify-center flex-nowrap overflow-hidden xl:flex"
 >
 	{#each numberArray as x}
 		<button
