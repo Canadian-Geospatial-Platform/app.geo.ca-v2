@@ -7,17 +7,19 @@ const description = {
 };
 
 export const load: PageLoad = ({ params, data, url }) => {
-	console.log(url);
 	return {
 		results: data.results,
 		lang: params.lang,
 		userData: data.userData,
+		start: data.start,
+		end: data.end,
 		t_title_1: {
 			text:
 				params.lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
 			href: url.href
 		},
-		t_description: params.lang == 'en-ca' ? description.en : description.fr
+		t_description: params.lang == 'en-ca' ? description.en : description.fr,
+		total: data.results?.[0]?.total ? data.results[0].total : 0
 	};
 };
 

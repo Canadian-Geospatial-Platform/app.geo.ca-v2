@@ -2,10 +2,9 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	// This component is a header bar with search result information, ordering options and presentation options.
-	let total = 0; // the total number of search results
-	let start = 0; // the offset of search results
-	let end = 0; // the limit of search results
-
+	$: total = $page.data.total;
+	$: start = $page.data.start;
+	$: end = $page.data.end;
 	function handleValueChange(e) {
 		let newUrl = $page.url;
 		newUrl.searchParams.set('sort', e.target.value);

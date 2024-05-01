@@ -23,11 +23,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	}
 
 	console.log(sanitizedResults);
-
 	return {
 		lang: params.lang,
 		results: sanitizedResults,
-		userData: userData.Item
+		userData: userData.Item,
+		start: getMin(url.searchParams),
+		end: getMin(url.searchParams) + sanitizedResults.length
 	};
 };
 
