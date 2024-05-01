@@ -20,7 +20,7 @@
 	<form>
 		<div class="button-2">
 			Sort By -
-			<select on:change={handleValueChange}>
+			<select class="cursor-pointer" on:change={handleValueChange}>
 				<option value="date-desc" selected="selected">Date ↓</option>
 				<option value="date-asc">Date ↑</option>
 				<option value="popularity-desc">Popularity ↓</option>
@@ -29,8 +29,6 @@
 			</select>
 		</div>
 	</form>
-
-	<button class="button-1"> Show Map </button>
 </div>
 
 <style>
