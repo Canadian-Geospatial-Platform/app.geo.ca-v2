@@ -6,13 +6,9 @@
 	let start = 0; // the offset of search results
 	let end = 0; // the limit of search results
 
-	let selectedValue = 'Relevance';
-
-	$: selectedValue && handleValueChange();
-
-	function handleValueChange() {
+	function handleValueChange(e) {
 		let newUrl = $page.url;
-		newUrl.searchParams.set('sort', selectedValue);
+		newUrl.searchParams.set('sort', e.target.value);
 		goto(newUrl);
 	}
 </script>
@@ -24,10 +20,12 @@
 	<form>
 		<div class="button-2">
 			Sort By -
-			<select bind:value={selectedValue}>
-				<option>Popularity</option>
-				<option>Alphabetical</option>
-				<option>Relevance</option>
+			<select on:change={handleValueChange}>
+				<option value="date-desc" selected="selected">Date ↓</option>
+				<option value="date-asc">Date ↑</option>
+				<option value="popularity-desc">Popularity ↓</option>
+				<option value="popularity-asc">Popularity ↑</option>
+				<option value="title">title ↑</option>
 			</select>
 		</div>
 	</form>

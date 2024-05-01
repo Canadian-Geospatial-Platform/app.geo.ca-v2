@@ -62,7 +62,7 @@ function mapSearchParams(searchParams, lang) {
 		lang: lang.split('-')[0],
 		min: getMin(searchParams),
 		max: getMax(searchParams),
-		sort: 'title'
+		sort: searchParams.get('sort')
 	};
 	return ret;
 }
