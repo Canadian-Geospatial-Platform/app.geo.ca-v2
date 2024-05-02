@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import ResultCount from '$lib/components/search-results/result-count.svelte';
 	let pageCount = 10;
 	export let resultsPerPage = 10;
 	$: current = parseInt($page.url.searchParams.get('page-number')) || 0;
@@ -33,20 +34,38 @@
 <div
 	class="p-4 rounded-lg drop-shadow-lg bg-custom-5 flex justify-center flex-nowrap overflow-hidden xl:flex"
 >
-	{#each numberArray as x}
-		<button
-			on:click={() => {
-				navigate(x);
-			}}
-			class="w-12 h-12 m-4 rounded-full drop-shadow-lg"
-			class:bg-custom-8={current == x}
-			class:text-custom-1={current == x}
-			class:bg-custom-1={current != x}
-			class:hidden={x > current + 1 || x < current - 1}
-			class:sm:block={x == current + 2 || x == current - 2}
-			class:md:block={x >= current + 3 || x <= current - 3}
-		>
-			<p class="align-bottom">{x + 1}</p>
-		</button>
-	{/each}
+	<ResultCount />
+	<div class="bg-custom-8 rounded-lg p-1 flex justify-center flex-nowrap">
+		<button class="button-2 arrow">{'<'}</button>
+		{#each numberArray as x}
+			<button
+				on:click={() => {
+					navigate(x);
+				}}
+				class="rounded-lg drop-shadow-lg"
+				class:button-2={current == x}
+				class:button-1={current != x}
+				class:text-custom-1={current == x}
+				class:hidden={x > current + 1 || x < current - 1}
+				class:sm:block={x == current + 2 || x == current - 2}
+				class:md:block={x >= current + 3 || x <= current - 3}
+			>
+				<p>{x + 1}</p>
+			</button>
+		{/each}
+		<button class="button-2 arrow">{'>'}</button>
+	</div>
 </div>
+
+<style>
+	button {
+		@apply w-10;
+		@apply h-10;
+		@apply p-0;
+		@apply m-1;
+	}
+
+	button.arrow {
+		@apply place-self-center;
+	}
+</style>
