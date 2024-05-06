@@ -36,7 +36,14 @@
 >
 	<ResultCount />
 	<div class="bg-custom-8 rounded-lg p-1 flex justify-center flex-nowrap">
-		<button class="button-2 arrow">{'<'}</button>
+		{#if current > 0}
+			<button
+				class="button-2 arrow"
+				on:click={() => {
+					navigate(current - 1);
+				}}>{'<'}</button
+			>
+		{/if}
 		{#each numberArray as x}
 			<button
 				on:click={() => {
@@ -53,7 +60,12 @@
 				<p>{x + 1}</p>
 			</button>
 		{/each}
-		<button class="button-2 arrow">{'>'}</button>
+		<button
+			class="button-2 arrow"
+			on:click={() => {
+				navigate(current + 1);
+			}}>{'>'}</button
+		>
 	</div>
 </div>
 

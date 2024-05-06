@@ -19,7 +19,7 @@
 
 <li class="bg-custom-6 rounded-lg p-4 my-4 grid xl:grid-cols-2 gap-4">
 	<div class="min-h-64 w-full" style="min-height: 16rem; width: 100%;">
-		<Map {id} {coordinates} />
+		<!-- <Map {id} {coordinates} /> -->
 	</div>
 	<div class="bg-custom-5 rounded-lg p-2">
 		<h2 class="text-2xl">{title}</h2>
