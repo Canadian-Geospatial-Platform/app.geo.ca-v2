@@ -17,7 +17,7 @@
 	$: isFavorite = favoritesArr.includes(id);
 </script>
 
-<li class="bg-custom-6 rounded-lg p-4 grid xl:grid-cols-2 gap-4">
+<li class="bg-custom-6 rounded-lg p-4 my-4 grid xl:grid-cols-2 gap-4">
 	<div class="min-h-64 w-full" style="min-height: 16rem; width: 100%;">
 		<Map {id} {coordinates} />
 	</div>
