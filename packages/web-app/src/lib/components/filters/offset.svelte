@@ -81,6 +81,10 @@
 		@apply m-1;
 	}
 
+	button:disabled {
+		@apply outline-1;
+	}
+
 	button.arrow {
 		@apply place-self-center;
 	}
