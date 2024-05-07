@@ -14,7 +14,7 @@
 	<ResultCount />
 	<form>
 		<div class="button-2">
-			Sort By -
+			<span class="text-slate-600">Sort By -</span>
 			<select class="cursor-pointer" on:change={handleValueChange}>
 				<option value="date-desc" selected="selected">Date ↓</option>
 				<option value="date-asc">Date ↑</option>
