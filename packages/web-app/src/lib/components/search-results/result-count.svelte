@@ -6,5 +6,9 @@
 </script>
 
 <p class="grow my-auto">
-	{start} - {end} of {total} datasets
+	{#if total > 0}
+		{start + 1} - {end > total ? total : end} of {total} datasets
+	{:else}
+		0 - 0 of 0 datasets
+	{/if}
 </p>

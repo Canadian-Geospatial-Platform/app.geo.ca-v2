@@ -1,5 +1,6 @@
 # To Do
 
+- [] hide next page icon when not relevant.
 - [] switch to use a single s3 bucket.
 - [] handle deletion from hnap.
 - [] bbox based spatial filtering.

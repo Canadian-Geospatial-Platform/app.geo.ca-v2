@@ -6,6 +6,8 @@
 	export let resultsPerPage = 10;
 	$: current = parseInt($page.url.searchParams.get('page-number')) || 0;
 	$: numberArray = calculateScreenSize(current);
+	$: total = $page.data.total;
+	$: end = $page.data.end;
 
 	function calculateScreenSize(current) {
 		let ret = [
@@ -36,31 +38,33 @@
 >
 	<ResultCount />
 	<div class="bg-custom-8 rounded-lg p-1 flex justify-center flex-nowrap">
-		{#if current > 0}
-			<button
-				class="button-2 arrow"
-				on:click={() => {
-					navigate(current - 1);
-				}}>{'<'}</button
-			>
-		{/if}
+		<button
+			disabled={current <= 0 ? 'disabled' : null}
+			class="button-2 arrow"
+			on:click={() => {
+				navigate(current - 1);
+			}}>{'<'}</button
+		>
 		{#each numberArray as x}
-			<button
-				on:click={() => {
-					navigate(x);
-				}}
-				class="rounded-lg drop-shadow-lg"
-				class:button-2={current == x}
-				class:button-1={current != x}
-				class:text-custom-1={current == x}
-				class:hidden={x > current + 1 || x < current - 1}
-				class:sm:block={x == current + 2 || x == current - 2}
-				class:md:block={x >= current + 3 || x <= current - 3}
-			>
-				<p>{x + 1}</p>
-			</button>
+			{#if x * resultsPerPage < $page.data.total}
+				<button
+					on:click={() => {
+						navigate(x);
+					}}
+					class="rounded-lg drop-shadow-lg"
+					class:button-2={current == x}
+					class:button-1={current != x}
+					class:text-custom-1={current == x}
+					class:hidden={x > current + 1 || x < current - 1}
+					class:sm:block={x == current + 2 || x == current - 2}
+					class:md:block={x >= current + 3 || x <= current - 3}
+				>
+					<p>{x + 1}</p>
+				</button>
+			{/if}
 		{/each}
 		<button
+			disabled={end >= total ? 'disabled' : null}
 			class="button-2 arrow"
 			on:click={() => {
 				navigate(current + 1);

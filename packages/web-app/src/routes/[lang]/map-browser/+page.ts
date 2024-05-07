@@ -19,7 +19,7 @@ export const load: PageLoad = ({ params, data, url }) => {
 			href: url.href
 		},
 		t_description: params.lang == 'en-ca' ? description.en : description.fr,
-		total: data.results?.[0]?.total ? data.results[0].total : 0
+		total: parseInt(data.results?.[0]?.total ? data.results[0].total : 0)
 	};
 };
 

@@ -21,8 +21,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	} catch (e) {
 		console.warn(e);
 	}
-
-	console.log(sanitizedResults);
 	return {
 		lang: params.lang,
 		results: sanitizedResults,
@@ -69,16 +67,19 @@ function mapSearchParams(searchParams, lang) {
 }
 
 function getMin(searchParams) {
-	const pn = searchParams.get('page-number') || 0;
-	const pc = searchParams.get('results-per-page') || 10;
+	const pn = parseInt(searchParams.get('page-number')) || 0;
+	const pc = parseInt(searchParams.get('results-per-page')) || 10;
 	const ret = pn * pc;
 	return ret;
 }
 
 function getMax(searchParams) {
-	const pn = searchParams.get('page-number') || 0;
-	const pc = searchParams.get('results-per-page') || 10;
-	const ret = pn * pc + (pc - 1);
+	const pn = parseInt(searchParams.get('page-number')) || 0;
+	const pc = parseInt(searchParams.get('results-per-page')) || 10;
+	const ret = (pn + 1) * pc;
+	if (pn > 0) {
+		return ret - 1;
+	}
 	return ret;
 }
 
