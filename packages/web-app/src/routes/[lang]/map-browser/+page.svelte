@@ -8,11 +8,11 @@
 	$: results = $page.data.results ? $page.data.results : [];
 </script>
 
-<div class="p-4 m-4 rounded-lg drop-shadow-lg bg-custom-5">
+<div class="p-4 rounded-lg drop-shadow-lg bg-custom-5">
 	<h1 class="text-3xl font-bold pb-4">{$page.data.t_title_1.text}</h1>
 	<p class="text-justify">{$page.data.t_description}</p>
 </div>
-<div class="flex flex-wrap lg:flex-nowrap items-start gap-4 p-4">
+<div class="flex flex-wrap lg:flex-nowrap items-start gap-4 py-4">
 	<div class="grow sm:shrink"><Filters /></div>
 	<div class="grow flex flex-col gap-4">
 		<ListHeader />
