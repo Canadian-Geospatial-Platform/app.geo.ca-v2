@@ -13,8 +13,8 @@
 <div class="flex flex-row gap-3">
 	<ResultCount />
 	<form>
-		<div class="button-2">
-			<span class="text-slate-600">Sort By -</span>
+		<div class="select-button">
+			<span class="text-slate-600">{$page.data.t_sortBy} -</span>
 			<select class="cursor-pointer" on:change={handleValueChange}>
 				<option value="date-desc" selected="selected">Date ↓</option>
 				<option value="date-asc">Date ↑</option>

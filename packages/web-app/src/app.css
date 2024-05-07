@@ -17,12 +17,25 @@
 	@apply disabled:bg-gray-100;
 	@apply disabled:outline-gray-400;
 	@apply disabled:text-gray-500;
+	@apply outline-1;
 	@apply hover:disabled:bg-gray-500;
 	@apply hover:disabled:text-gray-100;
 	@apply text-custom-8;
 	@apply hover:text-custom-1;
 	@apply bg-custom-1;
 	@apply hover:bg-custom-8;
+	@apply outline;
+	@apply outline-custom-8;
+	@apply p-2.5;
+	@apply rounded-lg;
+	@apply drop-shadow-lg;
+	@apply border-2;
+	@apply hover:border-white;
+}
+
+.select-button {
+	@apply text-custom-8;
+	@apply bg-custom-1;
 	@apply outline;
 	@apply outline-custom-8;
 	@apply p-2.5;

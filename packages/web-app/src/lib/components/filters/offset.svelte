@@ -46,7 +46,7 @@
 			}}>{'<'}</button
 		>
 		{#each numberArray as x}
-			{#if x * resultsPerPage < $page.data.total}
+			{#if x * resultsPerPage <= $page.data.total}
 				<button
 					on:click={() => {
 						navigate(x);
@@ -79,10 +79,6 @@
 		@apply h-10;
 		@apply p-0;
 		@apply m-1;
-	}
-
-	button:disabled {
-		@apply outline-1;
 	}
 
 	button.arrow {

@@ -1,5 +1,7 @@
 # To Do
 
+- [] fix x of y datasets off by one error on last record.
+- [] switch search layout to grid for precise control on filter/results sizing.
 - [] hide next page icon when not relevant.
 - [] switch to use a single s3 bucket.
 - [] handle deletion from hnap.
