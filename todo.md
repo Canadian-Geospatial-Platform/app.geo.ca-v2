@@ -1,5 +1,6 @@
 # To Do
 
+- [] we will have to update to sst-ion. however, it is not yet complete enought for sveltekit. this will be revisited later.
 - [] fix x of y datasets off by one error on last record.
 - [] switch search layout to grid for precise control on filter/results sizing.
 - [] hide next page icon when not relevant.
