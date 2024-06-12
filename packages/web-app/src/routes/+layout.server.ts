@@ -8,6 +8,8 @@ import enNavitems from '$lib/components/header/i18n/en/navitems.json';
 import frNavitems from '$lib/components/header/i18n/fr/navitems.json';
 import enHeaderTranslations from '$lib/components/header/i18n/en/translations.json';
 import frHeaderTranslations from '$lib/components/header/i18n/fr/translations.json';
+import enShareTranslations from '$lib/components/share/i18n/en/translations.json';
+import frShareTranslations from '$lib/components/share/i18n/fr/translations.json';
 
 export const load: LayoutServerLoad = async ({ cookies, params }) => {
 	return {
@@ -18,5 +20,6 @@ export const load: LayoutServerLoad = async ({ cookies, params }) => {
 		legalData: params.lang == 'fr-ca' ? frLegal : enLegal,
 		navitems: params.lang == 'fr-ca' ? frNavitems : enNavitems,
 		headerTranslations: params.lang == 'fr-ca' ? frHeaderTranslations : enHeaderTranslations,
+		shareTranslations: params.lang == 'fr-ca' ? frShareTranslations : enShareTranslations,
 	};
 };

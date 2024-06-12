@@ -14,7 +14,7 @@
 </script>
 
 <div class="bg-custom-5 font-open-sans">
-  <div class="grid grid-cols-1 md:grid-cols-2 content-width mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-2 content-width">
     <div class="legal-col">
       <h3>{contactUs}</h3>
       <p>{ccmeo}</p>

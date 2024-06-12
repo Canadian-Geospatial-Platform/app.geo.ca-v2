@@ -3,7 +3,7 @@
 </script>
 
 <div class="bg-custom-14">
-  <div class="content-width grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-auto py-12">
+  <div class="content-width grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-12">
     {#each Object.entries(linksData) as [colIndex, data]}
       <div class="p-3 font-custom-style-footer-1">
         {#if Object.hasOwn(data, "title")}

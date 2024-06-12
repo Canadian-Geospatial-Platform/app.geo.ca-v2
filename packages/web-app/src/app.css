@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 .content-width {
-  @apply md:w-11/12;
-  @apply 2xl:w-5/6;
+	@apply w-[96%];
+  @apply md:w-5/6;
+  @apply 2xl:w-3/4;
+	@apply mx-auto;
 }
 
 .button-1 {
@@ -95,4 +97,11 @@ input {
 	@apply font-bold;
 	@apply text-[18px];
 	@apply text-custom-16;
+}
+
+.font-custom-style-body-1 {
+	@apply font-open-sans;
+	@apply font-medium;
+	@apply text-[16px];
+	@apply text-custom-7;
 }

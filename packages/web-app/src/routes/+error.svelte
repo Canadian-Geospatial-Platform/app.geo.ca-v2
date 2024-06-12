@@ -10,7 +10,7 @@
 </script>
 
 <Header />
-<div class="container flex flex-col mx-auto px-2 space-y-4 bg-custom-1 min-h-screen relative pt-24 z-0">
+<div class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen relative pt-24 z-0">
 	<Feedback />
 	<div class="grow">
 		{#if $page.data.lang == 'en-ca'}

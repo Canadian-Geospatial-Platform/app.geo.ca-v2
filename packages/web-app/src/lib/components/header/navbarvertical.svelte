@@ -22,7 +22,7 @@
   <Menubutton bind:active={active}/>
 </div>
 <div
-  class="nav-items-container"
+  class="nav-items-container z-20"
   class:hidden={!active}
 >
   {#each Object.entries(navItems) as [colIndex, data]}

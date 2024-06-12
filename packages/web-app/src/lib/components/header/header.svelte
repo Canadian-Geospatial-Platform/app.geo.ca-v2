@@ -10,7 +10,7 @@
 </script>
 
 <div class="fixed w-full h-20 border-b-4 border-custom-16 bg-custom-1 z-10">
-  <div class="grid grid-cols-2 h-full md:grid-cols-6 content-width mx-auto">
+  <div class="grid grid-cols-2 h-full md:grid-cols-6 content-width">
     <a href={logoHref} data-sveltekit-reload class="grid">
       <img 
         class="w-36 self-center"
