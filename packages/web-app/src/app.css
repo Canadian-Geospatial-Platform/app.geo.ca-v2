@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.content-width {
+  @apply md:w-11/12;
+  @apply 2xl:w-5/6;
+}
+
 .button-1 {
 	@apply text-white;
 	@apply bg-custom-8;
@@ -50,4 +55,44 @@ input {
 	@apply drop-shadow-lg;
 	@apply my-2;
 	@apply p-2;
+}
+
+/* Custom font classes from the wire-frame */
+
+/* footer fonts */
+.font-custom-style-footer-1 {
+	@apply font-open-sans;
+	@apply font-semibold;
+	@apply text-[16px];
+	@apply text-custom-17;
+	@apply tracking-[0.06em];
+}
+
+.font-custom-style-footer-2 {
+	@apply font-open-sans;
+	@apply font-light;
+	@apply text-[16px];
+	@apply text-custom-17;
+	@apply tracking-wider;
+}
+
+.font-custom-style-header-1 {
+	@apply font-open-sans;
+	@apply font-semibold;
+	@apply text-[16px];
+	@apply text-custom-15;
+}
+
+.font-custom-style-header-2 {
+	@apply font-open-sans;
+	@apply font-semibold;
+	@apply text-[16px];
+	@apply text-custom-16;
+}
+
+.font-custom-style-header-3 {
+	@apply font-open-sans;
+	@apply font-bold;
+	@apply text-[18px];
+	@apply text-custom-16;
 }

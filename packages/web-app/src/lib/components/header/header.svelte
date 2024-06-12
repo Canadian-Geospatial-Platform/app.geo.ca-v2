@@ -1,29 +1,32 @@
-<script lang="ts">
-	import Content from './content.svelte';
-	let collapse = true;
-	$: icon = collapse ? '|||' : 'X';
+<script>
+  import { page } from '$app/stores';
+  import Navbarhorizontal from './navbarhorizontal.svelte';
+  import Navbarvertical from './navbarvertical.svelte';
+
+  const translations = $page.data.headerTranslations;
+  const logoAlt = Object.hasOwn(translations,"logoAlt") ? translations["logoAlt"] : "";
+  const logoHref = Object.hasOwn(translations,"logoHref") ? translations["logoHref"] : "";
+  const logoSrc = Object.hasOwn(translations,"logoSrc") ? translations["logoSrc"] : "";
 </script>
 
-<nav class="flex place-items-center text-2xl bg-custom-1 rounded-lg">
-	<img
-		class="h-20 md:h-24 object-scale shrink mr-auto"
-		src="https://geo.ca/wp-content/uploads/2023/02/geo-ca-logo.svg"
-		alt="GEO.CA logo, blue and green globe / Logo de GEO.CA, globe bleu et vert"
-		decoding="async"
-		loading="lazy"
-	/>
-	<div class="text-right flex flex-col">
-		<button
-			class="button-1 ml-auto lg:hidden m-4"
-			on:click={() => {
-				collapse = !collapse;
-			}}>{icon}</button
-		>
-		{#if !collapse}
-			<Content />
-		{/if}
-	</div>
-	<div class="collapse lg:visible">
-		<Content />
-	</div>
-</nav>
+<div class="fixed w-full h-20 border-b-4 border-custom-16 bg-custom-1">
+  <div class="grid grid-cols-2 h-full md:grid-cols-6 content-width mx-auto">
+    <a href={logoHref} data-sveltekit-reload class="grid">
+      <img 
+        class="w-36 self-center"
+        src= {logoSrc}
+        alt= {logoAlt}
+      />
+    </a>
+
+    <div class="hidden lg:flex col-span-5 justify-end font-custom-style-header-3">
+      <Navbarhorizontal />
+    </div>
+    <div class="flex lg:hidden col-span-1 md:col-span-5 justify-end font-custom-style-header-3">
+      <Navbarvertical />
+    </div>
+
+  </div>
+</div>
+
+<style></style>
