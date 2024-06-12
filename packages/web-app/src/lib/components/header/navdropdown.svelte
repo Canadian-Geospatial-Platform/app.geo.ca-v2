@@ -46,7 +46,7 @@
   .horizontal {
     @apply flex;
     @apply absolute;
-    @apply z-50;
+    @apply z-20;
     @apply top-[0.28em];
     @apply left-1/2;
     @apply -translate-x-1/2;

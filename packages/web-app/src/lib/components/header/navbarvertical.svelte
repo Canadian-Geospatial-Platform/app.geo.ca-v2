@@ -60,6 +60,6 @@
     @apply w-full;
     @apply h-screen;
     @apply bg-custom-12;
-    @apply -z-10;
+    @apply z-10;
   }
 </style>
