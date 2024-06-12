@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { toggleScroll } from "./toggleScroll";
+
   export let active: Boolean;
 
   const translations = $page.data.headerTranslations;
@@ -12,7 +13,7 @@
   }
 </script>
 
-<button class="inline-block cursor-pointer p-1"
+<button class="inline-block cursor-pointer p-1 self-center"
   on:click={handleMenuButtonClick}
   class:active={active} 
   title={menuButton}
