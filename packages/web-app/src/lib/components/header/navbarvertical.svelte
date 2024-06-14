@@ -18,7 +18,7 @@
 
 <svelte:window on:resize={resetNav} />
 
-<div class="grid pr-4">
+<div class="grid">
   <Menubutton bind:active={active}/>
 </div>
 <div

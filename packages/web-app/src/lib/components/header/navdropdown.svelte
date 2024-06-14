@@ -1,4 +1,5 @@
 <script>
+  import { setPosition } from "./setPosition";
   import Info from '../icons/info.svelte';
   import Tooltip from '../tooltip/tooltip.svelte';
 
@@ -11,6 +12,7 @@
   class:horizontal={active && orientation ==="horizontal"}
   class:vertical={active && orientation ==="vertical"}
   class="hidden"
+  use:setPosition
 >
   {#each options as option}
     <div
