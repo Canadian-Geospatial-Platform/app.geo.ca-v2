@@ -12,7 +12,7 @@
   class:horizontal={active && orientation ==="horizontal"}
   class:vertical={active && orientation ==="vertical"}
   class="hidden"
-  use:setPosition
+  use:setPosition={orientation ==="horizontal"}
 >
   {#each options as option}
     <div
