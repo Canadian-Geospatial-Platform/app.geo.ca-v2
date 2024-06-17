@@ -101,7 +101,21 @@ input {
 
 .font-custom-style-body-1 {
 	@apply font-open-sans;
-	@apply font-medium;
+	@apply font-normal;
 	@apply text-[16px];
 	@apply text-custom-7;
+}
+
+.font-custom-style-h1 {
+	@apply font-open-sans;
+	@apply font-bold;
+	@apply text-[36px];
+	@apply text-custom-7;
+}
+
+.font-custom-style-h2 {
+	@apply font-open-sans;
+	@apply font-bold;
+	@apply text-[28px];
+	@apply text-custom-15;
 }
