@@ -106,6 +106,14 @@ input {
 	@apply text-custom-7;
 }
 
+.font-custom-style-body-2 {
+	@apply font-noto-sans;
+	@apply font-medium;
+	@apply text-[16px];
+	@apply text-custom-16;
+	@apply underline;
+}
+
 .font-custom-style-h1 {
 	@apply font-open-sans;
 	@apply font-bold;
