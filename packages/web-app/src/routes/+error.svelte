@@ -4,10 +4,13 @@
 	import Header from '$lib/components/header/header.svelte';
 	import Footer from '$lib/components/footer/footer.svelte';
 	import Feedback from '$lib/components/feedback/feedback.svelte';
+
+	const linksData: JSON = $page.data.footerLinks;
+  const legalData: {[key: string]: string} = $page.data.legalData;
 </script>
 
-<div class="container flex flex-col mx-auto px-2 space-y-4 bg-custom-1 min-h-screen">
-	<Header />
+<Header />
+<div class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen relative pt-24 z-0">
 	<Feedback />
 	<div class="grow">
 		{#if $page.data.lang == 'en-ca'}
@@ -20,5 +23,5 @@
 			.
 		{/if}
 	</div>
-	<Footer />
 </div>
+<Footer linksData={linksData} legalData={legalData}/>

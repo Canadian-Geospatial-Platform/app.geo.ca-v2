@@ -1,8 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { Config } from 'sst/node/config';
 import { getRecord } from '$lib/db/record.ts';
-import enLabels from '$lib/components/record/i18n/en.json';
-import frLabels from '$lib/components/record/i18n/fr.json';
+import enLabels from '$lib/components/record/i18n/en/translations.json';
+import frLabels from '$lib/components/record/i18n/fr/translations.json';
 
 const GEOCORE_API_DOMAIN = Config.GEOCORE_API_DOMAIN;
 
