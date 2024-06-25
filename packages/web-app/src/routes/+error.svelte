@@ -11,7 +11,6 @@
 
 <Header />
 <div class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen relative pt-24 z-0">
-	<Feedback />
 	<div class="grow">
 		{#if $page.data.lang == 'en-ca'}
 			Oups... There was an error. Feel free to report it by sending us an email to
@@ -23,5 +22,6 @@
 			.
 		{/if}
 	</div>
+	<Feedback />
 </div>
 <Footer linksData={linksData} legalData={legalData}/>
