@@ -38,6 +38,7 @@
 
   const dataResourcesRaw = properties['options'];
   const dataResourcesList = parseDataResources(dataResourcesRaw, langShort);
+  const uuid = properties.id;
 
   // Translation of table column labels
   const tableLabels: DataResourcesRow = {
@@ -46,13 +47,29 @@
     "format": formatText,
     "languages": languagesText
   };
+
+  function handleDownloadButtonClick() {
+    let downloadUrl = "https://geocore.metadata.geo.ca/" + uuid + ".geojson";
+    window.open(downloadUrl);
+  };
+
+  function handleViewHNAPButtonClick() {
+    let downloadUrl = "https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&version=2.0.2&request=GetRecordById&outputSchema=csw:IsoRecord&ElementSetName=full&id=" + uuid;
+    window.open(downloadUrl);
+  }
 </script>
 
 <div class="space-x-4">
-  <button class="bg-custom-16 text-custom-1 font-custom-style-body-5">
+  <button 
+    class="bg-custom-16 text-custom-1 font-custom-style-body-5"
+    on:click={handleDownloadButtonClick}
+  >
     {downloadGeoCoreText}
   </button>
-  <button class="bg-custom-1 text-custom-16 font-custom-style-body-3">
+  <button
+    class="bg-custom-1 text-custom-16 font-custom-style-body-3"
+    on:click={handleViewHNAPButtonClick}
+  >
     {viewHNAPText}
   </button>
 </div>

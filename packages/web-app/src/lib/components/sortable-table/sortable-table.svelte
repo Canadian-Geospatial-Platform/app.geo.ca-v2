@@ -46,7 +46,7 @@
 
   function handleRowClick(url: string) {
     if (url.length > 0) {
-      window.open(url, '_blank').focus();
+      window.open(url);
     }
   }
 </script>
