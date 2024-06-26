@@ -4,10 +4,12 @@
 
   const data = $page.data;
   const lang = data.lang;
-  const items = data.result.body.Items[0];
+  const items = data.item_v2;
+  const properties = items.properties;
 
-  const title = lang == 'fr-ca' ? items.title_fr : items.title_en;
-  const description = items.description.replaceAll(/\\n/g, '<br>');
+  const title = lang == 'fr-ca' ? properties.title.fr : properties.title.en;
+  const descriptionRaw = lang == 'fr-ca' ? properties.description.fr : properties.description.en;
+  const description = descriptionRaw.replaceAll(/\n/g, '<br>');
 </script>
 
 <div>

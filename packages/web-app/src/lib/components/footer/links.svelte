@@ -1,5 +1,7 @@
 <script lang="ts">
-  export let linksData: JSON;
+  import { page } from '$app/stores';
+
+  const linksData: JSON = $page.data.footerLinks;
 </script>
 
 <div class="bg-custom-14">

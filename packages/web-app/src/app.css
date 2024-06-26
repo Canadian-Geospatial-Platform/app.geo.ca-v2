@@ -106,6 +106,35 @@ input {
 	@apply text-custom-7;
 }
 
+.font-custom-style-body-2 {
+	@apply font-noto-sans;
+	@apply font-medium;
+	@apply text-[16px];
+	@apply text-custom-16;
+	@apply underline;
+}
+
+.font-custom-style-body-3 {
+	@apply font-noto-sans;
+	@apply font-semibold;
+	@apply text-[16px];
+	@apply text-custom-16;
+}
+
+.font-custom-style-body-4 {
+	@apply font-lato;
+	@apply font-normal;
+	@apply text-[16px];
+	@apply text-custom-7;
+}
+
+.font-custom-style-body-5 {
+	@apply font-noto-sans;
+	@apply font-semibold;
+	@apply text-[16px];
+	@apply text-custom-1;
+}
+
 .font-custom-style-h1 {
 	@apply font-open-sans;
 	@apply font-bold;

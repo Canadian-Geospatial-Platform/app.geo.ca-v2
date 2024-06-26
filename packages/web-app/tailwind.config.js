@@ -22,7 +22,8 @@ export default {
 					15: '#212529',
 					16: '#535AA4',
 					17: '#e0e0e0',
-					18: '#00000029'
+					18: '#00000029',
+					19: '#BEBFC2'
 				}
 			},
 			spacing: {
@@ -35,9 +36,13 @@ export default {
 			maxHeight: {
         'vertical-nav': '90vh',
       },
+			maxWidth: {
+				'tabbed-title': 'calc(100% - 135px)',
+			},
 			fontFamily: {
 				'open-sans': ['"Open Sans"'],
-				'noto-sans': ['"Noto Sans"']
+				'noto-sans': ['"Noto Sans"'],
+				'lato': ['"Lato"']
 			},
 		}
 	},

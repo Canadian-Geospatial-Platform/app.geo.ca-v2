@@ -27,7 +27,7 @@
 >
   {#each Object.entries(navItems) as [colIndex, data]}
     <div class="bg-custom-1 p-2 m-3">
-      <Navitem linkData={data} orientation={orientation} />
+      <Navitem linkData={data} {orientation} />
     </div>
   {/each}
 </div>

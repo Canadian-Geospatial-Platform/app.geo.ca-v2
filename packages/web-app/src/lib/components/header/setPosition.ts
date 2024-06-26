@@ -1,4 +1,9 @@
 export function setPosition(node: any, isHorizontal: boolean) {
+  /**************************************************************************
+  * The purpose of this function is to ensure that the menu dropdowns don't
+  * flow off the page for smaller screens. In the case where the default
+  * position is off screen, a vertical translation is applied.
+  ***************************************************************************/
   if (isHorizontal) {
     let nodeBounding;
     let nodeLeft;

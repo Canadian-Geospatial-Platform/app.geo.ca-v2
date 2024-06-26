@@ -4,14 +4,10 @@
 	import Header from '$lib/components/header/header.svelte';
 	import Footer from '$lib/components/footer/footer.svelte';
 	import Feedback from '$lib/components/feedback/feedback.svelte';
-
-	const linksData: JSON = $page.data.footerLinks;
-  const legalData: {[key: string]: string} = $page.data.legalData;
 </script>
 
 <Header />
 <div class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen relative pt-24 z-0">
-	<Feedback />
 	<div class="grow">
 		{#if $page.data.lang == 'en-ca'}
 			Oups... There was an error. Feel free to report it by sending us an email to
@@ -23,5 +19,6 @@
 			.
 		{/if}
 	</div>
+	<Feedback />
 </div>
-<Footer linksData={linksData} legalData={legalData}/>
+<Footer />
