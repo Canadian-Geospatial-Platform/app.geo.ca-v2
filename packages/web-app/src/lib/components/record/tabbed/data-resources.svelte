@@ -48,6 +48,7 @@
     "languages": languagesText
   };
 
+  // TODO: check to make sure these are the up to date download links
   function handleDownloadButtonClick() {
     let downloadUrl = "https://geocore.metadata.geo.ca/" + uuid + ".geojson";
     window.open(downloadUrl);
