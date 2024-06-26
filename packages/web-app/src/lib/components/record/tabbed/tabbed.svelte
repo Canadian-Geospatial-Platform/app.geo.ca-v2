@@ -33,5 +33,5 @@
 </script>
 
 <div class="flex flex-col space-y-3">
-  <TabCard tabContentArray={tabContentArray}/>
+  <TabCard {tabContentArray}/>
 </div>

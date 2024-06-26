@@ -41,7 +41,7 @@
         <button 
           class="hidden lg:flex items-center h-9 px-5 font-custom-style-body-3 bg-custom-5 border-b-[3px] border-custom-16"
           class:active={tab.tabId == activeTabId}
-          on:click={handleTabClick(tab.tabId)}
+          on:click={() => handleTabClick(tab.tabId)}
         >
           {tab.label}
         </button>
@@ -65,7 +65,7 @@
         <button 
           class="flex lg:hidden justify-start mx-6 font-custom-style-body-3 bg-custom-1 p-3"
           class:active={tab.tabId == activeTabId}
-          on:click={handleTabClick(tab.tabId)}
+          on:click={() => handleTabClick(tab.tabId)}
         >
           {tab.label}
         </button>

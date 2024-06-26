@@ -1,4 +1,9 @@
 export function setPosition(node: any) {
+  /***
+   * The purpose of this function is to ensure that the tooltip does not flow
+   * off the page on small screens. Vertical or horizontal translations are
+   * applied if the default position causes the tooltip to overflow.
+  */
   let parentNode = node.parentNode;
 
   let nodeBounding;

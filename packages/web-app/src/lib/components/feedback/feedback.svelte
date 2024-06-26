@@ -10,6 +10,7 @@
 	<h2 class="font-custom-style-h2 mb-1">
     {title}
   </h2>
+	<!-- TODO: Update feedback text -->
 	<p>
 		{#if lang == 'en-ca'}
 			<h2>🌟 Welcome to the app.geo.ca Beta! 🌟</h2>

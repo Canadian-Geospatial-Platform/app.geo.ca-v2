@@ -4,9 +4,6 @@
 	import Header from '$lib/components/header/header.svelte';
 	import Footer from '$lib/components/footer/footer.svelte';
 	import Feedback from '$lib/components/feedback/feedback.svelte';
-
-	const linksData: JSON = $page.data.footerLinks;
-  const legalData: {[key: string]: string} = $page.data.legalData;
 </script>
 
 <Header />
@@ -24,4 +21,4 @@
 	</div>
 	<Feedback />
 </div>
-<Footer linksData={linksData} legalData={legalData}/>
+<Footer />

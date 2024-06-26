@@ -3,9 +3,11 @@
 	import SortInactive from "$lib/components/icons/sort-inactive.svelte";
 	import SortUp from "$lib/components/icons/sort-up.svelte";
 
+  // TODO: fix type definition to remove 'any'
   // Every item in the array should have the same set of keys,
   // since the keys will become the column titles of the table
   type TableContent = Array<any>;
+  type sortDirectionState = 0 | 1 | 2;
 
   export let tableContent: TableContent;
   export let tableLabels;
@@ -21,7 +23,7 @@
 
   let sortColumn = tableLabelsArray[0];
   // Can be 0 (default order from tableLabelsArray), 1 (a-z, sort-down icon), or 2 (z-a, sort-up icon)
-  let sortDirection = 0;
+  let sortDirection: sortDirectionState = 0;
   // Unsorted by default
   let sortedTableContent = tableContent;
 
@@ -49,51 +51,72 @@
       window.open(url);
     }
   }
+
+  function handleRowClickKeydown(url: string, event: KeyboardEvent) {
+    console.log(event.key);
+    if (url.length > 0 && (event.key == "Enter" || event.key == " ")) {
+      window.open(url);
+    }
+  }
 </script>
 
-<table class="w-full bg-custom-1">
-  <thead>
-    <tr>
-      {#each tableLabelsArray as labelTranslation, i}
-        <th class:w-[50%]={i == 0 && tableLabelsArray.length > 1}>
-          <div class="flex flex-row justify-between font-custom-style-header-1">
-            {tableLabels[labelTranslation]}
-            <button class="px-2" on:click={() => handleSortButtonClick(labelTranslation)}>
-              {#if sortDirection == 1 && labelTranslation == sortColumn}
-                <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
-              {:else if sortDirection == 2 && labelTranslation == sortColumn}
-                <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
-              {:else}
-                <SortInactive classes={"inline w-4 h-4"}/>
-              {/if}
-            </button>
-          </div>
-        </th>
+<div class="overflow-auto">
+  <table class="w-full bg-custom-1">
+    <thead>
+      <tr>
+        {#each tableLabelsArray as labelTranslation, i}
+          <th class:w-[50%]={i == 0 && tableLabelsArray.length > 1}>
+            <div class="flex flex-row justify-between font-custom-style-header-1">
+              {tableLabels[labelTranslation]}
+              <button class="px-2" on:click={() => handleSortButtonClick(labelTranslation)}>
+                {#if sortDirection == 1 && labelTranslation == sortColumn}
+                  <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
+                {:else if sortDirection == 2 && labelTranslation == sortColumn}
+                  <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
+                {:else}
+                  <SortInactive classes={"inline w-4 h-4"}/>
+                {/if}
+              </button>
+            </div>
+          </th>
+        {/each}
+      </tr>
+    </thead>
+    <tbody>
+      {#each sortedTableContent as row}
+        {#if clickableRows && Object.hasOwn(row, "url")}
+          <!--
+            Adding a tab index ensures that each clickable row can
+            be navigated to using the tab key. Since tr elements are
+            not usually navigable, we also need to manually add a
+            keydown event to enable using enter or space to open the url.
+          -->
+          <tr
+            on:click={() => handleRowClick(row.url)}
+            on:keydown={(event) => handleRowClickKeydown(row.url, event)}
+            class="hover:bg-custom-5 hover:cursor-pointer"
+            tabindex="0"
+            role="button"
+          >
+            {#each tableLabelsArray as label}
+              <td class="font-custom-style-body-4">
+                {row[label]}
+              </td>
+            {/each}
+          </tr>
+        {:else}
+          <tr>
+            {#each tableLabelsArray as label}
+              <td class="font-custom-style-body-4">
+                {row[label]}
+              </td>
+            {/each}
+          </tr>
+        {/if}
       {/each}
-    </tr>
-  </thead>
-  <tbody>
-    {#each sortedTableContent as row}
-      {#if clickableRows && Object.hasOwn(row, "url")}
-        <tr on:click={handleRowClick(row.url)} class="hover:bg-custom-5 hover:cursor-pointer">
-          {#each tableLabelsArray as label}
-            <td class="font-custom-style-body-4">
-              {row[label]}
-            </td>
-          {/each}
-        </tr>
-      {:else}
-        <tr>
-          {#each tableLabelsArray as label}
-            <td class="font-custom-style-body-4">
-              {row[label]}
-            </td>
-          {/each}
-        </tr>
-      {/if}
-    {/each}
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
 
 <style>
   thead, td {

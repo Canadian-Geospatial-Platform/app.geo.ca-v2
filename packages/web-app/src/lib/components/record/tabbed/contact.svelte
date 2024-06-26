@@ -81,4 +81,4 @@
   const tableLabels: ContactRow = {"label": labelText,"description": descriptionText};
 </script>
 
-<SortableTable tableContent={tableDataArray} tableLabels={tableLabels} clickableRows={false} />
+<SortableTable tableContent={tableDataArray} {tableLabels} clickableRows={false} />

@@ -7,11 +7,12 @@
   import Tabbed from './tabbed/tabbed.svelte';
 </script>
 
-<div class="flex flex-col space-y-3">
+<div class="flex flex-col space-y-8">
   <Description />
   <Metadata />
   <MapPreview />
   <Tabbed />
   <Keywords />
-  <SimilarProducts />
+  <!-- TODO: Uncomment SimilarProducts when the component no longer uses placeholder data -->
+  <!-- <SimilarProducts /> -->
 </div>

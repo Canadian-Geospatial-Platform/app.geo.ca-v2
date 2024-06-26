@@ -7,9 +7,6 @@
 	import Footer from '$lib/components/footer/footer.svelte';
 	import Feedback from '$lib/components/feedback/feedback.svelte';
 	import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
-
-	const linksData: JSON = $page.data.footerLinks;
-  const legalData: {[key: string]: string} = $page.data.legalData;
 </script>
 
 <Header />
@@ -23,4 +20,4 @@
 	</div>
 	<Feedback />
 </div>
-<Footer linksData={linksData} legalData={legalData}/>
+<Footer />
