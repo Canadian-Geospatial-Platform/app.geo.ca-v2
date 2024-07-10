@@ -1,5 +1,7 @@
 <script lang="ts">
-  export let legalData: {[key: string]: string};
+  import { page } from '$app/stores';
+
+  const legalData: {[key: string]: string} = $page.data.legalData;
 
   let logoUrl = Object.hasOwn(legalData,"logoUrl") ? legalData["logoUrl"] : "";
   let logoAlt = Object.hasOwn(legalData, "logoAlt") ? legalData["logoAlt"] : "";

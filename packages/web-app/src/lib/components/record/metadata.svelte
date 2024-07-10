@@ -34,17 +34,24 @@
   /******************* Data *******************/
   const data = $page.data;
   const lang = data.lang;
-  const items = data.result.body.Items[0];
+  const items = data.item_v2;
+  const properties = items.properties;
 
   // Top Section
-  const dateCreated = items.created;
-  const datePublished = items.published;
+  const dates = properties.date;
+  const dateCreatedObj = dates.find((x) => x.dateType.en == 'creation');
+  const dateCreated = dateCreatedObj.date;
+  const datePublishedObj = dates.find((x) => x.dateType.en == 'publication');
+  const datePublished = datePublishedObj.date;
   const accessLast30 = data.analyticRes['30'];
   const accessAllTime = data.analyticRes.all;
-  let temporalCoverage = items.temporalExtent.begin + ' ' + items.temporalExtent.end;
+  let temporalCoverage = properties.extent.temporalExtent.start
+    + ' ' + properties.extent.temporalExtent.end;
 
   if (lang == 'fr-ca') {
-    temporalCoverage = temporalCoverage.replaceAll('Present', 'Présent');
+    temporalCoverage = temporalCoverage.replaceAll('null', 'Présent');
+  } else {
+    temporalCoverage = temporalCoverage.replaceAll('null', 'Present');
   }
 
   let topSection = [
@@ -53,18 +60,18 @@
     [temporalCoverageText, temporalCoverage],
     [accessLast30Text, accessLast30],
     [accessAllTimeText, accessAllTime]
- ];
+  ];
 
- // Sources
- const distributor = items.distributor;
- const sourcesArray = distributor.map((x) => x['organisation'][lang.slice(0, 2)]);
+  // Sources
+  const distributor = properties.distributor;
+  const sourcesArray = distributor.map((x) => x['organisation'][lang.slice(0, 2)]);
 
- // Use limitations
- const useLimitationsRaw = items.useLimits;
- const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
- const useLimitationsUrl = useLimitationsRaw.match(urlRegEx)[0];
- const useLimitationsLabel = useLimitationsRaw.split(' (')[0];
- const useLimitations = '<a href="' + useLimitationsUrl
+  // Use limitations
+  const useLimitationsRaw = properties.constraints.legal[lang.slice(0, 2)];
+  const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
+  const useLimitationsUrl = useLimitationsRaw.match(urlRegEx)[0];
+  const useLimitationsLabel = useLimitationsRaw.split(' (')[0];
+  const useLimitations = '<a href="' + useLimitationsUrl
     + '" target="_blank" class="underline text-custom-16">'
     + useLimitationsLabel + '</a>'
 </script>

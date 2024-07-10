@@ -59,12 +59,13 @@
   class:active={active && orientation === 'horizontal'}
 >
   {#if Object.hasOwn(linkData, "options")}
+    <!-- TODO: fix typescript error for click_outside event-->
     <button
       class="nav-link"
       class:w-full={orientation === 'vertical'}
       use:clickOutside
       on:click_outside={handleClickOutside(orientation)}
-      on:click={handleDropdownClick(orientation)}
+      on:click={() => handleDropdownClick(orientation)}
     >
       {linkData["title"]}
       {#if chevronDown}

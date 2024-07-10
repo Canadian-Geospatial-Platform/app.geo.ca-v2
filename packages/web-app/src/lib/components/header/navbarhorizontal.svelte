@@ -8,7 +8,7 @@
 
 <div class="flex justify-end space-x-8 items-end">
   {#each Object.entries(navItems) as [colIndex, data]}
-    <Navitem linkData={data} orientation={orientation} />
+    <Navitem linkData={data} {orientation} />
   {/each}
 </div>
 
