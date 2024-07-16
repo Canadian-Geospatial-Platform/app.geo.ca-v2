@@ -5,7 +5,7 @@
 
   const translations = $page.data.headerTranslations;
   const logoAlt = translations?.logoAlt ? translations["logoAlt"] : "";
-  const logoHref = translations?.logoHref ? translations["logoHref"] : "";
+  const logoHref = $page.url.origin;
   const logoSrc = translations?.logoSrc ? translations["logoSrc"] : "";
 </script>
 
