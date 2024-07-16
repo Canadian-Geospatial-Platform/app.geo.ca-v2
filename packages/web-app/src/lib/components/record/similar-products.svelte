@@ -2,13 +2,10 @@
   import { page } from '$app/stores';
 
   const translations = $page.data.t;
-  const similarProductsText = Object.hasOwn(translations,"similarProducts") ?
-    translations["similarProducts"] : "Similar Products";
+  const similarProductsText = translations?.similarProducts ? translations["similarProducts"] : "Similar Products";
 
   const data = $page.data;
-  const lang = data.lang;
   const items = data.item_v2;
-  const properties = items.properties;
 
   // TODO replace with real data
   const similarProducts = [

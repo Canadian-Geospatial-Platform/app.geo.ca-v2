@@ -11,27 +11,17 @@
   const translations = $page.data.t;
 
   // Row labels
-  const organizationText = Object.hasOwn(translations,"organization") ?
-    translations["organization"] : "Organization";
-  const addressText = Object.hasOwn(translations,"address") ?
-    translations["address"] : "Address";
-  const individualNameText = Object.hasOwn(translations,"individualName") ?
-    translations["individualName"] : "Individual Name";
-  const roleText = Object.hasOwn(translations,"role") ?
-    translations["role"] : "Role";
-  const telephoneText = Object.hasOwn(translations,"telephone") ?
-    translations["telephone"] : "Telephone";
-  const faxText = Object.hasOwn(translations,"fax") ?
-    translations["fax"] : "Fax";
-  const emailText = Object.hasOwn(translations,"email") ?
-    translations["email"] : "Email";
-  const websiteText = Object.hasOwn(translations,"website") ?
-    translations["website"] : "Website";
+  const organizationText = translations?.organization ? translations["organization"] : "Organization";
+  const addressText = translations?.address ? translations["address"] : "Address";
+  const individualNameText = translations?.individualName ? translations["individualName"] : "Individual Name";
+  const roleText = translations?.role ? translations["role"] : "Role";
+  const telephoneText = translations?.telephone ? translations["telephone"] : "Telephone";
+  const faxText = translations?.fax ? translations["fax"] : "Fax";
+  const emailText = translations?.email ? translations["email"] : "Email";
+  const websiteText = translations?.website ? translations["website"] : "Website";
 
-  const labelText = Object.hasOwn(translations,"label") ?
-    translations["label"] : "Label";
-  const descriptionText = Object.hasOwn(translations,"description") ?
-    translations["description"] : "Description";
+  const labelText = translations?.label ? translations["label"] : "Label";
+  const descriptionText = translations?.description ? translations["description"] : "Description";
 
   /******************* Data *******************/
   const data = $page.data;
@@ -42,26 +32,17 @@
   const contact = properties.contact[0];
 
   // TODO: Confirm the full schema of the contact section
-  const organization = Object.hasOwn(contact, "organisation") ?
-    contact["organisation"][langShort] : "N/A";
-  const address = Object.hasOwn(contact, "address") ?
-    contact["address"][langShort] : "N/A";
-  const individualName = Object.hasOwn(contact, "individual") ?
-    contact["individual"][langShort] : "N/A";
-  const role = Object.hasOwn(contact, "role") ?
-    contact["role"][langShort] : "N/A";
-  const telephone = Object.hasOwn(contact, "telephone") ?
-    contact["telephone"][langShort] : "N/A";
-  const fax = Object.hasOwn(contact, "fax") ?
-    contact["fax"][langShort] : "N/A";
-  const email = Object.hasOwn(contact, "email") ?
-    contact["email"][langShort] : "N/A";
-  const website = Object.hasOwn(contact, "onlineResource") &&
-    Object.hasOwn(contact["onlineResource"], "url") && 
+  const organization = contact?.organisation ? contact["organisation"][langShort] : "N/A";
+  const address = contact?.address ? contact["address"][langShort] : "N/A";
+  const individualName = contact?.individual ? contact["individual"][langShort] : "N/A";
+  const role = contact?.role ? contact["role"][langShort] : "N/A";
+  const telephone = contact?.telephone ? contact["telephone"][langShort] : "N/A";
+  const fax = contact?.fax ? contact["fax"][langShort] : "N/A";
+  const email = contact?.email ? contact["email"][langShort] : "N/A";
+  const website = contact?.onlineResource?.url && 
     contact["onlineResource"]["url"] != null ?
     contact["onlineResource"]["url"] : "N/A";
-  const description = Object.hasOwn(contact, "onlineResource") &&
-    Object.hasOwn(contact["onlineResource"], "onlineresource_description") ?
+  const description = contact?.onlineResource?.onlineresource_description ?
     contact["onlineResource"]["onlineresource_description"] : "N/A";
 
   // Table Array

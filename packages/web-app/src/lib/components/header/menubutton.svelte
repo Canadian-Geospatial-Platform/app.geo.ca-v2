@@ -5,7 +5,7 @@
   export let active: Boolean;
 
   const translations = $page.data.headerTranslations;
-  const menuButton = Object.hasOwn(translations,"menuButton") ? translations["menuButton"] : "";
+  const menuButton = translations?.menuButton ? translations["menuButton"] : "";
 
   function handleMenuButtonClick() {
     active = !active;

@@ -58,7 +58,7 @@
   class="h-full"
   class:active={active && orientation === 'horizontal'}
 >
-  {#if Object.hasOwn(linkData, "options")}
+  {#if linkData?.options}
     <!-- TODO: fix typescript error for click_outside event-->
     <button
       class="nav-link"
@@ -79,15 +79,15 @@
       <Navdropdown options={linkData['options']} bind:active={active} orientation={orientation}/>
     </div>
     <div class:mask={active && orientation === 'horizontal'}></div>
-  {:else if Object.hasOwn(linkData, "title") && linkData["title"] == "English"}
+  {:else if linkData?.title && linkData["title"] == "English"}
     <a class="nav-link" href={englishUrl} data-sveltekit-reload>
       {linkData["title"]}
     </a>
-  {:else if Object.hasOwn(linkData, "title") && linkData["title"] == "Français"}
+  {:else if linkData?.title && linkData["title"] == "Français"}
     <a class="nav-link" href={frenchUrl} data-sveltekit-reload>
       {linkData["title"]}
     </a>
-  {:else if Object.hasOwn(linkData, "href")}
+  {:else if linkData?.href}
     <a class="nav-link" href={linkData["href"]}>
       {linkData["title"]}
     </a>

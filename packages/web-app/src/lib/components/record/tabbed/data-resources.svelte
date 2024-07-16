@@ -14,20 +14,15 @@
   const translations = $page.data.t;
 
   // Buttons
-  const downloadGeoCoreText = Object.hasOwn(translations,"downloadGeoCore") ?
+  const downloadGeoCoreText = translations?.downloadGeoCore ?
     translations["downloadGeoCore"] : "Download GeoCore";
-  const viewHNAPText = Object.hasOwn(translations,"viewHNAP") ?
-    translations["viewHNAP"] : "View HNAP Record";
+  const viewHNAPText = translations?.viewHNAP ? translations["viewHNAP"] : "View HNAP Record";
 
   // Row labels
-  const nameText = Object.hasOwn(translations,"name") ?
-    translations["name"] : "Name";
-  const typeText = Object.hasOwn(translations,"type") ?
-    translations["type"] : "Type";
-  const formatText = Object.hasOwn(translations,"format") ?
-    translations["format"] : "Format";
-  const languagesText = Object.hasOwn(translations,"languages") ?
-    translations["languages"] : "Languages";
+  const nameText = translations?.name ? translations["name"] : "Name";
+  const typeText = translations?.type ? translations["type"] : "Type";
+  const formatText = translations?.format ? translations["format"] : "Format";
+  const languagesText = translations?.languages ? translations["languages"] : "Languages";
 
   /******************* Data *******************/
   const data = $page.data;

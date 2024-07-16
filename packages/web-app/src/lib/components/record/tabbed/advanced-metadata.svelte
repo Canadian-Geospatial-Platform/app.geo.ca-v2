@@ -11,31 +11,20 @@
   const translations = $page.data.t;
 
   // Row labels
-  const statusText = Object.hasOwn(translations,"status") ?
-    translations["status"] : "Status";
-  const maintenanceText = Object.hasOwn(translations,"maintenance") ?
-    translations["maintenance"] : "Maintenance";
-  const idText = Object.hasOwn(translations,"id") ?
-    translations["id"] : "ID";
-  const topicCategoryText = Object.hasOwn(translations,"topicCategory") ?
-    translations["topicCategory"] : "Topic Category";
-  const typeText = Object.hasOwn(translations,"type") ?
-    translations["type"] : "Type";
-  const northText = Object.hasOwn(translations,"north") ?
-    translations["north"] : "North";
-  const eastText = Object.hasOwn(translations,"east") ?
-    translations["east"] : "East";
-  const westText = Object.hasOwn(translations,"west") ?
-    translations["west"] : "West";
-  const southText = Object.hasOwn(translations,"south") ?
-    translations["south"] : "South";
-  const spatialRepresentationText = Object.hasOwn(translations,"spatialRepresentation") ?
+  const statusText = translations?.status ? translations["status"] : "Status";
+  const maintenanceText = translations?.maintenance ? translations["maintenance"] : "Maintenance";
+  const idText = translations?.id ? translations["id"] : "ID";
+  const topicCategoryText = translations?.topicCategory ? translations["topicCategory"] : "Topic Category";
+  const typeText = translations?.type ? translations["type"] : "Type";
+  const northText = translations?.north ? translations["north"] : "North";
+  const eastText = translations?.east ? translations["east"] : "East";
+  const westText = translations?.west ? translations["west"] : "West";
+  const southText = translations?.south ? translations["south"] : "South";
+  const spatialRepresentationText = translations?.spatialRepresentation ?
     translations["spatialRepresentation"] : "Spatial Representation";
 
-  const labelText = Object.hasOwn(translations,"label") ?
-    translations["label"] : "Label";
-  const descriptionText = Object.hasOwn(translations,"description") ?
-    translations["description"] : "Description";
+  const labelText = translations?.label ? translations["label"] : "Label";
+  const descriptionText = translations?.description ? translations["description"] : "Description";
 
   /******************* Data *******************/
   const data = $page.data;

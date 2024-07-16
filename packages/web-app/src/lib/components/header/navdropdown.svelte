@@ -20,14 +20,14 @@
       class:option-vertical={orientation === "vertical"}
       class="bg-custom-1 p-4"
     >
-      {#if Object.hasOwn(option, "col-title")}
+      {#if option?.colTitle}
         <div class="font-custom-style-header-1">
-          {option["col-title"]}
+          {option["colTitle"]}
         </div>
       {/if}
       {#each option["links"] as link}
         <div class="block px-3 py-2 font-custom-style-header-2">
-          {#if Object.hasOwn(link, "info") && Object.hasOwn(link, "tipId")}
+          {#if link?.info && link?.tipId}
             <a class="hover:underline" href={link["href"]} aria-describedby={link["tipId"]}>
               {link["title"]}
               <Info classes="inline h-3 w-3 text-custom-8"/>
