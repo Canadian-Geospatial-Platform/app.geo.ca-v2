@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import {clickOutside} from './clickOutside';
-  import { toggleScroll } from "./toggleScroll";
+  import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
   import Navdropdown from './navdropdown.svelte';
   import Chevronup from '../icons/chevronup.svelte';
   import Chevrondown from '../icons/chevrondown.svelte';

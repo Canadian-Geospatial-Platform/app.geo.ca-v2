@@ -23,7 +23,7 @@
 
   /****************** Sorting ******************/
   let url = $page.url;
-  let sortOrder = url.searchParams.get('sort') ?? 'popularity-desc';
+  let sortOrder = url.searchParams.get('sort') ?? 'title';
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
   $: currentPage = Number(url.searchParams.get('page-number') ?? '0') + 1;
 
@@ -78,11 +78,14 @@
       {/if}
     </p>
     <div class="flex flex-col-reverse md:flex-row gap-3 md:gap-5">
-      <SelectCustomized
-        optionsData={sortBySelectData}
-        bind:selected={selected}
-        on:selectedChange={changeSort}
-      />
+      <div class="w-full md:w-48">
+        <SelectCustomized
+          optionsData={sortBySelectData}
+          selectId={"sort-options"}
+          bind:selected={selected}
+          on:selectedChange={changeSort}
+        />
+      </div>
       <!-- TODO: Add a method for this button -->
       <button class="button-3">{saveSearchParamsText}</button>
     </div>
@@ -95,7 +98,7 @@
           <a 
             href={hrefPrefix + result.id}
             class="uppercase underline font-custom-style-header-2"
-            target=”_blank”
+            target="_blank"
           >
             {result.title}
           </a>

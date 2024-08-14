@@ -37,7 +37,8 @@
   import type { ComponentType } from "svelte";
 	import Chevrondown from "$lib/components/icons/chevrondown.svelte";
   import Chevronup from "$lib/components/icons/chevronup.svelte";
-  import { createEventDispatcher } from 'svelte';
+  import Close from '$lib/components/icons/close.svelte';
+  import { createEventDispatcher, afterUpdate } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -50,9 +51,14 @@
 
   export let optionsData: Array<SelectOption>;
   // The default selection object
-  export let selected: SelectOption;
-  
-  let iconClasses = "w-4 h-4 self-center mr-1";
+  export let selected: SelectOption | undefined | null;
+  export let selectId: string;
+  export let buttonClasses: string = "button-3";
+  export let iconClasses: string = "w-4 h-4 self-center mr-1";
+  export let dropDownColor: string = "#535AA4";
+  export let removableSelection: boolean = false;
+  export let defaultLabel: string = "";
+
   $: expanded = false;
 
   function handleSelectClick() {
@@ -64,60 +70,103 @@
     selected = option;
     dispatch('selectedChange', selected);
   }
+
+  function handleRemoveSelect() {
+    selected = null;
+    expanded = false;
+    dispatch('selectedChange', selected);
+  }
+
+  // Set the width of the dropdown based on the unknown width of the select button
+  let selectButton: HTMLElement;
+  let dropDown: HTMLElement;
+
+  afterUpdate(() => {
+    if (selectButton && dropDown) {
+      const selectButtonWidth = selectButton.offsetWidth;
+      dropDown.style.width = `${selectButtonWidth - 12}px`;
+    }
+  });
 </script>
 
-<div class="w-full md:w-48">
-  <button 
-    class="grid grid-cols-12 w-full button-3"
-    aria-haspopup="listbox" 
-    aria-expanded={expanded}
-    on:click={handleSelectClick}
+<button 
+  class="grid grid-cols-12 w-full {buttonClasses}"
+  aria-haspopup="listbox" 
+  aria-expanded={expanded}
+  value={selected?.value}
+  id={selectId}
+  type="button"
+  on:click={handleSelectClick}
+  bind:this={selectButton}
+>
+  <span
+    class="group col-span-11 justify-self-center md:justify-self-start flex
+      flex-row translate-x-[13.1%] md:translate-x-0"
   >
-    <span class="col-span-11 justify-self-center md:justify-self-start flex flex-row translate-x-[13.1%] md:translate-x-0">
-      {selected.label}
+    {#if selected}
       {#if selected?.icon}
         <svelte:component this={selected.icon} classes={iconClasses}/>
       {/if}
-    </span>
-    <span class="justify-self-end">
-      {#if expanded}
-        <Chevronup classes="w-5 h-5"/>
-      {:else}
-        <Chevrondown classes="w-5 h-5"/>
+      {selected.label}
+      {#if removableSelection}
+        <button 
+          class="flex invisible group-hover:visible justify-center items-center
+            p-2 mx-1 hover:bg-custom-5 rounded-[50%]"
+          type="button"
+          on:click|stopPropagation={handleRemoveSelect}
+        >
+          <Close classes="h-[8px]"/>
+        </button>
       {/if}
-    </span>
-  </button>
-  <div 
-    class="responsive-width md:w-44 absolute z-10 mx-2 border-x border-b border-custom-16
-      divide-y divide-custom-16 text-custom-16"
-    class:hidden={!expanded}
-  >
-    {#each optionsData as option}
-      <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1"
-        id={option.value}
-        role="option"
-        aria-selected={option.value == selected.value}
-        class:selected-option={option.value == selected.value}
-        on:click={() => handleOptionClick(option)}
-      >
-        {option.label}
-        {#if option?.icon}
-          <svelte:component this={option.icon} classes={iconClasses}/>
-        {/if}
-      </button>
-    {/each}
-  </div>
+    {:else}
+      <span class="text-custom-9">
+        {defaultLabel}
+      </span>
+    {/if}
+  </span>
+  <span class="justify-self-end">
+    {#if expanded}
+      <Chevronup classes="w-5 h-5"/>
+    {:else}
+      <Chevrondown classes="w-5 h-5"/>
+    {/if}
+  </span>
+</button>
+<div 
+  class="custom-dropdown absolute z-10 mx-1.5 border-x border-b"
+  style:--dropDownColor={dropDownColor}
+  class:hidden={!expanded}
+  bind:this={dropDown}
+>
+  {#each optionsData as option}
+    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1"
+      id={option.value}
+      role="option"
+      aria-selected={option.value == selected?.value}
+      class:selected-option={option.value == selected?.value}
+      type="button"
+      on:click={() => handleOptionClick(option)}
+    >
+      {#if option?.icon}
+        <svelte:component this={option.icon} classes={iconClasses}/>
+      {/if}
+      {option.label}
+    </button>
+  {/each}
 </div>
 
 <style>
-  .selected-option {
-    @apply bg-custom-16;
-    @apply text-custom-1;
+  .custom-dropdown {
+    border-color: var(--dropDownColor);
+    color: var(--dropDownColor);
   }
 
-  @media (max-width: 767px) {
-    .responsive-width {
-      width: calc(100% - 64px);
-    }
+  .custom-dropdown button:not(:first-child) {
+    border-top: 1px solid var(--dropDownColor);
+  }
+
+  .selected-option {
+    background-color: var(--dropDownColor);
+    @apply text-custom-1;
   }
 </style>

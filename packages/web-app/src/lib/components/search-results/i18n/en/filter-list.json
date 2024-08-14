@@ -1,0 +1,180 @@
+{
+  "filters": [{
+    "section": "spatio-temporal",
+    "label": "Spatio-Temporal",
+    "filterList": [
+      {
+        "label": "Spatial Extent",
+        "value": "spatial-extent"
+      }, {
+        "label": "Temporal Extent",
+        "value": "temporal-extent"
+      }
+    ]
+  }, {
+    "section": "organisations",
+    "label": "Organizations",
+    "filterList": [
+      {
+        "label": "Agriculture and Agri-Food Canada",
+        "value": "agriculture-and-agri-food-canada"
+      }, {
+        "label": "Canadian Geospatial Data Infrastructure Web Harvester",
+        "value": "canadian-geospatial-data-infrastructure-web-harvester"
+      }, {
+        "label": "Canadian Heritage",
+        "value": "canadian-heritage"
+      }, {
+        "label": "Canadian Northern Economic Development Agency",
+        "value": "canadian-northern-economic-development-agency"
+      }, {
+        "label": "Canadian Nuclear Safety Commission",
+        "value": "canadian-nuclear-safety-commission"
+      }, {
+        "label": "Canadian Space Agency",
+        "value": "canadian-space-agency"
+      }, {
+        "label": "Elections Canada",
+        "value": "elections-canada"
+      }, {
+        "label": "Employment and Social Development Canada",
+        "value": "employment-and-social-development-canada"
+      }, {
+        "label": "Environment and Climate Change Canada",
+        "value": "environment-and-climate-change-canada"
+      }, {
+        "label": "Fisheries and Oceans Canada",
+        "value": "fisheries-and-oceans-canada"
+      }, {
+        "label": "Government and Municipalities of Québec",
+        "value": "government-and-municipalities-of-québec"
+      }, {
+        "label": "Government of Alberta",
+        "value": "government-of-alberta"
+      }, {
+        "label": "Government of British Columbia",
+        "value": "government-of-british-columbia"
+      }, {
+        "label": "Government of Manitoba",
+        "value": "government-of-manitoba"
+      }, {
+        "label": "Government of New Brunswick",
+        "value": "government-of-new-brunswick"
+      }, {
+        "label": "Government of Newfoundland and Labrador",
+        "value": "government-of-newfoundland-and-labrador"
+      }, {
+        "label": "Government of Northwest Territories",
+        "value": "government-of-northwest-territories"
+      }, {
+        "label": "Government of Nova Scotia",
+        "value": "government-of-nova-scotia"
+      }, {
+        "label": "Government of Nunavut",
+        "value": "government-of-nunavut"
+      }, {
+        "label": "Government of Ontario",
+        "value": "government-of-ontario"
+      }, {
+        "label": "Government of Prince Edward Island",
+        "value": "government-of-prince-edward-island"
+      }, {
+        "label": "Government of Saskatchewan",
+        "value": "government-of-saskatchewan"
+      }, {
+        "label": "Government of Yukon",
+        "value": "government-of-yukon"
+      }, {
+        "label": "Impact Assessment Agency of Canada",
+        "value": "impact-assessment-agency-of-canada"
+      }, {
+        "label": "Indigenous Services Canada",
+        "value": "indigenous-services-canada"
+      }, {
+        "label": "National Defence",
+        "value": "national-defence"
+      }, {
+        "label": "Natural Resources Canada",
+        "value": "natural-resources-canada"
+      }, {
+        "label": "Parks Canada",
+        "value": "parks-canada"
+      }, {
+        "label": "Public Health Agency of Canada",
+        "value": "public-health-agency-of-canada"
+      }, {
+        "label": "Statistics Canada",
+        "value": "statistics-canada"
+      }, {
+        "label": "Transport Canada",
+        "value": "transport-canada"
+      }
+    ]
+  }, {
+    "section": "types",
+    "label": "Types",
+    "filterList": [
+      {
+        "label": "API",
+        "value": "api"
+      }, {
+        "label": "Application",
+        "value": "application"
+      }, {
+        "label": "Collection",
+        "value": "collection"
+      }, {
+        "label": "Community",
+        "value": "community"
+      }, {
+        "label": "Dataset",
+        "value": "dataset"
+      }, {
+        "label": "Service",
+        "value": "service"
+      }
+    ]
+  }, {
+    "section": "themes",
+    "label": "Themes",
+    "filterList": [
+      {
+        "label": "Administration",
+        "value": "administration"
+      }, {
+        "label": "Economy",
+        "value": "economy"
+      }, {
+        "label": "Emergency",
+        "value": "emergency"
+      }, {
+        "label": "Environment",
+        "value": "environment"
+      }, {
+        "label": "Imagery",
+        "value": "imagery"
+      }, {
+        "label": "Infrastructure",
+        "value": "infrastructure"
+      }, {
+        "label": "Legal",
+        "value": "legal"
+      }, {
+        "label": "Science",
+        "value": "science"
+      }, {
+        "label": "Society",
+        "value": "society"
+      }
+    ]
+  }, {
+    "section": "others",
+    "label": "Other Filters",
+    "filterList": [
+      {
+        "label": "Foundational Data",
+        "value": "foundation-data"
+      }
+    ]
+  }]
+}

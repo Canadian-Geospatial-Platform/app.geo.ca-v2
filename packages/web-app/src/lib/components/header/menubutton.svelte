@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { toggleScroll } from "./toggleScroll";
+  import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
 
   export let active: Boolean;
 
