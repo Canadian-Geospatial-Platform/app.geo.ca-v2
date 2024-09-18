@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
   import Card from '$lib/components/card/card.svelte';
   import Search from '$lib/components/icons/search.svelte';
@@ -23,14 +24,16 @@
     translations["collections"] : "Collections";
 
   /***************** Data ******************/
+  let searchTextInput: HTMLInputElement;
+  let analytics = $page.data.analytics;
   $: numFilters = 0;
 
   // TODO: Get actual numbers for all data variables
-  $: datasets = 0;
-  $: contributors = 0;
-  $: applications = 0;
-  $: apis = 0;
-  $: collections = 0;
+  let datasets = analytics?.total ?? 0;
+  let contributors = analytics?.organization ?? 0;
+  let applications = 0;
+  let apis = 0;
+  let collections = 0;
 
   $: modalActive = false;
 
@@ -38,6 +41,30 @@
     modalActive = true;
     toggleScroll(modalActive);
   };
+
+  function handleSearchClick(event: Event) {
+    let searchTerm = searchTextInput?.value;
+    if (searchTerm && searchTerm.length > 0) {
+      applyKeywordSearch(searchTerm);
+    }
+  }
+
+  function handleSearchEnterKeyDown(event: KeyboardEvent) {
+    let key = event.key;
+    if (key == "Enter") {
+      let searchTerm = searchTextInput?.value;
+      if (searchTerm && searchTerm.length > 0) {
+        applyKeywordSearch(searchTerm);
+      }
+    }
+  }
+
+  function applyKeywordSearch(keyword: string) {
+    let url = $page.url;
+    url.searchParams.set('search-terms', keyword);
+    // TODO: return to first page of results. Note: this requires resetting the pagination element too.
+    goto(url, { invalidateAll: true });
+  }
 </script>
 
 <FilterModal bind:active={modalActive} bind:numFilters={numFilters}/>
@@ -57,10 +84,13 @@
       placeholder={searchProductsText}
       class="w-full h-12 ml-5 px-5 rounded-s-[5px] font-custom-style-placeholder
         shadow-[inset_0px_3px_6px_#00000029]"
+      bind:this={searchTextInput}
+      on:keydown={handleSearchEnterKeyDown}
     />
     <button
       class="text-nowrap h-12 px-5 rounded-e-[5px] bg-custom-16
         font-custom-style-button-3 shadow-[0px_3px_6px_#00000029]"
+      on:click={handleSearchClick}
     >
       <Search classes="inline" height="18px"/>
       {searchText}

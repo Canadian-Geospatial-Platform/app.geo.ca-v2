@@ -1,16 +1,21 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { updateCategoryOfInterest } from '$lib/components/search-results/filters/store';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
-	import Checkmark from '$lib/components/icons/checkmark.svelte';
 	import Close from '$lib/components/icons/close.svelte';
-  import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
-	import Search from '../icons/search.svelte';
+	import Search from '$lib/components/icons/search.svelte';
+	import CategoryOfInterest from '$lib/components/search-results/filters/category-of-interest.svelte';
+	import Organizations from '$lib/components/search-results/filters/organizations.svelte';
+	import Types from '$lib/components/search-results/filters/types.svelte';
+	import Themes from '$lib/components/search-results/filters/themes.svelte';
+	import OtherFilters from '$lib/components/search-results/filters/other-filters.svelte';
+	import SpatioTemporal from '$lib/components/search-results/filters/spatio-temporal.svelte';
 
   // TODO: Fix tab sequence for keyboard navigation i.e. disable content below mask
 
   export let active = false;
   export let numFilters = 0;
-  
+
   /************* Translations ***************/
   const translations = $page.data.t;
 
@@ -18,22 +23,13 @@
   // TODO: update description text
   const filterDescriptionText = translations?.filterDescription ?
     translations["filterDescription"] : "";
-  const categoryOfInterestText = translations?.categoryOfInterest ?
-    translations["categoryOfInterest"] : "Select Category of Interest";
   const clearAllText = translations?.clearAll ? translations["clearAll"] : "Clear All";
   const searchText = translations?.search ? translations["search"] : "Search";
-  const categorySelectDefautText = translations?.categorySelectDefaut ?
-    translations["categorySelectDefaut"] : "--Select a Category--";
 
   /************* Filter Data ***************/
-  const filters = $page.data.filters.filters;
-  const categories = $page.data.categories;
-
-  // TODO: Get full list of categories
-  const categoriesOfInterest = categories;
-
-  $: selected = null;
   $: tempNumFilters = numFilters;
+  let temporalActive = false;
+  let spatialActive = false;
 
   /************* Handlers ***************/
   function handleCloseButtonClick(event: Event) {
@@ -41,29 +37,18 @@
     toggleScroll(active);
   }
 
-  function handleCategoryOfInterestChange(event: CustomEvent) {
-    if (!selected && event.detail) {
-      tempNumFilters = tempNumFilters + 1;
-    } else if (selected && !event.detail) {
-      tempNumFilters = tempNumFilters - 1;
-    }
-    selected = event.detail;
-  }
-
-  function handleCheckboxClick(event: Event) {
-    let checkbox = event.target as HTMLInputElement;
-    if (checkbox.checked == true) {
-      tempNumFilters = tempNumFilters + 1;
-    } else {
-      tempNumFilters = tempNumFilters - 1;
-    }
+  function handleClearAllClick(event: Event) {
+    tempNumFilters = 0;
+    numFilters = 0;
+    temporalActive = false;
+    spatialActive = false;
+    updateCategoryOfInterest(null);
   }
 
   function handleSubmit(event: Event) {
-    numFilters = tempNumFilters;
     console.log(event);
+    numFilters = tempNumFilters;
   }
-
 </script>
 
 <div
@@ -76,72 +61,38 @@
   >
     <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
       <div>
-        <h1 class="font-custom-style-h1-2">
-          {filterByText}
-        </h1>
+        <h1 class="font-custom-style-h1-2">{filterByText}</h1>
         <p>{filterDescriptionText}</p>
       </div>
-      <div class="w-full">
-        <h3 class="font-custom-style-h3 mb-5">
-          {categoryOfInterestText}
-        </h3>
-        <div class="w-full lg:w-[60%]">
-          <SelectCustomized
-            optionsData={categoriesOfInterest}
-            selectId={"categories-of-interest"}
-            buttonClasses={"button-4"}
-            dropDownColor={"#002E62"}
-            removableSelection={true}
-            defaultLabel={categorySelectDefautText}
-            selected={selected}
-            on:selectedChange={handleCategoryOfInterestChange}
-          />
-        </div>
-      </div>
       <div class="flex flex-col gap-y-5">
-        {#each filters as filter}
-          <h3 class="font-custom-style-h3">
-            {filter?.label}
-          </h3>
-          <div
-            class:organizations={filter.section == "organisations"}
-            class:sections={filter.section != "organisations"}
-          >
-            {#each filter.filterList as filterListItem}
-              <div class="flex gap-[13px] flex-[1_1_160px]">
-                <!-- Note: checkboxes with the same name attribute are grouped together -->
-                <input 
-                  type="checkbox" 
-                  id={filter.section + "-" + filterListItem.value} 
-                  class="peer appearance-none min-w-[27px] h-[27px] border-2 
-                    border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16"
-                  name={filter.section}
-                  on:click={handleCheckboxClick}
-                />
-                <label for={filter.section + "-" + filterListItem.value}>
-                  {filterListItem.label}
-                </label>
-                <Checkmark
-                  classes="absolute h-4 mt-1.5 ml-1.5 hidden peer-checked:block
-                    pointer-events-none text-custom-1"
-                />
-              </div>
-            {/each}
-          </div>
-        {/each}
+        <CategoryOfInterest
+          bind:tempNumFilters={tempNumFilters}
+        />
+        <SpatioTemporal
+          bind:tempNumFilters={tempNumFilters}
+          bind:temporalActive={temporalActive}
+          bind:spatialActive={spatialActive}
+        />
+        <Organizations bind:tempNumFilters={tempNumFilters} />
+        <Types bind:tempNumFilters={tempNumFilters} />
+        <Themes bind:tempNumFilters={tempNumFilters} />
+        <OtherFilters bind:tempNumFilters={tempNumFilters} />
       </div>
     </div>
     <div class="col-span-1 px-5 pt-8 justify-self-end">
-      <button 
-        class="flex justify-center items-center border border-custom-16 rounded-[50%] h-[49px] w-[49px]"
+      <button
         type="button"
+        class="flex justify-center items-center border border-custom-16 rounded-[50%] h-[49px] w-[49px]"
         on:click={handleCloseButtonClick}
       >
         <Close classes="text-custom-16 h-[21px]"/>
       </button>
     </div>
     <div class="grid grid-cols-2 col-span-6 bg-custom-5 border-t border-custom-21 px-5 py-[18px]">
-      <button type="button" class="justify-self-start button-3">
+      <button
+        type="reset" class="justify-self-start button-3"
+        on:click={handleClearAllClick}
+      >
         {clearAllText}
       </button>
       <button type="submit" class="justify-self-end button-5 shadow-[0px_3px_6px_#00000029]">
@@ -160,26 +111,5 @@
 
   .hide-scroll::-webkit-scrollbar {
     @apply hidden; /* Chrome */
-  }
-
-  .organizations {
-    @apply space-y-[18px];
-  }
-
-  .sections {
-    @apply grid;
-    @apply gap-x-4;
-    @apply gap-y-[18px];
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    .organizations {
-      columns: 2;
-    }
-
-    .sections {
-      grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), max-content));
-    }
   }
 </style>

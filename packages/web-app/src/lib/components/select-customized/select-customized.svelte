@@ -34,20 +34,13 @@
 ------------------------------------------------------------------>
 
 <script lang="ts">
-  import type { ComponentType } from "svelte";
 	import Chevrondown from "$lib/components/icons/chevrondown.svelte";
   import Chevronup from "$lib/components/icons/chevronup.svelte";
   import Close from '$lib/components/icons/close.svelte';
   import { createEventDispatcher, afterUpdate } from 'svelte';
+  import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
 
 	const dispatch = createEventDispatcher();
-
-  type SelectOption = {
-    value: string,
-    label: string,
-    // The icon should be a component from the 'icons' folder
-    icon?: ComponentType,
-  }
 
   export let optionsData: Array<SelectOption>;
   // The default selection object
@@ -66,7 +59,7 @@
   }
 
   function handleOptionClick(option: SelectOption) {
-    expanded = !expanded;
+    expanded = false;
     selected = option;
     dispatch('selectedChange', selected);
   }
@@ -109,7 +102,7 @@
       {/if}
       {selected.label}
       {#if removableSelection}
-        <button 
+        <button
           class="flex invisible group-hover:visible justify-center items-center
             p-2 mx-1 hover:bg-custom-5 rounded-[50%]"
           type="button"
@@ -132,7 +125,7 @@
     {/if}
   </span>
 </button>
-<div 
+<div
   class="custom-dropdown absolute z-10 mx-1.5 border-x border-b"
   style:--dropDownColor={dropDownColor}
   class:hidden={!expanded}

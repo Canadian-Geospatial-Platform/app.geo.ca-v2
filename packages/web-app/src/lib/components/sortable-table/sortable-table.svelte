@@ -53,7 +53,6 @@
   }
 
   function handleRowClickKeydown(url: string, event: KeyboardEvent) {
-    console.log(event.key);
     if (url.length > 0 && (event.key == "Enter" || event.key == " ")) {
       window.open(url);
     }

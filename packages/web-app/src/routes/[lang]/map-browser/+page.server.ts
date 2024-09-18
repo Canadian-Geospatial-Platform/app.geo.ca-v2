@@ -3,9 +3,11 @@ import { page } from '$app/stores';
 import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/db/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
+import Organizations from '$lib/components/search-results/filters/organizations.svelte';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
+	let analytics = await getAnalytics(fetch);
 	let parsedResponse = [];
 	let userData = { Item: { mapCart: [] } };
 	let sanitizedResults;
@@ -26,7 +28,8 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		results: sanitizedResults,
 		userData: userData.Item,
 		start: getMin(url.searchParams),
-		end: getMin(url.searchParams) + sanitizedResults.length
+		end: getMin(url.searchParams) + sanitizedResults.length,
+		analytics: analytics
 	};
 };
 
@@ -37,6 +40,19 @@ function generateUrl(fetch, searchParams, lang, token) {
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
+}
+
+async function getAnalytics(fetch) {
+	let analytics = await fetch('https://geocore.api.geo.ca/analytics/11');
+	let parsedAnalytics = [];
+
+	try {
+		parsedAnalytics = await analytics.json();
+	} catch (e) {
+		console.error(e);
+	}
+
+	return parsedAnalytics?.Items[0] ?? {};
 }
 
 function mapSearchParams(searchParams, lang) {

@@ -26,5 +26,6 @@ export const load: PageLoad = ({ params, data, url }) => {
 		total: parseInt(data.results?.[0]?.total ? data.results[0].total : 0),
 		filters: filters,
 		categories: categories,
+		analytics: data.analytics,
 	};
 };

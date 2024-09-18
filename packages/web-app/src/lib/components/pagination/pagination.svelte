@@ -43,14 +43,18 @@
   $: startPage = 1;
 
   function pageRange(current: number) {
-    if (current <= halfNumPageButtons) {
-      startPage = 1
-    } else if (current > numPages - halfNumPageButtons) {
-      startPage = numPages - numPageButtons + 1;
-    } else {
-      startPage = current - halfNumPageButtons;
+    if (numPages > numPageButtons) {
+      if (current <= halfNumPageButtons) {
+        startPage = 1
+      } else if (current > numPages - halfNumPageButtons) {
+        startPage = numPages - numPageButtons + 1;
+      } else {
+        startPage = current - halfNumPageButtons;
+      }
+      return Array.from({ length: numPageButtons }, (value, i) => startPage + i);
     }
-    return Array.from({ length: numPageButtons }, (value, i) => startPage + i);
+
+    return Array.from({ length: numPages }, (_, i) => i + 1);
   }
 
   function handlePageClick(page: number) {
@@ -59,11 +63,11 @@
   }
 </script>
 
-<div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_3px_6px_#00000029]">
+<div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_3px_6px_#00000029]" class:hidden={totalItems == 0}>
   <button
     class="arrows mr-2 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage - 1)}
-    disabled={currentPage == 1}
+    disabled={currentPage == 1 || totalItems == 0}
   >
     <Chevronleft classes="h-6" />
   </button>
@@ -79,7 +83,7 @@
   <button
     class="arrows ml-2 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage + 1)}
-    disabled={currentPage == numPages}
+    disabled={currentPage == numPages || totalItems == 0}
   >
     <Chevronright classes="h-6" />
   </button>
