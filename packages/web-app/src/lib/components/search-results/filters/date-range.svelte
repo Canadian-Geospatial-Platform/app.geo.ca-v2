@@ -12,9 +12,11 @@
   const endDate = translations?.endDate ? translations["endDate"] : "End Date";
   const validatorRequired = translations?.validatorRequired ?
     translations["validatorRequired"] : "Please fill out this field.";
+  const validatorStartGreater = translations?.validatorStartGreater ?
+    translations["validatorStartGreater"] : "The start date should be earlier or equal to the end date.";
 
-  const startDateKey = dateId + '-' + 'start';
-  const endDateKey = dateId + '-' + 'end';
+  const startDateKey = dateId + '-start';
+  const endDateKey = dateId + '-end';
 
   const labels = [
     [startDate, startDateKey],
@@ -35,8 +37,23 @@
       let message = '';
       let date = Date.parse(input.value);
 
+      // Note: The validator message is set when the field is set, and not when
+      // the form is submitted. So, we need to check both the start and end dates
+      // seperately to account for the user possibly selecting dates in the reverse order.
       if (Number.isNaN(date)) {
         message = validatorRequired;
+      } else if (input.id == dateId + '-start') {
+        let endElement = document.getElementById(dateId + '-end');
+        let endDate = Date.parse(endElement.value);
+        if (!Number.isNaN(endDate) && date > endDate) {
+          message = validatorStartGreater;
+        }
+      } else if (input.id == dateId + '-end') {
+        let startElement = document.getElementById(dateId + '-start');
+        let startDate = Date.parse(startElement.value);
+        if (!Number.isNaN(startDate) && date < startDate) {
+          message = validatorStartGreater;
+        }
       }
 
 			input.setCustomValidity(message);	

@@ -21,6 +21,9 @@
     translations["validatorTooBig"] : "Value must be less than or equal to ";
   const validatorTooSmall = translations?.validatorTooSmall ?
     translations["validatorTooSmall"] : "Value must be greater than or equal to ";
+  const validatorNorthGreater = translations?.validatorNorthGreater ?
+    translations["validatorNorthGreater"] :
+    "The northern latitude value should be greater than the southern latitude.";
 
   const labels = [
     [north, coordinatesId + "-north", "90", "90"],
@@ -45,12 +48,29 @@
       let min = Number.parseFloat(input.min);
       let max = Number.parseFloat(input.max);
 
+      // Note: The validator message is set when the field is set, and not when
+      // the is form submitted. So, we need to check both the north and south latitudes
+      // seperately to account for the user possibly entering values in the reverse order.
+      // Also, we only need to check the latitue because longitudes can wrap arround in
+      // in the oposite direction.
       if (Number.isNaN(number)) {
         message = validatorRequired;
       } else if (!Number.isNaN(min) && number < min) {
         message = validatorTooSmall + min;
       } else if (!Number.isNaN(max) && number > max) {
         message = validatorTooBig + max;
+      } else if (input.id == coordinatesId + '-north') {
+        let southElement = document.getElementById(coordinatesId + '-south');
+        let southNumber = Number.parseFloat(southElement.value);
+        if (!Number.isNaN(southNumber) && number < southNumber) {
+          message = validatorNorthGreater;
+        }
+      } else if (input.id == coordinatesId + '-south') {
+        let northElement = document.getElementById(coordinatesId + '-north');
+        let northNumber = Number.parseFloat(northElement.value);
+        if (!Number.isNaN(northNumber) && number > northNumber) {
+          message = validatorNorthGreater;
+        }
       }
 
 			input.setCustomValidity(message);	

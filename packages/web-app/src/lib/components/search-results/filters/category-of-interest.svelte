@@ -11,12 +11,16 @@
   // TODO: Get full list of categories
   const categories = $page.data.categories;
   let selected: SelectOption | null = null;
+  let categoryStoreVal: string | null = null;
 
   onMount(() => {
-    selected = init();
+    init();
     categoryOfInterest.subscribe((value) => {
       let category = findCategory(value);
-      changeSelection(category);
+      if (selected != category) {
+        changeSelection(category);
+      }
+      categoryStoreVal = value;
     });
   });
 
@@ -32,21 +36,25 @@
 
   function init() {
     let selectedValue = $page.url.searchParams.get(categoriesKey);
-    selected = findCategory(selectedValue);
-    return selected;
+    let selectedCategory = findCategory(selectedValue);
+    if (selectedCategory) {
+      tempNumFilters = tempNumFilters + 1;
+      selected = selectedCategory;
+      updateCategoryOfInterest(selected?.value ?? null);
+    }
 	}
 
   function findCategory(categoryName: string | null) {
     return categories.find((x: FilterItem) => x.value == categoryName) ?? null;
   }
 
-  function changeSelection(selection: SelectOption | null) {
-    if (!selected && selection) {
+  function changeSelection(newSelection: SelectOption | null) {
+    if (!categoryStoreVal && newSelection) {
       tempNumFilters = tempNumFilters + 1;
-    } else if (selected && !selection) {
+    } else if (categoryStoreVal && !newSelection) {
       tempNumFilters = tempNumFilters - 1;
     }
-    selected = selection;
+    selected = newSelection;
   }
 
   /************* Handlers ***************/

@@ -46,7 +46,6 @@
   }
 
   function handleSubmit(event: Event) {
-    console.log(event);
     numFilters = tempNumFilters;
   }
 </script>
