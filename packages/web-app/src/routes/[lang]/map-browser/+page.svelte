@@ -5,14 +5,14 @@
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
 	// Load maps
-	afterNavigate(async () => {
-		try {
-			await tick();
-			cgpv.init();
-		} catch (e) {
-			console.warn('Error initialising cgpv.', e);
-		}
-	});
+	// afterNavigate(async () => {
+	// 	try {
+	// 		await tick();
+	// 		cgpv.init();
+	// 	} catch (e) {
+	// 		console.warn('Error initialising cgpv.', e);
+	// 	}
+	// });
 
 	$: results = $page.data.results ? $page.data.results : [];
 </script>

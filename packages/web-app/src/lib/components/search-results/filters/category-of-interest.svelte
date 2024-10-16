@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
-  import { categoryOfInterest, updateCategoryOfInterest } from '$lib/components/search-results/filters/store';
+  import { tempCategoryOfInterest, updateTempCategoryOfInterest } from '$lib/components/search-results/store';
   import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
   import type { FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
   import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
@@ -15,7 +15,7 @@
 
   onMount(() => {
     init();
-    categoryOfInterest.subscribe((value) => {
+    tempCategoryOfInterest.subscribe((value) => {
       let category = findCategory(value);
       if (selected != category) {
         changeSelection(category);
@@ -40,7 +40,7 @@
     if (selectedCategory) {
       tempNumFilters = tempNumFilters + 1;
       selected = selectedCategory;
-      updateCategoryOfInterest(selected?.value ?? null);
+      updateTempCategoryOfInterest(selected?.value ?? null);
     }
 	}
 
@@ -60,7 +60,7 @@
   /************* Handlers ***************/
   function handleCategoryOfInterestChange(event: CustomEvent) {
     changeSelection(event.detail);
-    updateCategoryOfInterest(selected?.value ?? null);
+    updateTempCategoryOfInterest(selected?.value ?? null);
   }
 </script>
 

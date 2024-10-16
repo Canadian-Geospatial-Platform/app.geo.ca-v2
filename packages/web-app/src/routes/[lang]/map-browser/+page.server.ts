@@ -37,6 +37,7 @@ function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
 	const params = mapSearchParams(searchParams, lang);
 	url.search = new URLSearchParams(params).toString();
+	console.log(url);
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
@@ -58,15 +59,15 @@ async function getAnalytics(fetch) {
 function mapSearchParams(searchParams, lang) {
 	let cKeys = concatKeys(searchParams);
 	let ret = {
-		north: 72.04683989379397,
-		east: 44.6484375,
-		south: 41.244772343082076,
-		west: -180,
+		north: searchParams.get('north') ?? 72.04683989379397,
+		east: searchParams.get('east') ?? 44.6484375,
+		south: searchParams.get('south') ?? 41.244772343082076,
+		west: searchParams.get('west') ?? -180,
 		keyword: searchParams.get('search-terms'),
 		org: cKeys.org,
 		type: cKeys.type,
 		theme: cKeys.theme,
-		bbox: cKeys.bbox,
+		bbox: searchParams.get('bbox'),
 		foundational: searchParams.get('others-foundational') === 'on' ? 'true' : '',
 		begin: searchParams.get('spatio-temporal-start')
 			? new Date(searchParams.get('spatio-temporal-start')).toISOString()

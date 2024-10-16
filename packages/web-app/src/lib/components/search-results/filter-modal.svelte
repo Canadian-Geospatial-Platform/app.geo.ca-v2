@@ -1,6 +1,10 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { updateCategoryOfInterest } from '$lib/components/search-results/filters/store';
+  import { goto } from '$app/navigation';
+  import { updateBoundingBox, updateCategoryOfInterest, updateDateRange,
+    updateFoundational, updateOrg, updateTheme, updateTypeFilter,
+    updateTempCategoryOfInterest, clearAll
+  } from '$lib/components/search-results/store';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
 	import Close from '$lib/components/icons/close.svelte';
 	import Search from '$lib/components/icons/search.svelte';
@@ -33,8 +37,7 @@
 
   /************* Handlers ***************/
   function handleCloseButtonClick(event: Event) {
-    active = false;
-    toggleScroll(active);
+    closeModal();
   }
 
   function handleClearAllClick(event: Event) {
@@ -42,11 +45,174 @@
     numFilters = 0;
     temporalActive = false;
     spatialActive = false;
+    updateTempCategoryOfInterest(null);
     updateCategoryOfInterest(null);
   }
 
   function handleSubmit(event: Event) {
     numFilters = tempNumFilters;
+    let filterForm = event.target;
+    let i: number;
+    let formInput: HTMLInputElement;
+    let key: string;
+
+    let category = null;
+    let bbox = null;
+    let dateRange = null;
+    let foundational = {
+      foundational: false,
+    }
+
+    let org = {
+      "agriculture-and-agri-food-canada": false,
+      "canadian-geospatial-data-infrastructure-web-harvester": false,
+      "canadian-heritage": false,
+      "canadian-northern-economic-development-agency": false,
+      "canadian-nuclear-safety-commission": false,
+      "canadian-space-agency": false,
+      "elections-canada": false,
+      "employment-and-social-development-canada": false,
+      "environment-and-climate-change-canada": false,
+      "fisheries-and-oceans-canada": false,
+      "government-and-municipalities-of-québec": false,
+      "government-of-alberta": false,
+      "government-of-british-columbia": false,
+      "government-of-manitoba": false,
+      "government-of-new-brunswick": false,
+      "government-of-newfoundland-and-labrador": false,
+      "government-of-northwest-territories": false,
+      "government-of-nova-scotia": false,
+      "government-of-nunavut": false,
+      "government-of-ontario": false,
+      "government-of-prince-edward-island": false,
+      "government-of-saskatchewan": false,
+      "government-of-yukon": false,
+      "impact-assessment-agency-of-canada": false,
+      "indigenous-services-canada": false,
+      "national-defence": false,
+      "natural-resources-canada": false,
+      "parks-canada": false,
+      "public-health-agency-of-canada": false,
+      "statistics-canada": false,
+      "transport-canada": false,
+    };
+
+    let theme = {
+      administration: false,
+      economy: false,
+      emergency: false,
+      environment: false,
+      imagery: false,
+      infrastructure: false,
+      legal: false,
+      science: false,
+      society: false,
+    };
+
+    let typeFilter = {
+      api: false,
+      application: false,
+      collection: false,
+      community: false,
+      dataset: false,
+      service: false,
+    };
+
+    for (i = 0; i < filterForm.length; i++) {
+      formInput = filterForm[i];
+      if (formInput?.id == 'categories-of-interest') {
+        category = formInput?.value ?? null;
+      } else if (formInput?.type == 'checkbox' && formInput?.id == 'spatio-temporal-spatial-extent') {
+        if (formInput.checked) {
+          let northEl = document.getElementById('spatio-temporal-north');
+          let eastEl = document.getElementById('spatio-temporal-east');
+          let southEl = document.getElementById('spatio-temporal-south');
+          let westEl = document.getElementById('spatio-temporal-west');
+
+          let north = northEl.value;
+          let east = eastEl.value;
+          let south = southEl.value;
+          let west = westEl.value;
+
+          bbox = {
+            north: north,
+            east: east,
+            south: south,
+            west: west
+          }
+        } else {
+          bbox = null;
+        }
+      } else if (formInput?.type == 'checkbox' && formInput?.id == 'spatio-temporal-temporal-extent') {
+        if (formInput.checked) {
+          let beginEl = document.getElementById('spatio-temporal-start');
+          let endEl = document.getElementById('spatio-temporal-end');
+
+          let begin = beginEl.value;
+          let end = endEl.value;
+
+          dateRange = {
+            begin: begin,
+            end: end
+          }
+        } else {
+          dateRange = null;
+        }
+      } else if (formInput?.type == 'checkbox' && formInput?.name == 'others') {
+        // Note: The different filters in the 'others' section will have their own
+        // entries in the filters store (since they are listed seperately in the get request),
+        // so we need to check for each one
+        if (formInput?.id == 'others-foundational') {
+          foundational.foundational = formInput.checked ? true : false;
+        }
+      } else if (formInput?.type == 'checkbox' && formInput.name && formInput.id) {
+        if (formInput.name == 'org') {
+          key = formInput.id.replace('org-', '');
+          org[key] = formInput.checked ? true : false;
+        } else if (formInput.name == 'type') {
+          key = formInput.id.replace('type-', '');
+          typeFilter[key] = formInput.checked ? true : false;
+        } else if (formInput.name == 'theme') {
+          key = formInput.id.replace('theme-', '');
+          theme[key] = formInput.checked ? true : false;
+        }
+      }
+    }
+
+    updateBoundingBox(bbox);
+    updateCategoryOfInterest(category);
+    updateDateRange(dateRange);
+    updateFoundational(foundational);
+    updateOrg(org);
+    updateTheme(theme);
+    updateTypeFilter(typeFilter);
+
+    let query = new URLSearchParams($page.url.searchParams.toString());
+
+    if (bbox) {
+      query.set('north', bbox.north);
+      query.set('east', bbox.east);
+      query.set('south', bbox.south);
+      query.set('west', bbox.west);
+      query.set('bbox', bbox.south + '|' + bbox.west + '|' + bbox.north + '|' + bbox.east);
+    }
+
+    let opts = {
+			replaceState: true,
+			keepfocus: true
+		};
+		goto(`?${query.toString()}`, opts);
+
+    console.log(query);
+
+    closeModal();
+  }
+
+  /************* utility methods ***************/
+
+  function closeModal() {
+    active = false;
+    toggleScroll(active);
   }
 </script>
 

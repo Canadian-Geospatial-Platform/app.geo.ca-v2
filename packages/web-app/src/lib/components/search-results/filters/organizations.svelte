@@ -7,7 +7,7 @@
 
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
-  const organizations = filters.find((x: Filter) => x.section == "organisations");
+  const organizations = filters.find((x: Filter) => x.section == "org");
 
   function init(key: string) {
     return $page.url.searchParams.get(key) == 'on' ? true : false;

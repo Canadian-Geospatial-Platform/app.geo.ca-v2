@@ -15,6 +15,7 @@
   const degrees = translations?.degrees ? translations["degrees"] : "Degrees";
   const spatialInstructions = translations?.spatialInstructions ?
     translations["spatialInstructions"] : "";
+
   const validatorRequired = translations?.validatorRequired ?
     translations["validatorRequired"] : "Please fill out this field.";
   const validatorTooBig = translations?.validatorTooBig ?

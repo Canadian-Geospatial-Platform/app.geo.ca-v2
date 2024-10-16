@@ -7,7 +7,7 @@
 
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
-  const themes = filters.find((x: Filter) => x.section == "themes");
+  const themes = filters.find((x: Filter) => x.section == "theme");
 
   function init(key: string) {
     return $page.url.searchParams.get(key) == 'on' ? true : false;

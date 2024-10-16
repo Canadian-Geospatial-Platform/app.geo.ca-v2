@@ -9,6 +9,9 @@
 	import { onMount } from 'svelte';
 	import Pagination from '$lib/components/pagination/pagination.svelte';
 	import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
+  import Map from '$lib/components/map/map.svelte';
+  import { tick } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -62,6 +65,25 @@
 	  url.searchParams.set('results-per-page', `${itemsPerPage}`);
     goto(url, { invalidateAll: true });
   }
+
+  /****************** Map ******************/
+  let mapHeight = '24rem';
+  let mapWidth = '100%';
+
+  // TODO: find a way to load only one map at a time using the ID
+  // TODO: reset maps on page change
+  // TODO: find out why some maps load and some don't
+
+  async function loadMap(event: any, mapId) {
+    console.log('MAP ID!!!!!!!!!!!!!!! ' + mapId);
+    console.log(event);
+    try {
+			await tick();
+			cgpv.init(function () {});
+		} catch (e) {
+			console.warn('Error initialising cgpv.', e);
+		}
+  }
 </script>
 
 <Card>
@@ -91,9 +113,9 @@
     </div>
   </div>
   <!-- List -->
-  {#each results as result}
+  {#each results as result, index}
     <div class="bg-custom-1 px-5 py-4">
-      <Accordian>
+      <Accordian on:openChange|once={(event) => loadMap(event, result.id)}>
         <div slot="accordianTitle">
           <a 
             href={hrefPrefix + result.id}
@@ -107,9 +129,11 @@
           </div>
         </div>
         <div slot="accordianContent" class="mt-4">
-          <!-- TODO add map preview here -->
-          <div class="flex w-full h-72 justify-center items-center bg-blue-500/5">
-            -- MAP PREVIEW HERE --
+          <div class="flex justify-center items-center">
+            <Map
+              coordinates={result.coordinates} id={result.id}
+              height={mapHeight} width={mapWidth}
+            />
           </div>
         </div>
       </Accordian>

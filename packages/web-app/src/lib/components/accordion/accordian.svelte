@@ -1,11 +1,17 @@
 <script lang="ts">
   import Chevronup from '$lib/components/icons/chevronup.svelte';
   import Chevrondown from '$lib/components/icons/chevrondown.svelte';
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   let open = false;
 
   function handleButtonClick() {
     open = !open;
+    if (open) {
+      dispatch('openChange');
+    }
   };
 </script>
 

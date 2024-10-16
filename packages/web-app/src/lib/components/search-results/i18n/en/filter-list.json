@@ -12,7 +12,7 @@
       }
     ]
   }, {
-    "section": "organisations",
+    "section": "org",
     "label": "Organizations",
     "filterList": [
       {
@@ -111,7 +111,7 @@
       }
     ]
   }, {
-    "section": "types",
+    "section": "type",
     "label": "Types",
     "filterList": [
       {
@@ -135,7 +135,7 @@
       }
     ]
   }, {
-    "section": "themes",
+    "section": "theme",
     "label": "Themes",
     "filterList": [
       {
@@ -173,7 +173,7 @@
     "filterList": [
       {
         "label": "Foundational Data",
-        "value": "foundation-data"
+        "value": "foundational"
       }
     ]
   }]

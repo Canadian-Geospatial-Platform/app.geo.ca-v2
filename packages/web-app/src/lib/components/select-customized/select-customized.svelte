@@ -86,7 +86,7 @@
   class="grid grid-cols-12 w-full {buttonClasses}"
   aria-haspopup="listbox" 
   aria-expanded={expanded}
-  value={selected?.value}
+  value={selected?.value ?? ''}
   id={selectId}
   type="button"
   on:click={handleSelectClick}
