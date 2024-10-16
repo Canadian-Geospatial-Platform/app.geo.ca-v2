@@ -1,0 +1,135 @@
+[
+  {
+    "code": "farming",
+    "label_en": "Farming",
+    "description_en": "Rearing of animals and/or cultivation of plants. Examples: agriculture, irrigation, aquaculture, plantations, herding, pests and diseases affecting crops and livestock",
+    "label_fr": "Agriculture",
+    "description_fr": "Elevage et/ou cultures. Exemples : agriculture, irrigation, aquaculture, plantations"
+  },
+  {
+    "code": "biota",
+    "label_en": "Biota",
+    "description_en": "Flora and/or fauna in natural environment. Examples: wildlife, vegetation, biological sciences, ecology, wilderness, sealife, wetlands, habitat",
+    "label_fr": "Biologie, faune et flore",
+    "description_fr": "Flore et faune dans un écosystème naturel. Exemples : habitat, écologie, faune sauvage, faune aquatique, sciences biologiques, zones humides, végétation, biodiversité"
+  },
+  {
+    "code": "boundaries",
+    "label_en": "Boundaries",
+    "description_en": "Legal land description_ens. Examples: political and administrative boundaries",
+    "label_fr": "Limites politiques et administratives",
+    "description_fr": "Exemples : limites de pays, de provinces, de départements, de communes"
+  },
+  {
+    "code": "climatologyMeteorologyAtmosphere",
+    "label_en": "Climatology, meteorology, atmosphere",
+    "description_en": "Processes and phenomena of the atmosphere. Examples: cloud cover, weather, climate, atmospheric conditions, climate change, precipitation",
+    "label_fr": "Climatologie, météorologie, atmosphère",
+    "description_fr": "Processus et phénomènes atmosphériques. Exemples : climat, météorologie, conditions atmosphériques, changements climatiques, couverture nuageuse"
+  },
+  {
+    "code": "economy",
+    "label_en": "Economy",
+    "description_en": "Economic activities, conditions and employment. Examples: production, labour, revenue, commerce, industry, tourism and ecotourism, forestry, fisheries, commercial or subsistence hunting, exploration and exploitation of resources such as minerals, oil and gas",
+    "label_fr": "Economie",
+    "description_fr": "Activités économiques. Exemples : production, travail, revenu, commerce, industrie, tourisme et éco-tourisme, foresterie, pêche, chasse, exploration et exploitation des ressources minières, pétrole, gaz naturel"
+  },
+  {
+    "code": "elevation",
+    "label_en": "Elevation",
+    "description_en": "Height above or below sea level. Examples: altitude, bathymetry, digital elevation models, slope, derived products",
+    "label_fr": "Altimétrie",
+    "description_fr": "Hauteurs au dessous et dessus du niveau de la mer. Exemples : altitude, bathymétrie, MNT, pentes et calculs dérivés de l’altitude"
+  },
+  {
+    "code": "environment",
+    "label_en": "Environment",
+    "description_en": "Environmental resources, protection and conservation. Examples: environmental pollution, waste storage and treatment, environmental impact assessment, monitoring environmental risk, nature reserves, landscape",
+    "label_fr": "Environnement",
+    "description_fr": "Ressources naturelles, protection, conservation des ressources naturelles. Exemples : pollution, traitement et stockage des déchets, suivi de l’environnement, gestion du risque, réserves naturelles, paysage"
+  },
+  {
+    "code": "geoscientificInformation",
+    "label_en": "Geoscientific information",
+    "description_en": "Information pertaining to earth sciences. Examples: geophysical features and processes, geology, minerals, sciences dealing with the composition, structure and origin of the earth s rocks, risks of earthquakes, volcanic activity, landslides, gravity information, soils, permafrost, hydrogeology, erosion",
+    "label_fr": "Sciences de la terre, géosciences",
+    "description_fr": "Informations relatives aux sciences de la terre. Exemples : composants et processus géophysiques, géologie, minéralogie, tectonique, risque sismique"
+  },
+  {
+    "code": "health",
+    "label_en": "Health",
+    "description_en": "Health, health services, human ecology, and safety. Examples: disease and illness, factors affecting health, hygiene, substance abuse, mental and physical health, health services",
+    "label_fr": "Santé",
+    "description_fr": "Santé, services de santé, épidémiologie. Exemples : maladies et épidémie, facteurs affectant la santé, santé mentale et physique, services de santé"
+  },
+  {
+    "code": "imageryBaseMapsEarthCover",
+    "label_en": "Imagery base maps earth cover",
+    "description_en": "Base maps. Examples: land cover, topographic maps, imagery, unclassified images, annotations",
+    "label_fr": "Carte de référence de la couverture terrestre",
+    "description_fr": "Carte de référence. Exemples : occupation des terres, imagerie aérienne et satellitale, carte thématiques, carte topographiques"
+  },
+  {
+    "code": "intelligenceMilitary",
+    "label_en": "Intelligence military",
+    "description_en": "Military bases, structures, activities. Examples: barracks, training grounds, military transportation, information collection",
+    "label_fr": "Infrastructures militaires",
+    "description_fr": "Bases militaires et infrastructures"
+  },
+  {
+    "code": "inlandWaters",
+    "label_en": "Inland waters",
+    "description_en": "Inland water features, drainage systems and their characteristics. Examples: rivers and glaciers, salt lakes, water utilization plans, dams, currents, floods, water quality, hydrographic charts",
+    "label_fr": "Eaux intérieures, Hydrographie",
+    "description_fr": "Exemples : fleuves, rivières, glaciers, lacs salés, systèmes hydrographiques, barrages, débits, qualité de l’eau"
+  },
+  {
+    "code": "location",
+    "label_en": "Location",
+    "description_en": "Positional information and services. Examples: addresses, geodetic networks, control points, postal zones and services, place names",
+    "label_fr": "Localisation",
+    "description_fr": "Exemples : zones postales, adresses, points de contrôle, réseau géodésique"
+  },
+  {
+    "code": "oceans",
+    "label_en": "Oceans",
+    "description_en": "Features and characteristics of salt water bodies (excluding inland waters). Examples: tides, tidal waves, coastal information, reefs",
+    "label_fr": "Océans",
+    "description_fr": "Composants et caractéristiques du milieu maritime. Exemples : littoral, récifs, marée, etc."
+  },
+  {
+    "code": "planningCadastre",
+    "label_en": "Planning cadastre",
+    "description_en": "Information used for appropriate actions for future use of the land. Examples: land use maps, zoning maps, cadastral surveys, land ownership",
+    "label_fr": "Cadastre, aménagement",
+    "description_fr": "Exemples : carte d’utilisation des terres, plan d’occupation des sols, planification pour la prévention des risques"
+  },
+  {
+    "code": "society",
+    "label_en": "Society",
+    "description_en": "Characteristics of society and cultures. Examples: settlements, anthropology, archaeology, education, traditional beliefs, manners and customs, demographic data, recreational areas and activities, social impact assessments, crime and justice, census information",
+    "label_fr": "Société",
+    "description_fr": "Caractéristiques des sociétés et des cultures. Exemples :lois, anthropologie, éducation, données démographiques, archéologique, suivi des systèmes  sociaux, croyances, us et coutumes, crimes et justices"
+  },
+  {
+    "code": "structure",
+    "label_en": "Structure",
+    "description_en": "Man-made construction. Examples: buildings, museums, churches, factories, housing, monuments, shops, towers",
+    "label_fr": "Constructions et ouvrages",
+    "description_fr": "Aménagements urbains. Exemples : musée, église, usines, maisons, monuments, boutiques, immeubles"
+  },
+  {
+    "code": "transportation",
+    "label_en": "Transportation",
+    "description_en": "Means and aids for conveying persons and/or goods. Examples: roads, airports/airstrips, shipping routes, tunnels, nautical charts, vehicle or vessel location, aeronautical charts, railways",
+    "label_fr": "Infrastructures de transport",
+    "description_fr": "Moyens de transports des personnes et des biens. Exemples :  routes, aéroports, tunnels, viaducs, ponts, chemin de fer"
+  },
+  {
+    "code": "utilitiesCommunication",
+    "label_en": "Utilities communication",
+    "description_en": "Energy, water and waste systems and communications infrastructure and services. Examples: hydroelectricity, geothermal, solar and nuclear sources of energy, water purification and distribution, sewage collection and disposal, electricity and gas distribution, data communication, telecommunication, radio, communication networks",
+    "label_fr": "Télécommunication, approvisionnement et énergie",
+    "description_fr": "Systèmes de distribution de gestion ou de stockage de l’énergie, de l’eau, des déchets. Infrastructures et services de communication. Exemples : source d’énergie solaire, hydroélectrique, nucléaire, épuration et distribution des eaux, réseau de distribution électrique, de gaz, réseau de télécommunication, radio."
+  }
+]

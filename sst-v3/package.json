@@ -1,0 +1,17 @@
+{
+  "name": "app-geo-ca",
+  "version": "2.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "sst dev"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "typescript": "5.6.2"
+  },
+  "dependencies": {
+    "sst": "^3"
+  }
+}

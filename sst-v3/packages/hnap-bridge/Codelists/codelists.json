@@ -1,0 +1,2604 @@
+{
+  "codelist": [
+    {
+      "name": "gmd:CI_DateTypeCode",
+      "entry": [
+        {
+          "code": "RI_366",
+          "value": "creation; création",
+          "label_en": "Creation",
+          "description_en": "Date identifies when the resource was brought into existence",
+          "label_fr": "Création",
+          "description_fr": "Date à laquelle la ressource est créée"
+        },
+        {
+          "code": "RI_367",
+          "value": "publication; publication",
+          "label_en": "Publication",
+          "description_en": "Date identifies when the resource was issued",
+          "label_fr": "Publication",
+          "description_fr": "Date à laquelle la ressource est publiée"
+        },
+        {
+          "code": "RI_368",
+          "value": "revision; révision",
+          "label_en": "Revision",
+          "description_en": "Date identifies when the resource was examined or re-examined and improved or amended",
+          "label_fr": "Révision",
+          "description_fr": "Date à laquelle la ressource est révisée"
+        },
+        {
+          "code": "RI_369",
+          "value": "notAvailable; nonDisponible",
+          "label_en": "Not Available",
+          "description_en": "Not Available",
+          "label_fr": "Non Disponible",
+          "description_fr": "Non Disponible"
+        },
+        {
+          "code": "RI_370",
+          "value": "inForce; enVigueur",
+          "label_en": "In Force",
+          "description_en": "In Force",
+          "label_fr": "En Vigueur",
+          "description_fr": "En Vigueur"
+        },
+        {
+          "code": "RI_371",
+          "value": "adopted; adoptée",
+          "label_en": "Adopted",
+          "description_en": "Adopted",
+          "label_fr": "Adoptée",
+          "description_fr": "Adoptée"
+        },
+        {
+          "code": "RI_372",
+          "value": "deprecated; réprouvée",
+          "label_en": "Deprecated",
+          "description_en": "Deprecated",
+          "label_fr": "Réprouvée",
+          "description_fr": "Réprouvée"
+        },
+        {
+          "code": "RI_373",
+          "value": "superseded; remplacée",
+          "label_en": "Superseded",
+          "description_en": "Superseded",
+          "label_fr": "Remplacée",
+          "description_fr": "Remplacée"
+        }
+      ]
+    },
+    {
+      "name": "gmd:CI_OnLineFunctionCode",
+      "entry": [
+        {
+          "code": "RI_375",
+          "value": "download; téléchargement",
+          "label_en": "Download",
+          "description_en": "Online instructions for transferring data from one storage device or system to another",
+          "label_fr": "Téléchargement",
+          "description_fr": "Téléchargement de la ressource"
+        },
+        {
+          "code": "RI_376",
+          "value": "information; information",
+          "label_en": "Information",
+          "description_en": "Online information about the resource",
+          "label_fr": "Information",
+          "description_fr": "Informations en ligne sur la ressource"
+        },
+        {
+          "code": "RI_377",
+          "value": "offlineAccess; accèsHorsLigne",
+          "label_en": "Offline access",
+          "description_en": "Online instructions for requesting the resource from the provider",
+          "label_fr": "Accès Hors Ligne",
+          "description_fr": "Instruction pour une commande auprès du distributeur"
+        },
+        {
+          "code": "RI_378",
+          "value": "order; commande",
+          "label_en": "Order",
+          "description_en": "Online order process for obtening the resource",
+          "label_fr": "Commande",
+          "description_fr": "Commande en ligne pour obtenir la ressource"
+        },
+        {
+          "code": "RI_379",
+          "value": "search; recherche",
+          "label_en": "Search",
+          "description_en": "Online search interface for seeking out information about the resource",
+          "label_fr": "Recherche",
+          "description_fr": "Interface de recherche pour trouver la ressource"
+        },
+        {
+          "code": "RI_380",
+          "value": "upload; téléversement",
+          "label_en": "Upload",
+          "description_en": "Online instructions for transfering data or file from a local storage device or system to another (e.g. mainframe or remote computer) via network",
+          "label_fr": "Téléversement",
+          "description_fr": "Instructions en ligne pour le transfert de données ou de fichiers d'un périphérique de stockage local ou d'un système à un autre (par exemple, ordinateur central ou ordinateur distant) via le réseau"
+        },
+        {
+          "code": "RI_381",
+          "value": "webService; serviceWeb",
+          "label_en": "Web Service",
+          "description_en": "Online instructions for the connection to a Web service (e.g. Web Services description_en Language file) providing an on-line geographic service other than a Web map service",
+          "label_fr": "Service Web",
+          "description_fr": "Instructions en ligne pour la connexion à un service Web (ex. Web Services description_fr Fichier de langue) fournissant un service géographique en ligne autre qu'un service de carte Web"
+        },
+        {
+          "code": "RI_382",
+          "value": "emailService; serviceCourriel",
+          "label_en": "Email Service",
+          "description_en": "Online instructions for the connection to an email service providing geographic services from emails",
+          "label_fr": "Service Courriel",
+          "description_fr": "Instructions en ligne pour la connexion à un service de messagerie fournissant des services géographiques à partir de courriers électroniques"
+        },
+        {
+          "code": "RI_383",
+          "value": "browsing; furetage",
+          "label_en": "Browsing",
+          "description_en": "Online interface for exploring and seeking information about the resource from a Web browser",
+          "label_fr": "Furetage",
+          "description_fr": "Interface en ligne pour explorer et rechercher des informations sur la ressource à partir d'un navigateur Web"
+        },
+        {
+          "code": "RI_384",
+          "value": "fileAccess; AccèsFichier",
+          "label_en": "File Access",
+          "description_en": "Direct retrieval of a file from a remote system, typically through the use of http or ftp protocol (or their secure variants)",
+          "label_fr": "Accès Fichier",
+          "description_fr": "Récupération directe d'un fichier à partir d'un système distant, généralement via l'utilisation du protocole http ou ftp (ou leurs variantes sécurisées)"
+        },
+        {
+          "code": "RI_385",
+          "value": "webMapService; ServiceCartesWeb",
+          "label_en": "Web Map Service",
+          "description_en": "Online instructions for the connection to a Web -based map request service, which may return custom georeferenced map images, streamed features, raster data, or surface data to a mapping client",
+          "label_fr": "Service Cartes Web",
+          "description_fr": "Instructions en ligne pour la connexion à un service de demande de carte basé sur le Web, qui peut renvoyer des images cartographiques géoréférencées personnalisées, des entités diffusées en continu, des données raster ou des données de surface à un client de cartographie"
+        }
+      ]
+    },
+    {
+      "name": "gmd:CI_PresentationFormCode",
+      "entry": [
+        {
+          "code": "RI_387",
+          "value": "documentDigital; documentNumérique",
+          "label_en": "Digital document",
+          "description_en": "Digital representation of a primarily textual item (can contain illustrations also)",
+          "label_fr": "Document numérique",
+          "description_fr": "Document numérique contenant du texte et pouvant contenir des illustrations"
+        },
+        {
+          "code": "RI_389",
+          "value": "imageDigital; imageNumérique",
+          "label_en": "Digital image",
+          "description_en": "Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and stored in digital format",
+          "label_fr": "Image numérique",
+          "description_fr": "Aspects à travers la télédétection, stocké sous format numérique"
+        },
+        {
+          "code": "RI_388",
+          "value": "documentHardcopy; documentPapier",
+          "label_en": "Hardcopy document",
+          "description_en": "Representation of a primarily textual item (can contain illustrations also) on paper, photograhic material, or other media",
+          "label_fr": "Document papier",
+          "description_fr": "Document papier contenant du texte et pouvant contenir des illustrations"
+        },
+        {
+          "code": "RI_390",
+          "value": "imageHardcopy; imagePapier",
+          "label_en": "Hardcopy image",
+          "description_en": "Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and reproduced on paper, photographic material, or other media for use directly by the human user",
+          "label_fr": "Image papier",
+          "description_fr": "Aspects à travers la télédétection, reproduit sur un support utilisable par l’homme"
+        },
+        {
+          "code": "RI_391",
+          "value": "mapDigital;carteNumérique",
+          "label_en": "Digital map",
+          "description_en": "Map represented in raster or vector form",
+          "label_fr": "Carte numérique",
+          "description_fr": "Carte numérique au format raster ou vecteur"
+        },
+        {
+          "code": "RI_392",
+          "value": "mapHardcopy; cartePapier",
+          "label_en": "Hardcopy map",
+          "description_en": "Map printed on paper, photographic material, or other media for use directly by the human user",
+          "label_fr": "Carte papier",
+          "description_fr": "Carte imprimée sur papier ou autre support utilisable par l’homme"
+        },
+        {
+          "code": "RI_393",
+          "value": "modelDigital; modèleNumérique",
+          "label_en": "Digital model",
+          "description_en": "Multi-dimensional digital representation of a feature, process, etc.",
+          "label_fr": "Modèle numérique",
+          "description_fr": "Modèle numérique 3D sous forme digitale"
+        },
+        {
+          "code": "RI_394",
+          "value": "modelHardcopy; maquette",
+          "label_en": "Hardcopy model",
+          "description_en": "3-dimensional, physical model",
+          "label_fr": "Maquette",
+          "description_fr": "Modèle numérique 3D physique"
+        },
+        {
+          "code": "RI_395",
+          "value": "profileDigital; profilNumérique",
+          "label_en": "Digital profile",
+          "description_en": "Vertical cross-section in digital form",
+          "label_fr": "Profil numérique",
+          "description_fr": "Profil vertical sous forme numérique"
+        },
+        {
+          "code": "RI_396",
+          "value": "profileHardcopy; profilPapier",
+          "label_en": "Hardcopy profile",
+          "description_en": "Vertical cross-section printed on paper, etc.",
+          "label_fr": "Profil papier",
+          "description_fr": "Profil vertical sous forme papier"
+        },
+        {
+          "code": "RI_397",
+          "value": "tableDigital; tableNumérique",
+          "label_en": "Digital table",
+          "description_en": "Digital representation of facts or figures systematically displayed, especially in columns",
+          "label_fr": "Table numérique",
+          "description_fr": "Représentation numérique d’informations sous forme de colonnes"
+        },
+        {
+          "code": "RI_398",
+          "value": "tableHardcopy; tablePapier",
+          "label_en": "Hardcopy table",
+          "description_en": "Representation of facts or figures systematically displayed, especially in columns, printed onpapers, photographic material, or other media"
+        },
+        {
+          "code": "RI_399",
+          "value": "videoDigital; vidéoNumérique",
+          "label_en": "Digital video",
+          "description_en": "Digital video recording",
+          "label_fr": "Vidéo numérique",
+          "description_fr": "Vidéo numérique"
+        },
+        {
+          "code": "RI_400",
+          "value": "videoHardcopy; vidéoFilm",
+          "label_en": "Hardcopy video",
+          "description_en": "Video recording on film",
+          "label_fr": "Vidéo magnétique",
+          "description_fr": "Vidéo enregistré sur bande"
+        },
+        {
+          "code": "RI_401",
+          "value": "audioDigital; audioNumérique",
+          "label_en": "Audio Digital",
+          "description_en": "",
+          "label_fr": "Audio Numérique",
+          "description_fr": ""
+        },
+        {
+          "code": "RI_402",
+          "value": "audioHardcopy; audioAnalogique",
+          "label_en": "Audio Hardcopy",
+          "description_en": "",
+          "label_fr": "Audio Analogique",
+          "description_fr": ""
+        },
+        {
+          "code": "RI_403",
+          "value": "multimediaDigital; multimédiaNumérique",
+          "label_en": "Multimedia Digital",
+          "description_en": "",
+          "label_fr": "Multimédia Numérique",
+          "description_fr": ""
+        },
+        {
+          "code": "RI_404",
+          "value": "multimediaHardcopy; multimédiaAnalogique",
+          "label_en": "Multimedia Hardcopy",
+          "description_en": "",
+          "label_fr": "Multimédia Analogique",
+          "description_fr": ""
+        },
+        {
+          "code": "RI_405",
+          "value": "diagramDigital; diagrammeNumérique",
+          "label_en": "Diagram Digital",
+          "description_en": "",
+          "label_fr": "Diagramme Numérique",
+          "description_fr": ""
+        },
+        {
+          "code": "RI_406",
+          "value": "diagramHardcopy; diagrammePapier",
+          "label_en": "Diagram Hardcopy",
+          "description_en": "",
+          "label_fr": "Diagramme Papier",
+          "description_fr": ""
+        }
+      ]
+    },
+    {
+      "name": "gmd:CI_RoleCode",
+      "entry": [
+        {
+          "code": "RI_408",
+          "value": "resourceProvider; fournisseurRessource",
+          "label_en": "Resource provider",
+          "description_en": "Party that supplies the resource",
+          "label_fr": "Fournisseur Ressource",
+          "description_fr": "Organisme qui fournit la ressource. Acteur qui délivre physiquement la ressource, soit de manière directe au destinataire, soit par l’intermédiaire d’un diffuseur"
+        },
+        {
+          "code": "RI_409",
+          "value": "custodian; conservateur",
+          "label_en": "Custodian",
+          "description_en": "Party that accepts accountability and responsability for the data and ensures appropriate care and maintenance of the resource",
+          "label_fr": "Conservateur",
+          "description_fr": "Acteur responsable de la gestion et de la mise à jour de la ressource"
+        },
+        {
+          "code": "RI_410",
+          "value": "owner; propriétaire",
+          "label_en": "Owner",
+          "description_en": "Party that owns the resource",
+          "label_fr": "Propriétaire",
+          "description_fr": "Organisme qui est propriétaire de la ressource / Acteur qui détient les droits patrimoniaux de la ressource"
+        },
+        {
+          "code": "RI_411",
+          "value": "user; utilisateur",
+          "label_en": "User",
+          "description_en": "Party who uses the resource",
+          "label_fr": "Utilisateur",
+          "description_fr": "Organisme qui utilise ou a utilisé la ressource"
+        },
+        {
+          "code": "RI_412",
+          "value": "distributor; distributeur",
+          "label_en": "Distributor",
+          "description_en": "Party who distributes the resource",
+          "label_fr": "Distributeur",
+          "description_fr": "Organisme qui distribue la ressource. Diffuseur de second niveau de la ressource"
+        },
+        {
+          "code": "RI_413",
+          "value": "originator; auteur",
+          "label_en": "Originator",
+          "description_en": "Party who created the resource",
+          "label_fr": "Créateur",
+          "description_fr": "Organisme qui  a commandé la ressource. Acteur qui a été habilité à créer la ressource et qui a mis en place les moyens pour la constituer"
+        },
+        {
+          "code": "RI_414",
+          "value": "pointOfContact; contact",
+          "label_en": "Point of contact",
+          "description_en": "Party who can be contacted for acquiring knowledge about or acquisition of the resource",
+          "label_fr": "Contact",
+          "description_fr": "Organisme que l’on peut contacter pour avoir des renseignements détaillés sur la ressource. Acteur à contacter en premier lieu pour obtenir des informations relatives à la ressource"
+        },
+        {
+          "code": "RI_415",
+          "value": "principalInvestigator; chercheurPrincipal",
+          "label_en": "Principal investigator",
+          "description_en": "Key party responsible for gathering information and conducting research",
+          "label_fr": "Chercheur Principal",
+          "description_fr": "Personne clé pour obtenir des informations sur la ressource et les recherches conduites autour de la ressource\nActeur qui a assuré la réalisation de la ressource,éventuellement en faisant appel à des co-traitants ou des sous traitants"
+        },
+        {
+          "code": "RI_416",
+          "value": "processor; traiteur",
+          "label_en": "Processor",
+          "description_en": "Party wha has processed the data in a manner such that the resource has been modified",
+          "label_fr": "Traiteur",
+          "description_fr": "Organisme qui a réalisé des traitements sur la ressource. Acteur qui est intervenu lors de la réalisation de la ressource"
+        },
+        {
+          "code": "RI_417",
+          "value": "publisher; éditeur",
+          "label_en": "Publisher",
+          "description_en": "Party who published the resource",
+          "label_fr": "Éditeur",
+          "description_fr": "Organisme qui assure la publication de la ressource."
+        },
+        {
+          "code": "RI_418",
+          "value": "author; auteur",
+          "label_en": "Author",
+          "description_en": "Party who authored the resource",
+          "label_fr": "Auteur",
+          "description_fr": "Organisme  ou personne qui est auteur. Acteur qui dispose des droits moraux relatifs à la ressource"
+        },
+        {
+          "code": "RI_419",
+          "value": "collaborator; collaborateur",
+          "label_en": "Collaborator",
+          "description_en": "Collaborator",
+          "label_fr": "Collaborateur",
+          "description_fr": "Collaborateur"
+        },
+        {
+          "code": "RI_420",
+          "value": "editor; réviseur",
+          "label_en": "Editor",
+          "description_en": "Editor",
+          "label_fr": "Réviseur",
+          "description_fr": "Réviseur"
+        },
+        {
+          "code": "RI_421",
+          "value": "mediator; médiateur",
+          "label_en": "Mediator",
+          "description_en": "Mediator",
+          "label_fr": "Médiateur",
+          "description_fr": "Médiateur"
+        },
+        {
+          "code": "RI_422",
+          "value": "rightsHolder; détenteurDroits",
+          "label_en": "Rights Holder",
+          "description_en": "Rights Holder",
+          "label_fr": "Détenteur Droits",
+          "description_fr": "Détenteur Droits"
+        }
+      ]
+    },
+    {
+      "name": "gmd:DQ_EvaluationMethodTypeCode",
+      "entry": [
+        {
+          "code": "RI_424",
+          "value": "directInternal; interneDirecte",
+          "label_en": "Direct internal",
+          "description_en": "Method of evaluating the quality of a dataset based on inspection of items within the dataset, where all data required is internal to the dataset being evaluated",
+          "label_fr": "Interne Directe",
+          "description_fr": "Méthode d’évaluation de la qualité d’un jeu de données basée sur l’analyse des données du jeu où toutes les données requises sont internes au jeu de données"
+        },
+        {
+          "code": "RI_425",
+          "value": "directExternal; externeDirecte",
+          "label_en": "Direct external",
+          "description_en": "Method of evaluating the quality of a dataset based on inspection of items within the dataset, where reference data external to the dataset being evaluated is required",
+          "label_fr": "Externe Directe",
+          "description_fr": "Méthode d’évaluation de la qualité d’un jeu de données basée sur l’analyse des données du jeu où les références vers des données externes sont requises."
+        },
+        {
+          "code": "RI_426",
+          "value": "indirect; indirecte",
+          "label_en": "Indirect",
+          "description_en": "Method of evaluating the quality of a dataset based on external knowledge",
+          "label_fr": "Indirecte",
+          "description_fr": "Méthode d’évaluation de la qualité basée sur une connaissance externe."
+        }
+      ]
+    },
+    {
+      "name": "gmd:DS_AssociationTypeCode",
+      "entry": [
+        {
+          "code": "RI_428",
+          "value": "crossReference; référenceCroisée",
+          "label_en": "Cross reference",
+          "description_en": "Reference from one dataset to another",
+          "label_fr": "Référence croisée",
+          "description_fr": "Référence d’un jeu de données à un autre"
+        },
+        {
+          "code": "RI_429",
+          "value": "largerWorkCitation; référenceGénérique",
+          "label_en": "Larger work citation",
+          "description_en": "Reference to a master dataset of which this one is a part",
+          "label_fr": "Référence générique",
+          "description_fr": "Référence à un jeu de données maître"
+        },
+        {
+          "code": "RI_430",
+          "value": "partOfSeamlessDatabase; partieDeBaseDeDonnéesContinue",
+          "label_en": "Part of seamless database",
+          "description_en": "Part of the same structured set of data held in a computer",
+          "label_fr": "Partie de base de données continue",
+          "description_fr": "Référence à un jeu de données stocké dans une même base de données"
+        },
+        {
+          "code": "RI_431",
+          "value": "source; source",
+          "label_en": "Source",
+          "description_en": "Mapping and charting information from which the dataset content originates",
+          "label_fr": "Source",
+          "description_fr": "Références vers la source des données qui a permis de produire les cartes"
+        },
+        {
+          "code": "RI_432",
+          "value": "stereoMate; stéréoAssociée",
+          "label_en": "Stereo mate",
+          "description_en": "Part of a set of imagery that when used together, provides three-dimensional images",
+          "label_fr": "Stéréo associée",
+          "description_fr": "Partie d’un ensemble d’images qui, utilisé ensemble, fournit une vision 3D de l’image"
+        },
+        {
+          "code": "RI_433",
+          "value": "isComposedOf; estComposéDe",
+          "label_en": "Is Composed Of",
+          "description_en": "Reference to datasets that are parts of this data set",
+          "label_fr": "Est composé de",
+          "description_fr": "Référence aux ensembles de données qui font partie de cet ensemble de données"
+        }
+      ]
+    },
+    {
+      "name": "gmd:DS_InitiativeTypeCode",
+      "entry": [
+        {
+          "code": "RI_435",
+          "value": "campaign; campagne",
+          "label_en": "Campaign",
+          "description_en": "Series of organized planned actions"
+        },
+        {
+          "code": "RI_436",
+          "value": "collection; collection",
+          "label_en": "Collection",
+          "description_en": "Accumulation of datasets assembled for a specific purpose"
+        },
+        {
+          "code": "RI_437",
+          "value": "exercise; exercice",
+          "label_en": "Exercise",
+          "description_en": "Specific performance of a function or group of functions"
+        },
+        {
+          "code": "RI_438",
+          "value": "experiment; expérience",
+          "label_en": "Experiment",
+          "description_en": "Process designed to find if something is effective or valid"
+        },
+        {
+          "code": "RI_439",
+          "value": "investigation; investigation",
+          "label_en": "Investigation",
+          "description_en": "Search or systematic inquiry"
+        },
+        {
+          "code": "RI_440",
+          "value": "mission; mission",
+          "label_en": "Mission",
+          "description_en": "Specific operation of a data collection system"
+        },
+        {
+          "code": "RI_441",
+          "value": "sensor; capteur",
+          "label_en": "Sensor",
+          "description_en": "Device or piece of equipment which detects or records"
+        },
+        {
+          "code": "RI_442",
+          "value": "operation; opération",
+          "label_en": "Operation",
+          "description_en": "Action that is part of a series of actions"
+        },
+        {
+          "code": "RI_443",
+          "value": "platform; plateforme",
+          "label_en": "Platform",
+          "description_en": "Vehicle or other support base that holds a sensor"
+        },
+        {
+          "code": "RI_444",
+          "value": "process; processus",
+          "label_en": "Process",
+          "description_en": "Method of doing something involving a number of steps"
+        },
+        {
+          "code": "RI_445",
+          "value": "program; programme",
+          "label_en": "Program",
+          "description_en": "Specific planned activity"
+        },
+        {
+          "code": "RI_446",
+          "value": "project; projet",
+          "label_en": "Project",
+          "description_en": "Organized undertaking, research, or development"
+        },
+        {
+          "code": "RI_447",
+          "value": "study; étude",
+          "label_en": "Study",
+          "description_en": "Examination or investigation"
+        },
+        {
+          "code": "RI_448",
+          "value": "task; tâche",
+          "label_en": "Task",
+          "description_en": "Piece of work"
+        },
+        {
+          "code": "RI_449",
+          "value": "trial; essai",
+          "label_en": "Trial",
+          "description_en": "Process of testing to discover or demonstrate something"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_CellGeometryCode",
+      "entry": [
+        {
+          "code": "RI_451",
+          "value": "point; point",
+          "label_en": "Point",
+          "description_en": "Each cell represents a point"
+        },
+        {
+          "code": "RI_452",
+          "value": "area; surface",
+          "label_en": "Area",
+          "description_en": "Each cell represents an area"
+        },
+        {
+          "code": "RI_453",
+          "value": "voxel; voxel",
+          "label_en": "Voxel",
+          "description_en": ""
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_CharacterSetCode",
+      "entry": [
+        {
+          "code": "RI_455",
+          "value": "ucs2; ucs2",
+          "label_en": "UCS2",
+          "description_en": "16-bit fixed size Universal Character Set, based on ISO/IEC\n\t\t\t10646"
+        },
+        {
+          "code": "RI_456",
+          "value": "ucs4; ucs4",
+          "label_en": "UCS4",
+          "description_en": "32-bit fixed size Universal Character Set, based on ISO/IEC\n\t\t\t10646"
+        },
+        {
+          "code": "RI_457",
+          "value": "utf7; utf7",
+          "label_en": "UTF7",
+          "description_en": "7-bit variable size UCS Transfer Format, based on ISO/IEC 10646"
+        },
+        {
+          "code": "RI_458",
+          "value": "utf8; utf8",
+          "label_en": "UTF8",
+          "description_en": "8-bit variable size UCS Transfer Format, based on ISO/IEC 10646"
+        },
+        {
+          "code": "RI_459",
+          "value": "utf16; utf16",
+          "label_en": "UTF16",
+          "description_en": "16-bit variable size UCS Transfer Format, based on ISO/IEC 10646"
+        },
+        {
+          "code": "RI_460",
+          "value": "8859part1; 8859partie1",
+          "label_en": "8859 Part 1",
+          "description_en": "ISO/IEC 8859-1, Information technology - 8-bit single byte coded graphic character sets - Part 1 : Latin alphabet No.1"
+        },
+        {
+          "code": "RI_461",
+          "value": "8859part2; 8859partie2",
+          "label_en": "8859 Part 2",
+          "description_en": "ISO/IEC 8859-2, Information technology - 8-bit single byte coded graphic character sets - Part 2 : Latin alphabet No.2"
+        },
+        {
+          "code": "RI_462",
+          "value": "8859part3; 8859partie3",
+          "label_en": "8859 Part 3",
+          "description_en": "ISO/IEC 8859-3, Information technology - 8-bit single byte coded graphic character sets - Part 3 : Latin alphabet No.3"
+        },
+        {
+          "code": "RI_463",
+          "value": "8859part4; 8859partie4",
+          "label_en": "8859 Part 4",
+          "description_en": "ISO/IEC 8859-4, Information technology - 8-bit single byte coded graphic character sets - Part 4 : Latin alphabet No.4"
+        },
+        {
+          "code": "RI_464",
+          "value": "8859part5; 8859partie5",
+          "label_en": "8859 Part 5",
+          "description_en": "ISO/IEC 8859-5, Information technology - 8-bit single byte coded graphic character sets - Part 5 : Latin/Cyrillic alphabet"
+        },
+        {
+          "code": "RI_465",
+          "value": "8859part6; 8859partie6",
+          "label_en": "8859 Part 6",
+          "description_en": "ISO/IEC 8859-6, Information technology - 8-bit single byte coded graphic character sets - Part 6 : Latin/Arabic alphabet"
+        },
+        {
+          "code": "RI_466",
+          "value": "8859part7; 8859partie7",
+          "label_en": "8859 Part 7",
+          "description_en": "ISO/IEC 8859-7, Information technology - 8-bit single byte coded graphic character sets - Part 7 : Latin/Greek alphabet"
+        },
+        {
+          "code": "RI_467",
+          "value": "8859part8; 8859partie8",
+          "label_en": "8859 Part 8",
+          "description_en": "ISO/IEC 8859-8, Information technology - 8-bit single byte coded graphic character sets - Part 8 : Latin/Hebrew alphabet"
+        },
+        {
+          "code": "RI_468",
+          "value": "8859part9; 8859partie9",
+          "label_en": "8859 Part 9",
+          "description_en": "ISO/IEC 8859-9, Information technology - 8-bit single byte coded graphic character sets - Part 9 : Latin alphabet No.5"
+        },
+        {
+          "code": "RI_469",
+          "value": "8859part10; 8859partie10",
+          "label_en": "8859 Part 10",
+          "description_en": "ISO/IEC 8859-10, Information technology - 8-bit single byte coded graphic character sets - Part 10 : Latin alphabet No.6"
+        },
+        {
+          "code": "RI_470",
+          "value": "8859part11; 8859partie11",
+          "label_en": "8859 Part 11",
+          "description_en": "ISO/IEC 8859-11, Information technology - 8-bit single byte coded graphic character sets - Part 11 : Latin/Thai alphabet"
+        },
+        {
+          "code": "RI_471",
+          "value": "8859part13; 8859partie13",
+          "label_en": "8859 Part 13",
+          "description_en": "ISO/IEC 8859-13, Information technology - 8-bit single byte coded graphic character sets - Part 13 : Latin alphabet No.7"
+        },
+        {
+          "code": "RI_472",
+          "value": "8859part14; 8859partie14",
+          "label_en": "8859 Part 14",
+          "description_en": "ISO/IEC 8859-14, Information technology - 8-bit single byte coded graphic character sets - Part 14 : Latin alphabet No.8 (Celtic)"
+        },
+        {
+          "code": "RI_473",
+          "value": "8859part15; 8859partie15",
+          "label_en": "8859 Part 15",
+          "description_en": "ISO/IEC 8859-15, Information technology - 8-bit single byte coded graphic character sets - Part 15 : Latin alphabet No.9"
+        },
+        {
+          "code": "RI_474",
+          "value": "8859part16; 8859partie16",
+          "label_en": "8859 Part 16",
+          "description_en": "ISO/IEC 8859-16, Information technology - 8-bit single byte coded graphic character sets - Part 16 : Latin alphabet No.10"
+        },
+        {
+          "code": "RI_475",
+          "value": "jis; jis",
+          "label_en": "JIS",
+          "description_en": "Japanese code set used for electronic transmission"
+        },
+        {
+          "code": "RI_476",
+          "value": "shiftJIS; shiftJIS",
+          "label_en": "Shift JIS",
+          "description_en": "Japanese code set used on MS-DOS machines"
+        },
+        {
+          "code": "RI_477",
+          "value": "eucJP; eucJP",
+          "label_en": "EUC JP",
+          "description_en": "Japanese code set used on UNIX based machines"
+        },
+        {
+          "code": "RI_478",
+          "value": "usAscii; usAscii",
+          "label_en": "US ASCII",
+          "description_en": "United States ASCII code set (ISO 646 US)"
+        },
+        {
+          "code": "RI_479",
+          "value": "ebcdic; ebcdic",
+          "label_en": "EBCDIC",
+          "description_en": "IBM mainframe code set"
+        },
+        {
+          "code": "RI_480",
+          "value": "eucKR; eucKR",
+          "label_en": "EUC KR",
+          "description_en": "Korean code set"
+        },
+        {
+          "code": "RI_481",
+          "value": "big5; big5",
+          "label_en": "BIG 5",
+          "description_en": "Traditional Chinese code set used in Taiwan, Hong Kong of China and other areas"
+        },
+        {
+          "code": "RI_482",
+          "value": "GB2312; GB2312",
+          "label_en": "GB2312",
+          "description_en": "Simplified Chinese code set"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_ClassificationCode",
+      "entry": [
+        {
+          "code": "RI_484",
+          "value": "unclassified; nonClassifié",
+          "label_en": "Unclassified",
+          "description_en": "Available for general disclosure"
+        },
+        {
+          "code": "RI_485",
+          "value": "restricted; restreint",
+          "label_en": "Restricted",
+          "description_en": "Not for general disclosure"
+        },
+        {
+          "code": "RI_486",
+          "value": "confidential; confidentiel",
+          "label_en": "Confidential",
+          "description_en": "Available for someone who can be entrusted with information"
+        },
+        {
+          "code": "RI_487",
+          "value": "secret; secret",
+          "label_en": "Secret",
+          "description_en": "Kept or meant to be kept private, unknown, or hidden from all but a select group of people"
+        },
+        {
+          "code": "RI_488",
+          "value": "topSecret; trèsSecret",
+          "label_en": "Top secret",
+          "description_en": "Of the highest secrecy"
+        },
+        {
+          "code": "RI_489",
+          "value": "sensitive; sensible",
+          "label_en": "Sensitive",
+          "description_en": "Sensitive"
+        },
+        {
+          "code": "RI_490",
+          "value": "forOfficialUseOnly; réservéÀOrganisation",
+          "label_en": "For Official Use Only",
+          "description_en": "For Official Use Only"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_CoverageContentTypeCode",
+      "entry": [
+        {
+          "code": "RI_492",
+          "value": "image; image",
+          "label_en": "Image",
+          "description_en": "Meaningful numerical representation of a physical parameter that is not the actual value of the physical parameter"
+        },
+        {
+          "code": "RI_493",
+          "value": "thematicClassification; classificationThématique",
+          "label_en": "Thematic classification",
+          "description_en": "Code value with no quantitative meaning, used to represent a physical\n\t\t\tquantity"
+        },
+        {
+          "code": "RI_494",
+          "value": "physicalMeasurement; mesurePhysique",
+          "label_en": "Physical measurement",
+          "description_en": "Value in physical units of the quantity being measured"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_DatatypeCode",
+      "entry": [
+        {
+          "code": "class",
+          "label_en": "Class",
+          "description_en": "Descriptor of a set of objects that share the same attributes, operations, methods, relationships, and behavior"
+        },
+        {
+          "code": "codelist",
+          "label_en": "Codelist",
+          "description_en": "Descriptor of a set of objects that share the same attributes, operations, methods, relationships, and behavior"
+        },
+        {
+          "code": "enumeration",
+          "label_en": "Enumeration",
+          "description_en": "Data type whose instances form a list of named literal values, not\n\t\t\textendable"
+        },
+        {
+          "code": "codelistElement",
+          "label_en": "Codelist element",
+          "description_en": "Permissible value for a codelist or enumeration"
+        },
+        {
+          "code": "abstractClass",
+          "label_en": "Abstract class",
+          "description_en": "Class that cannot be directly instantiated"
+        },
+        {
+          "code": "aggregateClass",
+          "label_en": "Aggregate class",
+          "description_en": "Class that is composed of classes it is connected to by an aggregate relationship"
+        },
+        {
+          "code": "specifiedClass",
+          "label_en": "Specified class",
+          "description_en": "Subclass that may be substituted for its superclass"
+        },
+        {
+          "code": "datatypeClass",
+          "label_en": "Datatype class",
+          "description_en": "Class with few or no operations whose primary purpose is to hold the abstract state of another class for transmittal, storage, encoding or persistent\n\t\t\tstorage"
+        },
+        {
+          "code": "interfaceClass",
+          "label_en": "Interface class",
+          "description_en": "Named set of operations that characterize the behavior of an\n\t\t\telement"
+        },
+        {
+          "code": "unionClass",
+          "label_en": "Union class",
+          "description_en": "Class describing a selection of one of the specified types"
+        },
+        {
+          "code": "metaClass",
+          "label_en": "Meta class",
+          "description_en": "Class whose instances are classes"
+        },
+        {
+          "code": "typeClass",
+          "label_en": "Type class",
+          "description_en": "Class used for specification of a domain of instances (objects), together with the operations applicable to the objects. A type may have attributes and\n\t\t\tassociations"
+        },
+        {
+          "code": "characterString",
+          "label_en": "Character string",
+          "description_en": "Free text field"
+        },
+        {
+          "code": "integer",
+          "label_en": "Integer",
+          "description_en": "Numerical field"
+        },
+        {
+          "code": "association",
+          "label_en": "Association",
+          "description_en": "Semantic relationship between two classes that involves connections among their instances"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_DimensionNameTypeCode",
+      "entry": [
+        {
+          "code": "RI_496",
+          "value": "row; rangée",
+          "label_en": "Row",
+          "description_en": "Ordinate (y) axis"
+        },
+        {
+          "code": "RI_497",
+          "value": "column; colonne",
+          "label_en": "Column",
+          "description_en": "Abscissa (x) axis"
+        },
+        {
+          "code": "RI_498",
+          "value": "vertical; vertical",
+          "label_en": "Vertical",
+          "description_en": "Vertical (z) axis"
+        },
+        {
+          "code": "RI_499",
+          "value": "track; trajectoire",
+          "label_en": "Track",
+          "description_en": "Along the direction of motion of the scan point"
+        },
+        {
+          "code": "RI_500",
+          "value": "crossTrack; trajectoireTransverse",
+          "label_en": "Cross track",
+          "description_en": "Perpendicular to the direction of motion of the scan point"
+        },
+        {
+          "code": "RI_501",
+          "value": "line; ligne",
+          "label_en": "Line",
+          "description_en": "Scan line of a sensor"
+        },
+        {
+          "code": "RI_502",
+          "value": "sample; échantillon",
+          "label_en": "Sample",
+          "description_en": "Element along a scan line"
+        },
+        {
+          "code": "RI_503",
+          "value": "time; temps",
+          "label_en": "Time",
+          "description_en": "Duration"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_GeometricObjectTypeCode",
+      "entry": [
+        {
+          "code": "RI_505",
+          "value": "complex; complexe",
+          "label_en": "Complex",
+          "description_en": "Set of geometric primitives such that their boundaries can be represented as a union of other primitives"
+        },
+        {
+          "code": "RI_506",
+          "value": "composite; composé",
+          "label_en": "Composite",
+          "description_en": "Connected set of curves, solids or surfaces"
+        },
+        {
+          "code": "RI_507",
+          "value": "curve; courbe",
+          "label_en": "Curve",
+          "description_en": "Bounded, 1-dimensional geometric primitive, representing the continuous image of a line"
+        },
+        {
+          "code": "RI_508",
+          "value": "point; point",
+          "label_en": "Point",
+          "description_en": "Zero-dimensional geometric primitive, representing a position but not having an extent"
+        },
+        {
+          "code": "RI_509",
+          "value": "solid; solide",
+          "label_en": "Solid",
+          "description_en": "Bounded, connected 3-dimensional geometric primitive, representing the continuous image of a region of space"
+        },
+        {
+          "code": "RI_510",
+          "value": "surface; surface",
+          "label_en": "Surface",
+          "description_en": "Bounded, connected 2-dimensional geometric primitive, representing the continuous image of a region of a plane"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_ImagingConditionCode",
+      "entry": [
+        {
+          "code": "RI_512",
+          "value": "blurredImage; imageFloue",
+          "label_en": "Blurred image",
+          "description_en": "Portion of the image is blurred"
+        },
+        {
+          "code": "RI_513",
+          "value": "cloud; nuage",
+          "label_en": "Cloud",
+          "description_en": "Portion of the image is partially obscured by cloud cover"
+        },
+        {
+          "code": "RI_514",
+          "value": "degradingObliquity; variationObliquité",
+          "label_en": "Degrading obliquity",
+          "description_en": "Acute angle between the plane of the ecliptic (the plane of the Earth s orbit) and the plane of the celestial equator"
+        },
+        {
+          "code": "RI_515",
+          "value": "fog; brouillard",
+          "label_en": "Fog",
+          "description_en": "Portion of the image is partially obscured by fog"
+        },
+        {
+          "code": "RI_516",
+          "value": "heavySmokeOrDust; fuméeDenseOuPoussière",
+          "label_en": "Heavy smoke or dust",
+          "description_en": "Portion of the image is partially obscured by heavy smoke or\n\t\t\tdust"
+        },
+        {
+          "code": "RI_517",
+          "value": "night; nuit",
+          "label_en": "Night",
+          "description_en": "Image was taken at night"
+        },
+        {
+          "code": "RI_518",
+          "value": "rain; pluie",
+          "label_en": "Rain",
+          "description_en": "Image was taken during rainfall"
+        },
+        {
+          "code": "RI_519",
+          "value": "semiDarkness; semiObscurité",
+          "label_en": "Semi darkness",
+          "description_en": "Image was taken during semi-dark conditions -- twilight\n\t\t\tconditions"
+        },
+        {
+          "code": "RI_520",
+          "value": "shadow; ombre",
+          "label_en": "Shadow",
+          "description_en": "Portion of the image is obscured by shadow"
+        },
+        {
+          "code": "RI_521",
+          "value": "snow; neige",
+          "label_en": "Snow",
+          "description_en": "Portion of the image is obscured by snow"
+        },
+        {
+          "code": "RI_522",
+          "value": "terrainMasking; masqueTerrain",
+          "label_en": "Terrain masking",
+          "description_en": "The absence of collection data of a given point or area caused by the relative location of topographic features which obstruct the collection path between the collector(s) and the subject(s) of interest"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_KeywordTypeCode",
+      "entry": [
+        {
+          "code": "RI_524",
+          "value": "discipline; discipline",
+          "label_en": "Discipline",
+          "description_en": "Keyword identifies a branch of instruction or specialized learning",
+          "label_fr": "Discipline",
+          "description_fr": "Mot-clé en relation avec une branche de la connaissance"
+        },
+        {
+          "code": "RI_525",
+          "value": "place; endroit",
+          "label_en": "Place",
+          "description_en": "Keyword identifies a location",
+          "label_fr": "Endroit",
+          "description_fr": "Mot-clé identifiant un lieu"
+        },
+        {
+          "code": "RI_526",
+          "value": "stratum; strate",
+          "label_en": "Stratum",
+          "description_en": "Keyword identifies the layer(s) of any deposited substance",
+          "label_fr": "Strate",
+          "description_fr": "Couche géologique"
+        },
+        {
+          "code": "RI_527",
+          "value": "temporal; temporel",
+          "label_en": "Temporal",
+          "description_en": "Keyword identifies a time period related to the dataset",
+          "label_fr": "Temporel",
+          "description_fr": "Mot clef identifiant une période de temps"
+        },
+        {
+          "code": "RI_528",
+          "value": "theme; thème",
+          "label_en": "Theme",
+          "description_en": "Keyword identifies a particular subject or topic",
+          "label_fr": "Thème",
+          "description_fr": "Mot-clé identifiant un sujet particulier"
+        },
+        {
+          "code": "RI_529",
+          "value": "product; produit",
+          "label_en": "Product",
+          "description_en": "Keyword identifies a type of product",
+          "label_fr": "Produit",
+          "description_fr": "Mot-clé identifiant un type de produit"
+        },
+        {
+          "code": "RI_530",
+          "value": "subTopicCategory; catégorieSousSujet",
+          "label_en": "Subtopic Category",
+          "description_en": "Refinement a topic category for the purpose of geographic data classification",
+          "label_fr": "Catégorie sous sujet",
+          "description_fr": "Spécialisation d'une catégorie sujet pour fin de classification des données géographiques"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_MaintenanceFrequencyCode",
+      "entry": [
+        {
+          "code": "RI_532",
+          "value": "continual; continue",
+          "label_en": "Continual",
+          "description_en": "Data is repeatedly and frequently updated",
+          "label_fr": "Continue",
+          "description_fr": "Mise à jour continue"
+        },
+        {
+          "code": "RI_533",
+          "value": "daily; quotidien",
+          "label_en": "Daily",
+          "description_en": "Data is updated each day",
+          "label_fr": "Quotidien",
+          "description_fr": "Mise à jour quotidienne"
+        },
+        {
+          "code": "RI_534",
+          "value": "weekly; hebdomadaire",
+          "label_en": "Weekly",
+          "description_en": "Data is updated on a weekly basis",
+          "label_fr": "Hebdomadaire",
+          "description_fr": "Mise à jour hebdomadaire"
+        },
+        {
+          "code": "RI_535",
+          "value": "fortnightly; quinzomadaire",
+          "label_en": "Fortnightly",
+          "description_en": "Data is updated every two weeks",
+          "label_fr": "Quinzomadaire",
+          "description_fr": "Mise à jour 2 fois par mois"
+        },
+        {
+          "code": "RI_536",
+          "value": "monthly; mensuel",
+          "label_en": "Monthly",
+          "description_en": "Data is updated each month",
+          "label_fr": "Mensuel",
+          "description_fr": "Mise à jour mensuelle"
+        },
+        {
+          "code": "RI_537",
+          "value": "quarterly; trimestriel",
+          "label_en": "Quarterly",
+          "description_en": "Data is updated every three months",
+          "label_fr": "Trimestriel",
+          "description_fr": "Mise à jour trimestrielle"
+        },
+        {
+          "code": "RI_538",
+          "value": "biannually; semestriel",
+          "label_en": "Biannually",
+          "description_en": "Data is updated twice each year",
+          "label_fr": "Semestriel",
+          "description_fr": "Mise à jour bi-annuelle"
+        },
+        {
+          "code": "RI_539",
+          "value": "annually; annuel",
+          "label_en": "Annually",
+          "description_en": "Data is updated every year",
+          "label_fr": "Annuel",
+          "description_fr": "Mise à jour annuelle"
+        },
+        {
+          "code": "RI_540",
+          "value": "asNeeded; auBesoin",
+          "label_en": "As needed",
+          "description_en": "Data is updated as deemed necessary",
+          "label_fr": "Au besoin",
+          "description_fr": "Mise à jour lorsque cela est jugé nécessaire"
+        },
+        {
+          "code": "RI_541",
+          "value": "irregular; irrégulier",
+          "label_en": "Irregular",
+          "description_en": "Data is updated in intervals that are uneven in duration",
+          "label_fr": "Irrégulier",
+          "description_fr": "Mise à jour irrégulière"
+        },
+        {
+          "code": "RI_542",
+          "value": "notPlanned; nonPlanifié",
+          "label_en": "Not planned",
+          "description_en": "There are no plans to update the data",
+          "label_fr": "Non planifié",
+          "description_fr": "Mise à jour non planifiée"
+        },
+        {
+          "code": "RI_543",
+          "value": "unknown; inconnu",
+          "label_en": "Unknown",
+          "description_en": "Frequency of maintenance for the data is not known",
+          "label_fr": "Inconnu",
+          "description_fr": "Mise à jour inconnue"
+        },
+        {
+          "code": "RI_544",
+          "value": "semimonthly; bimensuel",
+          "label_en": "Semi Monthly",
+          "description_en": "",
+          "label_fr": "Bimensuel",
+          "description_fr": ""
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_MediumFormatCode",
+      "entry": [
+        {
+          "code": "RI_546",
+          "value": "cpio; cpio",
+          "label_en": "CPIO",
+          "description_en": "CoPy In / Out (UNIX file format and command)"
+        },
+        {
+          "code": "RI_547",
+          "value": "tar; tar",
+          "label_en": "TAR",
+          "description_en": "Tape ARchive"
+        },
+        {
+          "code": "RI_548",
+          "value": "highSierra; highSierra",
+          "label_en": "High sierra",
+          "description_en": "High sierra file system"
+        },
+        {
+          "code": "RI_549",
+          "value": "iso9660; iso9660",
+          "label_en": "ISO9660",
+          "description_en": "Information processing volume and file structure of CD-ROM"
+        },
+        {
+          "code": "RI_550",
+          "value": "iso9660RockRidge; iso9660RockRidge",
+          "label_en": "ISO9660 Rock Ridge",
+          "description_en": "Rock ridge interchange protocol (UNIX)"
+        },
+        {
+          "code": "RI_551",
+          "value": "iso9660AppleHFS; iso9660AppleHFS",
+          "label_en": "ISO9660 Apple HFS",
+          "description_en": "Hierarchical file system (Macintosh)"
+        },
+        {
+          "code": "RI_552",
+          "value": "UDF; UDF",
+          "label_en": "Universal Disk Format",
+          "description_en": "Universal Disk Format file system for storing files on optical media"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_MediumNameCode",
+      "entry": [
+        {
+          "code": "RI_554",
+          "value": "cdRom; cdRom",
+          "label_en": "CDROM",
+          "description_en": "Read-only optical disk"
+        },
+        {
+          "code": "RI_555",
+          "value": "dvd; dvd",
+          "label_en": "DVD",
+          "description_en": "Digital versatile disk"
+        },
+        {
+          "code": "RI_556",
+          "value": "dvdRom; dvdRom",
+          "label_en": "DVDROM",
+          "description_en": "Digital versatile disk, read only"
+        },
+        {
+          "code": "RI_557",
+          "value": "3halfInchFloppy; disquette3PoucesDemie",
+          "label_en": "3 Half Inch Floppy",
+          "description_en": "3,5 inch magnetic disk"
+        },
+        {
+          "code": "RI_558",
+          "value": "5quarterInchFloppy; disquette5PoucesQuart",
+          "label_en": "5 Quarter Inch Floppy",
+          "description_en": "5,25 inch magnetic disk"
+        },
+        {
+          "code": "RI_559",
+          "value": "7trackTape; ruban7Pistes",
+          "label_en": "7 Track tape",
+          "description_en": "7 track magnetic tape"
+        },
+        {
+          "code": "RI_560",
+          "value": "9trackTape; ruban9Pistes",
+          "label_en": "9 track tape",
+          "description_en": "9 track magnetic tape"
+        },
+        {
+          "code": "RI_561",
+          "value": "3480Cartridge; cartouche3480",
+          "label_en": "3480 Cartridge",
+          "description_en": "3480 cartridge tape drive"
+        },
+        {
+          "code": "RI_562",
+          "value": "3490Cartridge; cartouche3490",
+          "label_en": "3490 Cartridge",
+          "description_en": "3490 cartridge tape drive"
+        },
+        {
+          "code": "RI_563",
+          "value": "3580Cartridge; cartouche3580",
+          "label_en": "3580 Cartridge",
+          "description_en": "3580 cartridge tape drive"
+        },
+        {
+          "code": "RI_564",
+          "value": "4mmCartridgeTape; cartoucheRuban4mm",
+          "label_en": "4 mm Cartridge tape",
+          "description_en": "4 millimetre magnetic tape"
+        },
+        {
+          "code": "RI_565",
+          "value": "8mmCartridgeTape; cartoucheRuban8mm",
+          "label_en": "8 mm Cartridge tape",
+          "description_en": "8 millimetre magnetic tape"
+        },
+        {
+          "code": "RI_566",
+          "value": "1quarterInchCartridgeTape; cartoucheRuban1QuartPouce",
+          "label_en": "1 Quarter inch cartridge tape",
+          "description_en": "0,25 inch magnetic tape"
+        },
+        {
+          "code": "RI_567",
+          "value": "digitalLinearTap; bandeLinéaireNumérique",
+          "label_en": "Digital linear tape",
+          "description_en": "Half inch cartridge streaming tape drive"
+        },
+        {
+          "code": "RI_568",
+          "value": "onLine; enLigne",
+          "label_en": "Online",
+          "description_en": "Direct computer linkage"
+        },
+        {
+          "code": "RI_569",
+          "value": "satellite; satellite",
+          "label_en": "Satellite",
+          "description_en": "Linkage through a satellite communication system"
+        },
+        {
+          "code": "RI_570",
+          "value": "telephoneLink; lienTéléphonique",
+          "label_en": "Telephone link",
+          "description_en": "Communication through a telephone network"
+        },
+        {
+          "code": "RI_571",
+          "value": "hardcopy; copiePapier",
+          "label_en": "Hardcopy",
+          "description_en": "Pamphlet or leaflet giving descriptive information"
+        },
+        {
+          "code": "RI_572",
+          "value": "hardcopyDiazoPolyester08; copieDiazoPolyester08",
+          "label_en": "Diazo on 0,08 millimetre polyester",
+          "description_en": "Diazo on 0,08 millimetre polyester"
+        },
+        {
+          "code": "RI_573",
+          "value": "hardcopyCardMicrofilm; copieMicrofilm",
+          "label_en": "Microfilm card",
+          "description_en": "Microfilm card"
+        },
+        {
+          "code": "RI_574",
+          "value": "hardcopyMicrofilm240; copieMicrofilm240",
+          "label_en": "Microfilm 240 millimetre",
+          "description_en": "Microfilm 240 millimetre"
+        },
+        {
+          "code": "RI_575",
+          "value": "hardcopyMicrofilm35; copyMicrofilm35",
+          "label_en": "Microfilm 35 millimetre",
+          "description_en": "Microfilm 35 millimetre"
+        },
+        {
+          "code": "RI_576",
+          "value": "hardcopyMicrofilm70; copieMicrofilm70",
+          "label_en": "Microfilm 70 millimetre",
+          "description_en": "Microfilm 70 millimetre"
+        },
+        {
+          "code": "RI_577",
+          "value": "hardcopyMicrofilmGeneral; copieMicrofilmGeneral",
+          "label_en": "Microfilm general",
+          "description_en": "Microfilm general"
+        },
+        {
+          "code": "RI_578",
+          "value": "hardcopyMicrofilmMicrofiche; copieMicrofilmMicrofiche",
+          "label_en": "Microfiche",
+          "description_en": "Microfiche"
+        },
+        {
+          "code": "RI_579",
+          "value": "hardcopyNegativePhoto; copieNegatifPhoto",
+          "label_en": "Negative photography",
+          "description_en": "Negative photography"
+        },
+        {
+          "code": "RI_580",
+          "value": "hardcopyPaper; copiePapier",
+          "label_en": "Printing on paper",
+          "description_en": "Printing on paper"
+        },
+        {
+          "code": "RI_581",
+          "value": "hardcopyDiazo; copiePapierDiazo",
+          "label_en": "Diazo printing on paper",
+          "description_en": "Diazo printing on paper"
+        },
+        {
+          "code": "RI_582",
+          "value": "hardcopyPhoto; copiePhotographie",
+          "label_en": "Printing on photographic paper",
+          "description_en": "Printing on photographic paper"
+        },
+        {
+          "code": "RI_583",
+          "value": "hardcopyTracedPaper; copieTracéPapier",
+          "label_en": "Drawing on paper",
+          "description_en": "Drawing on paper"
+        },
+        {
+          "code": "RI_584",
+          "value": "hardDisk; disqueDur",
+          "label_en": "Hard disk",
+          "description_en": "Mass storage temporarily plug to a computer for massive data transmission"
+        },
+        {
+          "code": "RI_585",
+          "value": "USBFlashDrive; cléUSB",
+          "label_en": "USB flash drive",
+          "description_en": "Flash memory data storage devices integrated with a USB (universal serial bus) interface"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_ObligationCode",
+      "entry": [
+        {
+          "code": "mandatory",
+          "label_en": "Mandatory",
+          "description_en": "Element is always required"
+        },
+        {
+          "code": "optional",
+          "label_en": "Optional",
+          "description_en": "Element is not required"
+        },
+        {
+          "code": "conditional",
+          "label_en": "Conditional",
+          "description_en": "Element is required when a specific condition is met"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_PixelOrientationCode",
+      "entry": [
+        {
+          "code": "RI_587",
+          "value": "center; centre",
+          "label_en": "Center",
+          "description_en": "Point halfway between the lower left and the upper right of the\n\t\t\tpixel"
+        },
+        {
+          "code": "RI_588",
+          "value": "lowerLeft; inférieurGauche",
+          "label_en": "Lower left",
+          "description_en": "The corner in the pixel closest to the origin of the SRS; if two are at the same distance from the origin, the one with the smallest x-value"
+        },
+        {
+          "code": "RI_589",
+          "value": "lowerRight; inférieurDroit",
+          "label_en": "Lower right",
+          "description_en": "Next corner counterclockwise from the lower left"
+        },
+        {
+          "code": "RI_590",
+          "value": "upperRight; supérieurDroit",
+          "label_en": "Upper right",
+          "description_en": "Next corner counterclockwise from the lower right"
+        },
+        {
+          "code": "RI_591",
+          "value": "upperLeft; supérieurGauche",
+          "label_en": "Upper left",
+          "description_en": "Next corner counterclockwise from the upper right"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_ProgressCode",
+      "entry": [
+        {
+          "code": "RI_593",
+          "value": "completed; complété",
+          "label_en": "Completed",
+          "description_en": "Production of the data has been completed",
+          "label_fr": "Complété",
+          "description_fr": "La production du jeu de données est terminée"
+        },
+        {
+          "code": "RI_594",
+          "value": "historicalArchive; archiveHistorique",
+          "label_en": "Historical archive",
+          "description_en": "Data has been stored in an offline storage facility",
+          "label_fr": "Archive Historique",
+          "description_fr": "Jeu de données historique"
+        },
+        {
+          "code": "RI_595",
+          "value": "obsolete; périmé",
+          "label_en": "Obsolete",
+          "description_en": "Data is no longer relevant",
+          "label_fr": "Périmé",
+          "description_fr": "Jeu de données obsolète"
+        },
+        {
+          "code": "RI_596",
+          "value": "onGoing; enContinue",
+          "label_en": "On going",
+          "description_en": "Data is continually being updated",
+          "label_fr": "En continue",
+          "description_fr": "Jeu de données ayant des mises à jour continues"
+        },
+        {
+          "code": "RI_597",
+          "value": "planned; planifié",
+          "label_en": "Planned",
+          "description_en": "Fixed date has been established upon or by which the data will be created or updated",
+          "label_fr": "Planifié",
+          "description_fr": "Jeu de données planifié"
+        },
+        {
+          "code": "RI_598",
+          "value": "required; requis",
+          "label_en": "Required",
+          "description_en": "Data needs to be generated or updated",
+          "label_fr": "Requis",
+          "description_fr": "Jeu de données devant être produit"
+        },
+        {
+          "code": "RI_599",
+          "value": "underDevelopment; enProduction",
+          "label_en": "Under development",
+          "description_en": "Data is currently in the process of being created",
+          "label_fr": "En production",
+          "description_fr": "Jeu de données en cours d’élaboration"
+        },
+        {
+          "code": "RI_600",
+          "value": "proposed; proposé",
+          "label_en": "Proposed",
+          "description_en": "Proposed",
+          "label_fr": "Proposé",
+          "description_fr": "Proposé"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_RestrictionCode",
+      "entry": [
+        {
+          "code": "RI_602",
+          "value": "copyright; droitAuteur",
+          "label_en": "Copyright",
+          "description_en": "Exclusive right to the publication, production, or sale of the rights to a literary, dramatic, musical, or artistic work, or to the use of a commercial print or label_en, granted by law for a specified period of time to an author, composer, artist, distributor"
+        },
+        {
+          "code": "RI_603",
+          "value": "patent; brevet",
+          "label_en": "Patent",
+          "description_en": "Government has granted exclusive right to make, sell, use or license an invention or discovery"
+        },
+        {
+          "code": "RI_604",
+          "value": "patentPending; brevetEnInstance",
+          "label_en": "Pending patent",
+          "description_en": "Produced or sold information awaiting a patent"
+        },
+        {
+          "code": "RI_605",
+          "value": "trademark; marqueDeCommerce",
+          "label_en": "Trademark",
+          "description_en": "A name, symbol, or other device identifying a product, officially registered and legally restricted to the use of the owner or manufacturer"
+        },
+        {
+          "code": "RI_606",
+          "value": "license; licence",
+          "label_en": "License",
+          "description_en": "Formal permission to do something"
+        },
+        {
+          "code": "RI_607",
+          "value": "intellectualPropertyRights; droitsPropriétéIntellectuelle",
+          "label_en": "Intellectual property rights",
+          "description_en": "Rights to financial benefit from and control of distribution of non-tangible property that is a result of creativity"
+        },
+        {
+          "code": "RI_608",
+          "value": "restricted; restreint",
+          "label_en": "Restricted",
+          "description_en": "Withheld from general circulation or disclosure"
+        },
+        {
+          "code": "RI_609",
+          "value": "otherRestrictions; autresRestrictions",
+          "label_en": "Other restrictions",
+          "description_en": "Limitation not listed"
+        },
+        {
+          "code": "RI_610",
+          "value": "licenseUnrestricted; licenceSansRestriction",
+          "label_en": "Unrestricted",
+          "description_en": "Formal permission does not limit use of the resources"
+        },
+        {
+          "code": "RI_611",
+          "value": "licenseEndUser; licenceUtilisateurFinal",
+          "label_en": "License End User",
+          "description_en": []
+        },
+        {
+          "code": "RI_612",
+          "value": "licenseDistributor; licenceDistributeur",
+          "label_en": "License Distributor",
+          "description_en": []
+        },
+        {
+          "code": "RI_613",
+          "value": "privacy; viePrivée",
+          "label_en": "Privacy",
+          "description_en": []
+        },
+        {
+          "code": "RI_614",
+          "value": "statutory; légal",
+          "label_en": "Statutory",
+          "description_en": []
+        },
+        {
+          "code": "RI_615",
+          "value": "confidential; confidentiel",
+          "label_en": "Confidential",
+          "description_en": []
+        },
+        {
+          "code": "RI_616",
+          "value": "sensitivity; sensible",
+          "label_en": "Sensitivity",
+          "description_en": []
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_ScopeCode",
+      "entry": [
+        {
+          "code": "RI_618",
+          "value": "attribute; attribut",
+          "label_en": "Attribute",
+          "description_en": "Information applies to the attribute class"
+        },
+        {
+          "code": "RI_619",
+          "value": "attributeType; typeAttribut",
+          "label_en": "Attribute type",
+          "description_en": "Information applies to the characteristic of a feature"
+        },
+        {
+          "code": "RI_620",
+          "value": "collectionHardware; collectionMatériel",
+          "label_en": "Collection hardware",
+          "description_en": "Information applies to the collection hardware class"
+        },
+        {
+          "code": "RI_621",
+          "value": "collectionSession; collectionSession",
+          "label_en": "Collection session",
+          "description_en": "Information applies to the collection session"
+        },
+        {
+          "code": "RI_622",
+          "value": "dataset; jeuDonnées",
+          "label_en": "Dataset",
+          "description_en": "Information applies to the dataset"
+        },
+        {
+          "code": "RI_623",
+          "value": "series; série",
+          "label_en": "Series",
+          "description_en": "Information applies to the series"
+        },
+        {
+          "code": "RI_624",
+          "value": "nonGeographicDataset; JeuDonnéesNonGéographique",
+          "label_en": "Non geographic dataset",
+          "description_en": "Information applies to non-geographic data"
+        },
+        {
+          "code": "RI_625",
+          "value": "dimensionGroup; groupeDimension",
+          "label_en": "Dimension group",
+          "description_en": "Information applies to a dimension group"
+        },
+        {
+          "code": "RI_626",
+          "value": "feature; entité",
+          "label_en": "Feature",
+          "description_en": "Information applies to a feature"
+        },
+        {
+          "code": "RI_627",
+          "value": "featureType; typeEntité",
+          "label_en": "Feature type",
+          "description_en": "Information applies to a feature type"
+        },
+        {
+          "code": "RI_628",
+          "value": "propertyType; typePropriété",
+          "label_en": "Property type",
+          "description_en": "Information applies to a property type"
+        },
+        {
+          "code": "RI_629",
+          "value": "fieldSession; campagneTerrain",
+          "label_en": "Field session",
+          "description_en": "Information applies to a field session"
+        },
+        {
+          "code": "RI_630",
+          "value": "software; logiciel",
+          "label_en": "Software",
+          "description_en": "Information applies to a computer program or routine"
+        },
+        {
+          "code": "RI_631",
+          "value": "service; service",
+          "label_en": "Service",
+          "description_en": "Information applies to a capability which a service provider entity makes available to a service user entity through a set of interfaces that define a behaviour, such as a use case"
+        },
+        {
+          "code": "RI_632",
+          "value": "model; modèle",
+          "label_en": "Model",
+          "description_en": "Information applies to a copy or imitation of an existing or hypothetical object"
+        },
+        {
+          "code": "RI_633",
+          "value": "tile; tuile",
+          "label_en": "Tile",
+          "description_en": "Information applies to a tile, a spatial subset of geographic\n\t\t\tdata"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_SpatialRepresentationTypeCode",
+      "entry": [
+        {
+          "code": "RI_635",
+          "value": "vector; vecteur",
+          "label_en": "Vector",
+          "description_en": "Vector data is used to represent geographic data"
+        },
+        {
+          "code": "RI_636",
+          "value": "grid; grille",
+          "label_en": "Grid",
+          "description_en": "Grid data is used to represent geographic data"
+        },
+        {
+          "code": "RI_637",
+          "value": "textTable; texteTable",
+          "label_en": "Text, table",
+          "description_en": "Textual or tabular data is used to represent geographic data"
+        },
+        {
+          "code": "RI_638",
+          "value": "tin; tin",
+          "label_en": "TIN",
+          "description_en": "Triangulated irregular network"
+        },
+        {
+          "code": "RI_639",
+          "value": "stereoModel ; stéréomodèle",
+          "label_en": "Stereo model",
+          "description_en": "Three-dimensional view formed by the intersecting homologous rays of an overlapping pair of images"
+        },
+        {
+          "code": "RI_640",
+          "value": "video; vidéo",
+          "label_en": "Video",
+          "description_en": "Scene from a video recording"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_TopicCategoryCode",
+      "entry": [
+        {
+          "code": "farming",
+          "label_en": "Farming",
+          "description_en": "Rearing of animals and/or cultivation of plants. Examples: agriculture, irrigation, aquaculture, plantations, herding, pests and diseases affecting crops and livestock",
+          "label_fr": "Agriculture",
+          "description_fr": "Elevage et/ou cultures. Exemples : agriculture, irrigation, aquaculture, plantations"
+        },
+        {
+          "code": "biota",
+          "label_en": "Biota",
+          "description_en": "Flora and/or fauna in natural environment. Examples: wildlife, vegetation, biological sciences, ecology, wilderness, sealife, wetlands, habitat",
+          "label_fr": "Biologie, faune et flore",
+          "description_fr": "Flore et faune dans un écosystème naturel. Exemples : habitat, écologie, faune sauvage, faune aquatique, sciences biologiques, zones humides, végétation, biodiversité"
+        },
+        {
+          "code": "boundaries",
+          "label_en": "Boundaries",
+          "description_en": "Legal land description_ens. Examples: political and administrative boundaries",
+          "label_fr": "Limites politiques et administratives",
+          "description_fr": "Exemples : limites de pays, de provinces, de départements, de communes"
+        },
+        {
+          "code": "climatologyMeteorologyAtmosphere",
+          "label_en": "Climatology, meteorology, atmosphere",
+          "description_en": "Processes and phenomena of the atmosphere. Examples: cloud cover, weather, climate, atmospheric conditions, climate change, precipitation",
+          "label_fr": "Climatologie, météorologie, atmosphère",
+          "description_fr": "Processus et phénomènes atmosphériques. Exemples : climat, météorologie, conditions atmosphériques, changements climatiques, couverture nuageuse"
+        },
+        {
+          "code": "economy",
+          "label_en": "Economy",
+          "description_en": "Economic activities, conditions and employment. Examples: production, labour, revenue, commerce, industry, tourism and ecotourism, forestry, fisheries, commercial or subsistence hunting, exploration and exploitation of resources such as minerals, oil and gas",
+          "label_fr": "Economie",
+          "description_fr": "Activités économiques. Exemples : production, travail, revenu, commerce, industrie, tourisme et éco-tourisme, foresterie, pêche, chasse, exploration et exploitation des ressources minières, pétrole, gaz naturel"
+        },
+        {
+          "code": "elevation",
+          "label_en": "Elevation",
+          "description_en": "Height above or below sea level. Examples: altitude, bathymetry, digital elevation models, slope, derived products",
+          "label_fr": "Altimétrie",
+          "description_fr": "Hauteurs au dessous et dessus du niveau de la mer. Exemples : altitude, bathymétrie, MNT, pentes et calculs dérivés de l’altitude"
+        },
+        {
+          "code": "environment",
+          "label_en": "Environment",
+          "description_en": "Environmental resources, protection and conservation. Examples: environmental pollution, waste storage and treatment, environmental impact assessment, monitoring environmental risk, nature reserves, landscape",
+          "label_fr": "Environnement",
+          "description_fr": "Ressources naturelles, protection, conservation des ressources naturelles. Exemples : pollution, traitement et stockage des déchets, suivi de l’environnement, gestion du risque, réserves naturelles, paysage"
+        },
+        {
+          "code": "geoscientificInformation",
+          "label_en": "Geoscientific information",
+          "description_en": "Information pertaining to earth sciences. Examples: geophysical features and processes, geology, minerals, sciences dealing with the composition, structure and origin of the earth s rocks, risks of earthquakes, volcanic activity, landslides, gravity information, soils, permafrost, hydrogeology, erosion",
+          "label_fr": "Sciences de la terre, géosciences",
+          "description_fr": "Informations relatives aux sciences de la terre. Exemples : composants et processus géophysiques, géologie, minéralogie, tectonique, risque sismique"
+        },
+        {
+          "code": "health",
+          "label_en": "Health",
+          "description_en": "Health, health services, human ecology, and safety. Examples: disease and illness, factors affecting health, hygiene, substance abuse, mental and physical health, health services",
+          "label_fr": "Santé",
+          "description_fr": "Santé, services de santé, épidémiologie. Exemples : maladies et épidémie, facteurs affectant la santé, santé mentale et physique, services de santé"
+        },
+        {
+          "code": "imageryBaseMapsEarthCover",
+          "label_en": "Imagery base maps earth cover",
+          "description_en": "Base maps. Examples: land cover, topographic maps, imagery, unclassified images, annotations",
+          "label_fr": "Carte de référence de la couverture terrestre",
+          "description_fr": "Carte de référence. Exemples : occupation des terres, imagerie aérienne et satellitale, carte thématiques, carte topographiques"
+        },
+        {
+          "code": "intelligenceMilitary",
+          "label_en": "Intelligence military",
+          "description_en": "Military bases, structures, activities. Examples: barracks, training grounds, military transportation, information collection",
+          "label_fr": "Infrastructures militaires",
+          "description_fr": "Bases militaires et infrastructures"
+        },
+        {
+          "code": "inlandWaters",
+          "label_en": "Inland waters",
+          "description_en": "Inland water features, drainage systems and their characteristics. Examples: rivers and glaciers, salt lakes, water utilization plans, dams, currents, floods, water quality, hydrographic charts",
+          "label_fr": "Eaux intérieures, Hydrographie",
+          "description_fr": "Exemples : fleuves, rivières, glaciers, lacs salés, systèmes hydrographiques, barrages, débits, qualité de l’eau"
+        },
+        {
+          "code": "location",
+          "label_en": "Location",
+          "description_en": "Positional information and services. Examples: addresses, geodetic networks, control points, postal zones and services, place names",
+          "label_fr": "Localisation",
+          "description_fr": "Exemples : zones postales, adresses, points de contrôle, réseau géodésique"
+        },
+        {
+          "code": "oceans",
+          "label_en": "Oceans",
+          "description_en": "Features and characteristics of salt water bodies (excluding inland waters). Examples: tides, tidal waves, coastal information, reefs",
+          "label_fr": "Océans",
+          "description_fr": "Composants et caractéristiques du milieu maritime. Exemples : littoral, récifs, marée, etc."
+        },
+        {
+          "code": "planningCadastre",
+          "label_en": "Planning cadastre",
+          "description_en": "Information used for appropriate actions for future use of the land. Examples: land use maps, zoning maps, cadastral surveys, land ownership",
+          "label_fr": "Cadastre, aménagement",
+          "description_fr": "Exemples : carte d’utilisation des terres, plan d’occupation des sols, planification pour la prévention des risques"
+        },
+        {
+          "code": "society",
+          "label_en": "Society",
+          "description_en": "Characteristics of society and cultures. Examples: settlements, anthropology, archaeology, education, traditional beliefs, manners and customs, demographic data, recreational areas and activities, social impact assessments, crime and justice, census information",
+          "label_fr": "Société",
+          "description_fr": "Caractéristiques des sociétés et des cultures. Exemples :lois, anthropologie, éducation, données démographiques, archéologique, suivi des systèmes  sociaux, croyances, us et coutumes, crimes et justices"
+        },
+        {
+          "code": "structure",
+          "label_en": "Structure",
+          "description_en": "Man-made construction. Examples: buildings, museums, churches, factories, housing, monuments, shops, towers",
+          "label_fr": "Constructions et ouvrages",
+          "description_fr": "Aménagements urbains. Exemples : musée, église, usines, maisons, monuments, boutiques, immeubles"
+        },
+        {
+          "code": "transportation",
+          "label_en": "Transportation",
+          "description_en": "Means and aids for conveying persons and/or goods. Examples: roads, airports/airstrips, shipping routes, tunnels, nautical charts, vehicle or vessel location, aeronautical charts, railways",
+          "label_fr": "Infrastructures de transport",
+          "description_fr": "Moyens de transports des personnes et des biens. Exemples :  routes, aéroports, tunnels, viaducs, ponts, chemin de fer"
+        },
+        {
+          "code": "utilitiesCommunication",
+          "label_en": "Utilities communication",
+          "description_en": "Energy, water and waste systems and communications infrastructure and services. Examples: hydroelectricity, geothermal, solar and nuclear sources of energy, water purification and distribution, sewage collection and disposal, electricity and gas distribution, data communication, telecommunication, radio, communication networks",
+          "label_fr": "Télécommunication, approvisionnement et énergie",
+          "description_fr": "Systèmes de distribution de gestion ou de stockage de l’énergie, de l’eau, des déchets. Infrastructures et services de communication. Exemples : source d’énergie solaire, hydroélectrique, nucléaire, épuration et distribution des eaux, réseau de distribution électrique, de gaz, réseau de télécommunication, radio."
+        }
+      ]
+    },
+    {
+      "name": "gmd:MD_TopologyLevelCode",
+      "entry": [
+        {
+          "code": "RI_662",
+          "value": "geometryOnly; géométrieUniquement",
+          "label_en": "Geometry only",
+          "description_en": "Geometry objects without any additional structure which describes\n\t\t\ttopology"
+        },
+        {
+          "code": "RI_663",
+          "value": "topology1D; topologie1D",
+          "label_en": "Topology 1D",
+          "description_en": "1-dimensional topological complex -- commonly called chain-node\n\t\t\ttopology"
+        },
+        {
+          "code": "RI_664",
+          "value": "planarGraph; graphePlanaire",
+          "label_en": "Planar graph",
+          "description_en": "1-dimensional topological complex that is planar. (A planar graph is a graph that can be drawn in a plane in such a way that no two edges intersect except at a vertex.)"
+        },
+        {
+          "code": "RI_665",
+          "value": "fullPlanarGraph; graphePlanaireComplet",
+          "label_en": "Full planar graph",
+          "description_en": "2-dimensional topological complex that is planar. (A 2-dimensional topological complex is commonly called full topology in a cartographic 2D\n\t\t\tenvironment.)"
+        },
+        {
+          "code": "RI_666",
+          "value": "surfaceGraph; grapheSurfacique",
+          "label_en": "Surface graph",
+          "description_en": "1-dimensional topological complex that is isomorphic to a subset of a surface. (A geometric complex is isomorphic to a topological complex if their elements are in a one-to-one, dimensional-and boundry-preserving correspondence to one\n\t\t\tanother.)"
+        },
+        {
+          "code": "RI_667",
+          "value": "fullSurfaceGraph; grapheSurfaciqueComplet",
+          "label_en": "Full surface graph",
+          "description_en": "2-dimensional topological complex that is isomorphic to a subset of a\n\t\t\tsurface"
+        },
+        {
+          "code": "RI_668",
+          "value": "topology3D; topologie3D",
+          "label_en": "Topology 3D",
+          "description_en": "3-dimensional topological complex. (A topological complex is a collection of topological primitives that are closed under the boundary operations.)"
+        },
+        {
+          "code": "RI_669",
+          "value": "fullTopology3D; topologie3DComplète",
+          "label_en": "Full topology 3D",
+          "description_en": "Complete coverage of a 3D Euclidean coordinate space"
+        },
+        {
+          "code": "RI_670",
+          "value": "abstract; abstrait",
+          "label_en": "Abstract",
+          "description_en": "Topological complex without any specified geometric realisation"
+        }
+      ]
+    },
+    {
+      "name": "gmd:MX_ScopeCode",
+      "entry": [
+        {
+          "code": "attribute",
+          "label_en": "Attribute",
+          "description_en": "Information applies to the attribute class"
+        },
+        {
+          "code": "attributeType",
+          "label_en": "Attribute type",
+          "description_en": "Information applies to the characteristic of a feature"
+        },
+        {
+          "code": "collectionHardware",
+          "label_en": "Collection hardware",
+          "description_en": "Information applies to the collection hardware class"
+        },
+        {
+          "code": "collectionSession",
+          "label_en": "Collection session",
+          "description_en": "Information applies to the collection session"
+        },
+        {
+          "code": "dataset",
+          "label_en": "Dataset",
+          "description_en": "Information applies to the dataset"
+        },
+        {
+          "code": "series",
+          "label_en": "Series",
+          "description_en": "Information applies to the series"
+        },
+        {
+          "code": "nonGeographicDataset",
+          "label_en": "Non geographic dataset",
+          "description_en": "Information applies to non-geographic data"
+        },
+        {
+          "code": "dimensionGroup",
+          "label_en": "Dimension group",
+          "description_en": "Information applies to a dimension group"
+        },
+        {
+          "code": "feature",
+          "label_en": "Feature",
+          "description_en": "Information applies to a feature"
+        },
+        {
+          "code": "featureType",
+          "label_en": "Feature type",
+          "description_en": "Information applies to a feature type"
+        },
+        {
+          "code": "propertyType",
+          "label_en": "Property type",
+          "description_en": "Information applies to a property type"
+        },
+        {
+          "code": "fieldSession",
+          "label_en": "Field session",
+          "description_en": "Information applies to a field session"
+        },
+        {
+          "code": "software",
+          "label_en": "Software",
+          "description_en": "Information applies to a computer program or routine"
+        },
+        {
+          "code": "service",
+          "label_en": "Service",
+          "description_en": "Information applies to a capability which a service provider entity makes available to a service user entity through a set of interfaces that define a behaviour, such as a use case"
+        },
+        {
+          "code": "model",
+          "label_en": "Model",
+          "description_en": "Information applies to a copy or imitation of an existing or hypothetical object"
+        },
+        {
+          "code": "tile",
+          "label_en": "Tile",
+          "description_en": "Information applies to a tile, a spatial subset of geographic\n\t\t\tdata"
+        },
+        {
+          "code": "initiative",
+          "label_en": "Initiative",
+          "description_en": "The referencing entity applies to a transfer aggregate which was originally identified as an initiative (DS_Initiative)"
+        },
+        {
+          "code": "stereomate",
+          "label_en": "Stereo mate",
+          "description_en": "The referencing entity applies to a transfer aggregate which was originally identified as a stereo mate (DS_StereoMate)"
+        },
+        {
+          "code": "sensor",
+          "label_en": "Sensor",
+          "description_en": "The referencing entity applies to a transfer aggregate which was originally identified as a sensor (DS_Sensor)"
+        },
+        {
+          "code": "platformSeries",
+          "label_en": "Platform series",
+          "description_en": "The referencing entity applies to a transfer aggregate which was originally identified as a platform series (DS_PlatformSeries)"
+        },
+        {
+          "code": "sensorSeries",
+          "label_en": "Sensor series",
+          "description_en": "The referencing entity applies to a transfer aggregate which was originally identified as a sensor series (DS_SensorSeries)"
+        },
+        {
+          "code": "productionSeries",
+          "label_en": "Production series",
+          "description_en": "The referencing entity applies to a transfer aggregate which was originally identified as a production series (DS_ProductionSeries)"
+        },
+        {
+          "code": "transferAggregate",
+          "label_en": "Transfer aggregate",
+          "description_en": "The referencing entity applies to a transfer aggregate which has no existence outside of the transfer context"
+        },
+        {
+          "code": "otherAggregate",
+          "label_en": "Other aggregate",
+          "description_en": "The referencing entity applies to a transfer aggregate which has an existence outside of the transfer context, but which does not pertains to a specific aggregate type."
+        }
+      ]
+    },
+    {
+      "name": "srv:DCPList",
+      "entry": [
+        {
+          "code": "RI_672",
+          "value": "XML; XML",
+          "label_en": "XML",
+          "description_en": "DCP is XML"
+        },
+        {
+          "code": "RI_673",
+          "value": "CORBA; CORBA",
+          "label_en": "CORBA",
+          "description_en": "DCP is CORBA"
+        },
+        {
+          "code": "RI_674",
+          "value": "JAVA; JAVA",
+          "label_en": "JAVA",
+          "description_en": "DCP is JAVA"
+        },
+        {
+          "code": "RI_675",
+          "value": "COM; COM",
+          "label_en": "COM",
+          "description_en": "DCP is COM"
+        },
+        {
+          "code": "RI_676",
+          "value": "SQL; SQL",
+          "label_en": "SQL",
+          "description_en": "DCP is SQL"
+        },
+        {
+          "code": "RI_677",
+          "value": "WebServices; servicesWeb",
+          "label_en": "Web services",
+          "description_en": "DCP is WebServices"
+        }
+      ]
+    },
+    {
+      "name": "srv:SV_CouplingType",
+      "entry": [
+        {
+          "code": "RI_685",
+          "value": "tight; fort",
+          "label_en": "Tight",
+          "description_en": "Tightly coupled: data associated"
+        },
+        {
+          "code": "RI_684",
+          "value": "mixed; mixte",
+          "label_en": "Mixed",
+          "description_en": "Mixed coupled: data associated; in addition, external data might be processed"
+        },
+        {
+          "code": "RI_683",
+          "value": "loose; faible",
+          "label_en": "Loose",
+          "description_en": "Loosely coupled: no data associated"
+        }
+      ]
+    },
+    {
+      "name": "srv:SV_ParameterDirection",
+      "entry": [
+        {
+          "code": "RI_679",
+          "value": "in; intrant",
+          "label_en": "Input"
+        },
+        {
+          "code": "RI_680",
+          "value": "out; extrant",
+          "label_en": "Output"
+        },
+        {
+          "code": "RI_681",
+          "value": "in/out; intant/extrant",
+          "label_en": "Input/output"
+        }
+      ]
+    },
+    {
+      "name": "napm:napMD_FileFormatCode",
+      "entry": [
+        {
+          "code": "RI_687",
+          "value": "bil; bil",
+          "label_en": "Bil",
+          "description_en": "BIL (band interleaved by line) format line data are arranged in the order of band number and repeated with respect to line number"
+        },
+        {
+          "code": "RI_688",
+          "value": "bmp; bmp",
+          "label_en": "Bmp",
+          "description_en": "bit mapped picture/BitMap"
+        },
+        {
+          "code": "RI_689",
+          "value": "bsq; bsq",
+          "label_en": "Bsq",
+          "description_en": "BSQ format (band sequential) image data (pixel number and line number) of each band are separately arranged"
+        },
+        {
+          "code": "RI_690",
+          "value": "bzip2; bzip2",
+          "label_en": "Bzip2",
+          "description_en": "bzip2 compressing format"
+        },
+        {
+          "code": "RI_691",
+          "value": "cdr; cdr",
+          "label_en": "Cdr",
+          "description_en": "corel file format"
+        },
+        {
+          "code": "RI_692",
+          "value": "cgm; cgm",
+          "label_en": "Cgm",
+          "description_en": "Computer Graphics Metafile format"
+        },
+        {
+          "code": "RI_693",
+          "value": "cover; cover",
+          "label_en": "Cover",
+          "description_en": "Arc/Info coverage format"
+        },
+        {
+          "code": ["RI_694", "csv"],
+          "value": "csv; csv",
+          "label_en": "Csv",
+          "description_en": "comma separated value"
+        },
+        {
+          "code": "RI_695",
+          "value": "dbf; dbf",
+          "label_en": "Dbf",
+          "description_en": "dbase file format"
+        },
+        {
+          "code": "RI_696",
+          "value": "dgn; dgn",
+          "label_en": "Dgn",
+          "description_en": "microstation graphic file format"
+        },
+        {
+          "code": "RI_697",
+          "value": "doc; doc",
+          "label_en": "Doc",
+          "description_en": "microsoft word file format"
+        },
+        {
+          "code": "RI_698",
+          "value": "dwg; dwg",
+          "label_en": "Dwg",
+          "description_en": "autocad drawing format"
+        },
+        {
+          "code": "RI_699",
+          "value": "dxf; dxf",
+          "label_en": "Dxf",
+          "description_en": "autocad data exchange format"
+        },
+        {
+          "code": "RI_700",
+          "value": "e00; e00",
+          "label_en": "e00",
+          "description_en": "arc/info exchange format"
+        },
+        {
+          "code": "RI_701",
+          "value": "ecw; ecw",
+          "label_en": "Ecw",
+          "description_en": "ermapper compressed format"
+        },
+        {
+          "code": "RI_702",
+          "value": "eps; eps",
+          "label_en": "Eps",
+          "description_en": "encapsulated postscript file format"
+        },
+        {
+          "code": "RI_703",
+          "value": "ers; ers",
+          "label_en": "Ers",
+          "description_en": "ermapper file format"
+        },
+        {
+          "code": "RI_704",
+          "value": "gdb; gdb",
+          "label_en": "Gdb",
+          "description_en": "arcgis geodatabase file format"
+        },
+        {
+          "code": "RI_705",
+          "value": "geotiff; geotiff",
+          "label_en": "Geotiff",
+          "description_en": "georeference tagged interchange file format"
+        },
+        {
+          "code": "RI_706",
+          "value": "gif; gif",
+          "label_en": "Gif",
+          "description_en": "graphic interchange format"
+        },
+        {
+          "code": "RI_707",
+          "value": "gml; gml",
+          "label_en": "Gml",
+          "description_en": "geography markup language"
+        },
+        {
+          "code": "RI_708",
+          "value": "grid; grid",
+          "label_en": "Grid",
+          "description_en": "regular data grids are rectangular, not sparse, matrices that contain column and row"
+        },
+        {
+          "code": "RI_709",
+          "value": "gzip; gzip",
+          "label_en": "Gzip",
+          "description_en": "GNU zip compression utility designed to be a replacement for compress"
+        },
+        {
+          "code": "RI_710",
+          "value": "html; html",
+          "label_en": "Html",
+          "description_en": "hypertext markup language"
+        },
+        {
+          "code": "RI_711",
+          "value": "jpg; jpg",
+          "label_en": "Jpg",
+          "description_en": "joint photographic experts group format (JPG)"
+        },
+        {
+          "code": "RI_712",
+          "value": "mdb; mdb",
+          "label_en": "Mdb",
+          "description_en": "microsoft access database file format"
+        },
+        {
+          "code": "RI_713",
+          "value": "mif; mif",
+          "label_en": "Mif",
+          "description_en": "mapinfo interchange format"
+        },
+        {
+          "code": "RI_714",
+          "value": "pbm; pbm",
+          "label_en": "Pbm",
+          "description_en": "portable bitmap format"
+        },
+        {
+          "code": "RI_715",
+          "value": "pdf; pdf",
+          "label_en": "Pdf",
+          "description_en": "portable document format (adobe)"
+        },
+        {
+          "code": "RI_716",
+          "value": "png; png",
+          "label_en": "Png",
+          "description_en": "portable network graphics bitmap"
+        },
+        {
+          "code": "RI_717",
+          "value": "ps; ps",
+          "label_en": "Ps",
+          "description_en": "postscript format"
+        },
+        {
+          "code": "RI_718",
+          "value": "rtf; rtf",
+          "label_en": "Rtf",
+          "description_en": "rich text format file"
+        },
+        {
+          "code": "RI_719",
+          "value": "sdc; sdc",
+          "label_en": "Sdc",
+          "description_en": "smart data compression format"
+        },
+        {
+          "code": "RI_720",
+          "value": "shp; shp",
+          "label_en": "Shp",
+          "description_en": "arcview shape file format"
+        },
+        {
+          "code": "RI_721",
+          "value": "sid; sid",
+          "label_en": "Sid",
+          "description_en": "multi-resolution seamless image database file format"
+        },
+        {
+          "code": "RI_722",
+          "value": "svg; svg",
+          "label_en": "Svg",
+          "description_en": "scalable vector graphic file format"
+        },
+        {
+          "code": "RI_723",
+          "value": "tab; tab",
+          "label_en": "Tab",
+          "description_en": "mapinfo file format (tab file)"
+        },
+        {
+          "code": "RI_724",
+          "value": "tar; tar",
+          "label_en": "Tar",
+          "description_en": "tape archive file format"
+        },
+        {
+          "code": "RI_725",
+          "value": "tiff; tiff",
+          "label_en": "Tiff",
+          "description_en": "tag image file format (TIFF) bitmap"
+        },
+        {
+          "code": "RI_726",
+          "value": "txt; txt",
+          "label_en": "Txt",
+          "description_en": "text file format"
+        },
+        {
+          "code": "RI_727",
+          "value": "wpd; wpd",
+          "label_en": "Wpd",
+          "description_en": "Wordperfect file format from corel"
+        },
+        {
+          "code": "RI_728",
+          "value": "xhtml; xhtml",
+          "label_en": "Xhtml",
+          "description_en": "Extensible HyperText Markup Language"
+        },
+        {
+          "code": "RI_729",
+          "value": "xls; xls",
+          "label_en": "Xls",
+          "description_en": "microsoft excell file format"
+        },
+        {
+          "code": "RI_730",
+          "value": "xml; xml",
+          "label_en": "Xml",
+          "description_en": "extensible markup language"
+        },
+        {
+          "code": "RI_731",
+          "value": "xwd; xwd",
+          "label_en": "Xwd",
+          "description_en": "dump X Window file format"
+        },
+        {
+          "code": "RI_732",
+          "value": "zip; zip",
+          "label_en": "Zip",
+          "description_en": "archive file format (zip)"
+        }
+      ]
+    }
+  ]
+}
