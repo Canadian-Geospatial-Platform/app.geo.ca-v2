@@ -1,5 +1,4 @@
 import type { LayoutServerLoad } from './$types';
-import { Config } from 'sst/node/config';
 import enFooterLinks from '$lib/components/footer/i18n/en/links.json';
 import enLegal from '$lib/components/footer/i18n/en/legal.json';
 import frFooterLinks from '$lib/components/footer/i18n/fr/links.json';
@@ -14,12 +13,12 @@ import frShareTranslations from '$lib/components/share/i18n/fr/translations.json
 export const load: LayoutServerLoad = async ({ cookies, params }) => {
 	return {
 		lang: params.lang,
-		FEATURE_SIGN_IN: Config.FEATURE_SIGN_IN === 'true' ? true : false,
 		signedIn: cookies.get('id_token') ? true : false,
+		FEATURE_SIGN_IN: process.env.FEATURE_SIGN_IN === 'true' ? true : false,
 		footerLinks: params.lang == 'fr-ca' ? frFooterLinks : enFooterLinks,
 		legalData: params.lang == 'fr-ca' ? frLegal : enLegal,
 		navitems: params.lang == 'fr-ca' ? frNavitems : enNavitems,
 		headerTranslations: params.lang == 'fr-ca' ? frHeaderTranslations : enHeaderTranslations,
-		shareTranslations: params.lang == 'fr-ca' ? frShareTranslations : enShareTranslations,
+		shareTranslations: params.lang == 'fr-ca' ? frShareTranslations : enShareTranslations
 	};
 };

@@ -1,10 +1,9 @@
 import type { PageServerLoad } from './$types';
-import { Config } from 'sst/node/config';
 import { redirect } from '@sveltejs/kit';
 import { urlEncode } from '$lib/utils/url-encode';
 
-const CLIENT_ID = Config.OIDC_CLIENT_ID;
-const CUSTOM_DOMAIN = Config.OIDC_CUSTOM_DOMAIN;
+const CLIENT_ID = process.env.OIDC_CLIENT_ID;
+const CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 
 export const load: PageServerLoad = async ({ params, url }) => {
 	const authUrl = CUSTOM_DOMAIN + '/oauth2/authorize?';

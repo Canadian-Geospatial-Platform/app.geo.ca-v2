@@ -1,11 +1,10 @@
 import type { PageServerLoad } from './$types';
-import { Config } from 'sst/node/config';
 import { redirect } from '@sveltejs/kit';
 import { urlEncode } from '$lib/utils/url-encode';
 
-const CLIENT_ID = Config.OIDC_CLIENT_ID;
-const CUSTOM_DOMAIN = Config.OIDC_CUSTOM_DOMAIN;
-const CLIENT_SECRET = Config.OIDC_CLIENT_SECRET;
+const CLIENT_ID = process.env.OIDC_CLIENT_ID;
+const CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
+const CLIENT_SECRET = process.env.OIDC_CLIENT_SECRET;
 
 export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 	let jwt = null;

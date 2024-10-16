@@ -1,4 +1,4 @@
-import { Table } from 'sst/node/table';
+import { Resource } from 'sst';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { getToken } from '$lib/utils/parse-jwt';
@@ -10,7 +10,7 @@ const getUserData = async (cookies) => {
 	let token = await getToken(cookies);
 	if (!token.ok) return { Item: { uuid: null, mapCart: [] } };
 	const command = new GetCommand({
-		TableName: Table.users.tableName,
+		TableName: Resource.user_table.name,
 		Key: {
 			uuid: token.value.username
 		}
