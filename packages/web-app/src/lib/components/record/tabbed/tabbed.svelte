@@ -7,11 +7,11 @@
 
   /******************* Translations *******************/
   const translations = $page.data.t;
-  const dataResources: string = Object.hasOwn(translations,"dataResources") ?
+  const dataResources: string = translations?.dataResources ?
     translations["dataResources"] : "Data Resources";
-  const advancedMetaData: string = Object.hasOwn(translations,"advancedMetaData") ?
+  const advancedMetaData: string = translations?.advancedMetaData ?
     translations["advancedMetaData"] : "Advanced Metadata";
-  const contactData: string = Object.hasOwn(translations,"contactData") ?
+  const contactData: string = translations?.contactData ?
     translations["contactData"] : "Contact Data";
 
   /******************* Data *******************/

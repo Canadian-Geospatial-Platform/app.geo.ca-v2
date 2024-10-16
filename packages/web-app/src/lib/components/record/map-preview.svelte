@@ -4,16 +4,14 @@
   import Map from '$lib/components/map/map.svelte';
 
   const translations = $page.data.t;
-  const mapPreviewtext = Object.hasOwn(translations,"mapPreview") ?
-    translations["mapPreview"] : "Map Preview";
-  const mapNotAvailableText = Object.hasOwn(translations,"mapNotAvailable") ?
-    translations["mapNotAvailable"] : "";
+  const mapPreviewtext = translations?.mapPreview ? translations["mapPreview"] : "Map Preview";
+  const mapNotAvailableText = translations?.mapNotAvailable ? translations["mapNotAvailable"] : "";
 
   const data = $page.data;
   const uuid = data.uuid;
   const items = data.item_v2;
-  const geometry = Object.hasOwn(items,"geometry") ? items.geometry : null;
-  const coordinates = geometry && Object.hasOwn(geometry,"coordinates") ? geometry.coordinates : null;
+  const geometry = items?.geometry ? items.geometry : null;
+  const coordinates = geometry && geometry?.coordinates ? geometry.coordinates : null;
 </script>
 
 <div class="font-custom-style-body-1">

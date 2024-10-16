@@ -3,7 +3,7 @@
     "title": "Discover",
     "options": [
       {
-        "col-title": "By Theme",
+        "colTitle": "By Theme",
         "links": [
           {"title": "Administration", "href": "https://geo.ca/administration/"},
           {"title": "Economy", "href": "https://geo.ca/economy/"},
@@ -17,7 +17,7 @@
           {"title": "Foundation Data", "href": "https://geo.ca/foundation-data/"}
         ]
       }, {
-        "col-title": "By Content Type",
+        "colTitle": "By Content Type",
         "links": [
           {"title": "API", "href": "/en-ca/map-browser", "info": "Discover and leverage useful APIs for requesting specific data and information.", "tipId": "api"},
           {"title": "Application", "href": "/en-ca/map-browser", "info": "Discover our collection of pre-built applications that leverage existing APIs, datasets, collections, and web services.", "tipId": "application"},
@@ -25,7 +25,7 @@
           {"title": "Initiatives", "href": "https://geo.ca/initiatives/"}
         ]
       }, {
-        "col-title": "By Organization",
+        "colTitle": "By Organization",
         "links": [
           {"title": "Government of Canada", "href": "https://geo.ca/government-of-canada/"},
           {"title": "Provinces and Territories", "href": "https://geo.ca/provinces-and-territories/"}
@@ -37,14 +37,14 @@
     "title": "Collaborate",
     "options": [
       {
-        "col-title": "Contributor",
+        "colTitle": "Contributor",
         "links": [
           {"title": "Learn", "href": "/en-ca/map-browser"},
           {"title": "Register", "href": "/en-ca/map-browser"},
           {"title": "Login", "href": "/en-ca/map-browser"}
         ]
       }, {
-        "col-title": "Communities",
+        "colTitle": "Communities",
         "links": [
           {"title": "Community Profiles", "href": "https://geo.ca/communities/"}
         ]

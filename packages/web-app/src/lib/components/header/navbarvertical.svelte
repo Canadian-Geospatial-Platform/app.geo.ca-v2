@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
   import Menubutton from './menubutton.svelte';
   import Navitem from './navitem.svelte';
-  import { toggleScroll } from './toggleScroll';
+  import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
 
   const navItems = $page.data.navitems;
   const orientation = 'vertical';

@@ -4,9 +4,9 @@
   import Navbarvertical from './navbarvertical.svelte';
 
   const translations = $page.data.headerTranslations;
-  const logoAlt = Object.hasOwn(translations,"logoAlt") ? translations["logoAlt"] : "";
-  const logoHref = Object.hasOwn(translations,"logoHref") ? translations["logoHref"] : "";
-  const logoSrc = Object.hasOwn(translations,"logoSrc") ? translations["logoSrc"] : "";
+  const logoAlt = translations?.logoAlt ? translations["logoAlt"] : "";
+  const logoHref = $page.url.origin;
+  const logoSrc = translations?.logoSrc ? translations["logoSrc"] : "";
 </script>
 
 <div class="fixed w-full h-20 border-b-4 border-custom-16 bg-custom-1 z-10">

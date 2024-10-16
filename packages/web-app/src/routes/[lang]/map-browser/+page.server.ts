@@ -3,9 +3,11 @@ import { page } from '$app/stores';
 import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/db/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
+import Organizations from '$lib/components/search-results/filters/organizations.svelte';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
+	let analytics = await getAnalytics(fetch);
 	let parsedResponse = [];
 	let userData = { Item: { mapCart: [] } };
 	let sanitizedResults;
@@ -26,7 +28,8 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		results: sanitizedResults,
 		userData: userData.Item,
 		start: getMin(url.searchParams),
-		end: getMin(url.searchParams) + sanitizedResults.length
+		end: getMin(url.searchParams) + sanitizedResults.length,
+		analytics: analytics
 	};
 };
 
@@ -34,23 +37,37 @@ function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
 	const params = mapSearchParams(searchParams, lang);
 	url.search = new URLSearchParams(params).toString();
+	console.log(url);
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
 }
 
+async function getAnalytics(fetch) {
+	let analytics = await fetch('https://geocore.api.geo.ca/analytics/11');
+	let parsedAnalytics = [];
+
+	try {
+		parsedAnalytics = await analytics.json();
+	} catch (e) {
+		console.error(e);
+	}
+
+	return parsedAnalytics?.Items[0] ?? {};
+}
+
 function mapSearchParams(searchParams, lang) {
 	let cKeys = concatKeys(searchParams);
 	let ret = {
-		north: 72.04683989379397,
-		east: 44.6484375,
-		south: 41.244772343082076,
-		west: -180,
+		north: searchParams.get('north') ?? 72.04683989379397,
+		east: searchParams.get('east') ?? 44.6484375,
+		south: searchParams.get('south') ?? 41.244772343082076,
+		west: searchParams.get('west') ?? -180,
 		keyword: searchParams.get('search-terms'),
 		org: cKeys.org,
 		type: cKeys.type,
 		theme: cKeys.theme,
-		bbox: cKeys.bbox,
+		bbox: searchParams.get('bbox'),
 		foundational: searchParams.get('others-foundational') === 'on' ? 'true' : '',
 		begin: searchParams.get('spatio-temporal-start')
 			? new Date(searchParams.get('spatio-temporal-start')).toISOString()

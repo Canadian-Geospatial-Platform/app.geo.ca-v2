@@ -3,16 +3,16 @@
 
   const legalData: {[key: string]: string} = $page.data.legalData;
 
-  let logoUrl = Object.hasOwn(legalData,"logoUrl") ? legalData["logoUrl"] : "";
-  let logoAlt = Object.hasOwn(legalData, "logoAlt") ? legalData["logoAlt"] : "";
-	let contactUs = Object.hasOwn(legalData, "contactUs") ? legalData["contactUs"] : "";
-	let ccmeo = Object.hasOwn(legalData, "ccmeo") ? legalData["ccmeo"] : "";
-	let nrcan = Object.hasOwn(legalData, "nrcan") ? legalData["nrcan"] : "";
-	let goc = Object.hasOwn(legalData, "goc") ? legalData["goc"] : "";
-  let license = Object.hasOwn(legalData, "license") ? legalData["license"] : "";
-	let licenceUrl = Object.hasOwn(legalData, "licenceUrl") ? legalData["licenceUrl"] : "";
-	let copyright = Object.hasOwn(legalData, "copyright") ? legalData["copyright"] : "";
-  let email = Object.hasOwn(legalData, "email") ? legalData["email"] : "";
+  let logoUrl = legalData?.logoUrl ? legalData["logoUrl"] : "";
+  let logoAlt = legalData?.logoAlt ? legalData["logoAlt"] : "";
+	let contactUs = legalData?.contactUs ? legalData["contactUs"] : "";
+	let ccmeo = legalData?.ccmeo ? legalData["ccmeo"] : "";
+	let nrcan = legalData?.nrcan ? legalData["nrcan"] : "";
+	let goc = legalData?.goc ? legalData["goc"] : "";
+  let license = legalData?.license ? legalData["license"] : "";
+	let licenceUrl = legalData?.licenceUrl ? legalData["licenceUrl"] : "";
+	let copyright = legalData?.copyright ? legalData["copyright"] : "";
+  let email = legalData?.email ? legalData["email"] : "";
 </script>
 
 <div class="bg-custom-5 font-open-sans">

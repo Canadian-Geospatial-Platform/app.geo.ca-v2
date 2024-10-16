@@ -5,6 +5,9 @@
 	export let coordinates;
 	export let id;
 	export let dynamic = false;
+	export let width = '100%';
+	export let height = '24rem';
+
 	$: center = calculateCenter(coordinates[0]);
 	$: zoom = calculateZoom(coordinates[0]);
 	// an empty listOfGeoviewLayerConfig is a required field for now. it may become unnecessary at a later date.
@@ -12,8 +15,8 @@
 		map: {
 			interaction: dynamic ? 'dynamic' : 'static',
 			viewSettings: {
-				zoom: zoom,
-				center: center,
+				// zoom: zoom,
+				// center: center,
 				projection: 3978
 			},
 			basemapOptions: {
@@ -31,7 +34,7 @@
 		theme: 'geo.ca',
 		components: [],
 		corePackages: [],
-		suportedLanguages: ['en']
+		// suportedLanguages: ['en']
 	};
 	$: sConfig = JSON.stringify(config);
 
@@ -96,7 +99,8 @@
 
 <div
 	id={'map-' + id}
-	class="geoview-map llwp-map bg-purple-100 rounded-lg"
+	class="geoview-map bg-blue-500/5"
+    style={`height: ${height}; width: ${width};`}
 	data-config={sConfig}
 	data-lang="en"
 />
