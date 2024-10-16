@@ -22,7 +22,7 @@
   }
 
   let sortColumn = tableLabelsArray[0];
-  // Can be 0 (default order from tableLabelsArray), 1 (a-z, sort-down icon), or 2 (z-a, sort-up icon)
+  // Can be 0 (default order from tableLabelsArray), 1 (a-z, sort-up icon), or 2 (z-a, sort-down icon)
   let sortDirection: sortDirectionState = 0;
   // Unsorted by default
   let sortedTableContent = tableContent;
@@ -53,7 +53,6 @@
   }
 
   function handleRowClickKeydown(url: string, event: KeyboardEvent) {
-    console.log(event.key);
     if (url.length > 0 && (event.key == "Enter" || event.key == " ")) {
       window.open(url);
     }
@@ -70,9 +69,9 @@
               {tableLabels[labelTranslation]}
               <button class="px-2" on:click={() => handleSortButtonClick(labelTranslation)}>
                 {#if sortDirection == 1 && labelTranslation == sortColumn}
-                  <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
-                {:else if sortDirection == 2 && labelTranslation == sortColumn}
                   <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
+                {:else if sortDirection == 2 && labelTranslation == sortColumn}
+                  <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
                 {:else}
                   <SortInactive classes={"inline w-4 h-4"}/>
                 {/if}
@@ -84,7 +83,7 @@
     </thead>
     <tbody>
       {#each sortedTableContent as row}
-        {#if clickableRows && Object.hasOwn(row, "url")}
+        {#if clickableRows && row?.url}
           <!--
             Adding a tab index ensures that each clickable row can
             be navigated to using the tab key. Since tr elements are

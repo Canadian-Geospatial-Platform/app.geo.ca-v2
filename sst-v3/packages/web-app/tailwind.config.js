@@ -23,27 +23,30 @@ export default {
 					16: '#535AA4',
 					17: '#e0e0e0',
 					18: '#00000029',
-					19: '#BEBFC2'
+					19: '#BEBFC2',
+					20: '#797979',
+					21: '#707070',
+					22: '#002E62',
 				}
 			},
 			spacing: {
 				144: '36rem'
 			},
 			boxShadow: {
-				nav: '0 2px 3px white, 0 3px grey;',
+        'nav': '0 2px 3px white, 0 3px grey;',
 				'banner-img': '0 0 200px 50px #140a46 inset'
-			},
+      },
 			maxHeight: {
-				'vertical-nav': '90vh'
-			},
+        'vertical-nav': '90vh',
+      },
 			maxWidth: {
-				'tabbed-title': 'calc(100% - 135px)'
+				'tabbed-title': 'calc(100% - 135px)',
 			},
 			fontFamily: {
 				'open-sans': ['"Open Sans"'],
 				'noto-sans': ['"Noto Sans"'],
-				lato: ['"Lato"']
-			}
+				'lato': ['"Lato"']
+			},
 		}
 	},
 	plugins: []

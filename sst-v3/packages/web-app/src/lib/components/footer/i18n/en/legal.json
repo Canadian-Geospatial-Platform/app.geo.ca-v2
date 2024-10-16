@@ -1,12 +1,12 @@
 {
-	"logoUrl": "https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png",
-	"logoAlt": "Government of Canada Logo",
+  "logoUrl": "https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png",
+  "logoAlt": "Government of Canada Logo",
 	"contactUs": "Contact Us",
 	"ccmeo": "Canada Centre for Mapping and Earth Observation",
 	"nrcan": "Natural Resources Canada",
 	"goc": "Government of Canada",
-	"license": "Terms and Conditions",
+  "license": "Terms and Conditions",
 	"licenceUrl": "https://geo.ca/terms-and-conditions/",
 	"copyright": "Powered by GEO.ca, Copyright © 2024",
-	"email": "geo@nrcan-rncan.gc.ca"
+  "email": "geo@nrcan-rncan.gc.ca"
 }

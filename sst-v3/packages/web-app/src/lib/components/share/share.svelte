@@ -6,7 +6,7 @@
   import X from "$lib/components/icons/x.svelte";
 
   const translations = $page.data.shareTranslations;
-  let shareText = Object.hasOwn(translations,"shareText") ? translations["shareText"] : "Share";
+  let shareText = translations?.shareText ? translations["shareText"] : "Share";
   let path = $page.url;
   let encodedPath = encodeURIComponent(String(path));
   let iconClass = "m-2 h-12 w-12";

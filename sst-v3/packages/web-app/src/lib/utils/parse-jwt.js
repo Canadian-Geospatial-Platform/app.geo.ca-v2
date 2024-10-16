@@ -1,7 +1,8 @@
 // import { CognitoJwtVerifier } from 'aws-jwt-verify';
+// import { Config } from 'sst/node/config';
 
-const COGNITO_USERPOOL_ID = process.env.COGNITO_USERPOOL_ID;
-const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
+// const COGNITO_USERPOOL_ID = Config.COGNITO_USERPOOL_ID;
+// const OIDC_CLIENT_ID = Config.OIDC_CLIENT_ID;
 
 // const verifier = CognitoJwtVerifier.create({
 // 	userPoolId: COGNITO_USERPOOL_ID,

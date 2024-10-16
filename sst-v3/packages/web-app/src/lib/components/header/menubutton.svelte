@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { toggleScroll } from "./toggleScroll";
+  import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
 
   export let active: Boolean;
 
   const translations = $page.data.headerTranslations;
-  const menuButton = Object.hasOwn(translations,"menuButton") ? translations["menuButton"] : "";
+  const menuButton = translations?.menuButton ? translations["menuButton"] : "";
 
   function handleMenuButtonClick() {
     active = !active;

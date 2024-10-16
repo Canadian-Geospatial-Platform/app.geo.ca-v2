@@ -2,8 +2,7 @@
   import { page } from '$app/stores';
 
   const translations = $page.data.t;
-  const keywordsText = Object.hasOwn(translations,"keywords") ?
-    translations["keywords"] : "Related Keywords";
+  const keywordsText = translations?.keywords ? translations["keywords"] : "Related Keywords";
 
   const url = $page.url;
   const data = $page.data;

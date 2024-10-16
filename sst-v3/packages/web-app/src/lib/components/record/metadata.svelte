@@ -6,30 +6,22 @@
   const translations = $page.data.t;
 
   // Description
-  const metadatatext = Object.hasOwn(translations,"metadata") ?
-    translations["metadata"] : "Metadata";
-  const metadataDescriptionText = Object.hasOwn(translations,"metadataDescription") ?
+  const metadatatext = translations?.metadata ? translations["metadata"] : "Metadata";
+  const metadataDescriptionText = translations?.metadataDescription ?
     translations["metadataDescription"] : "";
 
   // Top Section
-  const dateCreatedText = Object.hasOwn(translations,"dateCreated") ?
-    translations["dateCreated"] : "";
-  const datePublishedText = Object.hasOwn(translations,"datePublished") ?
-    translations["datePublished"] : "";
-  const temporalCoverageText = Object.hasOwn(translations,"temporalCoverage") ?
-    translations["temporalCoverage"] : "";
-  const accessLast30Text = Object.hasOwn(translations,"accessLast30") ?
-    translations["accessLast30"] : "";
-  const accessAllTimeText = Object.hasOwn(translations,"accessAllTime") ?
-    translations["accessAllTime"] : "";
+  const dateCreatedText = translations?.dateCreated ? translations["dateCreated"] : "";
+  const datePublishedText = translations?.datePublished ? translations["datePublished"] : "";
+  const temporalCoverageText = translations?.temporalCoverage ? translations["temporalCoverage"] : "";
+  const accessLast30Text = translations?.accessLast30 ? translations["accessLast30"] : "";
+  const accessAllTimeText = translations?.accessAllTime ? translations["accessAllTime"] : "";
 
   // Sources
-  const sourcesText = Object.hasOwn(translations,"sources") ?
-    translations["sources"] : "";
+  const sourcesText = translations?.sources ? translations["sources"] : "";
 
   // Use Limitations
-  const useLimitationsText = Object.hasOwn(translations,"useLimitations") ?
-    translations["useLimitations"] : "";
+  const useLimitationsText = translations?.useLimitations ? translations["useLimitations"] : "";
 
   /******************* Data *******************/
   const data = $page.data;

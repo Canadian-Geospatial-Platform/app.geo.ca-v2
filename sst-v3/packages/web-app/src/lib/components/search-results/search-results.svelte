@@ -1,38 +1,25 @@
 <script lang="ts">
-	import { tick } from 'svelte';
-	import { afterNavigate } from '$app/navigation';
-	import { page } from '$app/stores';
-	import SearchResult from './search-result.svelte';
+  import { page } from '$app/stores';
+	import ResultList from '$lib/components/search-results/result-list.svelte';
+  import SearchBar from '$lib/components/search-results/search-bar.svelte';
 
-	$: noResults = $page.data.lang == 'en-ca' ? 'No results found!' : 'Aucun résultat trouvé';
-	export let results = [];
+  /************* Translations ***************/
+  const translations = $page.data.t;
 
-	afterNavigate(async () => {
-		try {
-			await tick();
-			cgpv.init();
-		} catch (e) {
-			console.warn('Error initialising cgpv.', e);
-		}
-	});
+  const listViewText = translations?.listView ? translations["listView"] : "List View";
+  const searchResultsText = translations?.searchResults ?
+    translations["searchResults"] : "Search Results";
+  const youMayText = translations?.youMay ? translations["youMay"] : "You may also like";
 </script>
 
-<svelte:head>
-	<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
-</svelte:head>
-<div class="grow">
-	<ol>
-		{#each results as x}
-			<SearchResult
-				title={x.title}
-				description={x.description}
-				date={x.created}
-				organization={x.organisation}
-				coordinates={x.coordinates}
-				id={x.id}
-			/>
-		{:else}
-			<li class="p-4 bg-red-100 rounded-lg drop-shadow-lg">{noResults}</li>
-		{/each}
-	</ol>
-</div>
+<h1 class="font-custom-style-h1">
+  {searchResultsText}
+</h1>
+<SearchBar />
+<h2 class="font-custom-style-h2">
+  {listViewText}
+</h2>
+<ResultList />
+<h2 class="font-custom-style-h2">
+  {youMayText}
+</h2>
