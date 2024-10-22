@@ -74,15 +74,18 @@
   // TODO: reset maps on page change
   // TODO: find out why some maps load and some don't
 
-  async function loadMap(event: any, mapId) {
-    console.log('MAP ID!!!!!!!!!!!!!!! ' + mapId);
+  async function loadMap(event: any, mapId, mapType) {
+    console.log('MAP Type!!!!!!!!!!!!!!! ' + mapType);
     console.log(event);
-    try {
-			await tick();
-			cgpv.init(function () {});
-		} catch (e) {
-			console.warn('Error initialising cgpv.', e);
-		}
+    // TODO: Figure out why non vector type layers won't load
+    if (mapType.includes('vector')) {
+      try {
+        await tick();
+        cgpv.init(function () {});
+      } catch (e) {
+        console.warn('Error initialising cgpv.', e);
+      }
+    }
   }
 </script>
 
@@ -115,7 +118,7 @@
   <!-- List -->
   {#each results as result, index}
     <div class="bg-custom-1 px-5 py-4">
-      <Accordian on:openChange|once={(event) => loadMap(event, result.id)}>
+      <Accordian on:openChange={(event) => loadMap(event, result.id, result.spatialRepresentation)}>
         <div slot="accordianTitle">
           <a 
             href={hrefPrefix + result.id}
@@ -129,12 +132,18 @@
           </div>
         </div>
         <div slot="accordianContent" class="mt-4">
-          <div class="flex justify-center items-center">
-            <Map
-              coordinates={result.coordinates} id={result.id}
-              height={mapHeight} width={mapWidth}
-            />
-          </div>
+          <!--For now, we will only load vector maps. Other map types won't load-->
+          {#if result.spatialRepresentation.includes('vector')}
+            <div class="flex justify-center items-center">
+              <Map
+                coordinates={result.coordinates} id={result.id}
+                height={mapHeight} width={mapWidth}
+                dynamic={true}
+              />
+            </div>
+          {:else}
+            Map preview not available
+          {/if}
         </div>
       </Accordian>
     </div>

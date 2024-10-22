@@ -7,6 +7,7 @@
 	export let dynamic = false;
 	export let width = '100%';
 	export let height = '24rem';
+	export let mapProjection = 3857;
 
 	$: center = calculateCenter(coordinates[0]);
 	$: zoom = calculateZoom(coordinates[0]);
@@ -15,15 +16,14 @@
 		map: {
 			interaction: dynamic ? 'dynamic' : 'static',
 			viewSettings: {
-				// zoom: zoom,
-				// center: center,
-				projection: 3978
-			},
-			basemapOptions: {
-				basemapId: 'transport',
-				shaded: true,
-				labeled: true
-			},
+              initialView: { zoomAndCenter: [zoom, center]},
+              projection: mapProjection
+            },
+            basemapOptions: {
+              basemapId: 'transport',
+              shaded: false,
+              labeled: true
+            },
 			listOfGeoviewLayerConfig: [
 				{
 					geoviewLayerType: 'geoCore',
