@@ -34,10 +34,10 @@
 ------------------------------------------------------------------>
 
 <script lang="ts">
+  import { createEventDispatcher, afterUpdate } from 'svelte';
 	import Chevrondown from "$lib/components/icons/chevrondown.svelte";
   import Chevronup from "$lib/components/icons/chevronup.svelte";
   import Close from '$lib/components/icons/close.svelte';
-  import { createEventDispatcher, afterUpdate } from 'svelte';
   import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
 
 	const dispatch = createEventDispatcher();

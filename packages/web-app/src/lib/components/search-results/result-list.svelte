@@ -1,16 +1,15 @@
 <script lang="ts">
   import { page, navigating } from '$app/stores';
   import { goto } from '$app/navigation';
-  import ArrowUp from "$lib/components/icons/arrow-up.svelte";
+  import { onMount, tick } from 'svelte';
+  import Accordian from '$lib/components/accordion/accordian.svelte';
   import ArrowDown from "$lib/components/icons/arrow-down.svelte";
+  import ArrowUp from "$lib/components/icons/arrow-up.svelte";
   import Card from '$lib/components/card/card.svelte';
-	import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
-	import Accordian from '$lib/components/accordion/accordian.svelte';
-	import { onMount } from 'svelte';
-	import Pagination from '$lib/components/pagination/pagination.svelte';
-	import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
+  import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
   import Map from '$lib/components/map/map.svelte';
-  import { tick } from 'svelte';
+  import Pagination from '$lib/components/pagination/pagination.svelte';
+	import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -18,12 +17,12 @@
   const datasetText = translations?.dataset ? translations["dataset"] : "Dataset";
   const datasetsText = translations?.datasets ? translations["datasets"] : "Datasets";
   const dateText = translations?.date ? translations["date"] : "Date";
-  const popularityText = translations?.popularity ? translations["popularity"] : "Popularity";
-  const titleText = translations?.title ? translations["title"] : "Title";
-  const saveSearchParamsText = translations?.saveSearchParams ?
-    translations["saveSearchParams"] : "Save Search Parameters";
   const mapNotAvailableText = translations?.mapNotAvailable ?
     translations["mapNotAvailable"] : "Map preview not available";
+  const popularityText = translations?.popularity ? translations["popularity"] : "Popularity";
+  const saveSearchParamsText = translations?.saveSearchParams ?
+    translations["saveSearchParams"] : "Save Search Parameters";
+  const titleText = translations?.title ? translations["title"] : "Title";
 
   /****************** Sorting ******************/
   let url = $page.url;
@@ -42,7 +41,7 @@
   let defaultOption = sortBySelectData.find((x) => x.value == sortOrder);
   $: selected = defaultOption ?? sortBySelectData[0];
 
-  function changeSort(event: any) {
+  function changeSort(event: CustomEvent) {
     selected = event.detail;
     currentPage = 1;
     url.searchParams.set('sort', selected.value);
@@ -60,7 +59,7 @@
     hrefPrefix = url.origin + url.pathname + '/record/';
   });
 
-  function changePage(event: any) {
+  function changePage(event: CustomEvent) {
     currentPage = event.detail;
     url.searchParams.set('page-number', `${currentPage - 1}`);
 	  url.searchParams.set('results-per-page', `${itemsPerPage}`);
@@ -74,7 +73,7 @@
 
   // TODO: find a way to load only one map at a time using the ID
 
-  async function loadMap(event: any, mapId, mapType) {
+  async function loadMap(event: CustomEvent, mapId: string, mapType: string) {
     if (mapType.includes('vector')) {
       try {
         await tick();
