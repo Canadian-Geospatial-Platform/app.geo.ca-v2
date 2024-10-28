@@ -34,7 +34,6 @@
 		theme: 'geo.ca',
 		components: [],
 		corePackages: [],
-		// suportedLanguages: ['en']
 	};
 	$: sConfig = JSON.stringify(config);
 

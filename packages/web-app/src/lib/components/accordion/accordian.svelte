@@ -47,6 +47,8 @@
     </div>
   </button>
 </div>
-<div class:hidden={!open}>
-  <slot name="accordianContent"></slot>
-</div>
+{#if open}
+  <div>
+    <slot name="accordianContent"></slot>
+  </div>
+{/if}

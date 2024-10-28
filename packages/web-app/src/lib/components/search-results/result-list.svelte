@@ -11,7 +11,6 @@
 	import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
   import Map from '$lib/components/map/map.svelte';
   import { tick } from 'svelte';
-	import { afterNavigate } from '$app/navigation';
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -23,6 +22,8 @@
   const titleText = translations?.title ? translations["title"] : "Title";
   const saveSearchParamsText = translations?.saveSearchParams ?
     translations["saveSearchParams"] : "Save Search Parameters";
+  const mapNotAvailableText = translations?.mapNotAvailable ?
+    translations["mapNotAvailable"] : "Map preview not available";
 
   /****************** Sorting ******************/
   let url = $page.url;
@@ -69,19 +70,17 @@
   /****************** Map ******************/
   let mapHeight = '24rem';
   let mapWidth = '100%';
+  let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
   // TODO: find a way to load only one map at a time using the ID
-  // TODO: reset maps on page change
-  // TODO: find out why some maps load and some don't
 
   async function loadMap(event: any, mapId, mapType) {
-    console.log('MAP Type!!!!!!!!!!!!!!! ' + mapType);
-    console.log(event);
-    // TODO: Figure out why non vector type layers won't load
     if (mapType.includes('vector')) {
       try {
         await tick();
-        cgpv.init(function () {});
+        cgpv.init((mapId) => {
+          cgpv.api.maps[mapId].setLanguage(lang);
+        });
       } catch (e) {
         console.warn('Error initialising cgpv.', e);
       }
@@ -142,7 +141,7 @@
               />
             </div>
           {:else}
-            Map preview not available
+            {mapNotAvailableText}
           {/if}
         </div>
       </Accordian>
