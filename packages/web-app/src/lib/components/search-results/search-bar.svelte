@@ -62,6 +62,7 @@
   function applyKeywordSearch(keyword: string) {
     let url = $page.url;
     url.searchParams.set('search-terms', keyword);
+    url.searchParams.set('page-number', '0');
     // TODO: return to first page of results. Note: this requires resetting the pagination element too.
     goto(url, { invalidateAll: true });
   }

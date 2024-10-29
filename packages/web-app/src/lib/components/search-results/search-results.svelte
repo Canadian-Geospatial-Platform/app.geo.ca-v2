@@ -20,6 +20,6 @@
   {listViewText}
 </h2>
 <ResultList />
-<h2 class="font-custom-style-h2">
-  {youMayText}
-</h2>
+<!--<h2 class="font-custom-style-h2">-->
+<!--  {youMayText}-->
+<!--</h2>-->

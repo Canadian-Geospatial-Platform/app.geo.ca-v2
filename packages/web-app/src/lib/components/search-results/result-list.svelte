@@ -10,6 +10,9 @@
   import Map from '$lib/components/map/map.svelte';
   import Pagination from '$lib/components/pagination/pagination.svelte';
 	import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
+	
+	/************* User Data ***************/
+	const userId = $page.data.userData?.uuid;
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -42,6 +45,7 @@
   $: selected = defaultOption ?? sortBySelectData[0];
 
   function changeSort(event: CustomEvent) {
+    url = $page.url;
     selected = event.detail;
     currentPage = 1;
     url.searchParams.set('sort', selected.value);
@@ -60,6 +64,7 @@
   });
 
   function changePage(event: CustomEvent) {
+    url = $page.url;
     currentPage = event.detail;
     url.searchParams.set('page-number', `${currentPage - 1}`);
 	  url.searchParams.set('results-per-page', `${itemsPerPage}`);
@@ -109,8 +114,10 @@
           on:selectedChange={changeSort}
         />
       </div>
-      <!-- TODO: Add a method for this button -->
-      <button class="button-3">{saveSearchParamsText}</button>
+      {#if userId}
+        <!-- TODO: Add a method for this button -->
+        <button class="button-3">{saveSearchParamsText}</button>
+      {/if}
     </div>
   </div>
   <!-- List -->

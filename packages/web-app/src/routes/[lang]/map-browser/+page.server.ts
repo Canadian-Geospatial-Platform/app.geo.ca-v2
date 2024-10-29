@@ -37,7 +37,6 @@ function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
 	const params = mapSearchParams(searchParams, lang);
 	url.search = new URLSearchParams(params).toString();
-	console.log(url);
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
