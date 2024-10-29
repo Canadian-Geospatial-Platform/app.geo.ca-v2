@@ -217,7 +217,7 @@
 </script>
 
 <div
-  class="fixed flex justify-center z-30 inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4"
+  class="fixed flex justify-center z-40 inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4"
   class:hidden={!active}
 >
   <form
