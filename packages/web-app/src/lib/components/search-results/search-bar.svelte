@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page, navigating } from '$app/stores';
   import { goto } from '$app/navigation';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
+  import { updatePaginationNumber } from '$lib/components/search-results/store';
   import Card from '$lib/components/card/card.svelte';
   import Search from '$lib/components/icons/search.svelte';
 	import FilterModal from '$lib/components/search-results/filter-modal.svelte';
+	import Filter from '$lib/components/icons/filter.svelte';
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -24,60 +26,88 @@
     translations["collections"] : "Collections";
 
   /***************** Data ******************/
+  const searchKey = 'search-terms';
+
   let searchTextInput: HTMLInputElement;
   let analytics = $page.data.analytics;
   $: numFilters = 0;
 
   // TODO: Get actual numbers for all data variables
-  let datasets = analytics?.total ?? 0;
-  let contributors = analytics?.organization ?? 0;
-  let applications = 0;
-  let apis = 0;
-  let collections = 0;
+  let notApplicable = 'N/A';
+  let datasets = analytics?.total ?? notApplicable;
+  let contributors = analytics?.organization ?? notApplicable;
+  let applications = notApplicable;
+  let apis = notApplicable;
+  let collections = notApplicable;
 
+  /***************** Handlers ******************/
   $: modalActive = false;
+  let filterModal;
 
   function handleFilterButtonClick(event: Event) {
     modalActive = true;
     toggleScroll(modalActive);
+    filterModal.setFiltersFromURL();
   };
 
   function handleSearchClick(event: Event) {
     let searchTerm = searchTextInput?.value;
-    if (searchTerm && searchTerm.length > 0) {
-      applyKeywordSearch(searchTerm);
-    }
+    applyKeywordSearch(searchTerm);
   }
 
   function handleSearchEnterKeyDown(event: KeyboardEvent) {
     let key = event.key;
     if (key == "Enter") {
       let searchTerm = searchTextInput?.value;
-      if (searchTerm && searchTerm.length > 0) {
-        applyKeywordSearch(searchTerm);
-      }
+      applyKeywordSearch(searchTerm);
     }
   }
 
   function applyKeywordSearch(keyword: string) {
-    let url = $page.url;
-    url.searchParams.set('search-terms', keyword);
-    url.searchParams.set('page-number', '0');
-    // TODO: return to first page of results. Note: this requires resetting the pagination element too.
-    goto(url, { invalidateAll: true });
+    let query = new URLSearchParams($page.url.searchParams.toString());
+    if (keyword) {
+      query.set('search-terms', keyword);
+      query.set('page-number', '0');
+    } else {
+      query.delete('search-terms');
+      query.set('page-number', '0');
+    }
+
+    // Using a store here ensures that the pagination element
+    // in the result list can be reset to 1
+    updatePaginationNumber(1);
+
+    let opts = {
+			replaceState: true,
+			keepfocus: true
+		};
+    goto(`?${query.toString()}`, opts);
   }
+
+  function init(key: string) {
+    return $page.url.searchParams.get(key);
+	}
 </script>
 
-<FilterModal bind:active={modalActive} bind:numFilters={numFilters}/>
+<FilterModal bind:active={modalActive} bind:numFilters={numFilters} bind:this={filterModal} />
 <Card>
   <div class="flex flex-row">
-    <button 
-      class="text-nowrap h-12 button-3 shadow-[0px_3px_6px_#00000029]"
+    <button
+      class={`text-nowrap shadow-[0px_3px_6px_#00000029]
+        ${$navigating ? 'button-3-disabled' : 'button-3'}`}
       on:click={handleFilterButtonClick}
+      disabled={$navigating}
     >
-      <span class="px-1 bg-custom-16 rounded-md font-custom-style-button-2 leading-[14px]">
-        {numFilters}
-      </span>
+      {#if numFilters > 0}
+        <span
+          class={`px-1 rounded-md font-custom-style-button-2 leading-[14px]
+            ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
+        >
+          {numFilters}
+        </span>
+      {:else}
+        <Filter classes='inline h-5'/>
+      {/if}
       {filtersText}
     </button>
     <input
@@ -87,11 +117,15 @@
         shadow-[inset_0px_3px_6px_#00000029]"
       bind:this={searchTextInput}
       on:keydown={handleSearchEnterKeyDown}
+      disabled={$navigating}
+      value={init(searchKey)}
     />
     <button
-      class="text-nowrap h-12 px-5 rounded-e-[5px] bg-custom-16
-        font-custom-style-button-3 shadow-[0px_3px_6px_#00000029]"
+      class={`text-nowrap h-12 px-5 rounded-e-[5px]
+        font-custom-style-button-3 shadow-[0px_3px_6px_#00000029]
+        ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
       on:click={handleSearchClick}
+      disabled={$navigating}
     >
       <Search classes="inline" height="18px"/>
       {searchText}
@@ -105,4 +139,3 @@
     <div>{collectionsText}: {collections}</div>
   </div>
 </Card>
-

@@ -4,8 +4,8 @@
 
 .content-width {
 	@apply w-[96%];
-  @apply md:w-5/6;
-  @apply 2xl:w-3/4;
+    @apply md:w-5/6;
+    @apply xl:w-2/3;
 	@apply mx-auto;
 }
 
@@ -48,6 +48,17 @@
 	@apply px-6;
 	@apply py-2;
 	@apply font-custom-style-body-7;
+}
+
+.button-3-disabled {
+	@apply bg-custom-1;
+	@apply border-custom-17;
+	@apply border-2;
+	@apply rounded;
+	@apply px-6;
+	@apply py-2;
+	@apply font-custom-style-body-7;
+	@apply text-custom-17;
 }
 
 .button-4 {
@@ -123,7 +134,6 @@
 .font-custom-style-header-3 {
 	@apply font-open-sans;
 	@apply font-bold;
-	@apply text-[18px];
 	@apply text-custom-16;
 }
 

@@ -2,7 +2,6 @@
   import { page } from '$app/stores';
 
   export let coordinatesId: string;
-  export let coordinatesName: string;
   export let active: boolean = false;
 
   /************* Translations ***************/
@@ -33,8 +32,38 @@
     [west, coordinatesId + "-west", "180", "-180"]
   ];
 
+  export function resetFilters() {
+    let northKey = $page.url.searchParams.get('north');
+    let eastKey = $page.url.searchParams.get('east');
+    let southKey = $page.url.searchParams.get('south');
+    let westKey = $page.url.searchParams.get('west');
+
+    let northEl = document.getElementById(labels[0][1]);
+    let eastEl = document.getElementById(labels[1][1]);
+    let southEl = document.getElementById(labels[2][1]);
+    let westEl = document.getElementById(labels[3][1]);
+
+    if (northEl) {
+      northEl.value = northKey && !isNaN(Number.parseFloat(northKey)) ? northKey : null;
+    }
+
+    if (eastEl) {
+      eastEl.value = eastKey && !isNaN(Number.parseFloat(eastKey)) ? eastKey : null;
+    }
+
+    if (southEl) {
+      southEl.value = southKey && !isNaN(Number.parseFloat(southKey)) ? southKey : null;
+    }
+
+    if (westEl) {
+      westEl.value = westKey && !isNaN(Number.parseFloat(westKey)) ? westKey : null;
+    }
+  }
+
   function init(key: string) {
-    return $page.url.searchParams.get(key);
+    let searchKey = key.replace((coordinatesId + '-'), '');
+    let coord = $page.url.searchParams.get(searchKey);
+    return coord;
 	}
 
   /************* Validators ***************/
@@ -101,7 +130,7 @@
         so it won't block a form unless the user has selected the spatial checkbox
       -->
       <input
-        type="number" id={inputLabel[1]} name={coordinatesName}
+        type="number" id={inputLabel[1]} name={inputLabel[1]}
         min={"-" + inputLabel[2]} max={inputLabel[2]}
         placeholder={inputLabel[3]} disabled="{!active}"
         value={init(inputLabel[1])}

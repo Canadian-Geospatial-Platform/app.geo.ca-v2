@@ -35,14 +35,14 @@
 
 <div>
   <button on:click={handleButtonClick} class="grid grid-cols-12 w-full h-full text-left">
-    <div bind:this={slotContent} class="col-span-11">
+    <div bind:this={slotContent} class="col-span-10">
       <slot name="accordianTitle"></slot>
     </div>
-    <div class="col-span-1 self-center">
+    <div class="col-span-1 col-start-12 self-center">
       {#if open}
-        <Chevronup classes="mt-1 ml-1 h-5 w-5 ml-auto text-custom-16"/>
+        <Chevronup classes="mt-1 mr-3 h-7 w-7 ml-auto text-custom-16"/>
       {:else}
-        <Chevrondown classes="mt-1 ml-1 h-5 w-5 ml-auto text-custom-16"/>
+        <Chevrondown classes="mt-1 mr-3 h-7 w-7 ml-auto text-custom-16"/>
       {/if}
     </div>
   </button>

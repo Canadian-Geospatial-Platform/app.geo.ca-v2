@@ -6,12 +6,18 @@
   import type { FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
   import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
 
-  export let tempNumFilters: number;
-
   // TODO: Get full list of categories
   const categories = $page.data.categories;
   let selected: SelectOption | null = null;
   let categoryStoreVal: string | null = null;
+
+  export function resetFilters() {
+    let catKey = $page.url.searchParams.get('category-of-interest');
+    let selectedCategory = findCategory(catKey);
+
+    selected = selectedCategory;
+    updateTempCategoryOfInterest(selected?.value ?? null);
+  }
 
   onMount(() => {
     init();
@@ -38,7 +44,6 @@
     let selectedValue = $page.url.searchParams.get(categoriesKey);
     let selectedCategory = findCategory(selectedValue);
     if (selectedCategory) {
-      tempNumFilters = tempNumFilters + 1;
       selected = selectedCategory;
       updateTempCategoryOfInterest(selected?.value ?? null);
     }
@@ -49,11 +54,6 @@
   }
 
   function changeSelection(newSelection: SelectOption | null) {
-    if (!categoryStoreVal && newSelection) {
-      tempNumFilters = tempNumFilters + 1;
-    } else if (categoryStoreVal && !newSelection) {
-      tempNumFilters = tempNumFilters - 1;
-    }
     selected = newSelection;
   }
 
@@ -70,7 +70,7 @@
   </h3>
   <div class="w-full lg:w-[60%]">
     <SelectCustomized
-      optionsData={categories} selectId={"categories-of-interest"} buttonClasses={"button-4"}
+      optionsData={categories} selectId={categoriesKey} buttonClasses={"button-4"}
       dropDownColor={"#002E62"} removableSelection={true} defaultLabel={categorySelectDefautText}
       bind:selected={selected} on:selectedChange={handleCategoryOfInterestChange}
     />

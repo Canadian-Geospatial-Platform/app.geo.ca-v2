@@ -1,39 +1,46 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { updateBoundingBox, updateCategoryOfInterest, updateDateRange,
-    updateFoundational, updateOrg, updateTheme, updateTypeFilter,
-    updateTempCategoryOfInterest, clearAll
-  } from '$lib/components/search-results/store';
+  import { onMount } from 'svelte';
+  import { updateTempCategoryOfInterest, updatePaginationNumber } from '$lib/components/search-results/store';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
-	import Close from '$lib/components/icons/close.svelte';
-	import Search from '$lib/components/icons/search.svelte';
-	import CategoryOfInterest from '$lib/components/search-results/filters/category-of-interest.svelte';
-	import Organizations from '$lib/components/search-results/filters/organizations.svelte';
-	import Types from '$lib/components/search-results/filters/types.svelte';
-	import Themes from '$lib/components/search-results/filters/themes.svelte';
-	import OtherFilters from '$lib/components/search-results/filters/other-filters.svelte';
-	import SpatioTemporal from '$lib/components/search-results/filters/spatio-temporal.svelte';
-
-  // TODO: Fix tab sequence for keyboard navigation i.e. disable content below mask
+  import Close from '$lib/components/icons/close.svelte';
+  import Search from '$lib/components/icons/search.svelte';
+  import CategoryOfInterest from '$lib/components/search-results/filters/category-of-interest.svelte';
+  import Organizations from '$lib/components/search-results/filters/organizations.svelte';
+  import Types from '$lib/components/search-results/filters/types.svelte';
+  import Themes from '$lib/components/search-results/filters/themes.svelte';
+  import OtherFilters from '$lib/components/search-results/filters/other-filters.svelte';
+  import SpatioTemporal from '$lib/components/search-results/filters/spatio-temporal.svelte';
 
   export let active = false;
   export let numFilters = 0;
 
-  /************* Translations ***************/
   const translations = $page.data.t;
 
-  const filterByText = translations?.filterBy ? translations["filterBy"] : "Filter By";
-  // TODO: update description text
-  const filterDescriptionText = translations?.filterDescription ?
-    translations["filterDescription"] : "";
-  const clearAllText = translations?.clearAll ? translations["clearAll"] : "Clear All";
-  const searchText = translations?.search ? translations["search"] : "Search";
+  const filterByText = translations?.filterBy ?? "Filter By";
+  const filterDescriptionText = translations?.filterDescription ?? "";
+  const clearAllText = translations?.clearAll ?? "Clear All";
+  const searchText = translations?.search ?? "Search";
 
-  /************* Filter Data ***************/
-  $: tempNumFilters = numFilters;
   let temporalActive = false;
   let spatialActive = false;
+
+  const categoriesKey = 'category-of-interest';
+  const orgKey = 'org';
+  const typeKey = 'type';
+  const themeKey = 'theme';
+  const foundationalKey = 'foundational';
+  const bboxKey = 'bbox';
+  const dateRangeKey = 'dateRange';
+  const delineator = '|';
+
+  let categoriesComponent;
+  let othersCompontent;
+  let orgCompontent;
+  let themeCompontent;
+  let typeCompontent;
+  let spatioTemporalComponent;
 
   /************* Handlers ***************/
   function handleCloseButtonClick(event: Event) {
@@ -41,179 +48,191 @@
   }
 
   function handleClearAllClick(event: Event) {
-    tempNumFilters = 0;
-    numFilters = 0;
     temporalActive = false;
     spatialActive = false;
     updateTempCategoryOfInterest(null);
-    updateCategoryOfInterest(null);
   }
 
   function handleSubmit(event: Event) {
-    numFilters = tempNumFilters;
-    let filterForm = event.target;
-    let i: number;
-    let formInput: HTMLInputElement;
-    let key: string;
+    const formEl = event.target;
+    const formData = new FormData(formEl);
+    const categoryVal = document.getElementById(categoriesKey).value;
 
-    let category = null;
-    let bbox = null;
-    let dateRange = null;
-    let foundational = {
-      foundational: false,
-    }
-
-    let org = {
-      "agriculture-and-agri-food-canada": false,
-      "canadian-geospatial-data-infrastructure-web-harvester": false,
-      "canadian-heritage": false,
-      "canadian-northern-economic-development-agency": false,
-      "canadian-nuclear-safety-commission": false,
-      "canadian-space-agency": false,
-      "elections-canada": false,
-      "employment-and-social-development-canada": false,
-      "environment-and-climate-change-canada": false,
-      "fisheries-and-oceans-canada": false,
-      "government-and-municipalities-of-québec": false,
-      "government-of-alberta": false,
-      "government-of-british-columbia": false,
-      "government-of-manitoba": false,
-      "government-of-new-brunswick": false,
-      "government-of-newfoundland-and-labrador": false,
-      "government-of-northwest-territories": false,
-      "government-of-nova-scotia": false,
-      "government-of-nunavut": false,
-      "government-of-ontario": false,
-      "government-of-prince-edward-island": false,
-      "government-of-saskatchewan": false,
-      "government-of-yukon": false,
-      "impact-assessment-agency-of-canada": false,
-      "indigenous-services-canada": false,
-      "national-defence": false,
-      "natural-resources-canada": false,
-      "parks-canada": false,
-      "public-health-agency-of-canada": false,
-      "statistics-canada": false,
-      "transport-canada": false,
+    const filters = {
+      category: categoryVal ? categoryVal : null,
+      bbox: formData.get('spatio-temporal-spatial-extent') ? parseBoundingBox() : null,
+      dateRange: formData.get('spatio-temporal-temporal-extent') ? parseDateRange() : null,
+      other: {
+        foundational: formData.has('others-foundational'),
+      },
+      org: {},
+      typeFilter: {},
+      theme: {}
     };
 
-    let theme = {
-      administration: false,
-      economy: false,
-      emergency: false,
-      environment: false,
-      imagery: false,
-      infrastructure: false,
-      legal: false,
-      science: false,
-      society: false,
-    };
-
-    let typeFilter = {
-      api: false,
-      application: false,
-      collection: false,
-      community: false,
-      dataset: false,
-      service: false,
-    };
-
-    for (i = 0; i < filterForm.length; i++) {
-      formInput = filterForm[i];
-      if (formInput?.id == 'categories-of-interest') {
-        category = formInput?.value ?? null;
-      } else if (formInput?.type == 'checkbox' && formInput?.id == 'spatio-temporal-spatial-extent') {
-        if (formInput.checked) {
-          let northEl = document.getElementById('spatio-temporal-north');
-          let eastEl = document.getElementById('spatio-temporal-east');
-          let southEl = document.getElementById('spatio-temporal-south');
-          let westEl = document.getElementById('spatio-temporal-west');
-
-          let north = northEl.value;
-          let east = eastEl.value;
-          let south = southEl.value;
-          let west = westEl.value;
-
-          bbox = {
-            north: north,
-            east: east,
-            south: south,
-            west: west
-          }
-        } else {
-          bbox = null;
-        }
-      } else if (formInput?.type == 'checkbox' && formInput?.id == 'spatio-temporal-temporal-extent') {
-        if (formInput.checked) {
-          let beginEl = document.getElementById('spatio-temporal-start');
-          let endEl = document.getElementById('spatio-temporal-end');
-
-          let begin = beginEl.value;
-          let end = endEl.value;
-
-          dateRange = {
-            begin: begin,
-            end: end
-          }
-        } else {
-          dateRange = null;
-        }
-      } else if (formInput?.type == 'checkbox' && formInput?.name == 'others') {
-        // Note: The different filters in the 'others' section will have their own
-        // entries in the filters store (since they are listed seperately in the get request),
-        // so we need to check for each one
-        if (formInput?.id == 'others-foundational') {
-          foundational.foundational = formInput.checked ? true : false;
-        }
-      } else if (formInput?.type == 'checkbox' && formInput.name && formInput.id) {
-        if (formInput.name == 'org') {
-          key = formInput.id.replace('org-', '');
-          org[key] = formInput.checked ? true : false;
-        } else if (formInput.name == 'type') {
-          key = formInput.id.replace('type-', '');
-          typeFilter[key] = formInput.checked ? true : false;
-        } else if (formInput.name == 'theme') {
-          key = formInput.id.replace('theme-', '');
-          theme[key] = formInput.checked ? true : false;
-        }
+    for (let [key, value] of formData.entries()) {
+      if (key.startsWith('org-')) {
+        filters.org[key.replace('org-', '')] = value === 'on';
+      } else if (key.startsWith('type-')) {
+        filters.typeFilter[key.replace('type-', '')] = value === 'on';
+      } else if (key.startsWith('theme-')) {
+        filters.theme[key.replace('theme-', '')] = value === 'on';
       }
     }
 
-    updateBoundingBox(bbox);
-    updateCategoryOfInterest(category);
-    updateDateRange(dateRange);
-    updateFoundational(foundational);
-    updateOrg(org);
-    updateTheme(theme);
-    updateTypeFilter(typeFilter);
+    numFilters = countFilters(filters);
 
-    let query = new URLSearchParams($page.url.searchParams.toString());
-
-    if (bbox) {
-      query.set('north', bbox.north);
-      query.set('east', bbox.east);
-      query.set('south', bbox.south);
-      query.set('west', bbox.west);
-      query.set('bbox', bbox.south + '|' + bbox.west + '|' + bbox.north + '|' + bbox.east);
-    }
-
-    let opts = {
-			replaceState: true,
-			keepfocus: true
-		};
-		goto(`?${query.toString()}`, opts);
-
-    console.log(query);
+    const query = buildFilterParams(filters);
+    goto(`?${query.toString()}`, { replaceState: true, keepfocus: true });
 
     closeModal();
   }
 
   /************* utility methods ***************/
+  export function setFiltersFromURL() {
+    categoriesComponent.resetFilters();
+    orgCompontent.resetFilters();
+    othersCompontent.resetFilters();
+    typeCompontent.resetFilters();
+    themeCompontent.resetFilters();
+    spatioTemporalComponent.resetFilters();
+  }
+
+  function parseBoundingBox() {
+    let northEl = document.getElementById('spatio-temporal-north');
+    let eastEl = document.getElementById('spatio-temporal-east');
+    let southEl = document.getElementById('spatio-temporal-south');
+    let westEl = document.getElementById('spatio-temporal-west');
+    let bbox = null;
+
+    if (northEl && eastEl && southEl && westEl) {
+      bbox = {
+        north: northEl.value,
+        east: eastEl.value,
+        south: southEl.value,
+        west: westEl.value,
+      };
+    }
+    return bbox;
+  }
+
+  function parseDateRange() {
+    let beginEl = document.getElementById('spatio-temporal-begin');
+    let endEl = document.getElementById('spatio-temporal-end');
+    let dateRange = null;
+
+    if (beginEl && endEl) {
+      dateRange = {
+        begin: beginEl.value,
+        end: endEl.value,
+      };
+    }
+    return dateRange;
+  }
+
+  function countFilters(filters) {
+    let filterCount = 0;
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (typeof value === 'object' && value !== null && key != bboxKey && key != dateRangeKey) {
+        filterCount = filterCount + countFilters(value);
+      } else if (value) {
+        filterCount = filterCount + 1;
+      }
+    }
+
+    return filterCount;
+  }
+
+  function buildFilterParams(filters) {
+    const bbox = filters.bbox;
+    const category = filters.category;
+    const dateRange = filters.dateRange;
+    const foundational = filters.other.foundational;
+    const org = filters.org;
+    const typeFilter = filters.typeFilter;
+    const theme = filters.theme;
+
+    const query = new URLSearchParams($page.url.searchParams.toString());
+
+    // BBOX
+    if (bbox) {
+      query.set('north', bbox.north);
+      query.set('east', bbox.east);
+      query.set('south', bbox.south);
+      query.set('west', bbox.west);
+      query.set(bboxKey, `${bbox.south}|${bbox.west}|${bbox.north}|${bbox.east}`);
+    } else {
+      query.delete('north');
+      query.delete('east');
+      query.delete('south');
+      query.delete('west');
+      query.delete(bboxKey);
+    }
+
+    // Date range
+    if (dateRange) {
+      query.set('begin', dateRange.begin);
+      query.set('end', dateRange.end);
+    } else {
+      query.delete('begin');
+      query.delete('end');
+    }
+
+    category ? query.set(categoriesKey, category) : query.delete(categoriesKey);
+
+    foundational ? query.set(foundationalKey, foundational) : query.delete(foundationalKey);
+
+    const orgString = getFilterStringFromObj(Object.entries(org));
+    orgString ? query.set(orgKey, orgString) : query.delete(orgKey);
+
+    const typeFilterString = getFilterStringFromObj(Object.entries(typeFilter));
+    typeFilterString ? query.set(typeKey, typeFilterString) : query.delete(typeKey);
+
+    const themeString = getFilterStringFromObj(Object.entries(theme));
+    themeString ? query.set(themeKey, themeString) : query.delete(themeKey);
+
+    // When filters change, reset the page and pagination element back to the start
+    query.set('page-number', '0');
+    updatePaginationNumber(1);
+
+    return query;
+  }
+
+  function getFilterStringFromObj(filterObj) {
+    const checkedEntries = filterObj.filter(([, checked]) => checked);
+    const checkedKeys = checkedEntries.map(([key]) => key);
+    return checkedKeys.join(delineator);
+  }
+
+  function setFilterCountFromUrl() {
+    const filterLists = {
+      bboxList: getList(bboxKey, false),
+      categoryList: getList(categoriesKey, false),
+      dateRangeList: getList('begin', false),
+      foundationalList: getList(foundationalKey, false),
+      orgList: getList(orgKey, true),
+      typeFilterList: getList(typeKey, true),
+      themeList: getList(themeKey, true),
+    };
+
+    numFilters = countFilters(filterLists);
+  }
+
+  function getList(key, split) {
+    const searchParams = $page.url.searchParams;
+    const value = searchParams.getAll(key)[0];
+    return split && value ? value.split(delineator) : value;
+  }
 
   function closeModal() {
     active = false;
     toggleScroll(active);
   }
+
+  onMount(() => {
+    setFilterCountFromUrl();
+  });
 </script>
 
 <div
@@ -230,27 +249,26 @@
         <p>{filterDescriptionText}</p>
       </div>
       <div class="flex flex-col gap-y-5">
-        <CategoryOfInterest
-          bind:tempNumFilters={tempNumFilters}
-        />
+        <CategoryOfInterest bind:this={categoriesComponent} />
         <SpatioTemporal
-          bind:tempNumFilters={tempNumFilters}
           bind:temporalActive={temporalActive}
           bind:spatialActive={spatialActive}
+          bind:this={spatioTemporalComponent}
         />
-        <Organizations bind:tempNumFilters={tempNumFilters} />
-        <Types bind:tempNumFilters={tempNumFilters} />
-        <Themes bind:tempNumFilters={tempNumFilters} />
-        <OtherFilters bind:tempNumFilters={tempNumFilters} />
+        <Organizations bind:this={orgCompontent} />
+        <Types bind:this={typeCompontent} />
+        <Themes bind:this={themeCompontent} />
+        <OtherFilters bind:this={othersCompontent} />
       </div>
     </div>
     <div class="col-span-1 px-5 pt-8 justify-self-end">
       <button
         type="button"
-        class="flex justify-center items-center border border-custom-16 rounded-[50%] h-[49px] w-[49px]"
+        class="flex justify-center items-center border border-custom-16 rounded-[50%]
+          h-[49px] w-[49px] hover:bg-custom-16 text-custom-16 hover:text-custom-1"
         on:click={handleCloseButtonClick}
       >
-        <Close classes="text-custom-16 h-[21px]"/>
+        <Close classes="h-[21px]"/>
       </button>
     </div>
     <div class="grid grid-cols-2 col-span-6 bg-custom-5 border-t border-custom-21 px-5 py-[18px]">

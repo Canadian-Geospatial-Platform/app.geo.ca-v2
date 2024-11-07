@@ -1,6 +1,12 @@
 [
   {
-    "value": "cartographie-des-inondations",
+    "value": "flood-mapping",
     "label": "Cartographie des inondations"
+  }, {
+    "value": "hydrology",
+    "label": "Hydrologie"
+  }, {
+    "value": "topography",
+    "label": "Topographie"
   }
 ]

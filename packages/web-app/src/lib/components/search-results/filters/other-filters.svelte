@@ -1,28 +1,47 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { onMount, tick } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
-
-  export let tempNumFilters: number;
 
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
   const others = filters.find((x: Filter) => x.section == "others");
 
-  function init(key: string) {
-    return $page.url.searchParams.get(key) == 'on' ? true : false;
+  let checkedStates: { [key: string]: boolean } = {};
+
+  export function resetFilters() {
+    let filterList = others.filterList.map((x) => x.value);
+    let filterKey;
+    let el;
+    let keyActive;
+
+    filterList.forEach((filterName) => {
+      filterKey = $page.url.searchParams.get(filterName);
+      el = document.getElementById(others.section + "-" + filterName);
+      if (el) {
+        keyActive = filterKey ? true : false;
+        el.checked = keyActive;
+        checkedStates[filterName] = keyActive;
+      }
+    });
+  }
+
+	async function init(key: string) {
+    await tick();
+    let othersKey = $page.url.searchParams.get(key);
+    let filterIsActive = othersKey;
+
+    checkedStates[key] = filterIsActive;
+
+    return filterIsActive;
 	}
 
-  /************* Handlers ***************/
-  function handleCheckboxClick(event: CustomEvent) {
-    let detail = event.detail;
-    let checkbox = detail.target as HTMLInputElement;
-    if (checkbox.checked == true) {
-      tempNumFilters = tempNumFilters + 1;
-    } else {
-      tempNumFilters = tempNumFilters - 1;
-    }
-  }
+  onMount(() => {
+    others?.filterList.forEach(async (filterListItem) => {
+      await init(filterListItem.value);
+    });
+  });
 
 </script>
 
@@ -33,10 +52,9 @@
   {#each others.filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={others.section + "-" + filterListItem.value}
-      checkboxName={others.section}
+      checkboxName={others.section + "-" + filterListItem.value}
       checkboxLabel={filterListItem.label}
-      checked={init(others.section + "-" + filterListItem.value)}
-      on:checkedStateChange={handleCheckboxClick}
+      checked={checkedStates[filterListItem.value] || false}
     />
   {/each}
 </div>

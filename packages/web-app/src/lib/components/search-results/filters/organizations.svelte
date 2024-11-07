@@ -1,28 +1,49 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { onMount, tick } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
-
-  export let tempNumFilters: number;
 
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
   const organizations = filters.find((x: Filter) => x.section == "org");
 
-  function init(key: string) {
-    return $page.url.searchParams.get(key) == 'on' ? true : false;
-	}
+  let checkedStates: { [key: string]: boolean } = {};
 
-  /************* Handlers ***************/
-  function handleCheckboxClick(event: CustomEvent) {
-    let detail = event.detail;
-    let checkbox = detail.target as HTMLInputElement;
-    if (checkbox.checked == true) {
-      tempNumFilters = tempNumFilters + 1;
-    } else {
-      tempNumFilters = tempNumFilters - 1;
+  export function resetFilters() {
+    let orgKey = $page.url.searchParams.get('org');
+    let el;
+    let keyActive;
+
+    for (let [key, value] of Object.entries(checkedStates)) {
+      el = document.getElementById(organizations.section + "-" + key);
+      if (el) {
+        keyActive = orgKey && orgKey.includes(key) ? true : false;
+        el.checked = keyActive;
+        checkedStates.key = keyActive;
+      }
     }
   }
+
+  async function init(key: string) {
+    await tick();
+    let orgKey = $page.url.searchParams.get('org');
+    let filterIsActive = false;
+
+    if (orgKey && orgKey.includes(key)) {
+      filterIsActive = true;
+    }
+
+    checkedStates[key] = filterIsActive;
+
+    return filterIsActive;
+	}
+
+  onMount(() => {
+    organizations?.filterList.forEach(async (filterListItem) => {
+      await init(filterListItem.value);
+    });
+  });
 
 </script>
 
@@ -33,10 +54,9 @@
   {#each organizations.filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={organizations.section + "-" + filterListItem.value}
-      checkboxName={organizations.section}
+      checkboxName={organizations.section + "-" + filterListItem.value}
       checkboxLabel={filterListItem.label}
-      checked={init(organizations.section + "-" + filterListItem.value)}
-      on:checkedStateChange={handleCheckboxClick}
+      checked={checkedStates[filterListItem.value] || false}
     />
   {/each}
 </div>

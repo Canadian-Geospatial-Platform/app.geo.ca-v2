@@ -2,6 +2,7 @@
   import { page, navigating } from '$app/stores';
   import { goto } from '$app/navigation';
   import { onMount, tick } from 'svelte';
+  import { paginationNumber, updatePaginationNumber } from '$lib/components/search-results/store';
   import Accordian from '$lib/components/accordion/accordian.svelte';
   import ArrowDown from "$lib/components/icons/arrow-down.svelte";
   import ArrowUp from "$lib/components/icons/arrow-up.svelte";
@@ -48,6 +49,7 @@
     url = $page.url;
     selected = event.detail;
     currentPage = 1;
+    updatePaginationNumber(currentPage);
     url.searchParams.set('sort', selected.value);
     url.searchParams.set('page-number', '0');
     goto(url, { invalidateAll: true });
@@ -59,27 +61,41 @@
   $: total = $page.data.total ?? 0;
 
   let hrefPrefix: string;
-  onMount(() => {
-    hrefPrefix = url.origin + url.pathname + '/record/';
-  });
 
   function changePage(event: CustomEvent) {
     url = $page.url;
     currentPage = event.detail;
+    updatePaginationNumber(currentPage);
     url.searchParams.set('page-number', `${currentPage - 1}`);
 	  url.searchParams.set('results-per-page', `${itemsPerPage}`);
     goto(url, { invalidateAll: true });
   }
 
   /****************** Map ******************/
-  let mapHeight = '24rem';
+  let mapHeight = '16rem';
   let mapWidth = '100%';
   let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
+
+  // Function to update mapHeight based on breakpoints
+  function updateMapSize() {
+    if (window.matchMedia('(min-width: 1536px)').matches) {
+      mapHeight = '32rem'; // 2xl breakpoint
+    } else if (window.matchMedia('(min-width: 1280px)').matches) {
+      mapHeight = '28rem'; // xl breakpoint
+    } else if (window.matchMedia('(min-width: 1024px)').matches) {
+      mapHeight = '24rem'; // lg breakpoint
+    } else if (window.matchMedia('(min-width: 768px)').matches) {
+      mapHeight = '20rem'; // md breakpoint
+    } else {
+      mapHeight = '16rem'; // Default for smaller screens
+    }
+  }
 
   // TODO: find a way to load only one map at a time using the ID
 
   async function loadMap(event: CustomEvent, mapId: string, mapType: string) {
     if (mapType.includes('vector')) {
+      updateMapSize();
       try {
         await tick();
         cgpv.init((mapId) => {
@@ -90,6 +106,21 @@
       }
     }
   }
+
+  onMount(() => {
+    // Sometimes the pagination element needs to be reset from other components.
+    // E.g. when a new value is entered in the search bar. We can use a store to do this.
+    updatePaginationNumber(currentPage);
+    paginationNumber.subscribe((value) => {
+      currentPage = value;
+    });
+
+    hrefPrefix = url.origin + url.pathname + '/record/';
+
+    /******** Map width setting **********/
+    // This is used to set the map width based on the active tailwind break points
+    updateMapSize();
+  });
 </script>
 
 <Card>
@@ -136,10 +167,10 @@
             {result.description}
           </div>
         </div>
-        <div slot="accordianContent" class="mt-4">
+        <div slot="accordianContent" class="mt-9">
           <!--For now, we will only load vector maps. Other map types won't load-->
           {#if result.spatialRepresentation.includes('vector')}
-            <div class="flex justify-center items-center">
+            <div class="flex">
               <Map
                 coordinates={result.coordinates} id={result.id}
                 height={mapHeight} width={mapWidth}

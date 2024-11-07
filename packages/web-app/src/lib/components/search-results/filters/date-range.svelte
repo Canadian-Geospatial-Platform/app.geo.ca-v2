@@ -2,7 +2,6 @@
   import { page } from '$app/stores';
 
   export let dateId: string;
-  export let dateName: string;
   export let active: boolean = false;
 
   /************* Translations ***************/
@@ -15,7 +14,7 @@
   const validatorStartGreater = translations?.validatorStartGreater ?
     translations["validatorStartGreater"] : "The start date should be earlier or equal to the end date.";
 
-  const startDateKey = dateId + '-start';
+  const startDateKey = dateId + '-begin';
   const endDateKey = dateId + '-end';
 
   const labels = [
@@ -23,8 +22,26 @@
     [endDate, endDateKey]
   ];
 
+  export function resetFilters() {
+    let beginKey = $page.url.searchParams.get('begin');
+    let endKey = $page.url.searchParams.get('end');
+
+    let beginEl = document.getElementById(startDateKey);
+    let endEl = document.getElementById(endDateKey);
+
+    if (beginEl) {
+      beginEl.value = beginKey && !isNaN(Date.parse(beginKey)) ? beginKey : null;
+    }
+
+    if (endEl) {
+      endEl.value = endKey && !isNaN(Date.parse(endKey)) ? endKey : null;
+    }
+  }
+
   function init(key: string) {
-    return $page.url.searchParams.get(key);
+    let searchKey = key.replace((dateId + '-'), '');
+    let date = $page.url.searchParams.get(searchKey);
+    return date;
 	}
 
   /************* Validators ***************/
@@ -42,14 +59,14 @@
       // seperately to account for the user possibly selecting dates in the reverse order.
       if (Number.isNaN(date)) {
         message = validatorRequired;
-      } else if (input.id == dateId + '-start') {
+      } else if (input.id == dateId + '-begin') {
         let endElement = document.getElementById(dateId + '-end');
         let endDate = Date.parse(endElement.value);
         if (!Number.isNaN(endDate) && date > endDate) {
           message = validatorStartGreater;
         }
       } else if (input.id == dateId + '-end') {
-        let startElement = document.getElementById(dateId + '-start');
+        let startElement = document.getElementById(dateId + '-begin');
         let startDate = Date.parse(startElement.value);
         if (!Number.isNaN(startDate) && date < startDate) {
           message = validatorStartGreater;
@@ -79,7 +96,7 @@
         so it won't block a form unless the user has selected the temporal checkbox
       -->
       <input
-        type="date" id={inputLabel[1]} name={dateName}
+        type="date" id={inputLabel[1]} name={inputLabel[1]}
         value={init(inputLabel[1])} disabled="{!active}"
         class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
         required use:customizeValiditor

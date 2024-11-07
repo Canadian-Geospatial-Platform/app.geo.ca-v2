@@ -65,7 +65,7 @@
 
 <div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_3px_6px_#00000029]" class:hidden={totalItems == 0}>
   <button
-    class="arrows mr-2 disabled:text-custom-19"
+    class="arrows mr-2 text-custom-16 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage - 1)}
     disabled={currentPage == 1 || totalItems == 0}
   >
@@ -81,7 +81,7 @@
     </button>
   {/each}
   <button
-    class="arrows ml-2 disabled:text-custom-19"
+    class="arrows ml-2 text-custom-16 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage + 1)}
     disabled={currentPage == numPages || totalItems == 0}
   >
@@ -95,7 +95,6 @@
     @apply h-7;
     @apply w-7;
     @apply rounded;
-    @apply text-custom-16;
   }
 
   .current-page {

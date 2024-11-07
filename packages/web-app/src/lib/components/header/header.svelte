@@ -9,7 +9,7 @@
   const logoSrc = translations?.logoSrc ? translations["logoSrc"] : "";
 </script>
 
-<div class="fixed w-full h-20 border-b-4 border-custom-16 bg-custom-1 z-30">
+<div class="fixed w-full h-20 border-b-4 border-custom-16 shadow-lg bg-custom-1 z-30">
   <div class="grid grid-cols-2 h-full md:grid-cols-6 content-width">
     <a href={logoHref} data-sveltekit-reload class="grid">
       <img 
@@ -19,10 +19,10 @@
       />
     </a>
 
-    <div class="hidden lg:flex col-span-5 justify-end font-custom-style-header-3">
+    <div class="hidden lg:flex col-span-5 justify-end text-[16px] 2xl:text-[18px] font-custom-style-header-3 ">
       <Navbarhorizontal />
     </div>
-    <div class="flex lg:hidden col-span-1 md:col-span-5 justify-end font-custom-style-header-3">
+    <div class="flex lg:hidden col-span-1 md:col-span-5 justify-end text-[18px] font-custom-style-header-3">
       <Navbarvertical />
     </div>
 
