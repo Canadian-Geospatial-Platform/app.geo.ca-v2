@@ -10,11 +10,16 @@
   const searchResultsText = translations?.searchResults ?
     translations["searchResults"] : "Search Results";
   const youMayText = translations?.youMay ? translations["youMay"] : "You may also like";
+
+  let numResults = $page.data.total;
 </script>
 
 <h1 class="font-custom-style-h1">
   {searchResultsText}
 </h1>
+<!--<p>-->
+<!--  We have found {numResults} datasets for the keywords...-->
+<!--</p>-->
 <SearchBar />
 <h2 class="font-custom-style-h2">
   {listViewText}

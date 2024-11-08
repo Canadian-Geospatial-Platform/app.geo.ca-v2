@@ -36,7 +36,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 function generateUrl(fetch, searchParams, lang, token) {
 	let url = new URL('https://geocore.api.geo.ca/geo');
 	const params = mapSearchParams(searchParams, lang);
-	url.search = new URLSearchParams(params).toString();
+	// URLSearchParams automatically encodes special characters to the html counterpart.
+	// However, the geocore get requests require the '+' to be unencoded, so
+	// we can fix it with replaceAll(). Additionally, the ' character needs to be
+	// replaced with '', so we can use replaceAll() a second time.
+	url.search = new URLSearchParams(params).toString()
+	  .replaceAll('%2B', '+').replaceAll('%27', '%27%27');
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
@@ -58,21 +63,21 @@ async function getAnalytics(fetch) {
 function mapSearchParams(searchParams, lang) {
 	let cKeys = concatKeys(searchParams);
 	let ret = {
-		north: searchParams.get('north') ?? 72.04683989379397,
-		east: searchParams.get('east') ?? 44.6484375,
-		south: searchParams.get('south') ?? 41.244772343082076,
+		north: searchParams.get('north') ?? 90,
+		east: searchParams.get('east') ?? 180,
+		south: searchParams.get('south') ?? -90,
 		west: searchParams.get('west') ?? -180,
-		keyword: searchParams.get('search-terms'),
-		org: cKeys.org,
-		type: cKeys.type,
-		theme: cKeys.theme,
-		bbox: searchParams.get('bbox'),
-		foundational: searchParams.get('others-foundational') === 'on' ? 'true' : '',
-		begin: searchParams.get('spatio-temporal-start')
-			? new Date(searchParams.get('spatio-temporal-start')).toISOString()
+		keyword: searchParams.get('search-terms') ?? '',
+		org: searchParams.get('org') ?? '',
+		type: searchParams.get('type') ?? '',
+		theme: searchParams.get('theme') ?? '',
+		bbox: searchParams.get('bbox') ?? '',
+		foundational: searchParams.get('foundational') ? 'true' : '',
+		begin: searchParams.get('begin')
+			? new Date(searchParams.get('begin')).toISOString()
 			: '',
-		end: searchParams.get('spatio-temporal-end')
-			? new Date(searchParams.get('spatio-temporal-end')).toISOString()
+		end: searchParams.get('end')
+			? new Date(searchParams.get('end')).toISOString()
 			: '',
 		lang: lang.split('-')[0],
 		min: getMin(searchParams),

@@ -17,97 +17,100 @@
     "filterList": [
       {
         "label": "Agence Canadienne de Développement économique du Nord",
-        "value": "canadian-northern-economic-development-agency"
+        "value": "agence+canadienne+de+développement+économique+du+nord"
       }, {
         "label": "Agence d'évaluation d'impact du Canada",
-        "value": "impact-assessment-agency-of-canada"
+        "value": "agence+d'évaluation+d'impact+du+canada"
       }, {
         "label": "Agence de la santé publique du Canada",
-        "value": "public-health-agency-of-canada"
+        "value": "agence+de+la+santé+publique+du+canada"
       }, {
         "label": "Agence spatiale canadienne",
-        "value": "canadian-space-agency"
+        "value": "agence+spatiale+canadienne"
       }, {
         "label": "Agriculture et Agroalimentaire Canada",
-        "value": "agriculture-and-agri-food-canada"
+        "value": "agriculture+et+agroalimentaire+canada"
       }, {
         "label": "Commission canadienne de sûreté nucléaire",
-        "value": "canadian-nuclear-safety-commission"
+        "value": "commission+canadienne+de+sûreté+nucléaire"
       }, {
         "label": "Défense nationale",
-        "value": "national-defence"
+        "value": "défense+nationale"
       }, {
         "label": "Élections Canada",
-        "value": "elections-canada"
+        "value": "élections+canada"
       }, {
         "label": "Emploi et Développement social Canada",
-        "value": "employment-and-social-development-canada"
+        "value": "emploi+et+développement+social+canada"
       }, {
         "label": "Environnement et Changement climatique Canada",
-        "value": "environment-and-climate-change-canada"
+        "value": "environnement+et+changement+climatique+canada"
       }, {
         "label": "Gouvernement de l'Alberta",
-        "value": "government-of-alberta"
+        "value": "gouvernement+de+l'alberta"
       }, {
         "label": "Gouvernement de l'Île-du-Prince-Édouard",
-        "value": "government-of-prince-edward-island"
+        "value": "gouvernement+de+l'île-du-prince-édouard"
       }, {
         "label": "Gouvernement de l'Ontario",
-        "value": "government-of-ontario"
+        "value": "gouvernement+de+l'ontario"
       }, {
         "label": "Gouvernement de la Colombie-Britannique",
-        "value": "government-of-british-columbia"
+        "value": "gouvernement+de+la+colombie-britannique"
       }, {
         "label": "Gouvernement de la Nouvelle-Écosse",
-        "value": "government-of-nova-scotia"
+        "value": "gouvernement+de+la+nouvelle-écosse"
       }, {
         "label": "Gouvernement de la Saskatchewan",
-        "value": "government-of-saskatchewan"
+        "value": "gouvernement+de+la+saskatchewan"
       }, {
         "label": "Gouvernement de Terre-Neuve-et-Labrador",
-        "value": "government-of-newfoundland-and-labrador"
+        "value": "gouvernement+de+terre-neuve-et-labrador"
       }, {
         "label": "Gouvernement des Territoires du Nord-Ouest",
-        "value": "government-of-northwest-territories"
+        "value": "gouvernement+des+territoires+du+nord-ouest"
       }, {
         "label": "Gouvernement du Manitoba",
-        "value": "government-of-manitoba"
+        "value": "gouvernement+du+manitoba"
       }, {
         "label": "Gouvernement du Nouveau-Brunswick",
-        "value": "government-of-new-brunswick"
+        "value": "gouvernement+du+nouveau-brunswick"
       }, {
         "label": "Gouvernement du Nunavut",
-        "value": "government-of-nunavut"
+        "value": "gouvernement+du+nunavut"
       }, {
         "label": "Gouvernement du Yukon",
-        "value": "government-of-yukon"
+        "value": "gouvernement+du+yukon"
       }, {
         "label": "Gouvernement et municipalités du Québec",
-        "value": "government-and-municipalities-of-québec"
+        "value": "gouvernement+et+municipalités+du+québec"
       }, {
-        "label": "Moissonneur web de l'Infrastructure canadienne de données géospatiales",
-        "value": "canadian-geospatial-data-infrastructure-web-harvester"
+        "label": "Innovation, Sciences et Développement économique Canada",
+        "value": "innovation,+sciences+et+développement+économique+canada"
+      }, {
+        "label": "Ministère de la Justice",
+        "value": "ministère+de+la+justice"
       }, {
         "label": "Parcs Canada",
-        "value": "parks-canada"
+        "value": "parcs+canada"
       }, {
         "label": "Patrimoine canadien",
-        "value": "canadian-heritage"
+        "value": "patrimoine+canadien"
       },  {
         "label": "Pêches et Océans Canada",
-        "value": "fisheries-and-oceans-canada"
+        "value": "pêches+et+océans+canada"
       }, {
         "label": "Ressources naturelles Canada",
-        "value": "natural-resources-canada"
+        "value": "ressources+naturelles+canada"
       }, {
         "label": "Services aux Autochtones Canada",
-        "value": "indigenous-services-canada"
+        "value": "services+aux+autochtones+canada"
       }, {
         "label": "Statistique Canada",
-        "value": "statistics-canada"
+        "value": "statistique+canada"
       }, {
         "label": "Transports Canada",
-        "value": "transport-canada"
+        "value": "transports+canada"
       }
     ]
   }, {
@@ -125,10 +128,10 @@
         "value": "collection"
       }, {
         "label": "Communauté",
-        "value": "community"
+        "value": "communauté"
       }, {
         "label": "Jeu de données",
-        "value": "dataset"
+        "value": "jeu+de+données"
       }, {
         "label": "Service",
         "value": "service"
@@ -143,13 +146,13 @@
         "value": "administration"
       }, {
         "label": "Économie",
-        "value": "economy"
+        "value": "économie"
       }, {
         "label": "Environnement",
-        "value": "environment"
+        "value": "environnement"
       }, {
         "label": "Imagerie",
-        "value": "imagery"
+        "value": "imagerie"
       }, {
         "label": "Infrastructure",
         "value": "infrastructure"
@@ -158,13 +161,13 @@
         "value": "science"
       }, {
         "label": "Société",
-        "value": "society"
+        "value": "société"
       }, {
         "label": "Urgences",
-        "value": "emergency"
+        "value": "urgences"
       }, {
         "label": "Renseignements juridiques",
-        "value": "legal"
+        "value": "renseignements+juridiques"
       }
     ]
   }, {

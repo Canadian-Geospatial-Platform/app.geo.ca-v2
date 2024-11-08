@@ -46,7 +46,7 @@
   };
 
   onMount(() => {
-    currentUrl = window.location.href;
+    currentUrl = window.location.origin + window.location.pathname;;
     frenchUrl = currentUrl.replace("en-ca", "fr-ca");
     englishUrl = currentUrl.replace("fr-ca", "en-ca");
   });
