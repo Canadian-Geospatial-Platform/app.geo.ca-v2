@@ -28,6 +28,8 @@
   import Chevronleft from "$lib/components/icons/chevronleft.svelte";
   import Chevronright from "$lib/components/icons/chevronright.svelte";
   import { createEventDispatcher } from 'svelte';
+  import { page } from '$app/stores';
+  import { afterNavigate } from '$app/navigation';
 
 	const dispatch = createEventDispatcher();
 
@@ -35,15 +37,17 @@
   export let itemsPerPage = 10;
   export let currentPage = 1;
   export let numPageButtons = 5;
-  let halfNumPageButtons = Math.floor(numPageButtons/2);
 
-  $: totalItems = totalItems;
-  $: currentPage = currentPage;
+  let halfNumPageButtons = Math.floor(numPageButtons/2);
+  let numPages = Math.ceil(totalItems/itemsPerPage);
+
   $: numPages = Math.ceil(totalItems/itemsPerPage);
-  $: startPage = 1;
+
+  $: pageButtons = pageRange(currentPage);
 
   function pageRange(current: number) {
     if (numPages > numPageButtons) {
+      let startPage;
       if (current <= halfNumPageButtons) {
         startPage = 1
       } else if (current > numPages - halfNumPageButtons) {
@@ -67,6 +71,11 @@
     currentPage = page;
     dispatch('pageChange', page);
   }
+
+  afterNavigate(() => {
+		totalItems = $page.data.total ?? 0;
+		pageButtons = pageRange(currentPage);
+	});
 </script>
 
 <div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_3px_6px_#00000029]" class:hidden={totalItems == 0}>
@@ -77,7 +86,7 @@
   >
     <Chevronleft classes="h-6" />
   </button>
-  {#each pageRange(currentPage) as page}
+  {#each pageButtons as page}
     <button
       class="font-custom-style-button-1 h-7 w-7"
       class:current-page={page == currentPage}
