@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page, navigating } from '$app/stores';
-  import { goto } from '$app/navigation';
+  import { afterNavigate, goto } from '$app/navigation';
   import { onMount, tick } from 'svelte';
   import { paginationNumber, updatePaginationNumber } from '$lib/components/search-results/store';
   import Accordian from '$lib/components/accordion/accordian.svelte';
@@ -10,10 +10,10 @@
   import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
   import Map from '$lib/components/map/map.svelte';
   import Pagination from '$lib/components/pagination/pagination.svelte';
-	import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
-	
-	/************* User Data ***************/
-	const userId = $page.data.userData?.uuid;
+  import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
+
+  /************* User Data ***************/
+  const userId = $page.data.userData?.uuid;
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -67,7 +67,7 @@
     currentPage = event.detail;
     updatePaginationNumber(currentPage);
     url.searchParams.set('page-number', `${currentPage - 1}`);
-	  url.searchParams.set('results-per-page', `${itemsPerPage}`);
+    url.searchParams.set('results-per-page', `${itemsPerPage}`);
     goto(url, { invalidateAll: true });
   }
 
@@ -91,22 +91,6 @@
     }
   }
 
-  // TODO: find a way to load only one map at a time using the ID
-
-  async function loadMap(event: CustomEvent, mapId: string, mapType: string) {
-    if (mapType.includes('vector')) {
-      updateMapSize();
-      try {
-        await tick();
-        cgpv.init((mapId) => {
-          cgpv.api.maps[mapId].setLanguage(lang);
-        });
-      } catch (e) {
-        console.warn('Error initialising cgpv.', e);
-      }
-    }
-  }
-
   onMount(() => {
     // Sometimes the pagination element needs to be reset from other components.
     // E.g. when a new value is entered in the search bar. We can use a store to do this.
@@ -120,6 +104,15 @@
     /******** Map width setting **********/
     // This is used to set the map width based on the active tailwind break points
     updateMapSize();
+  });
+
+  afterNavigate(async () => {
+    try {
+      await tick();
+      cgpv.init();
+    } catch (e) {
+      console.warn('Error initialising cgpv.', e);
+    }
   });
 </script>
 
@@ -154,7 +147,7 @@
   <!-- List -->
   {#each results as result, index}
     <div class="bg-custom-1 px-5 py-4">
-      <Accordian on:openChange={(event) => loadMap(event, result.id, result.spatialRepresentation)}>
+      <Accordian>
         <div slot="accordianTitle">
           <a 
             href={hrefPrefix + result.id}
@@ -169,12 +162,12 @@
         </div>
         <div slot="accordianContent" class="mt-9">
           <!--For now, we will only load vector maps. Other map types won't load-->
-          {#if result.spatialRepresentation.includes('vector')}
+          {#if result.coordinates}
             <div class="flex">
               <Map
                 coordinates={result.coordinates} id={result.id}
                 height={mapHeight} width={mapWidth}
-                dynamic={true}
+                dynamic={true} useMap={result.hasMap}
               />
             </div>
           {:else}

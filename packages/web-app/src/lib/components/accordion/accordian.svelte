@@ -1,9 +1,7 @@
 <script lang="ts">
   import Chevronup from '$lib/components/icons/chevronup.svelte';
   import Chevrondown from '$lib/components/icons/chevrondown.svelte';
-  import { createEventDispatcher, afterUpdate, onMount } from 'svelte';
-
-  const dispatch = createEventDispatcher();
+  import { afterUpdate, onMount } from 'svelte';
 
   let open = false;
   let slotContent = null;
@@ -11,9 +9,6 @@
 
   function handleButtonClick() {
     open = !open;
-    if (open) {
-      dispatch('openChange');
-    }
   };
 
   // Automatically close the acordian when the slot content changes.
