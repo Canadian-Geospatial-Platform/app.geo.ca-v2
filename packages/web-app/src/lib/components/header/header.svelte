@@ -4,8 +4,9 @@
   import Navbarvertical from './navbarvertical.svelte';
 
   const translations = $page.data.headerTranslations;
+  const lang = $page.data.lang;
   const logoAlt = translations?.logoAlt ? translations["logoAlt"] : "";
-  const logoHref = $page.url.origin;
+  const logoHref = lang == 'fr-ca' ? 'https://geo.ca/fr/accueil/' : 'https://geo.ca/home';
   const logoSrc = translations?.logoSrc ? translations["logoSrc"] : "";
 </script>
 

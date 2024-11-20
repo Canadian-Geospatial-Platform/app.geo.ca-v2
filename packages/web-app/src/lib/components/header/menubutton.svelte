@@ -3,12 +3,14 @@
   import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
 
   export let active: Boolean;
+  export let mainMenuVisible: Boolean;
 
   const translations = $page.data.headerTranslations;
   const menuButton = translations?.menuButton ? translations["menuButton"] : "";
 
   function handleMenuButtonClick() {
     active = !active;
+    mainMenuVisible = active;
     toggleScroll(active);
   }
 </script>

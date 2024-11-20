@@ -1,5 +1,9 @@
 {
-  "0": {
+  "home": {
+    "title": "Accueil",
+    "href": "https://geo.ca/fr/accueil/"
+  },
+  "discover": {
     "title": "Découvrir",
     "options": [
       {
@@ -19,9 +23,9 @@
       }, {
         "colTitle": "Par type de contenu",
         "links": [
-          {"title": "API", "href": "/fr-ca/map-browser", "info": "Découvrez et tirez profit des API utiles pour obtenir des données et des informations précises.", "tipId": "api"},
-          {"title": "Application", "href": "/fr-ca/map-browser", "info": "Découvrez notre collection d’applications préintégrées qui tirent profit des API, des ensembles de données, des collections et des services Web existants.", "tipId": "application"},
-          {"title": "Collection", "href": "/fr-ca/map-browser", "info": "Découvrez des groupes de données et d’informations connexes facilement accessibles.", "tipId": "collection"},
+          {"title": "API", "href": "/fr-ca/map-browser?type=api", "info": "Découvrez et tirez profit des API utiles pour obtenir des données et des informations précises.", "tipId": "api"},
+          {"title": "Application", "href": "/fr-ca/map-browser?type=application", "info": "Découvrez notre collection d’applications préintégrées qui tirent profit des API, des ensembles de données, des collections et des services Web existants.", "tipId": "application"},
+          {"title": "Collection", "href": "/fr-ca/map-browser?type=collection", "info": "Découvrez des groupes de données et d’informations connexes facilement accessibles.", "tipId": "collection"},
           {"title": "Initiatives", "href": "https://geo.ca/fr/initiatives-fr/"}
         ]
       }, {
@@ -33,25 +37,18 @@
       }
     ]
   },
-  "1": {
+  "collaborate": {
     "title": "Collaborer",
     "options": [
       {
-        "colTitle": "Contributeurs",
         "links": [
-          {"title": "Apprendre", "href": "/fr-ca/map-browser"},
-          {"title": "Registre", "href": "/fr-ca/map-browser"},
-          {"title": "Se connecter", "href": "/fr-ca/map-browser"}
-        ]
-      }, {
-        "colTitle": "Communautés",
-        "links": [
-          {"title": "Profils de communauté", "href": "https://geo.ca/fr/communautes/"}
+          {"title": "Contributeurs", "href": "https://geo.ca/fr/contributeurs/"},
+          {"title": "Communautés", "href": "https://geo.ca/fr/communautes/"}
         ]
       }
     ]
   },
-  "2": {
+  "learn": {
     "title": "Apprendre",
     "options": [
       {
@@ -63,7 +60,7 @@
       }
     ]
   },
-  "3": {
+  "collections": {
     "title": "Mes collections",
     "options": [
       {
@@ -74,11 +71,11 @@
       }
     ]
   },
-  "4": {
+  "alerts": {
     "title": "Alertes",
     "href": "/fr-ca/map-browser"
   },
-  "5": {
+  "lang": {
     "title": "English",
     "href": "/en-ca/map-browser"
   }
