@@ -5,8 +5,10 @@
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
   import Chevronleft from '../icons/chevronleft.svelte';
 
+  const userId = $page.data.userData?.uuid;
   const navItems = $page.data.navitems;
   const orientation = 'vertical';
+
   let active = false;
   let mainMenuVisible = false;
   let activeMenuContent = null;
@@ -41,7 +43,7 @@
 >
   <div class="rounded-[5px] bg-custom-1 divide-y divide-custom-16">
     {#each Object.entries(navItems) as [key, data]}
-      {#if key != 'lang'}
+      {#if key != 'lang' && ((key != 'collections') || userId)}
         <div class="nav-item">
           <Navitem linkData={data} {orientation} on:dropDownClick={toggleMenuView} />
         </div>
@@ -53,6 +55,10 @@
   </div>
 </div>
 
+<!--
+  This section replaces the main menu with a seconday menu when a menu option is
+  selected e.g. the Discover, Collaborate, or Learn menus
+-->
 {#if activeMenuContent}
   <div
     class="nav-items-container bg-custom-23 pb-[40px]"

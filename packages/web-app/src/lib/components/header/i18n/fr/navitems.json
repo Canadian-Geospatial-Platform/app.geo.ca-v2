@@ -71,10 +71,6 @@
       }
     ]
   },
-  "alerts": {
-    "title": "Alertes",
-    "href": "/fr-ca/map-browser"
-  },
   "lang": {
     "title": "English",
     "href": "/en-ca/map-browser"
