@@ -31,7 +31,7 @@
 <div>
   <button on:click={handleButtonClick} class="grid grid-cols-12 w-full h-full text-left">
     <div bind:this={slotContent} class="col-span-10">
-      <slot name="accordianTitle"></slot>
+      <slot name="accordionTitle"></slot>
     </div>
     <div class="col-span-1 col-start-12 self-center">
       {#if open}
@@ -44,6 +44,6 @@
 </div>
 {#if open}
   <div>
-    <slot name="accordianContent"></slot>
+    <slot name="accordionContent"></slot>
   </div>
 {/if}

@@ -3,7 +3,7 @@
   import { afterNavigate, goto } from '$app/navigation';
   import { onMount, tick } from 'svelte';
   import { paginationNumber, updatePaginationNumber } from '$lib/components/search-results/store';
-  import Accordian from '$lib/components/accordion/accordian.svelte';
+  import Accordion from '$lib/components/accordion/accordion.svelte';
   import ArrowDown from "$lib/components/icons/arrow-down.svelte";
   import ArrowUp from "$lib/components/icons/arrow-up.svelte";
   import Card from '$lib/components/card/card.svelte';
@@ -147,8 +147,8 @@
   <!-- List -->
   {#each results as result, index}
     <div class="bg-custom-1 px-5 py-4">
-      <Accordian>
-        <div slot="accordianTitle">
+      <Accordion>
+        <div slot="accordionTitle">
           <a 
             href={hrefPrefix + result.id}
             class="uppercase underline font-custom-style-header-2"
@@ -160,7 +160,7 @@
             {result.description}
           </div>
         </div>
-        <div slot="accordianContent" class="mt-9">
+        <div slot="accordionContent" class="mt-9">
           <!--For now, we will only load vector maps. Other map types won't load-->
           {#if result.coordinates}
             <div class="flex">
@@ -174,7 +174,7 @@
             {mapNotAvailableText}
           {/if}
         </div>
-      </Accordian>
+      </Accordion>
     </div>
   {/each}
   <!-- Pagination -->
