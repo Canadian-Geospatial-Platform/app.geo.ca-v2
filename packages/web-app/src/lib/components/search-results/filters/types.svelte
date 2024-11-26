@@ -1,50 +1,27 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
-  const types = filters.find((x: Filter) => x.section == "type");
-
+  const types = filters.find((x: Filter) => x.section === 'type');
   let checkedStates: { [key: string]: boolean } = {};
 
   export function resetFilters() {
     let typeKey = $page.url.searchParams.get('type');
-    let el;
-    let keyActive;
-
-    for (let [key, value] of Object.entries(checkedStates)) {
-      el = document.getElementById(types.section + "-" + key);
-      if (el) {
-        keyActive = typeKey && typeKey.includes(key) ? true : false;
-        el.checked = keyActive;
-        checkedStates.key = keyActive;
-      }
+    if (types) {
+      types.filterList.forEach((filterListItem) => {
+        const key = filterListItem.value;
+        checkedStates[key] = typeKey?.includes(key) || false;
+      });
     }
   }
 
-  async function init(key: string) {
-    await tick();
-    let typeKey = $page.url.searchParams.get('type');
-    let filterIsActive = false;
-
-    if (typeKey && typeKey.includes(key)) {
-      filterIsActive = true;
-    }
-
-    checkedStates[key] = filterIsActive;
-
-    return filterIsActive
-	}
-
-  onMount(() => {
-    types?.filterList.forEach(async (filterListItem) => {
-      await init(filterListItem.value);
-    });
-  });
-
+  export function clearAllFilters() {
+    checkedStates = {};
+  }
 </script>
 
 <h3 class="font-custom-style-h3">

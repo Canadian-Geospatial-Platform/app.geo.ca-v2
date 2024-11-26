@@ -51,12 +51,13 @@
     temporalActive = false;
     spatialActive = false;
     updateTempCategoryOfInterest(null);
+    clearAllChecks();
   }
 
   function handleSubmit(event: Event) {
     const formEl = event.target;
     const formData = new FormData(formEl);
-    const categoryVal = document.getElementById(categoriesKey).value;
+    const categoryVal = categoriesComponent.getValue();
 
     const filters = {
       category: categoryVal ? categoryVal : null,
@@ -97,37 +98,21 @@
     themeCompontent.resetFilters();
     spatioTemporalComponent.resetFilters();
   }
+  
+  function clearAllChecks() {
+    orgCompontent.clearAllFilters();
+    othersCompontent.clearAllFilters();
+    typeCompontent.clearAllFilters();
+    themeCompontent.clearAllFilters();
+    spatioTemporalComponent.clearAllFilters();
+  }
 
   function parseBoundingBox() {
-    let northEl = document.getElementById('spatio-temporal-north');
-    let eastEl = document.getElementById('spatio-temporal-east');
-    let southEl = document.getElementById('spatio-temporal-south');
-    let westEl = document.getElementById('spatio-temporal-west');
-    let bbox = null;
-
-    if (northEl && eastEl && southEl && westEl) {
-      bbox = {
-        north: northEl.value,
-        east: eastEl.value,
-        south: southEl.value,
-        west: westEl.value,
-      };
-    }
-    return bbox;
+    return spatioTemporalComponent.getBBox();
   }
 
   function parseDateRange() {
-    let beginEl = document.getElementById('spatio-temporal-begin');
-    let endEl = document.getElementById('spatio-temporal-end');
-    let dateRange = null;
-
-    if (beginEl && endEl) {
-      dateRange = {
-        begin: beginEl.value,
-        end: endEl.value,
-      };
-    }
-    return dateRange;
+    return spatioTemporalComponent.getDateRange();
   }
 
   function countFilters(filters) {
@@ -273,7 +258,7 @@
     </div>
     <div class="grid grid-cols-2 col-span-6 bg-custom-5 border-t border-custom-21 px-5 py-[18px]">
       <button
-        type="reset" class="justify-self-start button-3"
+        type="button" class="justify-self-start button-3"
         on:click={handleClearAllClick}
       >
         {clearAllText}

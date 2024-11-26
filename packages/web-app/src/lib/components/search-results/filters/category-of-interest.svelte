@@ -19,6 +19,10 @@
     updateTempCategoryOfInterest(selected?.value ?? null);
   }
 
+  export function getValue() {
+    return categoryStoreVal;
+  }
+
   onMount(() => {
     init();
     tempCategoryOfInterest.subscribe((value) => {

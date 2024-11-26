@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import DateRange from '$lib/components/search-results/filters/date-range.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
@@ -11,7 +11,7 @@
 
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
-  const spatioTemporalFilters = filters.find((x: Filter) => x.section == "spatio-temporal");
+  const spatioTemporalFilters = filters.find((x: Filter) => x.section === 'spatio-temporal');
   const section = spatioTemporalFilters.section;
   const label = spatioTemporalFilters.label;
   const filterList = spatioTemporalFilters.filterList;
@@ -21,55 +21,33 @@
   let spatialComponent;
 
   export function resetFilters() {
-    let spatialKey = $page.url.searchParams.get('bbox');
-    let beginKey = $page.url.searchParams.get('begin');
-    let endKey = $page.url.searchParams.get('end');
-    let spatialEl = document.getElementById(section + "-spatial-extent");
-    let temporalEl = document.getElementById(section + "-temporal-extent");
-    let keyActive;
+    const spatialKey = $page.url.searchParams.get('bbox');
+    const beginKey = $page.url.searchParams.get('begin');
+    const endKey = $page.url.searchParams.get('end');
 
-    if (spatialEl) {
-      keyActive = spatialKey ? true : false;
-      spatialEl.checked = keyActive;
-      checkedStates['spatial-extent'] = keyActive;
-      spatialActive = keyActive;
+    // Update checkbox states
+    checkedStates['spatial-extent'] = !!spatialKey;
+    spatialActive = !!spatialKey;
 
-      spatialComponent.resetFilters();
-    }
+    checkedStates['temporal-extent'] = !!(beginKey && endKey);
+    temporalActive = !!(beginKey && endKey);
 
-    if (temporalEl) {
-      keyActive = beginKey && endKey ? true : false;
-      temporalEl.checked = keyActive;
-      checkedStates['temporal-extent'] = keyActive;
-      temporalActive = keyActive;
-
-      temporalComponent.resetFilters();
-    }
+    // Reset child components
+    spatialComponent?.resetFilters();
+    temporalComponent?.resetFilters();
   }
 
-  async function init(key: string) {
-    await tick();
-    let filterIsActive: boolean;
-    if (key == 'spatial-extent') {
-      let spatioTemporalKey = $page.url.searchParams.get('bbox');
-      filterIsActive = spatioTemporalKey ? true : false;
-      spatialActive = filterIsActive;
-    } else if (key == 'temporal-extent') {
-      let beginKey = $page.url.searchParams.get('begin');
-      let endKey = $page.url.searchParams.get('end');
-      filterIsActive = beginKey && endKey ? true : false;
-      temporalActive = filterIsActive;
-    }
-    checkedStates[key] = filterIsActive;
+  export function clearAllFilters() {
+    checkedStates = {};
+  }
 
-    return filterIsActive;
-	}
+  export function getBBox() {
+    return spatialComponent.getBBox();
+  }
 
-  onMount(() => {
-    spatioTemporalFilters?.filterList.forEach(async (filterListItem) => {
-      await init(filterListItem.value);
-    });
-  });
+  export function getDateRange() {
+    return temporalComponent.getDateRange();
+  }
 
   /************* Handlers ***************/
   function handleCheckboxClick(event: CustomEvent) {
@@ -82,7 +60,6 @@
       spatialActive = !spatialActive;
     }
   }
-
 </script>
 
 <h3 class="font-custom-style-h3">{label}</h3>
