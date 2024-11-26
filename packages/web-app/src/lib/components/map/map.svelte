@@ -10,6 +10,7 @@
   export let height = '24rem';
   export let mapProjection = 3857;
   export let useMap = true; // When false, the map's bounding box is used instead
+  export let mapType = null;
 
   let mapId = 'map-' + id;
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
@@ -174,10 +175,19 @@
   <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
 
-<div
-  id={mapId}
-  class="bg-blue-500/5"
-  style={`height: ${height}; width: ${width};`}
-  data-config={sConfig}
-  data-lang={mapLang}
-/>
+{#if mapType === 'resultList'}
+  <div
+    id={mapId}
+    class="bg-blue-500/5 w-full h-64 md:h-80 lg:h-96 xl:h-[28rem] 2xl:h-[32rem]"
+    data-config={sConfig}
+    data-lang={mapLang}
+  />
+{:else}
+  <div
+    id={mapId}
+    class="bg-blue-500/5"
+    style={`height: ${height}; width: ${width};`}
+    data-config={sConfig}
+    data-lang={mapLang}
+  />
+{/if}

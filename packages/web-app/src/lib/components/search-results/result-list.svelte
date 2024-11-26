@@ -72,24 +72,8 @@
   }
 
   /****************** Map ******************/
-  let mapHeight = '16rem';
-  let mapWidth = '100%';
+  let mapType = 'resultList';
   let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
-
-  // Function to update mapHeight based on breakpoints
-  function updateMapSize() {
-    if (window.matchMedia('(min-width: 1536px)').matches) {
-      mapHeight = '32rem'; // 2xl breakpoint
-    } else if (window.matchMedia('(min-width: 1280px)').matches) {
-      mapHeight = '28rem'; // xl breakpoint
-    } else if (window.matchMedia('(min-width: 1024px)').matches) {
-      mapHeight = '24rem'; // lg breakpoint
-    } else if (window.matchMedia('(min-width: 768px)').matches) {
-      mapHeight = '20rem'; // md breakpoint
-    } else {
-      mapHeight = '16rem'; // Default for smaller screens
-    }
-  }
 
   onMount(() => {
     // Sometimes the pagination element needs to be reset from other components.
@@ -100,10 +84,6 @@
     });
 
     hrefPrefix = url.origin + url.pathname + '/record/';
-
-    /******** Map width setting **********/
-    // This is used to set the map width based on the active tailwind break points
-    updateMapSize();
   });
 
   afterNavigate(async () => {
@@ -166,8 +146,8 @@
             <div class="flex">
               <Map
                 coordinates={result.coordinates} id={result.id}
-                height={mapHeight} width={mapWidth}
                 dynamic={true} useMap={result.hasMap}
+                mapType={mapType}
               />
             </div>
           {:else}
