@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import DateRange from '$lib/components/search-results/filters/date-range.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
