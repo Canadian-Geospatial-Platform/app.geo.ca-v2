@@ -20,7 +20,7 @@
   <h2 class="font-custom-style-h2 mb-1">
     {similarProductsText}
   </h2>
-  <ul class="flex flex-col space-y-4 list-outside list-disc py-2 ml-[18px]">
+  <ul class="flex flex-col space-y-4 list-outside list-disc py-2 ml-[1.125rem]">
     {#each similarProducts as product}
       <li>
         <a class="font-custom-style-body-2" href={product.linkUrl} target="_blank">

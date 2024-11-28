@@ -15,22 +15,22 @@
   }
 </script>
 
-<button class="grid grid-cols-4 cursor-pointer pl-[13px] pr-[9px]
-    py-[7px] self-center bg-custom-16 text-custom-1 rounded-[5px]
-    font-bold text-[20px]"
+<button class="grid grid-cols-4 cursor-pointer pl-[0.8125rem] pr-[0.5625rem]
+    py-[0.4375rem] self-center bg-custom-16 text-custom-1 rounded-[0.3125rem]
+    font-bold text-xl"
   on:click={handleMenuButtonClick}
   class:active={active} 
   title={menuButton}
 >
   {#if !active}
-    <div class="col-span-1 mt-[3px] mr-[5px]">
+    <div class="col-span-1 mt-[0.1875rem] mr-[0.3125rem]">
       <div class="bar bar1"></div>
       <div class="bar bar2"></div>
       <div class="bar bar3"></div>
     </div>
     <p class="col-span-3">MENU</p>
   {:else}
-    <div class="col-span-4 mt-[4px] mb-[2px] mx-[1px] self-center translate-x-0.5">
+    <div class="col-span-4 mt-1 mb-0.5 mx-px self-center translate-x-0.5">
       <div class="bar bar1"></div>
       <div class="bar bar2"></div>
       <div class="bar bar3"></div>
@@ -40,16 +40,16 @@
 
 <style>
   .bar {
-    @apply w-[18px];
-    @apply h-[2px];
+    @apply w-[1.125rem];
+    @apply h-0.5;
     @apply bg-custom-1;
-    @apply my-[4px];
+    @apply my-1;
     @apply rounded;
   }
 
   .active .bar1 {
-    @apply w-[20px];
-    @apply h-[3px];
+    @apply w-5;
+    @apply h-[0.1875rem];
     @apply origin-top-left;
     @apply rotate-45;
   }
@@ -59,8 +59,8 @@
   }
 
   .active .bar3 {
-    @apply w-[20px];
-    @apply h-[3px];
+    @apply w-5;
+    @apply h-[0.1875rem];
     @apply origin-bottom-left;
     @apply -rotate-45;
   }

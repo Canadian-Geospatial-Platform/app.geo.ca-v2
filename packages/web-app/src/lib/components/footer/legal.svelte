@@ -41,7 +41,7 @@
     @apply p-3;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 48rem) {
     .legal-col {
       align-content: flex-end;
     }

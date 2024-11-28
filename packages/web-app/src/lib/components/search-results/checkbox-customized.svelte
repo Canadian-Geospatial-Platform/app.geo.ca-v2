@@ -16,10 +16,10 @@
   }
 </script>
 
-<div class="flex gap-[13px] flex-[1_1_160px]">
+<div class="flex gap-[0.8125rem] flex-[1_1_10rem]">
   <input 
     type="checkbox" id={checkboxId} name={checkboxName} bind:checked={checked}
-    class="peer appearance-none min-w-[27px] h-[27px] border-2 
+    class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
       border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16"
     on:change={handleCheckboxClick}
   />

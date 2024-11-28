@@ -84,14 +84,14 @@
 <Card>
   <div class="flex flex-row">
     <button
-      class={`text-nowrap shadow-[0px_3px_6px_#00000029]
+      class={`text-nowrap shadow-[0rem_0.1875rem_0.375rem_#00000029]
         ${$navigating ? 'button-3-disabled' : 'button-3'}`}
       on:click={handleFilterButtonClick}
       disabled={$navigating}
     >
       {#if numFilters > 0}
         <span
-          class={`px-1 rounded-md font-custom-style-button-2 leading-[14px]
+          class={`px-1 rounded-md font-custom-style-button-2 leading-[0.875rem]
             ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
         >
           {numFilters}
@@ -104,21 +104,21 @@
     <input
       type="text"
       placeholder={searchProductsText}
-      class="w-full h-12 ml-5 px-5 rounded-s-[5px] font-custom-style-placeholder
-        shadow-[inset_0px_3px_6px_#00000029]"
+      class="w-full h-12 ml-5 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
+        shadow-[inset_0rem_0.1875rem_0.375rem_#00000029]"
       bind:this={searchTextInput}
       on:keydown={handleSearchEnterKeyDown}
       disabled={$navigating}
       value={keywordFromUrl}
     />
     <button
-      class={`text-nowrap h-12 px-5 rounded-e-[5px]
-        font-custom-style-button-3 shadow-[0px_3px_6px_#00000029]
+      class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
+        font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
         ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
       on:click={handleSearchClick}
       disabled={$navigating}
     >
-      <Search classes="inline" height="18px"/>
+      <Search classes="inline" height="1.125rem"/>
       {searchText}
     </button>
   </div>

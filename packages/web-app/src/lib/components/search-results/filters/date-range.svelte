@@ -110,7 +110,7 @@
       name={labels.start.key}
       value={init(labels.start.key)}
       disabled="{!active}"
-      class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
+      class="border-2 rounded border-custom-16 px-3.5 py-[0.5625rem]"
       required
       use:customizeValiditor
     />
@@ -124,7 +124,7 @@
       name={labels.end.key}
       value={init(labels.end.key)}
       disabled="{!active}"
-      class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
+      class="border-2 rounded border-custom-16 px-3.5 py-[0.5625rem]"
       required
       use:customizeValiditor
     />

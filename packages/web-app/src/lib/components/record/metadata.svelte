@@ -103,14 +103,14 @@
     @apply p-5;
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: 63.9375rem) {
     .top-table:not(:first-child) {
-      border-top: 1px solid #00000029;
-      padding-top: 2px;
+      border-top: 0.0625rem solid #00000029;
+      padding-top: 0.125rem;
     }
 
     .top-table:not(:last-child) {
-      padding-bottom: 2px;
+      padding-bottom: 0.125rem;
     }
   }
 </style>

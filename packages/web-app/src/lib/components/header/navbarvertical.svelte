@@ -41,7 +41,7 @@
   class="nav-items-container bg-custom-23"
   class:hidden={!active || !mainMenuVisible}
 >
-  <div class="rounded-[5px] bg-custom-1 divide-y divide-custom-16">
+  <div class="rounded-[0.3125rem] bg-custom-1 divide-y divide-custom-16">
     {#each Object.entries(navItems) as [key, data]}
       {#if key != 'lang' && ((key != 'collections') || userId)}
         <div class="nav-item">
@@ -61,26 +61,26 @@
 -->
 {#if activeMenuContent}
   <div
-    class="nav-items-container bg-custom-23 pb-[40px]"
+    class="nav-items-container bg-custom-23 pb-10"
     class:hidden={!active || mainMenuVisible}
   >
     <button
-      class="w-full h-[81px] pl-[20px] text-left bg-custom-16 text-custom-1 rounded-t-[5px]"
+      class="w-full h-[5.0625rem] pl-5 text-left bg-custom-16 text-custom-1 rounded-t-[0.3125rem]"
       class:rounded-section-title={activeMenuContent?.options && activeMenuContent?.options[0]?.colTitle}
       on:click={toggleMenuView}
     >
-      <Chevronleft classes="h-[35px] w-[35px] inline-block"/>
+      <Chevronleft classes="h-[2.1875rem] w-[2.1875rem] inline-block"/>
       {activeMenuContent.title}
     </button>
     {#if activeMenuContent.options}
       {#each activeMenuContent.options as option}
         {#if option?.colTitle}
-          <div class="font-open-sans text-custom-1 text-base font-semibold mt-[17px] mb-[13px]">
+          <div class="font-open-sans text-custom-1 text-base font-semibold mt-[1.0625rem] mb-[0.8125rem]">
             {option.colTitle}
           </div>
         {/if}
         <div
-          class="rounded-b-[5px] bg-custom-1 divide-y divide-custom-16"
+          class="rounded-b-[0.3125rem] bg-custom-1 divide-y divide-custom-16"
           class:rounded-section-link-list={option?.colTitle}
         >
           {#each option["links"] as link}
@@ -102,8 +102,8 @@
     @apply absolute;
     @apply top-20;
     @apply z-20;
-    width: calc(100% - 40px);
-    @apply m-[20px];
+    width: calc(100% - 2.5rem);
+    @apply m-5;
     @apply left-0;
     @apply max-h-vertical-nav;
     @apply overflow-y-scroll;
@@ -116,17 +116,17 @@
   }
 
   .nav-item {
-    @apply pl-[28px];
-    @apply pr-[15px];
-    @apply h-[58px];
+    @apply pl-7;
+    @apply pr-[0.9375rem];
+    @apply h-[3.625rem];
   }
 
   .rounded-section-title {
-    @apply rounded-b-[5px];
+    @apply rounded-b-[0.3125rem];
   }
 
   .rounded-section-link-list {
-    @apply rounded-t-[5px];
+    @apply rounded-t-[0.3125rem];
   }
 
   .mask {
@@ -136,6 +136,6 @@
     @apply w-full;
     @apply bg-custom-23;
     @apply z-10;
-    height: calc(100vh + 40px);
+    height: calc(100vh + 2.5rem);
   }
 </style>

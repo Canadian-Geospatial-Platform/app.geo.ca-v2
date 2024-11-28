@@ -39,7 +39,7 @@
       <!-------------- Tabs for large screens -------------->
       {#each tabContentArray as tab}
         <button 
-          class="hidden lg:flex items-center h-9 px-5 font-custom-style-body-3 bg-custom-5 border-b-[3px] border-custom-16"
+          class="hidden lg:flex items-center h-9 px-5 font-custom-style-body-3 bg-custom-5 border-b-[0.1875rem] border-custom-16"
           class:active={tab.tabId == activeTabId}
           on:click={() => handleTabClick(tab.tabId)}
         >
@@ -48,7 +48,7 @@
       {/each}
       <!-------------- Dropdown for smaller screens -------------->
       <button
-        class="flex flex-col lg:hidden justify-center items-center py-3 px-5 space-y-[5px] bg-custom-5"
+        class="flex flex-col lg:hidden justify-center items-center py-3 px-5 space-y-[0.3125rem] bg-custom-5"
         class:open={open}
         on:click={handleDropdownClick}
       >
@@ -58,7 +58,7 @@
       </button>
     </div>
     <div
-      class="flex flex-col lg:hidden w-full bg-custom-5 py-6 space-y-3 border-b-[3px] border-custom-16"
+      class="flex flex-col lg:hidden w-full bg-custom-5 py-6 space-y-3 border-b-[0.1875rem] border-custom-16"
       class:hidden={!open}
     >
       {#each tabContentArray as tab}

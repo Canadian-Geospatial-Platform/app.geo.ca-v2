@@ -28,7 +28,7 @@
 <h3 class="font-custom-style-h3">
   {organizations?.label}
 </h3>
-<div class="space-y-[18px] lg:columns-2">
+<div class="space-y-[1.125rem] lg:columns-2">
   {#each organizations.filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={organizations.section + "-" + filterListItem.value}

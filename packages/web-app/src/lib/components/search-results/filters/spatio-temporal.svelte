@@ -63,7 +63,7 @@
 </script>
 
 <h3 class="font-custom-style-h3">{label}</h3>
-<div class="space-y-[18px]">
+<div class="space-y-[1.125rem]">
   {#each filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={section + "-" + filterListItem.value}

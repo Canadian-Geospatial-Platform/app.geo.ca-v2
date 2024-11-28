@@ -149,7 +149,7 @@
         placeholder={placeHolder}
         disabled="{!active}"
         value={init(id)}
-        class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
+        class="border-2 rounded border-custom-16 px-3.5 py-[0.5625rem]"
         required
         use:customizeValiditor
       />

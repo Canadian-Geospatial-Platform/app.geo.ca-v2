@@ -20,10 +20,10 @@
       />
     </a>
 
-    <div class="hidden lg:flex col-span-5 justify-end text-[16px] 2xl:text-[18px] font-custom-style-header-3 ">
+    <div class="hidden lg:flex col-span-5 justify-end text-base 2xl:text-lg font-custom-style-header-3 ">
       <Navbarhorizontal />
     </div>
-    <div class="flex lg:hidden col-span-1 md:col-span-5 justify-end text-[18px] font-custom-style-header-3">
+    <div class="flex lg:hidden col-span-1 md:col-span-5 justify-end text-lg font-custom-style-header-3">
       <Navbarvertical />
     </div>
 

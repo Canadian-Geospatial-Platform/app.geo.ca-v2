@@ -28,7 +28,7 @@
 <h3 class="font-custom-style-h3">
   {themes?.label}
 </h3>
-<div class="grid gap-x-4 gap-y-[18px] grid-cols-1 custom-grid">
+<div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
   {#each themes.filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={themes.section + "-" + filterListItem.value}
@@ -40,9 +40,9 @@
 </div>
 
 <style>
-  @media (min-width: 1024px) {
+  @media (min-width: 64rem) {
     .custom-grid {
-      grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), max-content));
+      grid-template-columns: repeat(auto-fit, minmax(min(8.75rem, 100%), max-content));
     }
   }
 </style>
