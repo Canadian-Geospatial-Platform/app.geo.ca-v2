@@ -2,7 +2,6 @@
   import { page, navigating } from '$app/stores';
   import { goto } from '$app/navigation';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
-  import { updatePaginationNumber } from '$lib/components/search-results/store';
   import Card from '$lib/components/card/card.svelte';
   import Search from '$lib/components/icons/search.svelte';
 	import FilterModal from '$lib/components/search-results/filter-modal.svelte';
@@ -31,6 +30,7 @@
   let searchTextInput: HTMLInputElement;
   let analytics = $page.data.analytics;
   $: numFilters = 0;
+  $: keywordFromUrl = $page.url.searchParams.get(searchKey);
 
   // TODO: Get actual numbers for all data variables
   let notApplicable = 'N/A';
@@ -67,15 +67,10 @@
     let query = new URLSearchParams($page.url.searchParams.toString());
     if (keyword) {
       query.set('search-terms', keyword);
-      query.set('page-number', '0');
     } else {
       query.delete('search-terms');
-      query.set('page-number', '0');
     }
-
-    // Using a store here ensures that the pagination element
-    // in the result list can be reset to 1
-    updatePaginationNumber(1);
+    query.set('page-number', '0');
 
     let opts = {
 			replaceState: true,
@@ -83,10 +78,6 @@
 		};
     goto(`?${query.toString()}`, opts);
   }
-
-  function init(key: string) {
-    return $page.url.searchParams.get(key);
-	}
 </script>
 
 <FilterModal bind:active={modalActive} bind:numFilters={numFilters} bind:this={filterModal} />
@@ -118,7 +109,7 @@
       bind:this={searchTextInput}
       on:keydown={handleSearchEnterKeyDown}
       disabled={$navigating}
-      value={init(searchKey)}
+      value={keywordFromUrl}
     />
     <button
       class={`text-nowrap h-12 px-5 rounded-e-[5px]

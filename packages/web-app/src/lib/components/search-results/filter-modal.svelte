@@ -1,8 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
-  import { updateTempCategoryOfInterest, updatePaginationNumber } from '$lib/components/search-results/store';
+  import { updateTempCategoryOfInterest } from '$lib/components/search-results/store';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
   import Close from '$lib/components/icons/close.svelte';
   import Search from '$lib/components/icons/search.svelte';
@@ -41,6 +40,12 @@
   let themeCompontent;
   let typeCompontent;
   let spatioTemporalComponent;
+
+  $: searchParams = $page.url.searchParams;
+
+  $: {
+    setFilterCountFromUrl(searchParams);
+  }
 
   /************* Handlers ***************/
   function handleCloseButtonClick(event: Event) {
@@ -98,7 +103,21 @@
     themeCompontent.resetFilters();
     spatioTemporalComponent.resetFilters();
   }
-  
+
+  function setFilterCountFromUrl(searchParams) {
+    const filterLists = {
+      bboxList: getList(bboxKey, false, searchParams),
+      categoryList: getList(categoriesKey, false, searchParams),
+      dateRangeList: getList('begin', false, searchParams),
+      foundationalList: getList(foundationalKey, false, searchParams),
+      orgList: getList(orgKey, true, searchParams),
+      typeFilterList: getList(typeKey, true, searchParams),
+      themeList: getList(themeKey, true, searchParams),
+    };
+
+    numFilters = countFilters(filterLists);
+  }
+
   function clearAllChecks() {
     orgCompontent.clearAllFilters();
     othersCompontent.clearAllFilters();
@@ -179,7 +198,6 @@
 
     // When filters change, reset the page and pagination element back to the start
     query.set('page-number', '0');
-    updatePaginationNumber(1);
 
     return query;
   }
@@ -190,22 +208,7 @@
     return checkedKeys.join(delineator);
   }
 
-  function setFilterCountFromUrl() {
-    const filterLists = {
-      bboxList: getList(bboxKey, false),
-      categoryList: getList(categoriesKey, false),
-      dateRangeList: getList('begin', false),
-      foundationalList: getList(foundationalKey, false),
-      orgList: getList(orgKey, true),
-      typeFilterList: getList(typeKey, true),
-      themeList: getList(themeKey, true),
-    };
-
-    numFilters = countFilters(filterLists);
-  }
-
-  function getList(key, split) {
-    const searchParams = $page.url.searchParams;
+  function getList(key, split, searchParams) {
     const value = searchParams.getAll(key)[0];
     return split && value ? value.split(delineator) : value;
   }
@@ -214,10 +217,6 @@
     active = false;
     toggleScroll(active);
   }
-
-  onMount(() => {
-    setFilterCountFromUrl();
-  });
 </script>
 
 <div

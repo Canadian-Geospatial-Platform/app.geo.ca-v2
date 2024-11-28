@@ -2,7 +2,6 @@
   import { page, navigating } from '$app/stores';
   import { afterNavigate, goto } from '$app/navigation';
   import { onMount, tick } from 'svelte';
-  import { paginationNumber, updatePaginationNumber } from '$lib/components/search-results/store';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import ArrowDown from "$lib/components/icons/arrow-down.svelte";
   import ArrowUp from "$lib/components/icons/arrow-up.svelte";
@@ -29,10 +28,9 @@
   const titleText = translations?.title ? translations["title"] : "Title";
 
   /****************** Sorting ******************/
-  let url = $page.url;
-  let sortOrder = url.searchParams.get('sort') ?? 'title';
+  let sortOrder = $page.url.searchParams.get('sort') ?? 'title';
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
-  $: currentPage = Number(url.searchParams.get('page-number') ?? '0') + 1;
+  $: currentPage = Number($page.url.searchParams.get('page-number') ?? '0') + 1;
 
   const sortBySelectData = [
     {"value": "date-desc", "label": dateText, "icon": ArrowDown},
@@ -49,10 +47,9 @@
     url = $page.url;
     selected = event.detail;
     currentPage = 1;
-    updatePaginationNumber(currentPage);
-    url.searchParams.set('sort', selected.value);
-    url.searchParams.set('page-number', '0');
-    goto(url, { invalidateAll: true });
+    $page.url.searchParams.set('sort', selected.value);
+    $page.url.searchParams.set('page-number', '0');
+    goto($page.url, { invalidateAll: true });
   }
 
   /****************** Pagination ******************/
@@ -63,12 +60,10 @@
   let hrefPrefix: string;
 
   function changePage(event: CustomEvent) {
-    url = $page.url;
     currentPage = event.detail;
-    updatePaginationNumber(currentPage);
-    url.searchParams.set('page-number', `${currentPage - 1}`);
-    url.searchParams.set('results-per-page', `${itemsPerPage}`);
-    goto(url, { invalidateAll: true });
+    $page.url.searchParams.set('page-number', `${currentPage - 1}`);
+    $page.url.searchParams.set('results-per-page', `${itemsPerPage}`);
+    goto($page.url, { invalidateAll: true });
   }
 
   /****************** Map ******************/
@@ -76,14 +71,7 @@
   let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
   onMount(() => {
-    // Sometimes the pagination element needs to be reset from other components.
-    // E.g. when a new value is entered in the search bar. We can use a store to do this.
-    updatePaginationNumber(currentPage);
-    paginationNumber.subscribe((value) => {
-      currentPage = value;
-    });
-
-    hrefPrefix = url.origin + url.pathname + '/record/';
+    hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
   });
 
   afterNavigate(async () => {

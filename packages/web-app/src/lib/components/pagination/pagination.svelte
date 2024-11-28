@@ -35,8 +35,10 @@
 
   export let totalItems = 0;
   export let itemsPerPage = 10;
-  export let currentPage = 1;
+  export let currentPage;
   export let numPageButtons = 5;
+
+  $: currentPage = $page.url.searchParams.get('page-number') ? $page.url.searchParams.get('page-number') + 1 : 1;
 
   let halfNumPageButtons = Math.floor(numPageButtons/2);
   let numPages = Math.ceil(totalItems/itemsPerPage);
