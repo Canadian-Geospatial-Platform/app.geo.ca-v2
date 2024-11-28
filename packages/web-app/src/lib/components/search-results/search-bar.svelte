@@ -41,7 +41,7 @@
   let collections = notApplicable;
 
   /***************** Handlers ******************/
-  $: modalActive = false;
+  let modalActive = false;
   let filterModal;
 
   function handleFilterButtonClick(event: Event) {

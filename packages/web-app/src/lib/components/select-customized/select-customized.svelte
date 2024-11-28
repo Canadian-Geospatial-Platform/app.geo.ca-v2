@@ -52,7 +52,7 @@
   export let removableSelection: boolean = false;
   export let defaultLabel: string = "";
 
-  $: expanded = false;
+  let expanded = false;
 
   function handleSelectClick() {
     expanded = !expanded;
