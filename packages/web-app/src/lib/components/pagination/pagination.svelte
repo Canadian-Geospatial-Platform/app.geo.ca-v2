@@ -40,26 +40,27 @@
 
   // Add 1 since page number from url starts at 0 while page buttons start at 1
   $: currentPage = parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1;
+  $: itemsPerPage = parseInt($page.url.searchParams.get('per-page') || itemsPerPage, 10);
   $: totalItems = $page.data.total ?? 0;
 
   let halfNumPageButtons = Math.floor(numPageButtons / 2);
   $: numPages = Math.ceil(totalItems / itemsPerPage);
-  $: pageButtons = pageRange(currentPage);
+  $: pageButtons = pageRange(currentPage, numPages, numPageButtons);
 
-  function pageRange(current: number) {
-    if (numPages > numPageButtons) {
+  function pageRange(current: number, totalPages: number, numButtons: number) {
+    if (totalPages > numButtons) {
       let startPage;
       if (current <= halfNumPageButtons) {
         startPage = 1
-      } else if (current > numPages - halfNumPageButtons) {
-        startPage = numPages - numPageButtons + 1;
+      } else if (current > totalPages - halfNumPageButtons) {
+        startPage = totalPages - numButtons + 1;
       } else {
         startPage = current - halfNumPageButtons;
       }
-      return Array.from({ length: numPageButtons }, (_, i) => startPage + i);
+      return Array.from({ length: numButtons }, (_, i) => startPage + i);
     }
 
-    return Array.from({ length: numPages }, (_, i) => i + 1);
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
   function handlePageClick(page: number) {
