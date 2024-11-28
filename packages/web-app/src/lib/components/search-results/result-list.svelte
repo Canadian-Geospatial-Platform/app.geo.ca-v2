@@ -44,7 +44,6 @@
   $: selected = defaultOption ?? sortBySelectData[0];
 
   function changeSort(event: CustomEvent) {
-    url = $page.url;
     selected = event.detail;
     currentPage = 1;
     $page.url.searchParams.set('sort', selected.value);

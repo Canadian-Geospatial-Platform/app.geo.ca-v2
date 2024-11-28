@@ -38,13 +38,12 @@
   export let currentPage;
   export let numPageButtons = 5;
 
-  $: currentPage = $page.url.searchParams.get('page-number') ? $page.url.searchParams.get('page-number') + 1 : 1;
+  // Add 1 since page number from url starts at 0 while page buttons start at 1
+  $: currentPage = parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1;
+  $: totalItems = $page.data.total ?? 0;
 
-  let halfNumPageButtons = Math.floor(numPageButtons/2);
-  let numPages = Math.ceil(totalItems/itemsPerPage);
-
-  $: numPages = Math.ceil(totalItems/itemsPerPage);
-
+  let halfNumPageButtons = Math.floor(numPageButtons / 2);
+  $: numPages = Math.ceil(totalItems / itemsPerPage);
   $: pageButtons = pageRange(currentPage);
 
   function pageRange(current: number) {
@@ -57,7 +56,7 @@
       } else {
         startPage = current - halfNumPageButtons;
       }
-      return Array.from({ length: numPageButtons }, (value, i) => startPage + i);
+      return Array.from({ length: numPageButtons }, (_, i) => startPage + i);
     }
 
     return Array.from({ length: numPages }, (_, i) => i + 1);
@@ -73,11 +72,6 @@
     currentPage = page;
     dispatch('pageChange', page);
   }
-
-  afterNavigate(() => {
-		totalItems = $page.data.total ?? 0;
-		pageButtons = pageRange(currentPage);
-	});
 </script>
 
 <div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_3px_6px_#00000029]" class:hidden={totalItems == 0}>
