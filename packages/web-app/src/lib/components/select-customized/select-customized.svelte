@@ -34,10 +34,10 @@
 ------------------------------------------------------------------>
 
 <script lang="ts">
+  import { createEventDispatcher, afterUpdate } from 'svelte';
 	import Chevrondown from "$lib/components/icons/chevrondown.svelte";
   import Chevronup from "$lib/components/icons/chevronup.svelte";
   import Close from '$lib/components/icons/close.svelte';
-  import { createEventDispatcher, afterUpdate } from 'svelte';
   import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
 
 	const dispatch = createEventDispatcher();
@@ -126,13 +126,13 @@
   </span>
 </button>
 <div
-  class="custom-dropdown absolute z-10 mx-1.5 border-x border-b"
+  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[5px]"
   style:--dropDownColor={dropDownColor}
   class:hidden={!expanded}
   bind:this={dropDown}
 >
   {#each optionsData as option}
-    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1"
+    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1 last:rounded-b-[2px] hover:bg-custom-5"
       id={option.value}
       role="option"
       aria-selected={option.value == selected?.value}
@@ -152,10 +152,6 @@
   .custom-dropdown {
     border-color: var(--dropDownColor);
     color: var(--dropDownColor);
-  }
-
-  .custom-dropdown button:not(:first-child) {
-    border-top: 1px solid var(--dropDownColor);
   }
 
   .selected-option {

@@ -1,29 +1,27 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
 
-  export let tempNumFilters: number;
-
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
-  const types = filters.find((x: Filter) => x.section == "type");
+  const types = filters.find((x: Filter) => x.section === 'type');
+  let checkedStates: { [key: string]: boolean } = {};
 
-  function init(key: string) {
-    return $page.url.searchParams.get(key) == 'on' ? true : false;
-	}
-
-  /************* Handlers ***************/
-  function handleCheckboxClick(event: CustomEvent) {
-    let detail = event.detail;
-    let checkbox = detail.target as HTMLInputElement;
-    if (checkbox.checked == true) {
-      tempNumFilters = tempNumFilters + 1;
-    } else {
-      tempNumFilters = tempNumFilters - 1;
+  export function resetFilters() {
+    let typeKey = $page.url.searchParams.get('type');
+    if (types) {
+      types.filterList.forEach((filterListItem) => {
+        const key = filterListItem.value;
+        checkedStates[key] = typeKey?.includes(key) || false;
+      });
     }
   }
 
+  export function clearAllFilters() {
+    checkedStates = {};
+  }
 </script>
 
 <h3 class="font-custom-style-h3">
@@ -33,10 +31,9 @@
   {#each types.filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={types.section + "-" + filterListItem.value}
-      checkboxName={types.section}
+      checkboxName={types.section + "-" + filterListItem.value}
       checkboxLabel={filterListItem.label}
-      checked={init(types.section + "-" + filterListItem.value)}
-      on:checkedStateChange={handleCheckboxClick}
+      checked={checkedStates[filterListItem.value] || false}
     />
   {/each}
 </div>

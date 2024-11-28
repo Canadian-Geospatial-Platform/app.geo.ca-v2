@@ -2,7 +2,6 @@
   import { page } from '$app/stores';
 
   export let dateId: string;
-  export let dateName: string;
   export let active: boolean = false;
 
   /************* Translations ***************/
@@ -15,16 +14,49 @@
   const validatorStartGreater = translations?.validatorStartGreater ?
     translations["validatorStartGreater"] : "The start date should be earlier or equal to the end date.";
 
-  const startDateKey = dateId + '-start';
+  const startDateKey = dateId + '-begin';
   const endDateKey = dateId + '-end';
 
-  const labels = [
-    [startDate, startDateKey],
-    [endDate, endDateKey]
-  ];
+  const labels = {
+    'start': {'label': startDate, 'key': startDateKey},
+    'end': {'label': endDate, 'key': endDateKey}
+  };
+
+  let beginInput: HTMLInputElement;
+  let endInput: HTMLInputElement;
+
+  export function resetFilters() {
+    let beginKey = $page.url.searchParams.get('begin');
+    let endKey = $page.url.searchParams.get('end');
+
+    if (beginInput) {
+      beginInput.value = beginKey && !isNaN(Date.parse(beginKey)) ? beginKey : "";
+    }
+
+    if (endInput) {
+      endInput.value = endKey && !isNaN(Date.parse(endKey)) ? endKey : "";
+    }
+  }
+
+  export function getDateRange() {
+    let beginEl = beginInput;
+    let endEl = endInput;
+    let dateRange = null;
+
+    if (beginEl && endEl) {
+      dateRange = {
+        begin: beginEl.value,
+        end: endEl.value,
+      };
+    }
+
+    return dateRange;
+  }
 
   function init(key: string) {
-    return $page.url.searchParams.get(key);
+    let searchKey = key.replace((dateId + '-'), '');
+    let date = $page.url.searchParams.get(searchKey);
+    return date;
 	}
 
   /************* Validators ***************/
@@ -42,15 +74,13 @@
       // seperately to account for the user possibly selecting dates in the reverse order.
       if (Number.isNaN(date)) {
         message = validatorRequired;
-      } else if (input.id == dateId + '-start') {
-        let endElement = document.getElementById(dateId + '-end');
-        let endDate = Date.parse(endElement.value);
+      } else if (input === beginInput) {
+        const endDate = Date.parse(endInput?.value || "");
         if (!Number.isNaN(endDate) && date > endDate) {
           message = validatorStartGreater;
         }
-      } else if (input.id == dateId + '-end') {
-        let startElement = document.getElementById(dateId + '-start');
-        let startDate = Date.parse(startElement.value);
+      } else if (input === endInput) {
+        const startDate = Date.parse(beginInput?.value || "");
         if (!Number.isNaN(startDate) && date < startDate) {
           message = validatorStartGreater;
         }
@@ -71,19 +101,32 @@
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-  {#each labels as inputLabel}
-    <div class="flex flex-col">
-      <label for={inputLabel[1]}>{inputLabel[0]}</label>
-      <!--
-        Note: the 'required' attribute only works when the input is enabled,
-        so it won't block a form unless the user has selected the temporal checkbox
-      -->
-      <input
-        type="date" id={inputLabel[1]} name={dateName}
-        value={init(inputLabel[1])} disabled="{!active}"
-        class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
-        required use:customizeValiditor
-      />
-    </div>
-  {/each}
+  <div class="flex flex-col">
+    <label for={labels.start.key}>{labels.start.label}</label>
+    <input
+      bind:this={beginInput}
+      type="date"
+      id={labels.start.key}
+      name={labels.start.key}
+      value={init(labels.start.key)}
+      disabled="{!active}"
+      class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
+      required
+      use:customizeValiditor
+    />
+  </div>
+  <div class="flex flex-col">
+    <label for={labels.end.key}>{labels.end.label}</label>
+    <input
+      bind:this={endInput}
+      type="date"
+      id={labels.end.key}
+      name={labels.end.key}
+      value={init(labels.end.key)}
+      disabled="{!active}"
+      class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
+      required
+      use:customizeValiditor
+    />
+  </div>
 </div>

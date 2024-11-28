@@ -2,7 +2,6 @@
   import { page } from '$app/stores';
 
   export let coordinatesId: string;
-  export let coordinatesName: string;
   export let active: boolean = false;
 
   /************* Translations ***************/
@@ -27,14 +26,56 @@
     "The northern latitude value should be greater than the southern latitude.";
 
   const labels = [
-    [north, coordinatesId + "-north", "90", "90"],
-    [east, coordinatesId + "-east", "180", "180"],
-    [south, coordinatesId + "-south", "90", "-90"],
-    [west, coordinatesId + "-west", "180", "-180"]
+    { label: north, id: coordinatesId + "-north", max: "90", placeHolder: "90" },
+    { label: east, id: coordinatesId + "-east", max: "180", placeHolder: "180" },
+    { label: south, id: coordinatesId + "-south", max: "90", placeHolder: "-90" },
+    { label: west, id: coordinatesId + "-west", max: "180", placeHolder: "-180" },
   ];
 
+  // Element references
+  let inputs = {};
+
+  export function resetFilters() {
+    const urlParams = $page.url.searchParams;
+    const coords = {
+      north: urlParams.get("north"),
+      east: urlParams.get("east"),
+      south: urlParams.get("south"),
+      west: urlParams.get("west"),
+    };
+
+    labels.forEach(({ id }) => {
+      if (inputs) {
+        const key = id.replace(coordinatesId + '-', '');
+        const value = coords[key];
+        inputs[id].value = value && !isNaN(Number.parseFloat(value)) ? value : null;
+      }
+    });
+  }
+
+  export function getBBox() {
+    let northEl = inputs['spatio-temporal-north'];
+    let eastEl = inputs['spatio-temporal-east'];
+    let southEl = inputs['spatio-temporal-south'];
+    let westEl = inputs['spatio-temporal-west'];
+    let bbox = null;
+
+    if (northEl && eastEl && southEl && westEl) {
+      bbox = {
+        north: northEl.value,
+        east: eastEl.value,
+        south: southEl.value,
+        west: westEl.value,
+      };
+    }
+
+    return bbox;
+  }
+
   function init(key: string) {
-    return $page.url.searchParams.get(key);
+    let searchKey = key.replace((coordinatesId + '-'), '');
+    let coord = $page.url.searchParams.get(searchKey);
+    return coord;
 	}
 
   /************* Validators ***************/
@@ -61,25 +102,23 @@
       } else if (!Number.isNaN(max) && number > max) {
         message = validatorTooBig + max;
       } else if (input.id == coordinatesId + '-north') {
-        let southElement = document.getElementById(coordinatesId + '-south');
-        let southNumber = Number.parseFloat(southElement.value);
-        if (!Number.isNaN(southNumber) && number < southNumber) {
+        const southValue = Number.parseFloat(inputs[coordinatesId + '-south']?.value || "");
+        if (!Number.isNaN(southValue) && number < southValue) {
           message = validatorNorthGreater;
         }
       } else if (input.id == coordinatesId + '-south') {
-        let northElement = document.getElementById(coordinatesId + '-north');
-        let northNumber = Number.parseFloat(northElement.value);
-        if (!Number.isNaN(northNumber) && number > northNumber) {
+        const northValue = Number.parseFloat(inputs[coordinatesId + '-north']?.value || "");
+        if (!Number.isNaN(northValue) && number > northValue) {
           message = validatorNorthGreater;
         }
       }
 
 			input.setCustomValidity(message);	
 		}
-		
+
 		input.addEventListener('input', validate);
 		validate();
-		
+
 		return {
 			destroy() {
 				input.removeEventListener('input', validate);
@@ -91,22 +130,28 @@
 
 <p class="mb-3" >{spatialInstructions}</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-  {#each labels as inputLabel}
+  {#each labels as { label, id, max, placeHolder }}
     <div class="flex flex-col">
-      <label for={inputLabel[1]}>
-        {inputLabel[0] + " (" + degrees + ")"}
+      <label for={id}>
+        {label} ({degrees})
       </label>
       <!--
         Note: the 'required' attribute only works when the input is enabled,
         so it won't block a form unless the user has selected the spatial checkbox
       -->
       <input
-        type="number" id={inputLabel[1]} name={coordinatesName}
-        min={"-" + inputLabel[2]} max={inputLabel[2]}
-        placeholder={inputLabel[3]} disabled="{!active}"
-        value={init(inputLabel[1])}
+        bind:this={inputs[id]}
+        type="number"
+        id={id}
+        name={id}
+        min={'-' + max}
+        max={max}
+        placeholder={placeHolder}
+        disabled="{!active}"
+        value={init(id)}
         class="border-2 rounded border-custom-16 px-3.5 py-[9px]"
-        required use:customizeValiditor
+        required
+        use:customizeValiditor
       />
     </div>
   {/each}

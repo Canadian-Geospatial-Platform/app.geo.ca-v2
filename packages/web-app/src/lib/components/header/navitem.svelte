@@ -1,13 +1,20 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { page } from '$app/stores';
+  import { onMount, createEventDispatcher } from 'svelte';
   import {clickOutside} from './clickOutside';
   import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
   import Navdropdown from './navdropdown.svelte';
   import Chevronup from '../icons/chevronup.svelte';
   import Chevrondown from '../icons/chevrondown.svelte';
+  import Chevronright from '../icons/chevronright.svelte';
 
   export let linkData;
   export let orientation;
+
+  const dispatch = createEventDispatcher();
+
+  const lang = $page.data.lang;
+  const homeText = lang == 'fr-ca' ? 'Accueil' : 'Home';
 
   let chevronDown = true;
   let active = false;
@@ -37,7 +44,15 @@
     } else {
       setActive(true, false, isHorizontal);
     }
+
+    if (!isHorizontal) {
+      dispatchDropDownClick();
+    }
 	};
+	
+	function dispatchDropDownClick() {
+	  dispatch('dropDownClick', {'menu': linkData});
+	}
 
   function resetNav() {
     if (active) {
@@ -46,7 +61,7 @@
   };
 
   onMount(() => {
-    currentUrl = window.location.href;
+    currentUrl = $page.url.origin + $page.url.pathname;
     frenchUrl = currentUrl.replace("en-ca", "fr-ca");
     englishUrl = currentUrl.replace("fr-ca", "en-ca");
   });
@@ -58,16 +73,15 @@
   class="h-full"
   class:active={active && orientation === 'horizontal'}
 >
-  {#if linkData?.options}
+  {#if linkData?.options && orientation == 'horizontal'}
     <!-- TODO: fix typescript error for click_outside event-->
     <button
       class="nav-link"
-      class:w-full={orientation === 'vertical'}
       use:clickOutside
       on:click_outside={handleClickOutside(orientation)}
       on:click={() => handleDropdownClick(orientation)}
     >
-      {linkData["title"]}
+      {linkData.title}
       {#if chevronDown}
         <Chevrondown classes="mt-1 ml-1 h-4 w-4 text-custom-16"/>
       {:else}
@@ -78,18 +92,38 @@
     <div class="relative">
       <Navdropdown options={linkData['options']} bind:active={active} orientation={orientation}/>
     </div>
-    <div class:mask={active && orientation === 'horizontal'}></div>
-  {:else if linkData?.title && linkData["title"] == "English"}
+    <div class:mask={active} />
+  {:else if linkData?.options}
+    <button
+      class="nav-link w-full justify-between"
+      use:clickOutside
+      on:click_outside={handleClickOutside(orientation)}
+      on:click={() => handleDropdownClick(orientation)}
+    >
+      <div>
+        {linkData.title}
+      </div>
+      <div>
+        <Chevronright classes="h-[35px] w-[35px] text-custom-16"/>
+      </div>
+    </button>
+  {:else if linkData?.title && linkData?.title == "English"}
     <a class="nav-link" href={englishUrl} data-sveltekit-reload>
-      {linkData["title"]}
+      {linkData.title}
     </a>
-  {:else if linkData?.title && linkData["title"] == "Français"}
+  {:else if linkData?.title && linkData?.title == "Français"}
     <a class="nav-link" href={frenchUrl} data-sveltekit-reload>
-      {linkData["title"]}
+      {linkData.title}
     </a>
+  {:else if linkData?.title && linkData?.title == homeText}
+    {#if orientation == 'vertical'}
+      <a class="nav-link" href={linkData["href"]}>
+        {linkData.title}
+      </a>
+    {/if}
   {:else if linkData?.href}
-    <a class="nav-link" href={linkData["href"]}>
-      {linkData["title"]}
+    <a class="nav-link" href={linkData["href"]} on:click={dispatchDropDownClick}>
+      {linkData.title}
     </a>
   {/if}
 </div>

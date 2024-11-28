@@ -28,36 +28,48 @@
   import Chevronleft from "$lib/components/icons/chevronleft.svelte";
   import Chevronright from "$lib/components/icons/chevronright.svelte";
   import { createEventDispatcher } from 'svelte';
+  import { page } from '$app/stores';
+  import { afterNavigate } from '$app/navigation';
 
 	const dispatch = createEventDispatcher();
 
   export let totalItems = 0;
   export let itemsPerPage = 10;
-  export let currentPage = 1;
+  export let currentPage;
   export let numPageButtons = 5;
-  let halfNumPageButtons = Math.floor(numPageButtons/2);
 
-  $: totalItems = totalItems;
-  $: currentPage = currentPage;
-  $: numPages = Math.ceil(totalItems/itemsPerPage);
-  $: startPage = 1;
+  // Add 1 since page number from url starts at 0 while page buttons start at 1
+  $: currentPage = parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1;
+  $: itemsPerPage = parseInt($page.url.searchParams.get('per-page') || itemsPerPage, 10);
+  $: totalItems = $page.data.total ?? 0;
 
-  function pageRange(current: number) {
-    if (numPages > numPageButtons) {
+  let halfNumPageButtons = Math.floor(numPageButtons / 2);
+  $: numPages = Math.ceil(totalItems / itemsPerPage);
+  $: pageButtons = pageRange(currentPage, numPages, numPageButtons);
+
+  function pageRange(current: number, totalPages: number, numButtons: number) {
+    if (totalPages > numButtons) {
+      let startPage;
       if (current <= halfNumPageButtons) {
         startPage = 1
-      } else if (current > numPages - halfNumPageButtons) {
-        startPage = numPages - numPageButtons + 1;
+      } else if (current > totalPages - halfNumPageButtons) {
+        startPage = totalPages - numButtons + 1;
       } else {
         startPage = current - halfNumPageButtons;
       }
-      return Array.from({ length: numPageButtons }, (value, i) => startPage + i);
+      return Array.from({ length: numButtons }, (_, i) => startPage + i);
     }
 
-    return Array.from({ length: numPages }, (_, i) => i + 1);
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
   function handlePageClick(page: number) {
+    // Go to the top of the page with new page load
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
     currentPage = page;
     dispatch('pageChange', page);
   }
@@ -65,13 +77,13 @@
 
 <div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_3px_6px_#00000029]" class:hidden={totalItems == 0}>
   <button
-    class="arrows mr-2 disabled:text-custom-19"
+    class="arrows mr-2 text-custom-16 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage - 1)}
     disabled={currentPage == 1 || totalItems == 0}
   >
     <Chevronleft classes="h-6" />
   </button>
-  {#each pageRange(currentPage) as page}
+  {#each pageButtons as page}
     <button
       class="font-custom-style-button-1 h-7 w-7"
       class:current-page={page == currentPage}
@@ -81,7 +93,7 @@
     </button>
   {/each}
   <button
-    class="arrows ml-2 disabled:text-custom-19"
+    class="arrows ml-2 text-custom-16 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage + 1)}
     disabled={currentPage == numPages || totalItems == 0}
   >
@@ -95,7 +107,6 @@
     @apply h-7;
     @apply w-7;
     @apply rounded;
-    @apply text-custom-16;
   }
 
   .current-page {

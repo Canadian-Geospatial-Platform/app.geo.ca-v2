@@ -1,8 +1,7 @@
 export function toggleScroll(active: Boolean) {
-  const body = document.body;
-  if (active) {
-    body.style.overflowY = "hidden";
-  } else {
-    body.style.overflowY = "auto";
+  // Check if 'document' is defined to avoid error during server side rendering
+  if (typeof document !== "undefined") {
+    const body = document.body;
+    body.style.overflowY = active ? "hidden" : "auto";
   }
 }

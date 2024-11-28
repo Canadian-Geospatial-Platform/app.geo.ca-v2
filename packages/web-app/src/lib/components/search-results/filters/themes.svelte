@@ -1,29 +1,28 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
 
-  export let tempNumFilters: number;
-
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
-  const themes = filters.find((x: Filter) => x.section == "theme");
+  const themes = filters.find((x: Filter) => x.section === 'theme');
+  let checkedStates: { [key: string]: boolean } = {};
 
-  function init(key: string) {
-    return $page.url.searchParams.get(key) == 'on' ? true : false;
-	}
-
-  /************* Handlers ***************/
-  function handleCheckboxClick(event: CustomEvent) {
-    let detail = event.detail;
-    let checkbox = detail.target as HTMLInputElement;
-    if (checkbox.checked == true) {
-      tempNumFilters = tempNumFilters + 1;
-    } else {
-      tempNumFilters = tempNumFilters - 1;
+  // Reset filters based on current URL search params
+  export function resetFilters() {
+    let themeKey = $page.url.searchParams.get('theme');
+    if (themes) {
+      themes.filterList.forEach((filterListItem) => {
+        const key = filterListItem.value;
+        checkedStates[key] = themeKey?.includes(key) || false;
+      });
     }
   }
 
+  export function clearAllFilters() {
+    checkedStates = {};
+  }
 </script>
 
 <h3 class="font-custom-style-h3">
@@ -33,10 +32,9 @@
   {#each themes.filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={themes.section + "-" + filterListItem.value}
-      checkboxName={themes.section}
+      checkboxName={themes.section + "-" + filterListItem.value}
       checkboxLabel={filterListItem.label}
-      checked={init(themes.section + "-" + filterListItem.value)}
-      on:checkedStateChange={handleCheckboxClick}
+      checked={checkedStates[filterListItem.value] || false}
     />
   {/each}
 </div>

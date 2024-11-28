@@ -9,15 +9,6 @@ declare module "sst" {
       "name": string
       "type": "sst.aws.Bucket"
     }
-    "MyApi": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
-    "MyBucket": {
-      "name": string
-      "type": "sst.aws.Bucket"
-    }
     "Users": {
       "name": string
       "type": "sst.aws.Dynamo"
