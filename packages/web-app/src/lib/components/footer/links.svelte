@@ -12,7 +12,7 @@
           <h3>{data["title"]}</h3>
         {/if}
         {#if data?.links}
-          <ul class="list-disc list-outside py-2 ml-[18px]">
+          <ul class="list-disc list-outside py-2 ml-[1.125rem]">
             {#each data["links"] as link}
               <li class="py-2 font-custom-style-footer-2 hover:underline">
                 <a href={link["href"]}>{link["title"]}</a>

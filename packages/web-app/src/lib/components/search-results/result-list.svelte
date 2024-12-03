@@ -56,7 +56,7 @@
   $: results = $page.data.results ?? [];
   $: total = $page.data.total ?? 0;
 
-  let hrefPrefix: string;
+  let hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
 
   function changePage(event: CustomEvent) {
     currentPage = event.detail;
@@ -68,10 +68,6 @@
   /****************** Map ******************/
   let mapType = 'resultList';
   let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
-
-  onMount(() => {
-    hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
-  });
 
   afterNavigate(async () => {
     try {

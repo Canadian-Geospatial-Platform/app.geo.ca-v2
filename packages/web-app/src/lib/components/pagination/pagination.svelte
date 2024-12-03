@@ -75,7 +75,7 @@
   }
 </script>
 
-<div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_3px_6px_#00000029]" class:hidden={totalItems == 0}>
+<div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_0.1875rem_0.375rem_#00000029]" class:hidden={totalItems == 0}>
   <button
     class="arrows mr-2 text-custom-16 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage - 1)}

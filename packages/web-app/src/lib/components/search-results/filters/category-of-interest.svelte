@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount } from 'svelte';
   import { tempCategoryOfInterest, updateTempCategoryOfInterest } from '$lib/components/search-results/store';
   import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
   import type { FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
@@ -10,6 +9,13 @@
   const categories = $page.data.categories;
   let selected: SelectOption | null = null;
   let categoryStoreVal: string | null = null;
+
+  let selectedValue = $page.url.searchParams.get(categoriesKey);
+  let selectedCategory = findCategory(selectedValue);
+  if (selectedCategory && selected !== selectedCategory) {
+    selected = selectedCategory;
+    updateTempCategoryOfInterest(selected?.value ?? null);
+  }
 
   export function resetFilters() {
     let catKey = $page.url.searchParams.get('category-of-interest');
@@ -23,17 +29,6 @@
     return categoryStoreVal;
   }
 
-  onMount(() => {
-    init();
-    tempCategoryOfInterest.subscribe((value) => {
-      let category = findCategory(value);
-      if (selected != category) {
-        changeSelection(category);
-      }
-      categoryStoreVal = value;
-    });
-  });
-
   /************* Translations ***************/
   const translations = $page.data.t;
   const categoryOfInterestText = translations?.categoryOfInterest ?
@@ -43,15 +38,6 @@
 
   /************* Filter Data ***************/
   const categoriesKey = 'category-of-interest';
-
-  function init() {
-    let selectedValue = $page.url.searchParams.get(categoriesKey);
-    let selectedCategory = findCategory(selectedValue);
-    if (selectedCategory) {
-      selected = selectedCategory;
-      updateTempCategoryOfInterest(selected?.value ?? null);
-    }
-	}
 
   function findCategory(categoryName: string | null) {
     return categories.find((x: FilterItem) => x.value == categoryName) ?? null;
@@ -66,6 +52,15 @@
     changeSelection(event.detail);
     updateTempCategoryOfInterest(selected?.value ?? null);
   }
+
+  /************* Subscriptions ***************/
+  tempCategoryOfInterest.subscribe((value) => {
+    let category = findCategory(value);
+    if (selected != category) {
+      changeSelection(category);
+    }
+    categoryStoreVal = value;
+  });
 </script>
 
 <div class="w-full">

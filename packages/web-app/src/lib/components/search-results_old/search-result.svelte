@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { getContext } from 'svelte';
 	import Map from '$lib/components/map/map.svelte';

@@ -104,7 +104,7 @@
         {linkData.title}
       </div>
       <div>
-        <Chevronright classes="h-[35px] w-[35px] text-custom-16"/>
+        <Chevronright classes="h-[2.1875rem] w-[2.1875rem] text-custom-16"/>
       </div>
     </button>
   {:else if linkData?.title && linkData?.title == "English"}
@@ -136,7 +136,7 @@
   }
   .active {
     @apply shadow-nav;
-    @apply border-b-[1px];
+    @apply border-b;
   }
 
   .mask {

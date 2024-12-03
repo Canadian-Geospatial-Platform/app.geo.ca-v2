@@ -28,7 +28,7 @@ export function setPosition(node: any) {
 
   function calcPosition() {
     // Reset node position to default
-    node.style.transform = "translate(0px, 0px)";
+    node.style.transform = "translate(0rem, 0rem)";
 
     nodeBounding = node.getBoundingClientRect();
     nodeLeft = nodeBounding.left;

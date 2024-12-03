@@ -52,7 +52,7 @@
   export let removableSelection: boolean = false;
   export let defaultLabel: string = "";
 
-  $: expanded = false;
+  let expanded = false;
 
   function handleSelectClick() {
     expanded = !expanded;
@@ -108,7 +108,7 @@
           type="button"
           on:click|stopPropagation={handleRemoveSelect}
         >
-          <Close classes="h-[8px]"/>
+          <Close classes="h-2"/>
         </button>
       {/if}
     {:else}
@@ -126,13 +126,13 @@
   </span>
 </button>
 <div
-  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[5px]"
+  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[0.3125rem]"
   style:--dropDownColor={dropDownColor}
   class:hidden={!expanded}
   bind:this={dropDown}
 >
   {#each optionsData as option}
-    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1 last:rounded-b-[2px] hover:bg-custom-5"
+    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1 last:rounded-b-sm hover:bg-custom-5"
       id={option.value}
       role="option"
       aria-selected={option.value == selected?.value}

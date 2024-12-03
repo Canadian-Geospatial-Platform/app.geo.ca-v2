@@ -249,21 +249,21 @@
       <button
         type="button"
         class="flex justify-center items-center border border-custom-16 rounded-[50%]
-          h-[49px] w-[49px] hover:bg-custom-16 text-custom-16 hover:text-custom-1"
+          h-[3.0625rem] w-[3.0625rem] hover:bg-custom-16 text-custom-16 hover:text-custom-1"
         on:click={handleCloseButtonClick}
       >
-        <Close classes="h-[21px]"/>
+        <Close classes="h-[1.3125rem]"/>
       </button>
     </div>
-    <div class="grid grid-cols-2 col-span-6 bg-custom-5 border-t border-custom-21 px-5 py-[18px]">
+    <div class="grid grid-cols-2 col-span-6 bg-custom-5 border-t border-custom-21 px-5 py-[1.125rem]">
       <button
         type="button" class="justify-self-start button-3"
         on:click={handleClearAllClick}
       >
         {clearAllText}
       </button>
-      <button type="submit" class="justify-self-end button-5 shadow-[0px_3px_6px_#00000029]">
-        <Search classes="inline" height="18px"/>
+      <button type="submit" class="justify-self-end button-5 shadow-[0rem_0.1875rem_0.375rem_#00000029]">
+        <Search classes="inline" height="1.125rem"/>
         {searchText}
       </button>
     </div>

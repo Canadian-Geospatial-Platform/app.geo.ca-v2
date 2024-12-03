@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
 	import Catalog from './catalog.svelte';
 	import Record from './record.svelte';
 

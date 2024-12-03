@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount } from 'svelte';
   import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
   import DateRange from '$lib/components/search-results/filters/date-range.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
@@ -63,7 +62,7 @@
 </script>
 
 <h3 class="font-custom-style-h3">{label}</h3>
-<div class="space-y-[18px]">
+<div class="space-y-[1.125rem]">
   {#each filterList as filterListItem}
     <CheckboxCustomized
       checkboxId={section + "-" + filterListItem.value}
