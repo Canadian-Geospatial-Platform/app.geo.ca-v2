@@ -81,8 +81,8 @@
 </script>
 
 <FilterModal bind:active={modalActive} bind:numFilters={numFilters} bind:this={filterModal} />
-<Card>
-  <div class="flex flex-row">
+<Card bgColour='bg-custom-1 md:bg-custom-5' padding='p-0 md:p-6' spaceBetween='space-y-4 md:space-y-7'>
+  <div class="flex flex-row gap-y-5 flex-wrap md:flex-nowrap">
     <button
       class={`text-nowrap shadow-[0rem_0.1875rem_0.375rem_#00000029]
         ${$navigating ? 'button-3-disabled' : 'button-3'}`}
@@ -101,28 +101,33 @@
       {/if}
       {filtersText}
     </button>
-    <input
-      type="text"
-      placeholder={searchProductsText}
-      class="w-full h-12 ml-5 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
-        shadow-[inset_0rem_0.1875rem_0.375rem_#00000029]"
-      bind:this={searchTextInput}
-      on:keydown={handleSearchEnterKeyDown}
-      disabled={$navigating}
-      value={keywordFromUrl}
-    />
-    <button
-      class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
-        font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
-        ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
-      on:click={handleSearchClick}
-      disabled={$navigating}
-    >
-      <Search classes="inline" height="1.125rem"/>
-      {searchText}
-    </button>
+    <div class='flex flex-nowrap w-full'>
+      <input
+        type="text"
+        placeholder={searchProductsText}
+        class={`w-full h-12 md:ml-5 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
+          shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-2 md:border-0
+          ${$navigating ? 'border-custom-17' : 'border-custom-16'}`}
+        bind:this={searchTextInput}
+        on:keydown={handleSearchEnterKeyDown}
+        disabled={$navigating}
+        value={keywordFromUrl}
+      />
+      <button
+        class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
+          font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
+          ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
+        on:click={handleSearchClick}
+        disabled={$navigating}
+      >
+        <Search classes="inline" height="1.125rem"/>
+        <span class="hidden md:inline">
+          {searchText}
+        </span>
+      </button>
+    </div>
   </div>
-  <div class="flex flex-row gap-7 font-custom-style-body-8">
+  <div class="flex flex-row flex-wrap lg:flex-nowrap gap-x-4 gap-y-1 lg:gap-x-7 font-custom-style-body-8">
     <div>{datasetsText}: {datasets}</div>
     <div>{contributorsText}: {contributors}</div>
     <div>{applicationsText}: {applications}</div>

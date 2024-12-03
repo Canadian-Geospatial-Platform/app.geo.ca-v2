@@ -55,8 +55,20 @@
   let itemsPerPage = 10;
   $: results = $page.data.results ?? [];
   $: total = $page.data.total ?? 0;
+  $: totalPages = Math.ceil(total/itemsPerPage);
 
   let hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
+
+  $: pageMessage = translations?.pageMessage ?
+    parsePageMessage(translations["pageMessage"], currentPage, totalPages) : "";
+  
+  
+  function parsePageMessage(message, page, numPages) {
+    message = message.replaceAll('{{page}}', page);
+    message = message.replaceAll('{{totalPages}}', numPages);
+
+    return message;
+  }
 
   function changePage(event: CustomEvent) {
     currentPage = event.detail;
@@ -87,9 +99,9 @@
   <div class="flex flex-col-reverse md:flex-row justify-between flex-wrap-reverse">
     <p class="font-custom-style-body-6">
       {#if total === 1}
-        {total} {datasetText}
+        {total} {datasetText}, {pageMessage}
       {:else}
-        {total} {datasetsText}
+        {total} {datasetsText}, {pageMessage}
       {/if}
     </p>
     <div class="flex flex-col-reverse md:flex-row gap-3 md:gap-5">
