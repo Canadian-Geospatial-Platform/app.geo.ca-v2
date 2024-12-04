@@ -128,7 +128,6 @@
           <a 
             href={hrefPrefix + result.id}
             class="uppercase underline font-custom-style-header-2"
-            target="_blank"
           >
             {result.title}
           </a>

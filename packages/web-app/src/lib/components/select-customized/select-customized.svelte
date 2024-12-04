@@ -126,7 +126,8 @@
   </span>
 </button>
 <div
-  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[0.3125rem] bg-custom-1"
+  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[0.3125rem]
+    bg-custom-1 max-h-60 overflow-y-auto"
   style:--dropDownColor={dropDownColor}
   class:hidden={!expanded}
   bind:this={dropDown}
