@@ -37,10 +37,10 @@
   }
 </script>
 
-<h1 class="font-custom-style-h1">
+<h1 class="font-custom-style-h1 px-5 md:px-0">
   {searchResultsText}
 </h1>
-<p class="mb-2 mt-[-0.75em] font-open-sans">
+<p class="mb-2 mt-[-0.75em] font-open-sans px-5 md:px-0">
   {#if searchTerm}
     {messageSearchTerm}
   {:else}
@@ -48,7 +48,7 @@
   {/if}
 </p>
 <SearchBar />
-<h2 class="font-custom-style-h2">
+<h2 class="font-custom-style-h2 px-5 md:px-0">
   {listViewText}
 </h2>
 <ResultList />

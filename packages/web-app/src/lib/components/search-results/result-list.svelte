@@ -96,7 +96,7 @@
     <LoadingMask classes="bottom-0 right-0 z-10"/>
   {/if}
   <!-- Header -->
-  <div class="flex flex-col-reverse md:flex-row justify-between flex-wrap-reverse">
+  <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
     <p class="font-custom-style-body-6">
       {#if total === 1}
         {total} {datasetText}, {pageMessage}
@@ -107,6 +107,7 @@
     <div class="flex flex-col-reverse md:flex-row gap-3 md:gap-5">
       <div class="w-full md:w-48">
         <SelectCustomized
+          buttonWidth='w-48 md:w-full'
           optionsData={sortBySelectData}
           selectId={"sort-options"}
           bind:selected={selected}
@@ -153,7 +154,7 @@
     </div>
   {/each}
   <!-- Pagination -->
-  <div class="flex justify-end">
+  <div class="flex justify-end w-full">
     <Pagination
       totalItems={total}
       {itemsPerPage}

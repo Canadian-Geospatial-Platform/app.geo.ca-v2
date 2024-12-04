@@ -35,8 +35,8 @@
   };
 </script>
 
-<div class="flex flex-wrap items-center justify-center md:justify-start">
-  <h1 class="font-custom-style-body-1 mr-3 w-full md:w-fit text-center md:text-left">
+<div class="flex flex-wrap items-center justify-start">
+  <h1 class="font-custom-style-body-1 mr-3 w-full md:w-fit text-left">
     {shareText}
   </h1>
   <button aria-label="facebook" on:click={handleFacebookLink}>

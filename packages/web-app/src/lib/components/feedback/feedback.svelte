@@ -6,8 +6,8 @@
 	  "Nous apprécions vos commentaires" : "We Value Your Feedback";
 </script>
 
-<div class="font-custom-style-body-1">
-	<h2 class="font-custom-style-h2 mb-1">
+<div class="font-custom-style-body-1 px-5 md:px-0">
+  <h2 class="font-custom-style-h2 mb-1">
     {title}
   </h2>
 	<!-- TODO: Update feedback text -->

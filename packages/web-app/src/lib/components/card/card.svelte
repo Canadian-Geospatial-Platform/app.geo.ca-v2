@@ -1,6 +1,6 @@
 <script lang="ts">
   export let bgColour = 'bg-custom-5';
-  export let padding = 'p-6';
+  export let padding = 'p-5 md:p-6';
   export let spaceBetween = 'space-y-7';
 </script>
 

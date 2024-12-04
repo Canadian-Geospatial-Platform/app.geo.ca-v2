@@ -5,7 +5,7 @@
 	$: appGeoCaUrl = '/' + $page.data.lang + '/map-browser';
 </script>
 
-<ol class="flex flex-wrap gap-2 text-custom-8">
+<ol class="flex flex-wrap px-5 md:px-0 gap-2 text-custom-8">
 	<li><a href={geoCaUrl}>Home</a></li>
 	<li>/ <a href={appGeoCaUrl}>Search</a></li>
 	{#if $page.data.t_title_2}

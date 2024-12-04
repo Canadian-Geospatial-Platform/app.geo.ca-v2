@@ -34,12 +34,12 @@ export default {
 				144: '36rem'
 			},
 			boxShadow: {
-        'nav': '0 2px 3px white, 0 3px grey;',
+                'nav': '0 2px 3px white, 0 3px grey;',
 				'banner-img': '0 0 200px 50px #140a46 inset'
-      },
+            },
 			maxHeight: {
-        'vertical-nav': '90vh',
-      },
+                'vertical-nav': '90vh',
+            },
 			maxWidth: {
 				'tabbed-title': 'calc(100% - 135px)',
 			},

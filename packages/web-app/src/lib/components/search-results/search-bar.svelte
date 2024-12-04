@@ -81,7 +81,7 @@
 </script>
 
 <FilterModal bind:active={modalActive} bind:numFilters={numFilters} bind:this={filterModal} />
-<Card bgColour='bg-custom-1 md:bg-custom-5' padding='p-0 md:p-6' spaceBetween='space-y-4 md:space-y-7'>
+<Card bgColour='bg-custom-1 md:bg-custom-5' padding='px-5 py-0 md:px-6 md:py-6' spaceBetween='space-y-4 md:space-y-7'>
   <div class="flex flex-row gap-y-5 flex-wrap md:flex-nowrap">
     <button
       class={`text-nowrap shadow-[0rem_0.1875rem_0.375rem_#00000029]

@@ -46,7 +46,8 @@
   // The default selection object
   export let selected: SelectOption | undefined | null;
   export let selectId: string;
-  export let buttonClasses: string = "button-3";
+  export let buttonClasses: string = "select-button-2";
+  export let buttonWidth: string = "w-full";
   export let iconClasses: string = "w-4 h-4 self-center mr-1";
   export let dropDownColor: string = "#535AA4";
   export let removableSelection: boolean = false;
@@ -83,7 +84,7 @@
 </script>
 
 <button 
-  class="grid grid-cols-12 w-full {buttonClasses}"
+  class="grid grid-cols-12 {buttonClasses} {buttonWidth}"
   aria-haspopup="listbox" 
   aria-expanded={expanded}
   value={selected?.value ?? ''}
@@ -93,8 +94,7 @@
   bind:this={selectButton}
 >
   <span
-    class="group col-span-11 justify-self-center md:justify-self-start flex
-      flex-row translate-x-[13.1%] md:translate-x-0"
+    class="group col-span-11 justify-self-start flex flex-row"
   >
     {#if selected}
       {#if selected?.icon}
@@ -126,13 +126,14 @@
   </span>
 </button>
 <div
-  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[0.3125rem]"
+  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[0.3125rem] bg-custom-1"
   style:--dropDownColor={dropDownColor}
   class:hidden={!expanded}
   bind:this={dropDown}
 >
   {#each optionsData as option}
-    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1 last:rounded-b-sm hover:bg-custom-5"
+    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1
+        last:rounded-b-sm hover:bg-custom-5"
       id={option.value}
       role="option"
       aria-selected={option.value == selected?.value}

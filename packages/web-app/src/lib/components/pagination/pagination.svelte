@@ -75,7 +75,11 @@
   }
 </script>
 
-<div class="bg-custom-16 flex flex-row w-fit p-1.5 rounded shadow-[0_0.1875rem_0.375rem_#00000029]" class:hidden={totalItems == 0}>
+<div
+  class="flex flex-row justify-between items-center pagination-width
+    rounded shadow-[0_0.1875rem_0.375rem_#00000029] bg-custom-16"
+  class:hidden={totalItems == 0}
+>
   <button
     class="arrows mr-2 text-custom-16 disabled:text-custom-19"
     on:click={() => handlePageClick(currentPage - 1)}
@@ -103,9 +107,14 @@
 
 <style>
   .arrows {
+    @apply flex;
+    @apply items-center;
+    @apply justify-center;
     @apply bg-custom-1;
-    @apply h-7;
-    @apply w-7;
+    @apply h-11;
+    @apply w-11;
+    @apply md:h-7;
+    @apply md:w-7;
     @apply rounded;
   }
 
@@ -113,5 +122,18 @@
     @apply bg-custom-1;
     @apply text-custom-7;
     @apply rounded;
+  }
+  
+  .pagination-width {
+    @apply box-border;
+    @apply md:box-content;
+    width: calc(100% + 2.5rem);
+    @apply md:w-fit;
+    @apply mx-[-1.25rem];
+    @apply md:mx-0;
+    @apply py-2.5;
+    @apply md:py-1.5;
+    @apply px-5;
+    @apply md:px-1.5;
   }
 </style>
