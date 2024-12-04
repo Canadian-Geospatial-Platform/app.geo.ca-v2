@@ -5,7 +5,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "sst dev"
+    "dev": "sst dev",
+    "deploy-dev": "sst deploy --stage development",
+    "deploy-stage": "sst deploy --stage staging",
+    "deploy-prod": "sst deploy --stage production"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
