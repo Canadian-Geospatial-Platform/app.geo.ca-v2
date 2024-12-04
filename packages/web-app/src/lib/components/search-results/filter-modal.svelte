@@ -224,7 +224,7 @@
   class:hidden={!active}
 >
   <form
-    class="grid grid-cols-6 bg-custom-1 border border-custom-21 w-2/3 h-fit mt-2"
+    class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-11/12 md:w-2/3 h-fit mt-2"
     on:submit|preventDefault={handleSubmit}
   >
     <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
@@ -245,24 +245,34 @@
         <OtherFilters bind:this={othersCompontent} />
       </div>
     </div>
-    <div class="col-span-1 px-5 pt-8 justify-self-end">
+    <div class="absolute md:static top-0 right-3.5 col-span-1 px-5 pt-8 justify-self-end">
       <button
         type="button"
         class="flex justify-center items-center border border-custom-16 rounded-[50%]
-          h-[3.0625rem] w-[3.0625rem] hover:bg-custom-16 text-custom-16 hover:text-custom-1"
+          h-9 w-9 md:h-[3.0625rem] md:w-[3.0625rem] hover:bg-custom-16 text-custom-16
+          hover:text-custom-1"
         on:click={handleCloseButtonClick}
       >
-        <Close classes="h-[1.3125rem]"/>
+        <Close classes="h-4 md:h-[1.3125rem]"/>
       </button>
     </div>
-    <div class="grid grid-cols-2 col-span-6 bg-custom-5 border-t border-custom-21 px-5 py-[1.125rem]">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 col-span-6 bg-custom-5 md:border-t border-custom-21
+        px-5 py-7 md:py-[1.125rem] gap-y-8"
+    >
       <button
-        type="button" class="justify-self-start button-3"
+        type="button"
+        class="row-start-2 md:row-start-1 w-full md:w-auto justify-self-start button-3
+          h-12 md:h-auto"
         on:click={handleClearAllClick}
       >
         {clearAllText}
       </button>
-      <button type="submit" class="justify-self-end button-5 shadow-[0rem_0.1875rem_0.375rem_#00000029]">
+      <button
+        type="submit"
+        class="w-full md:w-auto justify-self-end button-5 h-12 md:h-auto
+          shadow-[0rem_0.1875rem_0.375rem_#00000029]"
+      >
         <Search classes="inline" height="1.125rem"/>
         {searchText}
       </button>
