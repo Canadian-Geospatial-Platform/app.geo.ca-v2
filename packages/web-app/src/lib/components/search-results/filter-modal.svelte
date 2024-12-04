@@ -224,7 +224,7 @@
   class:hidden={!active}
 >
   <form
-    class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-11/12 md:w-2/3 h-fit mt-2"
+    class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-full md:w-2/3 h-fit md:mt-2 m-5 md:m-0"
     on:submit|preventDefault={handleSubmit}
   >
     <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
@@ -245,7 +245,7 @@
         <OtherFilters bind:this={othersCompontent} />
       </div>
     </div>
-    <div class="absolute md:static top-0 right-3.5 col-span-1 px-5 pt-8 justify-self-end">
+    <div class="absolute md:static top-0 right-4 col-span-1 px-5 pt-8 justify-self-end">
       <button
         type="button"
         class="flex justify-center items-center border border-custom-16 rounded-[50%]
