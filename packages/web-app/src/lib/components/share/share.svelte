@@ -9,7 +9,7 @@
   let shareText = translations?.shareText ? translations["shareText"] : "Share";
   let path = $page.url;
   let encodedPath = encodeURIComponent(String(path));
-  let iconClass = "m-2 h-12 w-12";
+  let iconClass = "m-1 md:m-2 h-10 md:h-12 w-10 md:w-12";
 
   function handleFacebookLink() {
     let facebookLink = "https://www.facebook.com/sharer/sharer.php";
@@ -36,7 +36,7 @@
 </script>
 
 <div class="flex flex-wrap items-center justify-start">
-  <h1 class="font-custom-style-body-1 mr-3 w-full md:w-fit text-left">
+  <h1 class="font-custom-style-body-1 mr-3 w-full md:w-fit text-left mb-2 md:mb-0">
     {shareText}
   </h1>
   <button aria-label="facebook" on:click={handleFacebookLink}>

@@ -10,7 +10,7 @@
 </script>
 
 <div
-  class="flex flex-col md:flex-row content-width md:items-center my-10
+  class="flex flex-col md:flex-row content-width md:items-center mb-6 md:mb-10 mt-10
     md:justify-between px-5 md:px-0 gap-y-6"
 >
   <p class="font-semibold">{dateModifiedText}: {dateModified}</p>
