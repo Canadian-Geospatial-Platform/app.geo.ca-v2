@@ -245,7 +245,7 @@
         <OtherFilters bind:this={othersCompontent} />
       </div>
     </div>
-    <div class="absolute md:static top-0 right-4 col-span-1 px-5 pt-8 justify-self-end">
+    <div class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end">
       <button
         type="button"
         class="flex justify-center items-center border border-custom-16 rounded-[50%]
