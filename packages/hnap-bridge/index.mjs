@@ -3,7 +3,7 @@ import aws from "aws-sdk";
 import { Resource } from "sst";
 import codelist from "./codelists.js"; // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
 const s3 = new aws.S3();
-const OUTPUT_BUCKET_NAME = Ressource.DataLake.bucketName;
+const OUTPUT_BUCKET_NAME = Resource.DataLake.name;
 var languageCode; // defined globally as it is widely used and unchanging.
 
 export const handler = async (event, context, callback) => {
@@ -48,22 +48,22 @@ async function parseData(data) {
     id: data["gmd:fileIdentifier"]?.["gco:CharacterString"]?.["#text"],
     title: parseMultilingualStringObject(
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:citation"
+      "gmd:citation"
       ]?.["gmd:CI_Citation"]?.["gmd:title"]?.["gco:CharacterString"]?.["#text"],
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:citation"
+      "gmd:citation"
       ]?.["gmd:CI_Citation"]?.["gmd:title"]?.["gmd:PT_FreeText"]?.[
-        "gmd:textGroup"
+      "gmd:textGroup"
       ]?.["gmd:LocalisedCharacterString"]?.["#text"],
     ),
     description: parseMultilingualStringObject(
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:abstract"
+      "gmd:abstract"
       ]?.["gco:CharacterString"]?.["#text"],
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:abstract"
+      "gmd:abstract"
       ]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-        "gmd:LocalisedCharacterString"
+      "gmd:LocalisedCharacterString"
       ]?.["#text"],
     ),
     keywords: parseKeywords(data),
@@ -72,7 +72,7 @@ async function parseData(data) {
     date: parseDates(data),
     spatialRepresentation: splitMultilingualString(
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:spatialRepresentationType"
+      "gmd:spatialRepresentationType"
       ]?.["gmd:MD_SpatialRepresentationTypeCode"]?.["#text"],
     ),
     type: splitMultilingualString(
@@ -83,14 +83,14 @@ async function parseData(data) {
     refSys: parseReferenceSystem(data),
     status: splitMultilingualString(
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:status"
+      "gmd:status"
       ]?.["gmd:MD_ProgressCode"]?.["#text"],
     ),
     maintenance: splitMultilingualString(
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:resourceMaintenance"
+      "gmd:resourceMaintenance"
       ]?.["gmd:MD_MaintenanceInformation"]?.[
-        "gmd:maintenanceAndUpdateFrequency"
+      "gmd:maintenanceAndUpdateFrequency"
       ]?.["gmd:MD_MaintenanceFrequencyCode"]?.["#text"],
     ),
     metadataStandard: parseMetadataStandard(data),
@@ -106,7 +106,7 @@ async function parseData(data) {
     ),
     environmentDescription:
       data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-        "gmd:environmentDescription"
+      "gmd:environmentDescription"
       ]?.["gco:CharacterString"]?.["#text"],
     supplementalInformation: parseSupplementalInformation(data),
     contact: parseContacts(data),
@@ -126,7 +126,7 @@ async function parseData(data) {
 function parseTopicCategory(data) {
   const topicCategoryCodes = collectSubValues(
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:topicCategory"
+    "gmd:topicCategory"
     ],
     '["gmd:MD_TopicCategoryCode"]',
   );
@@ -149,7 +149,7 @@ function parseCredits(data) {
   let ret = [];
   const creditsArray = toArray(
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:credit"
+    "gmd:credit"
     ],
   );
   creditsArray.forEach((e) => {
@@ -162,7 +162,7 @@ function parseCited(data) {
   let ret = [];
   const citedArray = collectSubValues(
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:citation"
+    "gmd:citation"
     ]?.["gmd:CI_Citation"]?.["gmd:citedResponsibleParty"],
     '["gmd:CI_ResponsibleParty"]',
   );
@@ -187,23 +187,23 @@ function parseContact(contact) {
     position: parseMultilingualStringObject(
       contact?.["gmd:positionName"]?.["gco:CharacterString"]?.["#text"],
       contact?.["gmd:positionName"]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-        "gmd:LocalisedCharacterString"
+      "gmd:LocalisedCharacterString"
       ]?.["#text"],
     ),
     organisation: parseMultilingualStringObject(
       contact?.["gmd:organisationName"]?.["gco:CharacterString"]?.["#text"],
       contact?.["gmd:organisationName"]?.["gmd:PT_FreeText"]?.[
-        "gmd:textGroup"
+      "gmd:textGroup"
       ]?.["gmd:LocalisedCharacterString"]?.["#text"],
     ),
     telephone: parseMultilingualStringObject(
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:phone"]?.[
-        "gmd:CI_Telephone"
+      "gmd:CI_Telephone"
       ]?.["gmd:voice"]?.["gco:CharacterString"]?.["#text"],
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:phone"]?.[
-        "gmd:CI_Telephone"
+      "gmd:CI_Telephone"
       ]?.["gmd:voice"]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-        "gmd:LocalisedCharacterString"
+      "gmd:LocalisedCharacterString"
       ]?.["#text"],
     ),
     fax: contact?.["gmd:CI_ResponsibleParty"]?.["gmd:contactInfo"]?.[
@@ -213,12 +213,12 @@ function parseContact(contact) {
     ]?.["#text"],
     address: parseMultilingualStringObject(
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:deliveryPoint"]?.["gco:CharacterString"]?.["#text"],
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:deliveryPoint"]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-        "gmd:LocalisedCharacterString"
+      "gmd:LocalisedCharacterString"
       ]?.["#text"],
     ),
     city: contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
@@ -226,36 +226,36 @@ function parseContact(contact) {
     ]?.["gmd:city"]?.["gco:CharacterString"]?.["#text"],
     provinceOrTerritory: parseMultilingualStringObject(
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:administrativeArea"]?.["gco:CharacterString"]?.["#text"],
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:administrativeArea"]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-        "gmd:LocalisedCharacterString"
+      "gmd:LocalisedCharacterString"
       ]?.["#text"],
     ),
     postalCode:
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:postalCode"]?.["gco:CharacterString"]?.["#text"],
     country: parseMultilingualStringObject(
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:country"]?.["gco:CharacterString"]?.["#text"],
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:country"]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-        "gmd:LocalisedCharacterString"
+      "gmd:LocalisedCharacterString"
       ]?.["#text"],
     ),
     email: parseMultilingualStringObject(
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:electronicMailAddress"]?.["gco:CharacterString"]?.["#text"],
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:address"]?.[
-        "gmd:CI_Address"
+      "gmd:CI_Address"
       ]?.["gmd:electronicMailAddress"]?.["gmd:PT_FreeText"]?.[
-        "gmd:textGroup"
+      "gmd:textGroup"
       ]?.["gmd:LocalisedCharacterString"]?.["#text"],
     ),
     onlineResource: {
@@ -264,9 +264,9 @@ function parseContact(contact) {
       ]?.["gmd:CI_OnlineResource"]?.["gmd:linkage"]?.["gmd:URL"],
       protocol:
         contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.[
-          "gmd:onlineResource"
+        "gmd:onlineResource"
         ]?.["gmd:CI_OnlineResource"]?.["gmd:protocol"]?.[
-          "gco:CharacterString"
+        "gco:CharacterString"
         ]?.["#text"],
       name: contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.[
         "gmd:onlineResource"
@@ -275,14 +275,14 @@ function parseContact(contact) {
       ],
       description:
         contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.[
-          "gmd:onlineResource"
+        "gmd:onlineResource"
         ]?.["gmd:CI_OnlineResource"]?.["gmd:description"]?.[
-          "gco:CharacterString"
+        "gco:CharacterString"
         ]?.["#text"],
     },
     hoursOfService:
       contact?.["gmd:contactInfo"]?.["gmd:CI_Contact"]?.[
-        "gmd:hoursOfService"
+      "gmd:hoursOfService"
       ]?.["gco:CharacterString"]?.["#text"],
     role: splitMultilingualString(
       contact?.["gmd:role"]?.["gmd:CI_RoleCode"]?.["#text"],
@@ -293,12 +293,12 @@ function parseContact(contact) {
 function parseSupplementalInformation(data) {
   return parseMultilingualStringObject(
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:supplementalInformation"
+    "gmd:supplementalInformation"
     ]?.["gco:CharacterString"]?.["#text"],
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:supplementalInformation"
+    "gmd:supplementalInformation"
     ]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-      "gmd:LocalisedCharacterString"
+    "gmd:LocalisedCharacterString"
     ]?.["#text"],
   );
 }
@@ -307,22 +307,22 @@ function parseLocale(data) {
   return {
     language: splitMultilingualString(
       data["gmd:locale"]?.["gmd:PT_Locale"]?.["gmd:languageCode"]?.[
-        "gmd:LanguageCode"
+      "gmd:LanguageCode"
       ]?.["#text"],
     ),
     country: splitMultilingualString(
       data["gmd:locale"]?.["gmd:PT_Locale"]?.["gmd:country"]?.["gmd:Country"]?.[
-        "#text"
+      "#text"
       ],
     ),
     encoding: splitMultilingualString(
       data["gmd:locale"]?.["gmd:PT_Locale"]?.["gmd:characterEncoding"]?.[
-        "gmd:MD_CharacterSetCode"
+      "gmd:MD_CharacterSetCode"
       ]?.["#text"],
       ["gmd:contactInfo"]?.["gmd:CI_Contact"]?.["gmd:phone"]?.[
-        "gmd:CI_Telephone"
+      "gmd:CI_Telephone"
       ]?.["gmd:voice"]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-        "gmd:LocalisedCharacterString"
+      "gmd:LocalisedCharacterString"
       ]?.["#text"],
     ),
   };
@@ -331,23 +331,23 @@ function parseLocale(data) {
 function parseConstraints(data) {
   const constraints =
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:resourceConstraints"
+    "gmd:resourceConstraints"
     ]?.["gmd:MD_LegalConstraints"];
   let ret = {
     legal: parseMultilingualStringObject(
       constraints?.["gmd:useLimitation"]?.["gco:CharacterString"]?.["#text"],
       constraints?.["gmd:useLimitation"]?.["gmd:PT_FreeText"]?.[
-        "gmd:textGroup"
+      "gmd:textGroup"
       ]?.["gmd:LocalisedCharacterString"]?.["#text"],
     ),
     access: splitMultilingualString(
       constraints?.["gmd:accessConstraints"]?.["gmd:MD_RestrictionCode"]?.[
-        "#text"
+      "#text"
       ],
     ),
     use: splitMultilingualString(
       constraints?.["gmd:useConstraints"]?.["gmd:MD_RestrictionCode"]?.[
-        "#text"
+      "#text"
       ],
     ),
     other:
@@ -360,7 +360,7 @@ function parseDistributionFormats(data) {
   let ret = [];
   const distributionFormatArray = collectSubValues(
     data["gmd:distributionInfo"]?.["gmd:MD_Distribution"]?.[
-      "gmd:distributionFormat"
+    "gmd:distributionFormat"
     ],
     '["gmd:MD_Format"]',
   );
@@ -382,7 +382,7 @@ function parseGraphicOverviews(data) {
   let ret = [];
   let graphicOverviewArray = collectSubValues(
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:graphicOverview"
+    "gmd:graphicOverview"
     ],
     '["gmd:MD_BrowseGraphic"]',
   );
@@ -397,7 +397,7 @@ function parseGraphicOverview(graphicOverview) {
     name: graphicOverview?.["gmd:fileName"]?.["gco:CharacterString"]?.["#text"],
     description:
       graphicOverview?.["gmd:fileDescription"]?.["gco:CharacterString"]?.[
-        "#text"
+      "#text"
       ],
     type: graphicOverview?.["gmd:fileType"]?.["gco:CharacterString"]?.["#text"],
   };
@@ -415,7 +415,7 @@ function parseMetadataStandardText(data) {
   return parseMultilingualStringObject(
     data["gmd:metadataStandardName"]?.["gco:CharacterString"]?.["#text"],
     data["gmd:metadataStandardName"]?.["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-      "gmd:LocalisedCharacterString"
+    "gmd:LocalisedCharacterString"
     ]?.["#text"],
   );
 }
@@ -446,7 +446,7 @@ function parseKeywords(data) {
   let ret = [];
   const keywordArray = collectSubValues(
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:descriptiveKeywords"
+    "gmd:descriptiveKeywords"
     ],
     '["gmd:MD_Keywords"]?.["gmd:keyword"]',
   );
@@ -455,7 +455,7 @@ function parseKeywords(data) {
       parseMultilingualStringObject(
         e["gco:CharacterString"]?.["#text"],
         e["gmd:PT_FreeText"]?.["gmd:textGroup"]?.[
-          "gmd:LocalisedCharacterString"
+        "gmd:LocalisedCharacterString"
         ]?.["#text"],
       ),
     );
@@ -468,7 +468,7 @@ function parseOptions(data) {
   let ret = [];
   const optionsArray = collectSubValues(
     data["gmd:distributionInfo"]?.["gmd:MD_Distribution"]?.[
-      "gmd:transferOptions"
+    "gmd:transferOptions"
     ],
     '["gmd:MD_DigitalTransferOptions"]?.["gmd:onLine"]',
   );
@@ -483,22 +483,22 @@ function parseOption(option) {
     url: option?.["gmd:CI_OnlineResource"]?.["gmd:linkage"]?.["gmd:URL"],
     protocol:
       option?.["gmd:CI_OnlineResource"]?.["gmd:protocol"]?.[
-        "gco:CharacterString"
+      "gco:CharacterString"
       ]?.["#text"],
     name: parseMultilingualStringObject(
       option?.["gmd:CI_OnlineResource"]?.["gmd:name"]?.[
-        "gco:CharacterString"
+      "gco:CharacterString"
       ]?.["#text"],
       option?.["gmd:CI_OnlineResource"]?.["gmd:name"]?.["gmd:PT_FreeText"]?.[
-        "gmd:textGroup"
+      "gmd:textGroup"
       ]?.["gmd:LocalisedCharacterString"]?.["#text"],
     ),
     description: parseMultilingualStringObject(
       option?.["gmd:CI_OnlineResource"]?.["gmd:description"]?.[
-        "gco:CharacterString"
+      "gco:CharacterString"
       ]?.["#text"],
       option?.["gmd:CI_OnlineResource"]?.["gmd:description"]?.[
-        "gmd:PT_FreeText"
+      "gmd:PT_FreeText"
       ]?.["gmd:textGroup"]?.["gmd:LocalisedCharacterString"]?.["#text"],
     ),
   };
@@ -509,7 +509,7 @@ function parseDates(data) {
   let ret = [];
   const dateArray =
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:citation"
+    "gmd:citation"
     ]?.["gmd:CI_Citation"]?.["gmd:date"] ?? [];
   dateArray.forEach((e) => {
     ret.push(parseDate(e));
@@ -529,7 +529,7 @@ function parseDate(date) {
 function parseExtent(data) {
   const basePath = collectSubValues(
     data["gmd:identificationInfo"]?.["gmd:MD_DataIdentification"]?.[
-      "gmd:extent"
+    "gmd:extent"
     ],
     '["gmd:EX_Extent"]',
   );
@@ -537,7 +537,7 @@ function parseExtent(data) {
   basePath.forEach((e) => {
     let temporalExtent = parseTemporalExtent(
       e?.["gmd:temporalElement"]?.["gmd:EX_TemporalExtent"]?.["gmd:extent"]?.[
-        "gml:TimePeriod"
+      "gml:TimePeriod"
       ],
     );
     let geographicExtent = parseGeographicExtent(
@@ -688,8 +688,8 @@ function parseMultilingualStringObject(
     default:
       throw new Error(
         "Error when parsing data: Language Code " +
-          languageCode +
-          " is invalid.",
+        languageCode +
+        " is invalid.",
       );
   }
 }
@@ -723,9 +723,9 @@ function collectSubValues(parent, pathToChild) {
     } catch (e) {
       console.log(
         "Warning: Error accessing child elements in collectSubValues(). Path to child: \n" +
-          pathToChild +
-          "Parent element: \n" +
-          JSON.stringify(e),
+        pathToChild +
+        "Parent element: \n" +
+        JSON.stringify(e),
       );
     }
 
@@ -760,7 +760,7 @@ async function getBucketObject(bucket, objectKey) {
 // Config for fetching data from the output bucket
 async function getLatestGeocoreData(id) {
   const bucket = OUTPUT_BUCKET_NAME; // Global variable from process.env
-  const key = "records/" + id + ".geojson"; 
+  const key = "records/" + id + ".geojson";
   const ret = await getBucketObject(bucket, key);
   return ret;
 }
