@@ -45,5 +45,6 @@
   "viewMore": "View More",
   "viewOnMap": "View on Map",
   "website": "Website",
-  "west": "West"
+  "west": "West",
+  "windowTooSmall": "The map for this resource is unavailable at your current screen resolution. Please switch to a larger screen to view the map. We apologize for any inconvenience this may cause."
 }

@@ -78,7 +78,7 @@
 <div
   class="flex flex-row justify-between items-center pagination-width
     rounded shadow-[0_0.1875rem_0.375rem_#00000029] bg-custom-16"
-  class:hidden={totalItems == 0}
+  class:hidden={numPages < 2}
 >
   <button
     class="arrows mr-2 text-custom-16 disabled:text-custom-19"

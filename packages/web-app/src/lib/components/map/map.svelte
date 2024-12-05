@@ -7,10 +7,11 @@
   export let id;
   export let dynamic = false;
   export let width = '100%';
-  export let height = '24rem';
+  export let height = '32rem';
   export let mapProjection = 3857;
   export let useMap = true; // When false, the map's bounding box is used instead
   export let mapType = null;
+  export let footer = false;
 
   let mapId = 'map-' + id;
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
@@ -41,6 +42,15 @@
       geoviewLayerType: 'geoCore',
       geoviewLayerId: id
     }]
+  }
+
+  if (footer) {
+    config.footerBar = {
+      tabs: {
+        core: ["legend", "data-table"]
+      },
+      collapsed: true
+    }
   }
 
   $: sConfig = JSON.stringify(config);
@@ -179,6 +189,14 @@
   <div
     id={mapId}
     class="bg-blue-500/5 w-full h-64 md:h-80 lg:h-96 xl:h-[28rem] 2xl:h-[32rem]"
+    data-config={sConfig}
+    data-lang={mapLang}
+  />
+{:else if mapType === 'record'}
+  <div
+    id={mapId}
+    class="bg-blue-500/5"
+    style={`height: ${height}; width: ${width};`}
     data-config={sConfig}
     data-lang={mapLang}
   />

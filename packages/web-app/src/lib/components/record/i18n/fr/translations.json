@@ -45,5 +45,6 @@
   "viewMore": "Voir Plus",
   "viewOnMap": "Voir sur la carte",
   "website": "web",
-  "west": "Ouest"
+  "west": "Ouest",
+  "windowTooSmall": "La carte de cette ressource n'est pas disponible avec votre résolution d'écran actuelle. Veuillez passer à un écran plus grand pour afficher la carte. On s'excuse pour tout inconvénient que ça pourrait causer."
 }
