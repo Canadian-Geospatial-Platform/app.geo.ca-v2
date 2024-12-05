@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .content-width {
-	@apply w-[96%];
+	@apply w-full;
     @apply md:w-5/6;
     @apply xl:w-2/3;
 	@apply mx-auto;
@@ -89,6 +89,17 @@
 	@apply drop-shadow-lg;
 	@apply border-2;
 	@apply hover:border-white;
+}
+
+.select-button-2 {
+	@apply bg-custom-1;
+	@apply border-custom-16;
+	@apply border-2;
+	@apply rounded;
+	@apply px-4;
+	@apply md:px-6;
+	@apply py-2;
+	@apply font-custom-style-body-7;
 }
 
 /* input {

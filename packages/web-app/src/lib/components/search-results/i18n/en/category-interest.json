@@ -1,12 +1,36 @@
 [
   {
+    "value": "agriculture",
+    "label": "Agriculture"
+  }, {
+    "value": "climate",
+    "label": "Climate"
+  }, {
     "value": "flood-mapping",
     "label": "Flood Mapping"
+  }, {
+    "value": "forestry",
+    "label": "Forestry"
   }, {
     "value": "hydrology",
     "label": "Hydrology"
   }, {
+    "value": "infrastructure",
+    "label": "Infrastructure"
+  }, {
+    "value": "mining",
+    "label": "Mining"
+  }, {
     "value": "topography",
     "label": "Topography"
+  }, {
+    "value": "transportation",
+    "label": "Transportation"
+  },  {
+    "value": "wetlands",
+    "label": "Wetlands"
+  }, {
+    "value": "wildfires",
+    "label": "Wildfires"
   }
 ]

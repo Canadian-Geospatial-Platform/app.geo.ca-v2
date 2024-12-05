@@ -55,20 +55,24 @@
   }
 </script>
 
-<div class="flex flex-col md:flex-row gap-4">
-  <button 
-    class="w-full md:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"
-    on:click={handleDownloadButtonClick}
-  >
-    {downloadGeoCoreText}
-  </button>
-  <button
-    class="w-full md:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"
-    on:click={handleViewHNAPButtonClick}
-  >
-    {viewHNAPText}
-  </button>
-</div>
+<!-- TODO: Commenting this section out for now since
+  these buttons might be moved to the menu instead,
+  waiting on changes to the wireframe -->
+
+<!--<div class="flex flex-col md:flex-row gap-4">-->
+<!--  <button -->
+<!--    class="w-full md:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"-->
+<!--    on:click={handleDownloadButtonClick}-->
+<!--  >-->
+<!--    {downloadGeoCoreText}-->
+<!--  </button>-->
+<!--  <button-->
+<!--    class="w-full md:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"-->
+<!--    on:click={handleViewHNAPButtonClick}-->
+<!--  >-->
+<!--    {viewHNAPText}-->
+<!--  </button>-->
+<!--</div>-->
 <SortableTable tableContent={dataResourcesList} {tableLabels} clickableRows={true} />
 
 <style>

@@ -13,10 +13,10 @@
 </script>
 
 <div>
-  <h1 class="font-custom-style-h1 mb-6">
+  <h1 class="font-custom-style-h1 mb-6 mx-5 md:mx-0">
     {title}
   </h1>
-  <p class="font-custom-style-body-1">
+  <p class="font-custom-style-body-1 mx-5 md:mx-0">
     <!------------------------------------------------------------
       Some descriptions may include links, so we can replace them
       with anchors using the Parsedlinks component.

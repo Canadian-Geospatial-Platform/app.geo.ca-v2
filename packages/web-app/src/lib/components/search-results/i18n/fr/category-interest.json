@@ -1,12 +1,36 @@
 [
   {
+    "value": "agriculture",
+    "label": "Agriculture"
+  }, {
+    "value": "climate",
+    "label": "Climat"
+  }, {
     "value": "flood-mapping",
     "label": "Cartographie des inondations"
+  }, {
+    "value": "forestry",
+    "label": "Foresterie"
   }, {
     "value": "hydrology",
     "label": "Hydrologie"
   }, {
+    "value": "infrastructure",
+    "label": "Infrastructure"
+  }, {
+    "value": "mining",
+    "label": "Exploitation minière"
+  }, {
     "value": "topography",
     "label": "Topographie"
+  }, {
+    "value": "transportation",
+    "label": "Transport"
+  },  {
+    "value": "wetlands",
+    "label": "Les terres humides"
+  }, {
+    "value": "wildfires",
+    "label": "Feux de forêt"
   }
 ]
