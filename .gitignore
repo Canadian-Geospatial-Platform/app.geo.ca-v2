@@ -2,7 +2,7 @@
 node_modules
 
 # typescript
-*.d.ts
+**/*.d.ts
 
 # sst
 .sst
