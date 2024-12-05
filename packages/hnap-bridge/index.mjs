@@ -8,6 +8,12 @@ var languageCode; // defined globally as it is widely used and unchanging.
 
 export const handler = async (event, context, callback) => {
   console.log("Starting handling of entry: ", event.Records[0].s3.object.key);
+
+  if (!event.Records[0].s3.object.key.startsWith('hnap/')) {
+    console.error("Configuration error, this function should not be triggered by writes to fodlers other than hnap/. Execution canceled.")
+    return "Configuration error. Please contact the project administrator.";
+  }
+
   const data = await getBucketObject(
     event.Records[0].s3.bucket.name,
     event.Records[0].s3.object.key,
