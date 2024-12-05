@@ -69,18 +69,18 @@
 </script>
 
 <div class="font-custom-style-body-1">
-  <h2 class="font-custom-style-h2 mb-1">
+  <h2 class="font-custom-style-h2 mb-1 mx-5 md:mx-0">
     {metadatatext}
   </h2>
-  <p>
+  <p class="mx-5 md:mx-0 mb-5">
     {metadataDescriptionText}
   </p>
   <Card>
     <div class="card-div flex flex-col lg:flex-row lg:space-x-3 justify-between">
       {#each topSection as [topItemLabel, topItemVal]}
-        <div class="top-table flex flex-row lg:flex-col min-w-[15%]">
-          <h3 class="w-1/2 lg:pb-1 lg:w-full font-semibold">{topItemLabel}</h3>
-          <p class="w-1/2 lg:w-full text-right lg:text-left">{topItemVal}</p>
+        <div class="top-table flex flex-col min-w-[15%]">
+          <h3 class="pb-1 w-full font-semibold">{topItemLabel}</h3>
+          <p class="w-full text-left">{topItemVal}</p>
         </div>
       {/each}
     </div>
@@ -105,12 +105,11 @@
 
   @media (max-width: 63.9375rem) {
     .top-table:not(:first-child) {
-      border-top: 0.0625rem solid #00000029;
-      padding-top: 0.125rem;
+      padding-top: 0.5rem;
     }
 
     .top-table:not(:last-child) {
-      padding-bottom: 0.125rem;
+      padding-bottom: 0.5rem;
     }
   }
 </style>

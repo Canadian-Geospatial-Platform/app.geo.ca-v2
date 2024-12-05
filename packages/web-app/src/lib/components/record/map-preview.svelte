@@ -15,7 +15,7 @@
 </script>
 
 <div class="font-custom-style-body-1">
-  <h2 class="font-custom-style-h2 mb-1">
+  <h2 class="font-custom-style-h2 mb-1 mx-5 md:mx-0">
     {mapPreviewtext}
   </h2>
   {#if coordinates}

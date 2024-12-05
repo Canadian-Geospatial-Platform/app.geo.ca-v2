@@ -32,7 +32,7 @@
   <div class="flex flex-wrap justify-between">
     <!-- Using a max width here ensures the title wraps instead of the menu tab for small screens -->
     <!-- Usig a min width for large screens ensures the flex wrap doesn't toggle when the tabs are clicked -->
-    <h2 class="font-custom-style-h2 max-w-tabbed-title lg:max-w-none lg:min-w-80 mb-1">
+    <h2 class="font-custom-style-h2 mx-5 md:mx-0 max-w-tabbed-title lg:max-w-none lg:min-w-80 mb-1">
       {title}
     </h2>
     <div class="flex mr-6 space-x-3 self-end">

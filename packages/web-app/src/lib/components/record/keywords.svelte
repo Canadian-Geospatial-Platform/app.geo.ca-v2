@@ -16,13 +16,13 @@
 </script>
 
 <div class="font-custom-style-body-1">
-  <h2 class="font-custom-style-h2 mb-1">
+  <h2 class="font-custom-style-h2 mb-2 md:mb-2 mx-5 md:mx-0">
     {keywordsText}
   </h2>
-  <p>
+  <p class="mx-5 md:mx-0 space-y-4">
     {#each keywords as keyword, i}
       <a
-        class="font-custom-style-body-2" 
+        class="font-custom-style-body-2 block md:inline"
         href={searchUrl + encodeURI(keyword.replaceAll(' ', '+'))}
       >
         {i < keywords.length - 1 ? keyword + ', ' : keyword}
