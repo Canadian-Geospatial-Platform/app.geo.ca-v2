@@ -1,7 +1,7 @@
 "use strict";
 import aws from "aws-sdk";
 import { Resource } from "sst";
-import codelist from "./codelists.js"; // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
+import getCodeList from "./codelists.js"; // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
 const s3 = new aws.S3();
 const OUTPUT_BUCKET_NAME = Resource.DataLake.name;
 var languageCode; // defined globally as it is widely used and unchanging.
@@ -136,7 +136,7 @@ function parseTopicCategory(data) {
     ],
     '["gmd:MD_TopicCategoryCode"]',
   );
-  return codelist.expand(topicCategoryCodes);
+  return getCodeList(topicCategoryCodes);
 }
 
 function parseDistributors(data) {
