@@ -82,7 +82,10 @@ function mapSearchParams(searchParams, lang) {
 		east: searchParams.get('east') ?? 180,
 		south: searchParams.get('south') ?? -90,
 		west: searchParams.get('west') ?? -180,
-		keyword: searchParams.get('search-terms') ?? '',
+		// TODO: separate keyword and category of interest.
+		// For now, there is no category of interest param to query,
+		// so it is grouped with the keywords
+		keyword: getKeyword(searchParams),
 		org: searchParams.get('org') ?? '',
 		type: searchParams.get('type') ?? '',
 		theme: searchParams.get('theme') ?? '',
@@ -100,6 +103,22 @@ function mapSearchParams(searchParams, lang) {
 		sort: searchParams.get('sort')
 	};
 	return ret;
+}
+
+function getKeyword(searchParams) {
+	const searchTerms = searchParams.get('search-terms');
+	const category = searchParams.get('category-of-interest');
+	let keywords = '';
+	
+	if (searchTerms && category) {
+		keywords = searchTerms + '+' + category;
+	} else if (searchTerms) {
+		keywords = searchTerms;
+	} else if (category) {
+		keywords = category;
+	}
+
+	return keywords;
 }
 
 function getMin(searchParams) {
