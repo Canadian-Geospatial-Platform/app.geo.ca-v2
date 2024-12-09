@@ -11,7 +11,7 @@ const getRecord = async (uuid) => {
 		try {
 			const { Body } = await s3Client.send(
 				new GetObjectCommand({
-					Bucket: Ressource.DataLake.bucketName,
+					Bucket: Resource.DataLake.name,
 					Key: key
 				})
 			);

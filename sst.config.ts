@@ -6,13 +6,14 @@ export default $config({
       name: "app-geo-ca",
       removal: input?.stage === "production" ? "retain" : "remove",
       home: "aws",
+      providers: {
+        aws: {
+          region: "ca-central-1",
+        },
+      },
     };
   },
   async run() {
-    $transform(aws.cloudwatch.LogGroup, (args, opts) => {
-      opts.retainOnDelete = true;
-    });
-
     const infra = await import("./infra");
 
     const GEOCORE_API_DOMAIN = $app.stage !== "prod"
