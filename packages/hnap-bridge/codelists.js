@@ -1,11 +1,11 @@
 const expandedCategoryCodeData = require("./Codelists/topic-categories.json");
 
-function expand(inputTopicCategoryCodes) {
+function getCodeList(inputTopicCategoryCodes) {
   let ret = [];
   inputTopicCategoryCodes.forEach((e) => {
     ret.push(
       parseCategory(
-        expandedCategoryCodeData.find(function (obj) {
+        expandedCategoryCodeData.find(function(obj) {
           return obj.code === e;
         }),
       ),
@@ -27,6 +27,5 @@ function parseCategory(category) {
     },
   };
 }
-module.exports = {
-  expand,
-};
+
+export default getCodeList
