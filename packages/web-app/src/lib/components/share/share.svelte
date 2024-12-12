@@ -7,9 +7,10 @@
 
   const translations = $page.data.shareTranslations;
   let shareText = translations?.shareText ? translations["shareText"] : "Share";
-  let path = $page.url;
-  let encodedPath = encodeURIComponent(String(path));
-  let iconClass = "m-1 md:m-2 h-10 md:h-12 w-10 md:w-12";
+
+  // Note: these variables need to be computed to react to changes to the page's url
+  $: path = $page.url;
+  $: encodedPath = encodeURIComponent(String(path));
 
   function handleFacebookLink() {
     let facebookLink = "https://www.facebook.com/sharer/sharer.php";
@@ -40,15 +41,15 @@
     {shareText}
   </h1>
   <button aria-label="facebook" on:click={handleFacebookLink}>
-    <Facebook classes={iconClass}/>
+    <Facebook />
   </button>
   <button aria-label="X" on:click={handleXLink}>
-    <X classes={iconClass}/>
+    <X />
   </button>
   <button aria-label="LinkedIn" on:click={handleLinkedInLink}>
-    <Linkedin classes={iconClass}/>
+    <Linkedin />
   </button>
   <button aria-label="email/courriel" on:click={handleEmailLink}>
-    <Email classes={iconClass}/>
+    <Email />
   </button>
 </div>

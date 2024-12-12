@@ -1,13 +1,9 @@
-<script>
-  export let classes;
-</script>
-
 <!--
   source: https://github.com/couetilc/react-social-icons 
   Licence: MIT https://github.com/couetilc/react-social-icons?tab=MIT-1-ov-file#readme
 -->
 <svg
-  class={classes}
+  class="share-icons"
   viewBox="0 0 64 64"
   aria-hidden="true"
 >

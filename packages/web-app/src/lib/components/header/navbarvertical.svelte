@@ -105,7 +105,7 @@
     width: calc(100% - 2.5rem);
     @apply m-5;
     @apply left-0;
-    @apply max-h-vertical-nav;
+    @apply max-h-[90vh];
     @apply overflow-y-scroll;
     -ms-overflow-style: none;  /* Edge */
     scrollbar-width: none;  /* Firefox */

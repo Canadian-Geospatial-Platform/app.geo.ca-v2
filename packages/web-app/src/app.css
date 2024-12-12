@@ -260,3 +260,12 @@
 	@apply text-[16px];
 	@apply placeholder-custom-7/[.17];
 }
+
+.share-icons {
+  @apply m-1;
+  @apply md:m-2;
+  @apply h-10;
+  @apply md:h-12;
+  @apply w-10;
+  @apply md:w-12;
+}

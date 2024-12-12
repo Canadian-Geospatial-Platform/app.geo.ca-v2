@@ -17,8 +17,6 @@
   /************* Translations ***************/
   const translations = $page.data.t;
 
-  const datasetText = translations?.dataset ? translations["dataset"] : "Dataset";
-  const datasetsText = translations?.datasets ? translations["datasets"] : "Datasets";
   const dateText = translations?.date ? translations["date"] : "Date";
   const mapNotAvailableText = translations?.mapNotAvailable ?
     translations["mapNotAvailable"] : "Map preview not available";
@@ -53,16 +51,13 @@
 
   /****************** Pagination ******************/
   let itemsPerPage = 10;
+  $: pageMessage = $page.data.numPageText;
   $: results = $page.data.results ?? [];
   $: total = $page.data.total ?? 0;
   $: totalPages = Math.ceil(total/itemsPerPage);
 
   let hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
 
-  $: pageMessage = translations?.pageMessage ?
-    parsePageMessage(translations["pageMessage"], currentPage, totalPages) : "";
-  
-  
   function parsePageMessage(message, page, numPages) {
     message = message.replaceAll('{{page}}', page);
     message = message.replaceAll('{{totalPages}}', numPages);
@@ -98,11 +93,7 @@
   <!-- Header -->
   <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
     <p class="font-custom-style-body-6">
-      {#if total === 1}
-        {total} {datasetText}, {pageMessage}
-      {:else}
-        {total} {datasetsText}, {pageMessage}
-      {/if}
+      {pageMessage}
     </p>
     <div class="flex flex-col-reverse md:flex-row gap-3 md:gap-5">
       <div class="w-full md:w-48">

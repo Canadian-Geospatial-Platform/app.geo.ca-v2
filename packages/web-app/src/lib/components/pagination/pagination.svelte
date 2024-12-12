@@ -89,7 +89,7 @@
   </button>
   {#each pageButtons as page}
     <button
-      class="font-custom-style-button-1 h-7 w-7"
+      class="font-custom-style-button-1 h-7 min-w-7 px-1"
       class:current-page={page == currentPage}
       on:click={() => handlePageClick(page)}
     >
