@@ -14,6 +14,7 @@ export const load: PageLoad = ({ params, data, url }) => {
 	let categories = lang == 'fr-ca' ? frCategories : enCategories;
 	let totalResults = parseInt(data.results?.[0]?.total ? data.results[0].total : 0);
 	let numPageText = parsePageMessage(lang, url, totalResults);
+	let resultMessage = parseResultMessage(lang, url, totalResults);
 	return {
 		results: data.results,
 		lang: lang,
@@ -30,7 +31,8 @@ export const load: PageLoad = ({ params, data, url }) => {
 		filters: filters,
 		categories: categories,
 		analytics: data.analytics,
-		numPageText: numPageText
+		numPageText: numPageText,
+		resultMessage: resultMessage
 	};
 };
 
@@ -56,6 +58,36 @@ function parsePageMessage(lang, url, totalResults) {
     datasetsText = totalResults == 1 ? 'Dataset' : 'Datasets';
     pageOfText = 'Page ' + pageNumber + ' of ' + totalPages;
     message = totalResults + ' ' + datasetsText + ', ' + pageOfText;
+  }
+
+  return message;
+}
+
+function parseResultMessage(lang, url, totalResults) {
+	let message;
+  let datasetsText;
+  let searchParams = url.searchParams;
+  let searchTerm = searchParams.get('search-terms');
+
+  if (lang == 'fr-ca') {
+    datasetsText = totalResults == 1 ? 'ensemble de données' : 'ensembles de données';
+    if (searchTerm) {
+      message = "Nous avons trouvé " + totalResults + " " + datasetsText + " pour le mot-clé « "
+        + searchTerm + " ». Vous pouvez continuer à explorer les résultats de recherche dans la liste ci-dessous."
+    } else {
+      message = "Nous avons trouvé " + totalResults + " " + datasetsText + ". Vous pouvez affiner votre "
+        + "recherche en entrant un terme de recherche ci-dessous ou en cliquant sur le bouton des "
+        + "filtres pour certaines options avancées."
+    }
+  } else {
+    datasetsText = totalResults == 1 ? 'dataset' : 'datasets';
+    if (searchTerm) {
+      message = "We have found " + totalResults + " " + datasetsText + " for the keyword \""
+        + searchTerm + "\". You can continue exploring the search results in the list below."
+    } else {
+      message = "We have found " + totalResults + " " + datasetsText + ". You can refine your "
+        + "search by entering a search term below, or clicking on the Filters button for some advanced options."
+    }
   }
 
   return message;
