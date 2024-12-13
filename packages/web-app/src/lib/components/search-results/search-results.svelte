@@ -3,9 +3,6 @@
 	import ResultList from '$lib/components/search-results/result-list.svelte';
   import SearchBar from '$lib/components/search-results/search-bar.svelte';
 
-  $: numResults = $page.data.total;
-  $: searchTerm = $page.url.searchParams.get('search-terms');
-
   /************* Translations ***************/
   const translations = $page.data.t;
 
