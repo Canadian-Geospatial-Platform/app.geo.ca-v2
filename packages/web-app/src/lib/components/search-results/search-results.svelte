@@ -11,17 +11,17 @@
     translations["searchResults"] : "Search Results";
   const youMayText = translations?.youMay ? translations["youMay"] : "You may also like";
 
-  let numResults = $page.data.total;
+  $: resultMessage = $page.data.resultMessage;
 </script>
 
-<h1 class="font-custom-style-h1">
+<h1 class="font-custom-style-h1 px-5 md:px-0">
   {searchResultsText}
 </h1>
-<!--<p>-->
-<!--  We have found {numResults} datasets for the keywords...-->
-<!--</p>-->
+<p class="mb-2 mt-[-0.75em] font-open-sans px-5 md:px-0">
+  {resultMessage}
+</p>
 <SearchBar />
-<h2 class="font-custom-style-h2">
+<h2 class="font-custom-style-h2 px-5 md:px-0">
   {listViewText}
 </h2>
 <ResultList />

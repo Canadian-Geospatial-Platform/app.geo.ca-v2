@@ -18,15 +18,15 @@
   const tabContentArray = [
     {
       label: dataResources,
-      tabId: 1,
+      value: 1,
       component: DataResources
     }, {
       label: advancedMetaData,
-      tabId: 2,
+      value: 2,
       component: AdvancedMetadata
     }, {
       label: contactData,
-      tabId: 3,
+      value: 3,
       component: Contact
     }
   ]

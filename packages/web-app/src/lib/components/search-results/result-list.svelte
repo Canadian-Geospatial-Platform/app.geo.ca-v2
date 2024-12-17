@@ -17,8 +17,6 @@
   /************* Translations ***************/
   const translations = $page.data.t;
 
-  const datasetText = translations?.dataset ? translations["dataset"] : "Dataset";
-  const datasetsText = translations?.datasets ? translations["datasets"] : "Datasets";
   const dateText = translations?.date ? translations["date"] : "Date";
   const mapNotAvailableText = translations?.mapNotAvailable ?
     translations["mapNotAvailable"] : "Map preview not available";
@@ -53,10 +51,19 @@
 
   /****************** Pagination ******************/
   let itemsPerPage = 10;
+  $: pageMessage = $page.data.numPageText;
   $: results = $page.data.results ?? [];
   $: total = $page.data.total ?? 0;
+  $: totalPages = Math.ceil(total/itemsPerPage);
 
   let hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
+
+  function parsePageMessage(message, page, numPages) {
+    message = message.replaceAll('{{page}}', page);
+    message = message.replaceAll('{{totalPages}}', numPages);
+
+    return message;
+  }
 
   function changePage(event: CustomEvent) {
     currentPage = event.detail;
@@ -84,17 +91,14 @@
     <LoadingMask classes="bottom-0 right-0 z-10"/>
   {/if}
   <!-- Header -->
-  <div class="flex flex-col-reverse md:flex-row justify-between flex-wrap-reverse">
+  <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
     <p class="font-custom-style-body-6">
-      {#if total === 1}
-        {total} {datasetText}
-      {:else}
-        {total} {datasetsText}
-      {/if}
+      {pageMessage}
     </p>
     <div class="flex flex-col-reverse md:flex-row gap-3 md:gap-5">
       <div class="w-full md:w-48">
         <SelectCustomized
+          buttonWidth='w-48 md:w-full'
           optionsData={sortBySelectData}
           selectId={"sort-options"}
           bind:selected={selected}
@@ -115,7 +119,6 @@
           <a 
             href={hrefPrefix + result.id}
             class="uppercase underline font-custom-style-header-2"
-            target="_blank"
           >
             {result.title}
           </a>
@@ -141,7 +144,7 @@
     </div>
   {/each}
   <!-- Pagination -->
-  <div class="flex justify-end">
+  <div class="flex justify-end w-full">
     <Pagination
       totalItems={total}
       {itemsPerPage}

@@ -5,7 +5,7 @@
 </script>
 
 <div class="bg-custom-14">
-  <div class="content-width grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-12">
+  <div class="content-width grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-2 py-2 md:py-12 md:px-0">
     {#each Object.entries(linksData) as [colIndex, data]}
       <div class="p-3 font-custom-style-footer-1">
         {#if data?.title}
