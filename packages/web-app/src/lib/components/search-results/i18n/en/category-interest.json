@@ -1,36 +1,63 @@
 [
   {
-    "value": "agriculture",
-    "label": "Agriculture"
+    "value": "biota",
+    "label": "Biota"
   }, {
-    "value": "climate",
-    "label": "Climate"
+    "value": "boundaries",
+    "label": "Boundaries"
   }, {
-    "value": "flood-mapping",
-    "label": "Flood Mapping"
+    "value": "climatologyMeteorologyAtmosphere",
+    "label": "Climatology, meteorology, and atmosphere"
   }, {
-    "value": "forestry",
-    "label": "Forestry"
+    "value": "disaster",
+    "label": "Natural disasters"
   }, {
-    "value": "hydrology",
-    "label": "Hydrology"
+    "value": "economy",
+    "label": "Economy"
   }, {
-    "value": "infrastructure",
-    "label": "Infrastructure"
+    "value": "elevation",
+    "label": "Elevation"
   }, {
-    "value": "mining",
-    "label": "Mining"
+    "value": "environment",
+    "label": "Environment"
   }, {
-    "value": "topography",
-    "label": "Topography"
+    "value": "extraTerrestrial",
+    "label": "Extra-terrestrial"
+  }, {
+    "value": "farming",
+    "label": "Farming"
+  }, {
+    "value": "geoscientificInformation",
+    "label": "Geoscientific information"
+  }, {
+    "value": "imageryBaseMapsEarthCover",
+    "label": "Imagery, base maps, and earth cover"
+  }, {
+    "value": "inlandWaters",
+    "label": "Inland waters"
+  }, {
+    "value": "intelligenceMilitary",
+    "label": "Intelligence and military"
+  }, {
+    "value": "location",
+    "label": "Location"
+  }, {
+    "value": "oceans",
+    "label": "Oceans"
+  }, {
+    "value": "planningCadastre",
+    "label": "Planning cadastre"
+  }, {
+    "value": "society",
+    "label": "Society"
+  }, {
+    "value": "structure",
+    "label": "Structure"
   }, {
     "value": "transportation",
     "label": "Transportation"
-  },  {
-    "value": "wetlands",
-    "label": "Wetlands"
   }, {
-    "value": "wildfires",
-    "label": "Wildfires"
+    "value": "utilitiesCommunication",
+    "label": "Utilities and communication"
   }
 ]

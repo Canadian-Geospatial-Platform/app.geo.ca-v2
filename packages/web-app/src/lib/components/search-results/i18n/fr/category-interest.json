@@ -1,36 +1,63 @@
 [
   {
-    "value": "agriculture",
+    "value": "farming",
     "label": "Agriculture"
   }, {
-    "value": "climate",
-    "label": "Climat"
+    "value": "planningCadastre",
+    "label": "Aménagement du territoire et cadastre"
   }, {
-    "value": "flood-mapping",
-    "label": "Cartographie des inondations"
+    "value": "biota",
+    "label": "Biote"
   }, {
-    "value": "forestry",
-    "label": "Foresterie"
+    "value": "disaster",
+    "label": "Catastrophes naturelles"
   }, {
-    "value": "hydrology",
-    "label": "Hydrologie"
+    "value": "climatologyMeteorologyAtmosphere",
+    "label": "Climatologie, météorologie et atmosphère"
   }, {
-    "value": "infrastructure",
-    "label": "Infrastructure"
+    "value": "inlandWaters",
+    "label": "Eaux intérieures"
   }, {
-    "value": "mining",
-    "label": "Exploitation minière"
+    "value": "environment",
+    "label": "Environnement"
   }, {
-    "value": "topography",
-    "label": "Topographie"
+    "value": "extraTerrestrial",
+    "label": "Extra-terrestre"
+  }, {
+    "value": "boundaries",
+    "label": "Frontières"
+  }, {
+    "value": "imageryBaseMapsEarthCover",
+    "label": "Imagerie, cartes de base et couverture terrestre"
+  }, {
+    "value": "geoscientificInformation",
+    "label": "Informations géoscientifiques"
+  }, {
+    "value": "location",
+    "label": "Localisation"
+  }, {
+    "value": "oceans",
+    "label": "Océans"
+  }, {
+    "value": "intelligenceMilitary",
+    "label": "Renseignement et militaire"
+  }, {
+    "value": "utilitiesCommunication",
+    "label": "Services publics et communication"
+  }, {
+    "value": "society",
+    "label": "Société"
+  }, {
+    "value": "structure",
+    "label": "Structure"
   }, {
     "value": "transportation",
     "label": "Transport"
-  },  {
-    "value": "wetlands",
-    "label": "Les terres humides"
   }, {
-    "value": "wildfires",
-    "label": "Feux de forêt"
+    "value": "economy",
+    "label": "Économie"
+  }, {
+    "value": "elevation",
+    "label": "Élévation"
   }
 ]

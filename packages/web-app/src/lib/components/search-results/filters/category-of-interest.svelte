@@ -5,7 +5,8 @@
   import type { FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
   import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
 
-  // TODO: Get full list of categories
+  // Note: the list of categories are based on the Topic Categories from ISO 19115-1
+  // https://icsm-au.github.io/metadata-working-group/defs/TopicCategory
   const categories = $page.data.categories;
   let selected: SelectOption | null = null;
   let categoryStoreVal: string | null = null;
