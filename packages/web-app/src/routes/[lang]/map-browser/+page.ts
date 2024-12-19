@@ -6,12 +6,15 @@ import enFilters from '$lib/components/search-results/i18n/en/filter-list.json';
 import frFilters from '$lib/components/search-results/i18n/fr/filter-list.json';
 import enCategories from '$lib/components/search-results/i18n/en/category-interest.json';
 import frCategories from '$lib/components/search-results/i18n/fr/category-interest.json';
+import enSortOptions from '$lib/components/search-results/i18n/en/sort-options.json';
+import frSortOptions from '$lib/components/search-results/i18n/fr/sort-options.json';
 
 export const load: PageLoad = ({ params, data, url }) => {
 	let lang = params.lang;
-	let t = lang == 'en-ca' ? enLabels : frLabels;
+	let t = lang == 'fr-ca' ? frLabels : enLabels;
 	let filters = lang == 'fr-ca' ? frFilters : enFilters;
 	let categories = lang == 'fr-ca' ? frCategories : enCategories;
+	let sortOptions = lang == 'fr-ca' ? frSortOptions : enSortOptions;
 	let totalResults = parseInt(data.results?.[0]?.total ? data.results[0].total : 0);
 	let numPageText = parsePageMessage(lang, url, totalResults);
 	let resultMessage = parseResultMessage(lang, url, totalResults);
@@ -30,6 +33,7 @@ export const load: PageLoad = ({ params, data, url }) => {
 		total: totalResults,
 		filters: filters,
 		categories: categories,
+		sortOptions: sortOptions,
 		analytics: data.analytics,
 		numPageText: numPageText,
 		resultMessage: resultMessage

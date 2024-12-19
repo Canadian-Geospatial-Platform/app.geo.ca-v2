@@ -64,13 +64,10 @@
     <h2 class="mx-5 font-custom-style-header-1 pt-5">
       {selectCategory}
     </h2>
-    <div class="mx-5 mt-2.5">
+    <div class="mx-5 mt-2.5 sm:w-fit">
       <SelectCustomized
-        buttonWidth='w-64'
         optionsData={tabContentArray}
-        selectId={"select-category"}
-        buttonClasses={"button-4"}
-        dropDownColor={"#002E62"}
+        selectType={"tabCard"}
         bind:selected={activeTab}
         on:selectedChange={handleDropdownClick}
       />

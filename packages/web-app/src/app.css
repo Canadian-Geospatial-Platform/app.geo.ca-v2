@@ -66,8 +66,8 @@
 	@apply border-custom-22;
 	@apply border-2;
 	@apply rounded;
-	@apply px-[14px];
-	@apply py-[9px];
+	@apply pl-[0.875rem];
+	@apply py-[0.563rem];
 	@apply font-custom-style-body-1;
 }
 
@@ -96,8 +96,8 @@
 	@apply border-custom-16;
 	@apply border-2;
 	@apply rounded;
-	@apply px-4;
-	@apply md:px-6;
+	@apply pl-4;
+	@apply md:pl-6;
 	@apply py-2;
 	@apply font-custom-style-body-7;
 }

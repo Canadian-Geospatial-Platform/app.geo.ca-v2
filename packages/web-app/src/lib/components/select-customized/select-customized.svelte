@@ -1,18 +1,4 @@
 <!-----------------------------------------------------------------
-  The default HTML <select> component has two main disadvantages:
-    - The drop-down options are difficult to style
-    - Individual browsers render selects using different styles,
-      causing an inconsistent experience.
-  This component is a simple custom select designed to fix those
-  problems.
-
-  When using this component, the drop-down options are specified
-  in an array of 'SelectOption' objects with the following keys:
-    - value - string
-    - label - string
-    - icon (optional) - an icon component to add an svg icon to the
-      option
-
   When a selection is made, a custom 'selectedChange' event is
   dispatched with the option's 'SelectOption' object as the 
   event's detail value. So, it is up to the parent component to
@@ -34,7 +20,8 @@
 ------------------------------------------------------------------>
 
 <script lang="ts">
-  import { createEventDispatcher, afterUpdate } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
+  import { page } from "$app/stores";
 	import Chevrondown from "$lib/components/icons/chevrondown.svelte";
   import Chevronup from "$lib/components/icons/chevronup.svelte";
   import Close from '$lib/components/icons/close.svelte';
@@ -45,119 +32,120 @@
   export let optionsData: Array<SelectOption>;
   // The default selection object
   export let selected: SelectOption | undefined | null;
-  export let selectId: string;
-  export let buttonClasses: string = "select-button-2";
-  export let buttonWidth: string = "w-full";
-  export let iconClasses: string = "w-4 h-4 self-center mr-1";
-  export let dropDownColor: string = "#535AA4";
   export let removableSelection: boolean = false;
   export let defaultLabel: string = "";
+  export let selectType = "default";
+
+  const lang = $page.data.lang;
+  let clearAriaLabel = lang == 'fr-ca' ? 'Effacer la sélection' : 'Clear selection';
 
   let expanded = false;
+  let selectEl;
 
-  function handleSelectClick() {
+  function handleSelectionChange(event) {
+    let value = event?.target?.value;
+
+    if (value != selected?.value) {
+      selected = optionsData.find((x) => x.value == value);
+      dispatch('selectedChange', selected);
+    }
+  }
+
+  function handleSelectClick(event) {
     expanded = !expanded;
   }
 
-  function handleOptionClick(option: SelectOption) {
-    expanded = false;
-    selected = option;
-    dispatch('selectedChange', selected);
-  }
-
-  function handleRemoveSelect() {
-    selected = null;
-    expanded = false;
-    dispatch('selectedChange', selected);
-  }
-
-  // Set the width of the dropdown based on the unknown width of the select button
-  let selectButton: HTMLElement;
-  let dropDown: HTMLElement;
-
-  afterUpdate(() => {
-    if (selectButton && dropDown) {
-      const selectButtonWidth = selectButton.offsetWidth;
-      dropDown.style.width = `${selectButtonWidth - 12}px`;
+  function handleSearchEnterKeyDown(event) {
+    let key = event.key;
+    if (key == "Enter" || (key == " " && !expanded)) {
+      expanded = !expanded;
     }
-  });
+  }
+
+  function handleBlur() {
+    expanded = false;
+  }
+
+  function handleRemoveSelect(event) {
+    // Change focus to select element instead of the remove button
+    // since the remove button will be removed from the DOM when no
+    // option is selected
+    if (selectEl instanceof HTMLSelectElement) {
+      selectEl.focus();
+    }
+
+    // remove the selection
+    expanded = false;
+    selected = null;
+    dispatch('selectedChange', selected);
+  }
+
 </script>
 
-<button 
-  class="grid grid-cols-12 {buttonClasses} {buttonWidth}"
-  aria-haspopup="listbox" 
-  aria-expanded={expanded}
-  value={selected?.value ?? ''}
-  id={selectId}
-  type="button"
-  on:click={handleSelectClick}
-  bind:this={selectButton}
->
-  <span
-    class="group col-span-11 justify-self-start flex flex-row"
-  >
-    {#if selected}
-      {#if selected?.icon}
-        <svelte:component this={selected.icon} classes={iconClasses}/>
-      {/if}
-      {selected.label}
-      {#if removableSelection}
-        <button
-          class="flex invisible group-hover:visible justify-center items-center
-            p-2 mx-1 hover:bg-custom-5 rounded-[50%]"
-          type="button"
-          on:click|stopPropagation={handleRemoveSelect}
-        >
-          <Close classes="h-2"/>
-        </button>
-      {/if}
-    {:else}
-      <span class="text-custom-9">
-        {defaultLabel}
-      </span>
-    {/if}
-  </span>
-  <span class="justify-self-end">
-    {#if expanded}
-      <Chevronup classes="w-5 h-5"/>
-    {:else}
-      <Chevrondown classes="w-5 h-5"/>
-    {/if}
-  </span>
-</button>
 <div
-  class="custom-dropdown absolute z-10 mx-1.5 shadow-lg border-x-2 border-b-2 rounded-b-[0.3125rem]
-    bg-custom-1 max-h-60 overflow-y-auto"
-  style:--dropDownColor={dropDownColor}
-  class:hidden={!expanded}
-  bind:this={dropDown}
+  class="relative"
+  class:resultList={selectType == 'resultList'}
+  class:default={selectType == 'default'}
 >
-  {#each optionsData as option}
-    <button class="flex flex-row w-full px-6 py-2 cursor-pointer bg-custom-1
-        last:rounded-b-sm hover:bg-custom-5"
-      id={option.value}
-      role="option"
-      aria-selected={option.value == selected?.value}
-      class:selected-option={option.value == selected?.value}
-      type="button"
-      on:click={() => handleOptionClick(option)}
-    >
-      {#if option?.icon}
-        <svelte:component this={option.icon} classes={iconClasses}/>
+  <select
+    class='pr-16 md:pr-12 appearance-none cursor-pointer'
+    class:tabCard={selectType == 'tabCard'}
+    class:categoryFilter={selectType == 'categoryFilter'}
+    class:select-button-2={selectType == 'resultList' || selectType == 'default'}
+    class:button-4={selectType == 'categoryFilter' || selectType == 'tabCard'}
+    on:change={handleSelectionChange}
+    on:click={handleSelectClick}
+    on:keydown={handleSearchEnterKeyDown}
+    on:blur={handleBlur}
+    bind:this={selectEl}
+  >
+    {#if defaultLabel}
+      {#if !selected}
+        <option value="" disabled={!removableSelection} selected>{defaultLabel}</option>
+      {:else}
+        <option value="" disabled={!removableSelection}>{defaultLabel}</option>
       {/if}
-      {option.label}
+    {/if}
+
+    {#each optionsData as option}
+      {#if selected && selected.value == option.value}
+        <option value={option.value} selected>{option.label}</option>
+      {:else}
+        <option value={option.value}>{option.label}</option>
+      {/if}
+    {/each}
+  </select>
+  {#if selected && removableSelection}
+    <button
+      type="button"
+      aria-label={clearAriaLabel}
+      class="clear-btn absolute top-1/4 right-10 md:right-14 text-gray-400 rounded-full p-1.5"
+      on:click={handleRemoveSelect}
+    >
+      <Close classes="w-2.5 h-2.5"/>
     </button>
-  {/each}
+  {/if}
+  {#if expanded}
+    <Chevronup classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none"/>
+  {:else}
+    <Chevrondown classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none"/>
+  {/if}
 </div>
 
 <style>
-  .custom-dropdown {
-    border-color: var(--dropDownColor);
-    color: var(--dropDownColor);
+  .resultList,
+  .default {
+    @apply text-custom-16;
   }
 
-  .selected-option {
-    background-color: var(--dropDownColor);
+  .tabCard,
+  .categoryFilter {
+    @apply w-full;
+  }
+
+  .clear-btn:hover,
+  .clear-btn:focus {
     @apply text-custom-1;
+    @apply bg-custom-22;
   }
 </style>

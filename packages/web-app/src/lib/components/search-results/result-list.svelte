@@ -3,8 +3,6 @@
   import { afterNavigate, goto } from '$app/navigation';
   import { onMount, tick } from 'svelte';
   import Accordion from '$lib/components/accordion/accordion.svelte';
-  import ArrowDown from "$lib/components/icons/arrow-down.svelte";
-  import ArrowUp from "$lib/components/icons/arrow-up.svelte";
   import Card from '$lib/components/card/card.svelte';
   import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
   import Map from '$lib/components/map/map.svelte';
@@ -17,26 +15,17 @@
   /************* Translations ***************/
   const translations = $page.data.t;
 
-  const dateText = translations?.date ? translations["date"] : "Date";
   const mapNotAvailableText = translations?.mapNotAvailable ?
     translations["mapNotAvailable"] : "Map preview not available";
-  const popularityText = translations?.popularity ? translations["popularity"] : "Popularity";
   const saveSearchParamsText = translations?.saveSearchParams ?
     translations["saveSearchParams"] : "Save Search Parameters";
-  const titleText = translations?.title ? translations["title"] : "Title";
 
   /****************** Sorting ******************/
   let sortOrder = $page.url.searchParams.get('sort') ?? 'title';
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
   $: currentPage = Number($page.url.searchParams.get('page-number') ?? '0') + 1;
 
-  const sortBySelectData = [
-    {"value": "date-desc", "label": dateText, "icon": ArrowDown},
-    {"value": "date-asc", "label": dateText, "icon": ArrowUp},
-    {"value": "popularity-desc", "label": popularityText, "icon": ArrowDown},
-    {"value": "popularity-asc", "label": popularityText, "icon": ArrowUp},
-    {"value": "title", "label": titleText}
-  ]
+  const sortBySelectData = $page.data.sortOptions;
 
   let defaultOption = sortBySelectData.find((x) => x.value == sortOrder);
   $: selected = defaultOption ?? sortBySelectData[0];
@@ -95,12 +84,11 @@
     <p class="font-custom-style-body-6">
       {pageMessage}
     </p>
-    <div class="flex flex-col-reverse md:flex-row gap-3 md:gap-5">
-      <div class="w-full md:w-48">
+    <div class="flex flex-row gap-3 md:gap-5">
+      <div>
         <SelectCustomized
-          buttonWidth='w-48 md:w-full'
+          selectType='resultList'
           optionsData={sortBySelectData}
-          selectId={"sort-options"}
           bind:selected={selected}
           on:selectedChange={changeSort}
         />

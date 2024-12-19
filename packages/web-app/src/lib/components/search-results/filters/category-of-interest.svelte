@@ -70,9 +70,12 @@
   </h3>
   <div class="w-full lg:w-[60%]">
     <SelectCustomized
-      optionsData={categories} selectId={categoriesKey} buttonClasses={"button-4"}
-      dropDownColor={"#002E62"} removableSelection={true} defaultLabel={categorySelectDefautText}
-      bind:selected={selected} on:selectedChange={handleCategoryOfInterestChange}
+      optionsData={categories}
+      removableSelection={true}
+      defaultLabel={categorySelectDefautText}
+      selectType={"categoryFilter"}
+      bind:selected={selected}
+      on:selectedChange={handleCategoryOfInterestChange}
     />
   </div>
 </div>

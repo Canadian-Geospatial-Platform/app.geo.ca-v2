@@ -1,0 +1,18 @@
+[
+  {
+    "value": "date-desc",
+    "label": "Date: newest first"
+  }, {
+    "value": "date-asc",
+    "label": "Date: oldest first"
+  }, {
+    "value": "popularity-desc",
+    "label": "Popularity: high to low"
+  }, {
+    "value": "popularity-asc",
+    "label": "Popularity: low to high"
+  }, {
+    "value": "title",
+    "label": "Title"
+  }
+]
