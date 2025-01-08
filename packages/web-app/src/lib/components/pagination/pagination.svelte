@@ -4,21 +4,21 @@
   
   When one of the page buttons is clicked, a custom 'pageChange'
   event is dispatched, along with the new page number as the
-  event's detail value. This event indicates when a page needs
+  event's value. This event indicates when a page needs
   to be changed, but doesn't fetch any data. So, it
   is up to the parent component to handle the actual page
   change like this:
   
   <Pagination
     ...
-    on:pageChange={myHandler}
+    pageChange={myHandler}
   />
 
   <script>
     ...
 
     function myHandler(event) {
-      currentPage = event.detail;
+      currentPage = event;
       ... /* get page data */
     }
   </script>
@@ -27,25 +27,33 @@
 <script lang="ts">
   import Chevronleft from "$lib/components/icons/chevronleft.svelte";
   import Chevronright from "$lib/components/icons/chevronright.svelte";
-  import { createEventDispatcher } from 'svelte';
   import { page } from '$app/stores';
   import { afterNavigate } from '$app/navigation';
 
-	const dispatch = createEventDispatcher();
+  interface Props {
+    totalItems?: number;
+    itemsPerPage?: number;
+    currentPage: number;
+    numPageButtons?: number;
+    pageChange: CustomEvent
+  }
 
-  export let totalItems = 0;
-  export let itemsPerPage = 10;
-  export let currentPage;
-  export let numPageButtons = 5;
+  let {
+    totalItems = $bindable($page.data.total ?? 0),
+    itemsPerPage = $bindable(parseInt($page.url.searchParams.get('per-page') || 10, 10)),
+    currentPage = $bindable(parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1),
+    numPageButtons = 5,
+    pageChange
+  }: Props = $props();
 
-  // Add 1 since page number from url starts at 0 while page buttons start at 1
-  $: currentPage = parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1;
-  $: itemsPerPage = parseInt($page.url.searchParams.get('per-page') || itemsPerPage, 10);
-  $: totalItems = $page.data.total ?? 0;
+  let urlPageNumber = $derived(parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1);
+  let numPages = $derived(Math.ceil(totalItems / itemsPerPage));
+  let halfNumPageButtons = $derived(Math.floor(numPageButtons / 2));
+  let pageButtons = $derived(pageRange(currentPage, numPages, numPageButtons));
 
-  let halfNumPageButtons = Math.floor(numPageButtons / 2);
-  $: numPages = Math.ceil(totalItems / itemsPerPage);
-  $: pageButtons = pageRange(currentPage, numPages, numPageButtons);
+  $effect(() => {
+    currentPage = urlPageNumber;
+  });
 
   function pageRange(current: number, totalPages: number, numButtons: number) {
     if (totalPages > numButtons) {
@@ -71,34 +79,38 @@
     });
 
     currentPage = page;
-    dispatch('pageChange', page);
+    pageChange(page);
   }
 </script>
 
 <div
-  class="flex flex-row justify-between items-center pagination-width
-    rounded shadow-[0_0.1875rem_0.375rem_#00000029] bg-custom-16"
-  class:hidden={numPages < 2}
+  class={[
+    "flex flex-row justify-between items-center pagination-width",
+    "rounded shadow-[0_0.1875rem_0.375rem_#00000029] bg-custom-16",
+    (numPages < 2) && "hidden"
+  ]}
 >
   <button
     class="arrows mr-2 text-custom-16 disabled:text-custom-19"
-    on:click={() => handlePageClick(currentPage - 1)}
+    onclick={() => handlePageClick(currentPage - 1)}
     disabled={currentPage == 1 || totalItems == 0}
   >
     <Chevronleft classes="h-6" />
   </button>
   {#each pageButtons as page}
     <button
-      class="font-custom-style-button-1 h-7 min-w-7 px-1"
-      class:current-page={page == currentPage}
-      on:click={() => handlePageClick(page)}
+      class={[
+        "font-custom-style-button-1 h-7 min-w-7 px-1",
+        (page == currentPage) && "current-page"
+      ]}
+      onclick={() => handlePageClick(page)}
     >
       {page}
     </button>
   {/each}
   <button
     class="arrows ml-2 text-custom-16 disabled:text-custom-19"
-    on:click={() => handlePageClick(currentPage + 1)}
+    onclick={() => handlePageClick(currentPage + 1)}
     disabled={currentPage == numPages || totalItems == 0}
   >
     <Chevronright classes="h-6" />

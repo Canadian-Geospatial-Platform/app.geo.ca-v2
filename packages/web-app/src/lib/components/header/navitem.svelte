@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount, createEventDispatcher } from 'svelte';
+  import { onMount } from 'svelte';
   import {clickOutside} from './clickOutside';
   import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
   import Navdropdown from './navdropdown.svelte';
@@ -8,19 +8,16 @@
   import Chevrondown from '../icons/chevrondown.svelte';
   import Chevronright from '../icons/chevronright.svelte';
 
-  export let linkData;
-  export let orientation;
-
-  const dispatch = createEventDispatcher();
+  let { linkData, orientation, dropDownClick } = $props();
 
   const lang = $page.data.lang;
   const homeText = lang == 'fr-ca' ? 'Accueil' : 'Home';
 
-  let chevronDown = true;
-  let active = false;
+  let chevronDown = $state(true);
+  let active = $state(false);
   let currentUrl: string;
-  let frenchUrl: string;
-  let englishUrl: string;
+  let frenchUrl: string = $state();
+  let englishUrl: string = $state();
 
   function setActive(isActive: boolean, down: boolean, activateScroll: boolean) {
     active = isActive;
@@ -31,7 +28,7 @@
   };
 
   function handleClickOutside(menuOrientation: string) {
-		if (active) {
+    if (active) {
       let isHorizontal = menuOrientation === "horizontal";
       setActive(false, true, isHorizontal);
     }
@@ -49,9 +46,9 @@
       dispatchDropDownClick();
     }
 	};
-	
+
 	function dispatchDropDownClick() {
-	  dispatch('dropDownClick', {'menu': linkData});
+	  dropDownClick({'menu': linkData});
 	}
 
   function resetNav() {
@@ -67,19 +64,21 @@
   });
 </script>
 
-<svelte:window on:resize={resetNav} />
+<svelte:window onresize={resetNav} />
 
 <div
-  class="h-full"
-  class:active={active && orientation === 'horizontal'}
+  class={[
+    "h-full",
+    (active && orientation === 'horizontal') && "active"
+  ]}
 >
   {#if linkData?.options && orientation == 'horizontal'}
     <!-- TODO: fix typescript error for click_outside event-->
     <button
       class="nav-link"
       use:clickOutside
-      on:click_outside={handleClickOutside(orientation)}
-      on:click={() => handleDropdownClick(orientation)}
+      onclick_outside={() => handleClickOutside(orientation)}
+      onclick={() => handleDropdownClick(orientation)}
     >
       {linkData.title}
       {#if chevronDown}
@@ -92,13 +91,13 @@
     <div class="relative">
       <Navdropdown options={linkData['options']} bind:active={active} orientation={orientation}/>
     </div>
-    <div class:mask={active} />
+    <div class={[active && "mask"]}></div>
   {:else if linkData?.options}
     <button
       class="nav-link w-full justify-between"
       use:clickOutside
-      on:click_outside={handleClickOutside(orientation)}
-      on:click={() => handleDropdownClick(orientation)}
+      onclick_outside={() => handleClickOutside(orientation)}
+      onclick={() => handleDropdownClick(orientation)}
     >
       <div>
         {linkData.title}
@@ -122,7 +121,7 @@
       </a>
     {/if}
   {:else if linkData?.href}
-    <a class="nav-link" href={linkData["href"]} on:click={dispatchDropDownClick}>
+    <a class="nav-link" href={linkData["href"]} onclick={dispatchDropDownClick}>
       {linkData.title}
     </a>
   {/if}

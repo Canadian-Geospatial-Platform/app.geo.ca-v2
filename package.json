@@ -15,6 +15,7 @@
     "typescript": "5.6.2"
   },
   "dependencies": {
-    "sst": "3.3.42"
+    "sst": "3.3.42",
+    "svelte": "^5.16.6"
   }
 }

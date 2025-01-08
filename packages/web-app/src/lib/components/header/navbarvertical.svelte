@@ -9,9 +9,9 @@
   const navItems = $page.data.navitems;
   const orientation = 'vertical';
 
-  let active = false;
-  let mainMenuVisible = false;
-  let activeMenuContent = null;
+  let active = $state(false);
+  let mainMenuVisible = $state(false);
+  let activeMenuContent = $state(null);
 
   function resetNav() {
     if (active === true) {
@@ -24,7 +24,7 @@
 
   function toggleMenuView(event: CustomEvent) {
     mainMenuVisible = !mainMenuVisible;
-    activeMenuContent = event?.detail?.menu;
+    activeMenuContent = event?.menu;
 
     if (activeMenuContent?.href) {
       resetNav();
@@ -32,26 +32,28 @@
   }
 </script>
 
-<svelte:window on:resize={resetNav} />
+<svelte:window onresize={resetNav} />
 
 <div class="grid">
   <Menubutton bind:active={active} bind:mainMenuVisible={mainMenuVisible} />
 </div>
 <div
-  class="nav-items-container bg-custom-23"
-  class:hidden={!active || !mainMenuVisible}
+  class={[
+    "nav-items-container bg-custom-23",
+    (!active || !mainMenuVisible) && "hidden"
+  ]}
 >
   <div class="rounded-[0.3125rem] bg-custom-1 divide-y divide-custom-16">
     {#each Object.entries(navItems) as [key, data]}
       {#if key != 'lang' && ((key != 'collections') || userId)}
         <div class="nav-item">
-          <Navitem linkData={data} {orientation} on:dropDownClick={toggleMenuView} />
+          <Navitem linkData={data} {orientation} dropDownClick={toggleMenuView} />
         </div>
       {/if}
     {/each}
   </div>
   <div class="text-custom-1 nav-item">
-    <Navitem linkData={navItems.lang} {orientation} on:dropDownClick={toggleMenuView} />
+    <Navitem linkData={navItems.lang} {orientation} dropDownClick={toggleMenuView} />
   </div>
 </div>
 
@@ -61,13 +63,17 @@
 -->
 {#if activeMenuContent}
   <div
-    class="nav-items-container bg-custom-23 pb-10"
-    class:hidden={!active || mainMenuVisible}
+    class={[
+      "nav-items-container bg-custom-23 pb-10",
+      (!active || mainMenuVisible) && "hidden"
+    ]}
   >
     <button
-      class="w-full h-[5.0625rem] pl-5 text-left bg-custom-16 text-custom-1 rounded-t-[0.3125rem]"
-      class:rounded-section-title={activeMenuContent?.options && activeMenuContent?.options[0]?.colTitle}
-      on:click={toggleMenuView}
+      class={[
+        "w-full h-[5.0625rem] pl-5 text-left bg-custom-16 text-custom-1 rounded-t-[0.3125rem]",
+        (activeMenuContent?.options && activeMenuContent?.options[0]?.colTitle) && "rounded-section-title"
+      ]}
+      onclick={toggleMenuView}
     >
       <Chevronleft classes="h-[2.1875rem] w-[2.1875rem] inline-block"/>
       {activeMenuContent.title}
@@ -80,12 +86,14 @@
           </div>
         {/if}
         <div
-          class="rounded-b-[0.3125rem] bg-custom-1 divide-y divide-custom-16"
-          class:rounded-section-link-list={option?.colTitle}
+          class={[
+            "rounded-b-[0.3125rem] bg-custom-1 divide-y divide-custom-16",
+            option?.colTitle && "rounded-section-link-list"
+          ]}
         >
           {#each option["links"] as link}
             <div class="nav-item">
-              <Navitem linkData={link} {orientation} on:dropDownClick={toggleMenuView} />
+              <Navitem linkData={link} {orientation} dropDownClick={toggleMenuView} />
             </div>
           {/each}
         </div>
@@ -94,7 +102,7 @@
   </div>
 {/if}
 
-<div class:mask={active}></div>
+<div class={[active && "mask"]}></div>
 
 <style>
   /* Hide scroll bar for navbar options*/

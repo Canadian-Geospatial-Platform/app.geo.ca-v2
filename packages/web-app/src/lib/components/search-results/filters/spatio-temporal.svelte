@@ -5,8 +5,12 @@
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
 	import BoundingBox from './bounding-box.svelte';
 
-  export let temporalActive: boolean = false;
-  export let spatialActive: boolean = false;
+  interface Props {
+    temporalActive?: boolean;
+    spatialActive?: boolean;
+  }
+
+  let { temporalActive = $bindable(false), spatialActive = $bindable(false) }: Props = $props();
 
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
@@ -15,9 +19,9 @@
   const label = spatioTemporalFilters.label;
   const filterList = spatioTemporalFilters.filterList;
 
-  let checkedStates: { [key: string]: boolean } = {};
-  let temporalComponent;
-  let spatialComponent;
+  let checkedStates = $state({});
+  let temporalComponent = $state();
+  let spatialComponent = $state();
 
   export function resetFilters() {
     const spatialKey = $page.url.searchParams.get('bbox');
@@ -38,6 +42,8 @@
 
   export function clearAllFilters() {
     checkedStates = {};
+    spatialComponent?.resetFilters();
+    temporalComponent?.resetFilters();
   }
 
   export function getBBox() {
@@ -50,13 +56,14 @@
 
   /************* Handlers ***************/
   function handleCheckboxClick(event: CustomEvent) {
-    let detail = event.detail;
-    let checkbox = detail.target as HTMLInputElement;
+    let checkbox = event.target as HTMLInputElement;
 
     if (checkbox.id == 'spatio-temporal-temporal-extent') {
       temporalActive = !temporalActive;
+      checkedStates['temporal-extent'] = event.target.checked;
     } else if (checkbox.id == 'spatio-temporal-spatial-extent') {
       spatialActive = !spatialActive;
+      checkedStates['spatial-extent'] = event.target.checked;
     }
   }
 </script>
@@ -69,14 +76,14 @@
       checkboxName={section + "-" + filterListItem.value}
       checkboxLabel={filterListItem.label}
       checked={checkedStates[filterListItem.value] || false}
-      on:checkedStateChange={handleCheckboxClick}
+      checkedStateChange={handleCheckboxClick}
     />
     {#if filterListItem.value == "spatial-extent"}
-      <div class:hidden={!spatialActive}>
+      <div class={[!spatialActive && "hidden"]}>
         <BoundingBox coordinatesId={section} bind:active={spatialActive} bind:this={spatialComponent} />
       </div>
     {:else if filterListItem.value == "temporal-extent"}
-      <div class:hidden={!temporalActive}>
+      <div class={[!temporalActive && "hidden"]}>
         <DateRange dateId={section} bind:active={temporalActive} bind:this={temporalComponent} />
       </div>
     {/if}

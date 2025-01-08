@@ -9,8 +9,8 @@
   let shareText = translations?.shareText ? translations["shareText"] : "Share";
 
   // Note: these variables need to be computed to react to changes to the page's url
-  $: path = $page.url;
-  $: encodedPath = encodeURIComponent(String(path));
+  let path = $derived($page.url);
+  let encodedPath = $derived(encodeURIComponent(String(path)));
 
   function handleFacebookLink() {
     let facebookLink = "https://www.facebook.com/sharer/sharer.php";
@@ -40,16 +40,16 @@
   <h1 class="font-custom-style-body-1 mr-3 w-full md:w-fit text-left mb-2 md:mb-0">
     {shareText}
   </h1>
-  <button aria-label="facebook" on:click={handleFacebookLink}>
+  <button aria-label="facebook" onclick={handleFacebookLink}>
     <Facebook />
   </button>
-  <button aria-label="X" on:click={handleXLink}>
+  <button aria-label="X" onclick={handleXLink}>
     <X />
   </button>
-  <button aria-label="LinkedIn" on:click={handleLinkedInLink}>
+  <button aria-label="LinkedIn" onclick={handleLinkedInLink}>
     <Linkedin />
   </button>
-  <button aria-label="email/courriel" on:click={handleEmailLink}>
+  <button aria-label="email/courriel" onclick={handleEmailLink}>
     <Email />
   </button>
 </div>

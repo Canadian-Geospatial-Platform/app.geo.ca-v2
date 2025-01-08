@@ -7,6 +7,7 @@
 
   // Note: the list of categories are based on the Topic Categories from ISO 19115-1
   // https://icsm-au.github.io/metadata-working-group/defs/TopicCategory
+  const categoriesKey = 'category-of-interest';
   const categories = $page.data.categories;
   let selected: SelectOption | null = null;
   let categoryStoreVal: string | null = null;
@@ -38,8 +39,6 @@
     translations["categorySelectDefaut"] : "Select a Category...";
 
   /************* Filter Data ***************/
-  const categoriesKey = 'category-of-interest';
-
   function findCategory(categoryName: string | null) {
     return categories.find((x: FilterItem) => x.value == categoryName) ?? null;
   }
@@ -50,7 +49,7 @@
 
   /************* Handlers ***************/
   function handleCategoryOfInterestChange(event: CustomEvent) {
-    changeSelection(event.detail);
+    changeSelection(event);
     updateTempCategoryOfInterest(selected?.value ?? null);
   }
 
@@ -75,7 +74,7 @@
       defaultLabel={categorySelectDefautText}
       selectType={"categoryFilter"}
       bind:selected={selected}
-      on:selectedChange={handleCategoryOfInterestChange}
+      selectedChange={handleCategoryOfInterestChange}
     />
   </div>
 </div>

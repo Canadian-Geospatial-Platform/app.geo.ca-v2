@@ -17,7 +17,7 @@
   const coordinates = geometry && geometry?.coordinates ? geometry.coordinates : null;
 
   // For small screens, don't include the map preview
-  let showMap = true;
+  let showMap = $state(true);
 
   const checkScreenSize = () => {
     // Tailwind's 'sm' breakpoint starts at 640px

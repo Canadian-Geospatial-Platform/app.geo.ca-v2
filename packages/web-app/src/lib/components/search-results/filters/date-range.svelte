@@ -1,8 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  export let dateId: string;
-  export let active: boolean = false;
+  interface Props {
+    dateId: string;
+    active?: boolean;
+  }
+
+  let { dateId, active = $bindable(false) }: Props = $props();
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -22,8 +26,8 @@
     'end': {'label': endDate, 'key': endDateKey}
   };
 
-  let beginInput: HTMLInputElement;
-  let endInput: HTMLInputElement;
+  let beginInput: HTMLInputElement = $state();
+  let endInput: HTMLInputElement = $state();
 
   export function resetFilters() {
     let beginKey = $page.url.searchParams.get('begin');

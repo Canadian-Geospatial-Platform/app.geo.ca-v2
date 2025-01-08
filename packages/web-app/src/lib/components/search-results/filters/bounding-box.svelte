@@ -1,8 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  export let coordinatesId: string;
-  export let active: boolean = false;
+  interface Props {
+    coordinatesId: string;
+    active?: boolean;
+  }
+
+  let { coordinatesId, active = $bindable(false) }: Props = $props();
 
   /************* Translations ***************/
   const translations = $page.data.t;
@@ -33,7 +37,7 @@
   ];
 
   // Element references
-  let inputs = {};
+  let inputs = $state({});
 
   export function resetFilters() {
     const urlParams = $page.url.searchParams;

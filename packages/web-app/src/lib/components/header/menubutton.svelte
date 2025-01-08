@@ -2,8 +2,12 @@
   import { page } from '$app/stores';
   import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
 
-  export let active: Boolean;
-  export let mainMenuVisible: Boolean;
+  interface Props {
+    active: Boolean;
+    mainMenuVisible: Boolean;
+  }
+
+  let { active = $bindable(), mainMenuVisible = $bindable() }: Props = $props();
 
   const translations = $page.data.headerTranslations;
   const menuButton = translations?.menuButton ? translations["menuButton"] : "";
@@ -15,11 +19,12 @@
   }
 </script>
 
-<button class="grid grid-cols-4 cursor-pointer pl-[0.8125rem] pr-[0.5625rem]
-    py-[0.4375rem] self-center bg-custom-16 text-custom-1 rounded-[0.3125rem]
-    font-bold text-xl"
-  on:click={handleMenuButtonClick}
-  class:active={active} 
+<button class={[
+    "grid grid-cols-4 cursor-pointer pl-[0.8125rem] pr-[0.5625rem] py-[0.4375rem]",
+    "self-center bg-custom-16 text-custom-1 rounded-[0.3125rem] font-bold text-xl",
+    active && "menu-active"
+  ]}
+  onclick={handleMenuButtonClick}
   title={menuButton}
 >
   {#if !active}
@@ -47,18 +52,18 @@
     @apply rounded;
   }
 
-  .active .bar1 {
+  .menu-active .bar1 {
     @apply w-5;
     @apply h-[0.1875rem];
     @apply origin-top-left;
     @apply rotate-45;
   }
 
-  .active .bar2 {
+  .menu-active .bar2 {
     @apply opacity-0;
   }
 
-  .active .bar3 {
+  .menu-active .bar3 {
     @apply w-5;
     @apply h-[0.1875rem];
     @apply origin-bottom-left;

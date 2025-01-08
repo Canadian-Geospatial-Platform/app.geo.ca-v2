@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let classes = "";
+  interface Props {
+    classes?: string;
+  }
+
+  let { classes = "" }: Props = $props();
 </script>
 
 <div class="{classes} absolute flex justify-center items-center bg-custom-15 w-full h-full">

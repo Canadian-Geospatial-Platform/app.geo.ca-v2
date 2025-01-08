@@ -1,18 +1,26 @@
 <script lang="ts">
   import Checkmark from '$lib/components/icons/checkmark.svelte';
-  import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
 
   // Note: checkboxes in the same form, with the same name attribute
   // are grouped together
-  export let checkboxId: string;
-  export let checkboxName: string;
-  export let checkboxLabel: string;
-  export let checked: boolean = false;
+  interface Props {
+    checkboxId: string;
+    checkboxName: string;
+    checkboxLabel: string;
+    checked?: boolean;
+    checkedStateChange: (arg: Event) => void;
+  }
+
+  let {
+    checkboxId,
+    checkboxName,
+    checkboxLabel,
+    checked = $bindable(false),
+    checkedStateChange
+  }: Props = $props();
 
   function handleCheckboxClick(event: Event) {
-    dispatch('checkedStateChange', event);
+    checkedStateChange(event);
   }
 </script>
 
@@ -21,7 +29,7 @@
     type="checkbox" id={checkboxId} name={checkboxName} bind:checked={checked}
     class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
       border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16"
-    on:change={handleCheckboxClick}
+    onchange={handleCheckboxClick}
   />
   <label for={checkboxId}>
     {checkboxLabel}

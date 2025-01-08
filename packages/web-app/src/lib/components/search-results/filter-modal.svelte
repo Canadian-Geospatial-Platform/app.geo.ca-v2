@@ -12,8 +12,12 @@
   import OtherFilters from '$lib/components/search-results/filters/other-filters.svelte';
   import SpatioTemporal from '$lib/components/search-results/filters/spatio-temporal.svelte';
 
-  export let active = false;
-  export let numFilters = 0;
+  interface Props {
+    active?: boolean;
+    numFilters?: number;
+  }
+
+  let { active = $bindable(false), numFilters = $bindable(0) }: Props = $props();
 
   const translations = $page.data.t;
 
@@ -22,8 +26,8 @@
   const clearAllText = translations?.clearAll ?? "Clear All";
   const searchText = translations?.search ?? "Search";
 
-  let temporalActive = false;
-  let spatialActive = false;
+  let temporalActive = $state(false);
+  let spatialActive = $state(false);
 
   const categoriesKey = 'category-of-interest';
   const orgKey = 'org';
@@ -34,18 +38,17 @@
   const dateRangeKey = 'dateRange';
   const delineator = '|';
 
-  let categoriesComponent;
-  let othersCompontent;
-  let orgCompontent;
-  let themeCompontent;
-  let typeCompontent;
-  let spatioTemporalComponent;
+  let categoriesComponent = $state();
+  let othersCompontent = $state();
+  let orgCompontent = $state();
+  let themeCompontent = $state();
+  let typeCompontent = $state();
+  let spatioTemporalComponent = $state();
 
-  $: searchParams = $page.url.searchParams;
-
-  $: {
+  let searchParams = $derived($page.url.searchParams);
+  $effect(() => {
     setFilterCountFromUrl(searchParams);
-  }
+  });
 
   /************* Handlers ***************/
   function handleCloseButtonClick(event: Event) {
@@ -60,6 +63,7 @@
   }
 
   function handleSubmit(event: Event) {
+    event.preventDefault();
     const formEl = event.target;
     const formData = new FormData(formEl);
     const categoryVal = categoriesComponent.getValue();
@@ -220,12 +224,14 @@
 </script>
 
 <div
-  class="fixed flex justify-center z-40 inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4"
-  class:hidden={!active}
+  class={[
+    "fixed flex justify-center z-40 inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
+    (!active) && "hidden"
+  ]}
 >
   <form
     class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-full md:w-2/3 h-fit md:mt-2 m-5 md:m-0"
-    on:submit|preventDefault={handleSubmit}
+    onsubmit={handleSubmit}
   >
     <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
       <div>
@@ -251,7 +257,7 @@
         class="flex justify-center items-center border border-custom-16 rounded-[50%]
           h-9 w-9 md:h-[3.0625rem] md:w-[3.0625rem] hover:bg-custom-16 text-custom-16
           hover:text-custom-1"
-        on:click={handleCloseButtonClick}
+        onclick={handleCloseButtonClick}
       >
         <Close classes="h-4 md:h-[1.3125rem]"/>
       </button>
@@ -264,7 +270,7 @@
         type="button"
         class="row-start-2 md:row-start-1 w-full md:w-auto justify-self-start button-3
           h-12 md:h-auto"
-        on:click={handleClearAllClick}
+        onclick={handleClearAllClick}
       >
         {clearAllText}
       </button>

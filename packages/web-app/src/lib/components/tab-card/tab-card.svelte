@@ -13,7 +13,11 @@
 
   type Tabs = Array<Tab>;
 
-  export let tabContentArray: Tabs;
+  interface Props {
+    tabContentArray: Tabs;
+  }
+
+  let { tabContentArray }: Props = $props();
 
   /******************* Translations *******************/
   const translations = $page.data.t;
@@ -21,9 +25,9 @@
   const resources = translations?.resources ? translations["resources"] : "Resources";
 
   // Set the first tab to active by default
-  let activeTabId = tabContentArray[0].value;
-  let activeTab = tabContentArray.find((x: Tab) => x.value == activeTabId);
-  $: title = activeTab ? activeTab.label : "";
+  let activeTabId = $state(tabContentArray[0].value);
+  let activeTab = $state(tabContentArray.find((x: Tab) => x.value == activeTabId));
+  let title = $derived(activeTab ? activeTab.label : "");
 
   function handleTabClick(tab: Tab) {
     activeTab = tab;
@@ -31,7 +35,7 @@
   };
 
   function handleDropdownClick(event: CustomEvent) {
-    handleTabClick(event.detail);
+    handleTabClick(event);
   }
 
 </script>
@@ -49,10 +53,12 @@
     <div class="flex mr-6 space-x-3 self-end">
       <!-------------- Tabs for large screens -------------->
       {#each tabContentArray as tab}
-        <button 
-          class="hidden lg:flex items-center h-9 px-5 font-custom-style-body-3 bg-custom-5 border-b-[0.1875rem] border-custom-16"
-          class:active={tab.value == activeTabId}
-          on:click={() => handleTabClick(tab)}
+        <button
+          class={["hidden lg:flex items-center h-9 px-5 font-custom-style-body-3",
+            "bg-custom-5 border-b-[0.1875rem] border-custom-16",
+            (tab.value == activeTabId) && "active"
+          ]}
+          onclick={() => handleTabClick(tab)}
         >
           {tab.label}
         </button>
@@ -69,19 +75,19 @@
         optionsData={tabContentArray}
         selectType={"tabCard"}
         bind:selected={activeTab}
-        on:selectedChange={handleDropdownClick}
+        selectedChange={handleDropdownClick}
       />
     </div>
   </div>
   {#each tabContentArray as tabContent}
     {#if activeTabId == tabContent.value}
-      <Card spaceBetween='space-y-3'>
+      <Card type="tabbed">
         <div class="lg:hidden">
           <h2 class="font-open-sans font-bold text-xl">
             {tabContent.label}
           </h2>
         </div>
-        <svelte:component this={tabContent.component}/>
+        <tabContent.component/>
       </Card>
     {/if}
   {/each}

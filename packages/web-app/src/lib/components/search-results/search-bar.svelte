@@ -27,10 +27,11 @@
   /***************** Data ******************/
   const searchKey = 'search-terms';
 
-  let searchTextInput: HTMLInputElement;
+  let searchTextInput: HTMLInputElement = $state();
   let analytics = $page.data.analytics;
-  $: numFilters = 0;
-  $: keywordFromUrl = $page.url.searchParams.get(searchKey);
+  let numFilters = $state(0);
+
+  let keywordFromUrl = $derived($page.url.searchParams.get(searchKey));
 
   // TODO: Get actual numbers for all data variables
   let notApplicable = 'N/A';
@@ -41,8 +42,8 @@
   let collections = notApplicable;
 
   /***************** Handlers ******************/
-  let modalActive = false;
-  let filterModal;
+  let modalActive = $state(false);
+  let filterModal = $state();
 
   function handleFilterButtonClick(event: Event) {
     modalActive = true;
@@ -81,12 +82,12 @@
 </script>
 
 <FilterModal bind:active={modalActive} bind:numFilters={numFilters} bind:this={filterModal} />
-<Card bgColour='bg-custom-1 md:bg-custom-5' padding='px-5 py-0 md:px-6 md:py-6' spaceBetween='space-y-4 md:space-y-7'>
+<Card type='searchBar'>
   <div class="flex flex-row gap-y-5 flex-wrap md:flex-nowrap">
     <button
       class={`text-nowrap shadow-[0rem_0.1875rem_0.375rem_#00000029]
         ${$navigating ? 'button-3-disabled' : 'button-3'}`}
-      on:click={handleFilterButtonClick}
+      onclick={handleFilterButtonClick}
       disabled={$navigating}
     >
       {#if numFilters > 0}
@@ -109,7 +110,7 @@
           shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-2 md:border-0
           ${$navigating ? 'border-custom-17' : 'border-custom-16'}`}
         bind:this={searchTextInput}
-        on:keydown={handleSearchEnterKeyDown}
+        onkeydown={handleSearchEnterKeyDown}
         disabled={$navigating}
         value={keywordFromUrl}
       />
@@ -117,7 +118,7 @@
         class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
           font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
           ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
-        on:click={handleSearchClick}
+        onclick={handleSearchClick}
         disabled={$navigating}
       >
         <Search classes="inline" height="1.125rem"/>

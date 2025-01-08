@@ -1,24 +1,26 @@
-<script>
+<script lang="ts">
   import { setPosition } from "./setPosition";
   import Info from '../icons/info.svelte';
   import Tooltip from '../tooltip/tooltip.svelte';
 
-  export let options;
-  export let active;
-  export let orientation;
+  let { options, active = $bindable(), orientation } = $props();
 </script>
 
 <div
-  class:horizontal={active && orientation ==="horizontal"}
-  class:vertical={active && orientation ==="vertical"}
-  class="hidden"
+  class={[
+    "hidden",
+     (active && orientation ==="horizontal") && "horizontal",
+     (active && orientation ==="vertical") && "vertical"
+  ]}
   use:setPosition={orientation ==="horizontal"}
 >
   {#each options as option}
     <div
-      class:option-horizontal={orientation === "horizontal"}
-      class:option-vertical={orientation === "vertical"}
-      class="bg-custom-1 p-4"
+      class={[
+        "bg-custom-1 p-4",
+        orientation === "horizontal" && "option-horizontal",
+        orientation === "vertical" && "option-vertical"
+      ]}
     >
       {#if option?.colTitle}
         <div class="font-custom-style-header-1">

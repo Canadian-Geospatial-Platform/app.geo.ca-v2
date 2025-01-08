@@ -9,10 +9,14 @@
   type TableContent = Array<any>;
   type sortDirectionState = 0 | 1 | 2;
 
-  export let tableContent: TableContent;
-  export let tableLabels;
-  // Requires a url attriute in the tableContent array
-  export let clickableRows: boolean;
+  interface Props {
+    tableContent: TableContent;
+    tableLabels: any;
+    // Requires a url attriute in the tableContent array
+    clickableRows: boolean;
+  }
+
+  let { tableContent, tableLabels, clickableRows }: Props = $props();
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -21,11 +25,11 @@
     tableLabelsArray.push(label);
   }
 
-  let sortColumn = tableLabelsArray[0];
+  let sortColumn = $state(tableLabelsArray[0]);
   // Can be 0 (default order from tableLabelsArray), 1 (a-z, sort-up icon), or 2 (z-a, sort-down icon)
-  let sortDirection: sortDirectionState = 0;
+  let sortDirection: sortDirectionState = $state(0);
   // Unsorted by default
-  let sortedTableContent = tableContent;
+  let sortedTableContent = $state(tableContent);
 
   function handleSortButtonClick(sortLable: string) {
     if (sortLable == sortColumn) {
@@ -64,10 +68,10 @@
     <thead>
       <tr>
         {#each tableLabelsArray as labelTranslation, i}
-          <th class:w-[50%]={i == 0 && tableLabelsArray.length > 1}>
+          <th class={[(i == 0 && tableLabelsArray.length > 1) && "w-[50%]"]}>
             <div class="flex flex-row justify-between font-custom-style-header-1">
               {tableLabels[labelTranslation]}
-              <button class="px-2" on:click={() => handleSortButtonClick(labelTranslation)}>
+              <button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
                 {#if sortDirection == 1 && labelTranslation == sortColumn}
                   <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
                 {:else if sortDirection == 2 && labelTranslation == sortColumn}
@@ -91,8 +95,8 @@
             keydown event to enable using enter or space to open the url.
           -->
           <tr
-            on:click={() => handleRowClick(row.url)}
-            on:keydown={(event) => handleRowClickKeydown(row.url, event)}
+            onclick={() => handleRowClick(row.url)}
+            onkeydown={(event) => handleRowClickKeydown(row.url, event)}
             class="hover:bg-custom-5 hover:cursor-pointer"
             tabindex="0"
             role="button"

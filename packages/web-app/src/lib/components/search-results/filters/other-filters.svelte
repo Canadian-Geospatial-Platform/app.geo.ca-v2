@@ -6,7 +6,7 @@
   /************* Filter Data ***************/
   const filters = $page.data.filters.filters;
   const others = filters.find((x: Filter) => x.section === 'others');
-  let checkedStates: { [key: string]: boolean } = {};
+  let checkedStates = $state({});
 
   // Reset filters based on current URL search params
   export function resetFilters() {
@@ -33,6 +33,9 @@
       checkboxName={others.section + "-" + filterListItem.value}
       checkboxLabel={filterListItem.label}
       checked={checkedStates[filterListItem.value] || false}
+      checkedStateChange={
+        (event) => checkedStates[filterListItem.value] = event.target.checked
+      }
     />
   {/each}
 </div>

@@ -20,18 +20,34 @@
   const saveSearchParamsText = translations?.saveSearchParams ?
     translations["saveSearchParams"] : "Save Search Parameters";
 
+  /************* Accordion Components ***************/
+  let data = $derived($page.data);
+  let accordionComponents = $state([]);
+
+  // When the page data changes, close all of the accordions.
+  // This will reset the maps.
+  $effect(() => {
+    if (data) {
+      accordionComponents.forEach((accordion) => {
+        if (accordion) {
+          accordion.closeAccordion();
+        }
+      })
+    }
+  });
+
   /****************** Sorting ******************/
   let sortOrder = $page.url.searchParams.get('sort') ?? 'title';
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
-  $: currentPage = Number($page.url.searchParams.get('page-number') ?? '0') + 1;
+  let currentPage = $state(Number($page.url.searchParams.get('page-number') ?? '0') + 1);
 
   const sortBySelectData = $page.data.sortOptions;
 
   let defaultOption = sortBySelectData.find((x) => x.value == sortOrder);
-  $: selected = defaultOption ?? sortBySelectData[0];
+  let selected = $state(defaultOption ?? sortBySelectData[0]);
 
   function changeSort(event: CustomEvent) {
-    selected = event.detail;
+    selected = event;
     currentPage = 1;
     $page.url.searchParams.set('sort', selected.value);
     $page.url.searchParams.set('page-number', '0');
@@ -40,10 +56,10 @@
 
   /****************** Pagination ******************/
   let itemsPerPage = 10;
-  $: pageMessage = $page.data.numPageText;
-  $: results = $page.data.results ?? [];
-  $: total = $page.data.total ?? 0;
-  $: totalPages = Math.ceil(total/itemsPerPage);
+  let pageMessage = $derived($page.data.numPageText);
+  let results = $derived($page.data.results ?? []);
+  let total = $derived($page.data.total ?? 0);
+  let totalPages = $derived(Math.ceil(total/itemsPerPage));
 
   let hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
 
@@ -55,7 +71,7 @@
   }
 
   function changePage(event: CustomEvent) {
-    currentPage = event.detail;
+    currentPage = event;
     $page.url.searchParams.set('page-number', `${currentPage - 1}`);
     $page.url.searchParams.set('results-per-page', `${itemsPerPage}`);
     goto($page.url, { invalidateAll: true });
@@ -90,7 +106,7 @@
           selectType='resultList'
           optionsData={sortBySelectData}
           bind:selected={selected}
-          on:selectedChange={changeSort}
+          selectedChange={changeSort}
         />
       </div>
       {#if userId}
@@ -102,32 +118,35 @@
   <!-- List -->
   {#each results as result, index}
     <div class="bg-custom-1 px-5 py-4">
-      <Accordion>
-        <div slot="accordionTitle">
-          <a 
-            href={hrefPrefix + result.id}
-            class="uppercase underline font-custom-style-header-2"
-          >
-            {result.title}
-          </a>
-          <div class="line-clamp-2">
-            {result.description}
-          </div>
-        </div>
-        <div slot="accordionContent" class="mt-9">
-          <!--For now, we will only load vector maps. Other map types won't load-->
-          {#if result.coordinates}
-            <div class="flex">
-              <Map
-                coordinates={result.coordinates} id={result.id}
-                dynamic={true} useMap={result.hasMap}
-                mapType={mapType}
-              />
+      <Accordion bind:this={accordionComponents[index]}>
+        {#snippet accordionTitle()}
+          <div>
+            <a 
+              href={hrefPrefix + result.id}
+              class="uppercase underline font-custom-style-header-2"
+            >
+              {result.title}
+            </a>
+            <div class="line-clamp-2">
+              {result.description}
             </div>
-          {:else}
-            {mapNotAvailableText}
-          {/if}
-        </div>
+          </div>
+        {/snippet}
+        {#snippet accordionContent()}
+          <div  class="mt-9">
+            {#if result.coordinates}
+              <div class="flex">
+                <Map
+                  coordinates={result.coordinates} id={result.id}
+                  dynamic={true} useMap={result.hasMap}
+                  mapType={mapType}
+                />
+              </div>
+            {:else}
+              {mapNotAvailableText}
+            {/if}
+          </div>
+        {/snippet}
       </Accordion>
     </div>
   {/each}
@@ -137,7 +156,7 @@
       totalItems={total}
       {itemsPerPage}
       bind:currentPage={currentPage}
-      on:pageChange={changePage}
+      pageChange={changePage}
     />
   </div>
 </Card>

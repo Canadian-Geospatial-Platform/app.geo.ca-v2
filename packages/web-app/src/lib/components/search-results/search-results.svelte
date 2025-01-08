@@ -11,7 +11,7 @@
     translations["searchResults"] : "Search Results";
   const youMayText = translations?.youMay ? translations["youMay"] : "You may also like";
 
-  $: resultMessage = $page.data.resultMessage;
+  let resultMessage = $derived($page.data.resultMessage);
 </script>
 
 <h1 class="font-custom-style-h1 px-5 md:px-0">

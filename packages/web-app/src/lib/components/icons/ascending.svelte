@@ -1,5 +1,5 @@
-<script>
-  export let classes;
+<script lang="ts">
+  let { classes } = $props();
 </script>
 
 <svg

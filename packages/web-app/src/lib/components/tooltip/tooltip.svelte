@@ -1,8 +1,7 @@
 <script lang="ts">
   import { setPosition } from "./setPosition";
 
-  export let describedById;
-  export let tooltipText;
+  let { describedById, tooltipText } = $props();
 </script>
 
 <!--

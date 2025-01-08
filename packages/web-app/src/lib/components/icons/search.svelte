@@ -1,6 +1,5 @@
-<script>
-  export let classes;
-  export let height;
+<script lang="ts">
+  let { classes, height } = $props();
 </script>
 
 <!--

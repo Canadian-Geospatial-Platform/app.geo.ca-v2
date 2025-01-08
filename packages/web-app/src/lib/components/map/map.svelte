@@ -3,15 +3,29 @@
   import { browser } from '$app/environment';
   import { onMount, tick } from 'svelte';
 
-  export let coordinates;
-  export let id;
-  export let dynamic = false;
-  export let width = '100%';
-  export let height = '32rem';
-  export let mapProjection = 3857;
-  export let useMap = true; // When false, the map's bounding box is used instead
-  export let mapType = null;
-  export let footer = false;
+  interface Props {
+    coordinates: any;
+    id: any;
+    dynamic?: boolean;
+    width?: string;
+    height?: string;
+    mapProjection?: number;
+    useMap?: boolean; // When false, the map's bounding box is used instead
+    mapType?: any;
+    footer?: boolean;
+  }
+
+  let {
+    coordinates,
+    id,
+    dynamic = false,
+    width = '100%',
+    height = '32rem',
+    mapProjection = 3857,
+    useMap = true,
+    mapType = null,
+    footer = false
+  }: Props = $props();
 
   let mapId = 'map-' + id;
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
@@ -19,7 +33,7 @@
   let center = calculateCenter(coordinates[0]);
   let zoom = calculateZoom(coordinates[0]);
 
-  let config = {
+  let config = $state({
     map: {
       interaction: dynamic ? 'dynamic' : 'static',
       viewSettings: {
@@ -35,7 +49,7 @@
     theme: 'geo.ca',
     components: [],
     corePackages: []
-  };
+  });
 
   if (useMap) {
     config.map.listOfGeoviewLayerConfig = [{
@@ -53,7 +67,7 @@
     }
   }
 
-  $: sConfig = JSON.stringify(config);
+  let sConfig = $derived(JSON.stringify(config));
 
   // todo: this currently errors due to receiving [..., [String, String]] as coordinates. This data quality issue needs to be fixed on import. Coordinates should be floats instead of Strings.
   function calculateCenter(coordinates) {
@@ -191,7 +205,7 @@
     class="bg-blue-500/5 w-full h-64 md:h-80 lg:h-96 xl:h-[28rem] 2xl:h-[32rem]"
     data-config={sConfig}
     data-lang={mapLang}
-  />
+  ></div>
 {:else if mapType === 'record'}
   <div
     id={mapId}
@@ -199,7 +213,7 @@
     style={`height: ${height}; width: ${width};`}
     data-config={sConfig}
     data-lang={mapLang}
-  />
+  ></div>
 {:else}
   <div
     id={mapId}
@@ -207,5 +221,5 @@
     style={`height: ${height}; width: ${width};`}
     data-config={sConfig}
     data-lang={mapLang}
-  />
+  ></div>
 {/if}
