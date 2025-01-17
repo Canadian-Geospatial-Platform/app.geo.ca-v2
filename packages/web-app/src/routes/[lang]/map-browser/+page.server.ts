@@ -3,19 +3,38 @@ import { page } from '$app/stores';
 import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/db/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
+import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results.ts';
 import Organizations from '$lib/components/search-results/filters/organizations.svelte';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-	let response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
+	let searchMode = params?.searchMethod == 'classic' ? 'classic' : 'semantic';
+	let response;
+	if (searchMode == 'classic') {
+		response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
+	} else {
+		response = await generateSemanticUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
+	}
 	let analytics = await getAnalytics(fetch);
 	let parsedResponse = [];
 	let userData = { Item: { mapCart: [] } };
 	let sanitizedResults;
 	try {
 		parsedResponse = await response.json();
-		sanitizedResults = sanitize(parsedResponse.Items, params.lang);
+		if (searchMode == 'classic') {
+		    sanitizedResults = sanitize(parsedResponse.Items, params.lang);
+		} else {
+		    sanitizedResults = sanitizeSemantic(parsedResponse.response.items, params.lang);
+		}
 	} catch (e) {
 		console.error(e);
+	}
+
+	let totalHits;
+	if (searchMode == 'classic') {
+		totalHits = parseInt(
+			sanitizedResults?.[0]?.total ? sanitizedResults[0].total : 0);
+	} else {
+		totalHits = parsedResponse.response.total_hits;
 	}
 
 	for (const result of sanitizedResults) {
@@ -44,7 +63,9 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		userData: userData.Item,
 		start: getMin(url.searchParams),
 		end: getMin(url.searchParams) + sanitizedResults.length,
-		analytics: analytics
+		analytics: analytics,
+		searchMode: searchMode,
+		totalHits: totalHits
 	};
 };
 
@@ -57,6 +78,18 @@ function generateUrl(fetch, searchParams, lang, token) {
 	// replaced with '', so we can use replaceAll() a second time.
 	url.search = new URLSearchParams(params).toString()
 	  .replaceAll('%2B', '+').replaceAll('%27', '%27%27');
+	return fetch(url, {
+		headers: { Authentication: 'Bearer ' + token }
+	});
+}
+
+function generateSemanticUrl(fetch, searchParams, lang, token) {
+	let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
+	const params = mapSemanticSearchResults(searchParams, lang);
+	// URLSearchParams automatically encodes special characters to the html counterpart.
+	// However, the geocore get requests require the '+' to be unencoded, so
+	// we can fix it with replaceAll().
+	url.search = new URLSearchParams(params).toString().replaceAll('%2B', '+');
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
@@ -101,6 +134,32 @@ function mapSearchParams(searchParams, lang) {
 		min: getMin(searchParams),
 		max: getMax(searchParams),
 		sort: searchParams.get('sort')
+	};
+	return ret;
+}
+
+function mapSemanticSearchResults(searchParams, lang) {
+	let ret = {
+	    method: 'SemanticSearch',
+	    q: getKeyword(searchParams),
+	    bbox: searchParams.get('bbox') ?? '',
+	    relation: searchParams.get('relation') ?? '',
+	    begin: searchParams.get('begin')
+			? new Date(searchParams.get('begin')).toISOString() : '',
+	    end: searchParams.get('end')
+			? new Date(searchParams.get('end')).toISOString() : '',
+	    org: searchParams.get('org') ?? '',
+	    type: searchParams.get('type') ?? '',
+	    theme: searchParams.get('theme') ?? '',
+	    foundational: searchParams.get('foundational') ? 'true' : '',
+	    source_system: '',
+	    eo_collection: '',
+	    polarization: '',
+	    orbit_direction: '',
+	    lang: lang.split('-')[0],
+	    sort: searchParams.get('sort') ?? 'popularity',
+	    size: searchParams.get('results-per-page') ?? '10',
+	    from: getMin(searchParams)
 	};
 	return ret;
 }

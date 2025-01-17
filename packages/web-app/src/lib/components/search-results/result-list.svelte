@@ -37,11 +37,18 @@
   });
 
   /****************** Sorting ******************/
-  let sortOrder = $page.url.searchParams.get('sort') ?? 'title';
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
   let currentPage = $state(Number($page.url.searchParams.get('page-number') ?? '0') + 1);
 
   const sortBySelectData = $page.data.sortOptions;
+  const searchMode = $page.data.searchMode ?? 'semantic';
+
+  let sortOrder;
+  if (searchMode == 'semantic') {
+    sortOrder = $page.url.searchParams.get('sort') ?? 'popularity';
+  } else {
+    sortOrder = $page.url.searchParams.get('sort') ?? 'popularity-desc';
+  }
 
   let defaultOption = sortBySelectData.find((x) => x.value == sortOrder);
   let selected = $state(defaultOption ?? sortBySelectData[0]);

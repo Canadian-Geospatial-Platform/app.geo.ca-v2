@@ -8,14 +8,24 @@ import enCategories from '$lib/components/search-results/i18n/en/category-intere
 import frCategories from '$lib/components/search-results/i18n/fr/category-interest.json';
 import enSortOptions from '$lib/components/search-results/i18n/en/sort-options.json';
 import frSortOptions from '$lib/components/search-results/i18n/fr/sort-options.json';
+import enSortOptionsSemantic from '$lib/components/search-results/i18n/en/sort-options-semantic.json';
+import frSortOptionsSemantic from '$lib/components/search-results/i18n/fr/sort-options-semantic.json';
 
 export const load: PageLoad = ({ params, data, url }) => {
+  let searchMode = data.searchMode ? data.searchMode : 'semantic';
 	let lang = params.lang;
 	let t = lang == 'fr-ca' ? frLabels : enLabels;
 	let filters = lang == 'fr-ca' ? frFilters : enFilters;
 	let categories = lang == 'fr-ca' ? frCategories : enCategories;
-	let sortOptions = lang == 'fr-ca' ? frSortOptions : enSortOptions;
-	let totalResults = parseInt(data.results?.[0]?.total ? data.results[0].total : 0);
+
+  let sortOptions;
+  if (searchMode == 'semantic') {
+    sortOptions = lang == 'fr-ca' ? frSortOptionsSemantic : enSortOptionsSemantic;
+  } else {
+    sortOptions = lang == 'fr-ca' ? frSortOptions : enSortOptions;
+  }
+
+  let totalResults = data.totalHits ? data.totalHits : 0;
 	let numPageText = parsePageMessage(lang, url, totalResults);
 	let resultMessage = parseResultMessage(lang, url, totalResults);
 	return {
@@ -36,7 +46,8 @@ export const load: PageLoad = ({ params, data, url }) => {
 		sortOptions: sortOptions,
 		analytics: data.analytics,
 		numPageText: numPageText,
-		resultMessage: resultMessage
+		resultMessage: resultMessage,
+		searchMode: searchMode,
 	};
 };
 
