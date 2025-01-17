@@ -1,4 +1,8 @@
 function sanitizeSemantic(results, lang) {
+  if (!results) {
+    return [];
+  }
+
   // Keep only valid results
   let truthyResults = results.filter((e) => e);
 

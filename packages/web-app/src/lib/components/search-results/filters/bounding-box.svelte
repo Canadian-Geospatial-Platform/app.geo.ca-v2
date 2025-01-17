@@ -8,6 +8,8 @@
 
   let { coordinatesId, active = $bindable(false) }: Props = $props();
 
+  const searchMode = $page.data.searchMode;
+
   /************* Translations ***************/
   const translations = $page.data.t;
 
@@ -15,9 +17,15 @@
   const east = translations?.east ? translations["east"] : "East";
   const south = translations?.south ? translations["south"] : "South";
   const west = translations?.west ? translations["west"] : "West";
+
+  const intersects = translations?.intersects ? translations["intersects"] : "Intersects";
+  const within = translations?.within ? translations["within"] : "Within";
+
   const degrees = translations?.degrees ? translations["degrees"] : "Degrees";
   const spatialInstructions = translations?.spatialInstructions ?
     translations["spatialInstructions"] : "";
+  const relationInstructions = translations?.relationInstructions ?
+    translations["relationInstructions"] : "";
 
   const validatorRequired = translations?.validatorRequired ?
     translations["validatorRequired"] : "Please fill out this field.";
@@ -39,8 +47,14 @@
   // Element references
   let inputs = $state({});
 
+  let relation = $page.url.searchParams.get('relation') ?? 'intersects';
+  let relationGroup = $state(relation);
+
   export function resetFilters() {
     const urlParams = $page.url.searchParams;
+    const spatialRelation = urlParams.get('relation') ?? 'intersects';
+    relationGroup = spatialRelation;
+
     const coords = {
       north: urlParams.get("north"),
       east: urlParams.get("east"),
@@ -132,6 +146,19 @@
 
 </script>
 
+{#if searchMode == "semantic"}
+  <p class="mt-4 mb-2">{relationInstructions}</p>
+  <div class="mb-4">
+    <input
+      type="radio" name="spatial-relation" id="intersects" value="intersects" bind:group={relationGroup}
+    />
+    <label class="mr-3" for="intersects">{intersects}</label>
+    <input
+      type="radio" name="spatial-relation" id="within" value="within" bind:group={relationGroup}
+    />
+    <label for="within">{within}</label>
+  </div>
+{/if}
 <p class="mb-3" >{spatialInstructions}</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
   {#each labels as { label, id, max, placeHolder }}
@@ -160,3 +187,23 @@
     </div>
   {/each}
 </div>
+
+<style>
+  input[type=radio] {
+    @apply appearance-none;
+    @apply h-7;
+    @apply w-7;
+    @apply border-2;
+    @apply border-custom-16;
+    @apply rounded-[50%];
+    @apply relative;
+    @apply top-2;
+    @apply mr-2;
+  }
+
+  input[type=radio]:checked {
+    @apply p-1;
+    @apply bg-custom-16;
+    @apply bg-clip-content;
+  }
+</style>

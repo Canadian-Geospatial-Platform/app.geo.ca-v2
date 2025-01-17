@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		if (searchMode == 'classic') {
 		    sanitizedResults = sanitize(parsedResponse.Items, params.lang);
 		} else {
-		    sanitizedResults = sanitizeSemantic(parsedResponse.response.items, params.lang);
+		    sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items, params.lang);
 		}
 	} catch (e) {
 		console.error(e);
@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		totalHits = parseInt(
 			sanitizedResults?.[0]?.total ? sanitizedResults[0].total : 0);
 	} else {
-		totalHits = parsedResponse.response.total_hits;
+		totalHits = parsedResponse?.response?.total_hits ?? 0;
 	}
 
 	for (const result of sanitizedResults) {
@@ -139,11 +139,17 @@ function mapSearchParams(searchParams, lang) {
 }
 
 function mapSemanticSearchResults(searchParams, lang) {
+	let west = searchParams.get('west') ?? -180;
+	let north = searchParams.get('north') ?? 90;
+	let east = searchParams.get('east') ?? 180;
+	let south = searchParams.get('south') ?? -90;
+	let bbox = searchParams.get('bbox') ?
+	  west + "," + south + "," + east + "," + north : "";
 	let ret = {
 	    method: 'SemanticSearch',
 	    q: getKeyword(searchParams),
-	    bbox: searchParams.get('bbox') ?? '',
-	    relation: searchParams.get('relation') ?? '',
+	    bbox: bbox,
+	    relation: searchParams.get('relation') ?? 'intersects',
 	    begin: searchParams.get('begin')
 			? new Date(searchParams.get('begin')).toISOString() : '',
 	    end: searchParams.get('end')
