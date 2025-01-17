@@ -157,7 +157,7 @@ function mapSemanticSearchResults(searchParams, lang) {
 	    polarization: '',
 	    orbit_direction: '',
 	    lang: lang.split('-')[0],
-	    sort: searchParams.get('sort') ?? 'popularity',
+	    sort: searchParams.get('sort') ?? 'relevancy',
 	    size: searchParams.get('results-per-page') ?? '10',
 	    from: getMin(searchParams)
 	};

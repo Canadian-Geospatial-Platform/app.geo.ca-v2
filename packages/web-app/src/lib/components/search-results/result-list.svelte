@@ -45,7 +45,7 @@
 
   let sortOrder;
   if (searchMode == 'semantic') {
-    sortOrder = $page.url.searchParams.get('sort') ?? 'popularity';
+    sortOrder = $page.url.searchParams.get('sort') ?? 'relevancy';
   } else {
     sortOrder = $page.url.searchParams.get('sort') ?? 'popularity-desc';
   }
