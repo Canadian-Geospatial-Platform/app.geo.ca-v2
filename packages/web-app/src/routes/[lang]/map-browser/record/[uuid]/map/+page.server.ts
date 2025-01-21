@@ -1,7 +1,5 @@
 import type { PageServerLoad } from './$types';
 import { getRecord } from '$lib/db/record.ts';
-import enLabels from '$lib/components/record_old/i18n/en.json';
-import frLabels from '$lib/components/record_old/i18n/fr.json';
 
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
@@ -19,7 +17,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		console.warn('error fetching record for microdata:\n', e);
 	}
 
-	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 	return {
 		t_title_1: {
 			text:
