@@ -76,10 +76,10 @@
 <SortableTable tableContent={dataResourcesList} {tableLabels} clickableRows={true} />
 
 <style>
-  button {
-    @apply px-6;
-    @apply py-2;
-    @apply border-2;
-    @apply border-custom-16;
-  }
+  /*button {*/
+  /*  @apply px-6;*/
+  /*  @apply py-2;*/
+  /*  @apply border-2;*/
+  /*  @apply border-custom-16;*/
+  /*}*/
 </style>
