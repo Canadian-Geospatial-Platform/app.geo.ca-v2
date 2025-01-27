@@ -70,6 +70,8 @@
 
     const filters = {
       category: categoryVal ? categoryVal : null,
+      relation: formData.get('spatial-relation') && formData.get('spatio-temporal-spatial-extent') ?
+        formData.get('spatial-relation') : null,
       bbox: formData.get('spatio-temporal-spatial-extent') ? parseBoundingBox() : null,
       dateRange: formData.get('spatio-temporal-temporal-extent') ? parseDateRange() : null,
       other: {
@@ -154,6 +156,7 @@
 
   function buildFilterParams(filters) {
     const bbox = filters.bbox;
+    const relation = filters.relation;
     const category = filters.category;
     const dateRange = filters.dateRange;
     const foundational = filters.other.foundational;
@@ -177,6 +180,8 @@
       query.delete('west');
       query.delete(bboxKey);
     }
+
+    relation ? query.set('relation', relation) : query.delete('relation');
 
     // Date range
     if (dateRange) {

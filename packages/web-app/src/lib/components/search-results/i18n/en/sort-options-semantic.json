@@ -1,0 +1,15 @@
+[
+  {
+    "value": "date",
+    "label": "Date"
+  }, {
+    "value": "popularity",
+    "label": "Popularity"
+  }, {
+    "value": "title",
+    "label": "Title"
+  }, {
+    "value": "relevancy",
+    "label": "Relevancy"
+  }
+]

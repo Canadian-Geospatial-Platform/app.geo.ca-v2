@@ -17,100 +17,100 @@
     "filterList": [
       {
         "label": "Agence Canadienne de Développement économique du Nord",
-        "value": "agence+canadienne+de+développement+économique+du+nord"
+        "value": "Agence+Canadienne+de+Développement+économique+du+Nord"
       }, {
         "label": "Agence d'évaluation d'impact du Canada",
-        "value": "agence+d'évaluation+d'impact+du+canada"
+        "value": "Agence+d'évaluation+d'impact+du+Canada"
       }, {
         "label": "Agence de la santé publique du Canada",
-        "value": "agence+de+la+santé+publique+du+canada"
+        "value": "Agence+de+la+santé+publique+du+Canada"
       }, {
         "label": "Agence spatiale canadienne",
-        "value": "agence+spatiale+canadienne"
+        "value": "Agence+spatiale+canadienne"
       }, {
         "label": "Agriculture et Agroalimentaire Canada",
-        "value": "agriculture+et+agroalimentaire+canada"
+        "value": "Agriculture+et+Agroalimentaire+Canada"
       }, {
         "label": "Commission canadienne de sûreté nucléaire",
-        "value": "commission+canadienne+de+sûreté+nucléaire"
+        "value": "Commission+canadienne+de+sûreté+nucléaire"
       }, {
         "label": "Défense nationale",
-        "value": "défense+nationale"
+        "value": "Défense+nationale"
       }, {
         "label": "Élections Canada",
-        "value": "élections+canada"
+        "value": "Élections+Canada"
       }, {
         "label": "Emploi et Développement social Canada",
-        "value": "emploi+et+développement+social+canada"
+        "value": "Emploi+et+Développement+social+Canada"
       }, {
         "label": "Environnement et Changement climatique Canada",
-        "value": "environnement+et+changement+climatique+canada"
+        "value": "Environnement+et+Changement+climatique+Canada"
       }, {
         "label": "Gouvernement de l'Alberta",
-        "value": "gouvernement+de+l'alberta"
+        "value": "Gouvernement+de+l'Alberta"
       }, {
         "label": "Gouvernement de l'Île-du-Prince-Édouard",
-        "value": "gouvernement+de+l'île-du-prince-édouard"
+        "value": "Gouvernement+de+l'Île-du-Prince-Édouard"
       }, {
         "label": "Gouvernement de l'Ontario",
-        "value": "gouvernement+de+l'ontario"
+        "value": "Gouvernement+de+l'Ontario"
       }, {
         "label": "Gouvernement de la Colombie-Britannique",
-        "value": "gouvernement+de+la+colombie-britannique"
+        "value": "Gouvernement+de+la+Colombie-Britannique"
       }, {
         "label": "Gouvernement de la Nouvelle-Écosse",
-        "value": "gouvernement+de+la+nouvelle-écosse"
+        "value": "Gouvernement+de+la+Nouvelle-Écosse"
       }, {
         "label": "Gouvernement de la Saskatchewan",
-        "value": "gouvernement+de+la+saskatchewan"
+        "value": "Gouvernement+de+la+Saskatchewan"
       }, {
         "label": "Gouvernement de Terre-Neuve-et-Labrador",
-        "value": "gouvernement+de+terre-neuve-et-labrador"
+        "value": "Gouvernement+de+Terre-Neuve-et-Labrador"
       }, {
         "label": "Gouvernement des Territoires du Nord-Ouest",
-        "value": "gouvernement+des+territoires+du+nord-ouest"
+        "value": "Gouvernement+des+Territoires+du+Nord-Ouest"
       }, {
         "label": "Gouvernement du Manitoba",
-        "value": "gouvernement+du+manitoba"
+        "value": "Gouvernement+du+Manitoba"
       }, {
         "label": "Gouvernement du Nouveau-Brunswick",
-        "value": "gouvernement+du+nouveau-brunswick"
+        "value": "Gouvernement+du+Nouveau-Brunswick"
       }, {
         "label": "Gouvernement du Nunavut",
-        "value": "gouvernement+du+nunavut"
+        "value": "Gouvernement+du+Nunavut"
       }, {
         "label": "Gouvernement du Yukon",
-        "value": "gouvernement+du+yukon"
+        "value": "Gouvernement+du+Yukon"
       }, {
         "label": "Gouvernement et municipalités du Québec",
-        "value": "gouvernement+et+municipalités+du+québec"
+        "value": "Gouvernement+et+municipalités+du+Québec"
       }, {
         "label": "Innovation, Sciences et Développement économique Canada",
-        "value": "innovation,+sciences+et+développement+économique+canada"
+        "value": "Innovation,+Sciences+et+Développement+économique+Canada"
       }, {
         "label": "Ministère de la Justice",
-        "value": "ministère+de+la+justice"
+        "value": "Ministère+de+la+Justice"
       }, {
         "label": "Parcs Canada",
-        "value": "parcs+canada"
+        "value": "Parcs+Canada"
       }, {
         "label": "Patrimoine canadien",
-        "value": "patrimoine+canadien"
+        "value": "Patrimoine+canadien"
       },  {
         "label": "Pêches et Océans Canada",
-        "value": "pêches+et+océans+canada"
+        "value": "Pêches+et+Océans+Canada"
       }, {
         "label": "Ressources naturelles Canada",
-        "value": "ressources+naturelles+canada"
+        "value": "Ressources+naturelles+Canada"
       }, {
         "label": "Services aux Autochtones Canada",
-        "value": "services+aux+autochtones+canada"
+        "value": "Services+aux+Autochtones+Canada"
       }, {
         "label": "Statistique Canada",
-        "value": "statistique+canada"
+        "value": "Statistique+Canada"
       }, {
         "label": "Transports Canada",
-        "value": "transports+canada"
+        "value": "Transports+Canada"
       }
     ]
   }, {
