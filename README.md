@@ -1,18 +1,44 @@
-# README
+# App.geo.ca-v2
 
-App.geo.ca v2 is an app that will allow users to browser the geo.ca data catalog.
+This project uses the [sveltekit](https://kit.svelte.dev/) framework and [sst](https://sst.dev/) to build and deploy to AWS a fullstack applications allowing for the search and cataloging of geospatial data.
 
-## Usage
+## Developing
 
-The project uses (sst)[https://sst.dev/docs/] as a way to declare and deploy it's infrastructure.
+Once you've created a project and installed dependencies with `npm install`, start a development server:
 
-## Dev
+- setup your aws credentials. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+- set the correct version of npm as indicated by the `.nvmrc` file. see [nvm](https://github.com/nvm-sh/nvm) for macos/linux and [nvm-windows](https://github.com/coreybutler/nvm-windows) for windows.
+- open a new terminal
+- from `/` run `npm i`.
+- from `/packages/web-app/` run `npm i`. A nodejs version that matches the `.nvmrc` may be required.
+- enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured. (Use npx instead of pnpm).
+- enshure your login and logout url's are configured correctly in aws cognito.
 
-1. start by setting you aws credentials.
-2. ensure you have the correct version of node.js installed by referencing the `.nvmrc`.
-3. Execute the following commands:
+  - Allowed callback URLs
+    - http://localhost:5173/en-ca/sign-in/receive
+    - http://localhost:5173/fr-ca/sign-in/receive
+  - Allowed sign-out URLs
+    - http://localhost:5173/en-ca/sign-in/logout
+    - http://localhost:5173/fr-ca/sign-in/logout
 
-```BASH
-npm i
-npm run dev
-```
+- `npm run sst:dev` to deploy the required code to the cloud.
+- open another terminal
+- `npm run dev` to bind the the previously deployed infrastructure
+- you should now be able to work on you local files and have your dev instance seamlessly connect to your aws ressources.
+
+## Building and deploying
+
+- setup your aws credentials for the desired environment. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+- enshure the correct [secrets](https://sst.dev/chapters/handling-secrets-in-sst.html) are configured. (Use npx instead of pnpm).
+- from `/` run `npm i`.
+- from `/packages/web-app/` run `npm i`. A nodejs version that matches the `.nvmrc` may be required.
+- enshure your login and logout url's are configured correctly in aws cognito.
+
+  - Example allowed callback URLs
+    - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/receive
+    - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/receive
+  - Example allowed sign-out URLs
+    - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/logout
+    - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/logout
+
+- deploy from the root of the repository: `npm run sst:deploy:{dev|stage|prod}`
