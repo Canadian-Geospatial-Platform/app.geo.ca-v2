@@ -3,11 +3,18 @@ import aws from "aws-sdk";
 import { Bucket } from "sst/node/bucket";
 import { getCodeList } from "./codelists.js"; // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
 const s3 = new aws.S3();
-const OUTPUT_BUCKET_NAME = Bucket.geocore.bucketName;
+const OUTPUT_BUCKET_NAME = Bucket.hnap.bucketName;
 var languageCode; // defined globally as it is widely used and unchanging.
 
 export const handler = async (event, context, callback) => {
   console.log("Starting handling of entry: ", event.Records[0].s3.object.key);
+
+  // Only run the handler for valid files
+  if (!event.Records[0].s3.object.key.endsWith(".json")) {
+    console.log("Skipping file: Not a JSON file");
+    return;
+  }
+
   const data = await getBucketObject(
     event.Records[0].s3.bucket.name,
     event.Records[0].s3.object.key,
@@ -18,7 +25,7 @@ export const handler = async (event, context, callback) => {
 };
 
 async function writeToOutputBucket(result) {
-  const key = "records/" + result.features[0].properties.id + ".geojson";
+  const key = "geocore/" + result.features[0].properties.id + ".geojson";
   try {
     const outputConfig = {
       Bucket: OUTPUT_BUCKET_NAME,
@@ -760,7 +767,7 @@ async function getBucketObject(bucket, objectKey) {
 // Config for fetching data from the output bucket
 async function getLatestGeocoreData(id) {
   const bucket = OUTPUT_BUCKET_NAME; // Global variable from process.env
-  const key = "records/" + id + ".geojson"; 
+  const key = "geocore/" + id + ".geojson";
   const ret = await getBucketObject(bucket, key);
   return ret;
 }

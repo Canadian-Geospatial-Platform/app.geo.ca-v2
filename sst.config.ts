@@ -58,15 +58,6 @@ export default {
         value: "false",
       });
 
-      const GEOCORE_BUCKET = new Bucket(stack, "geocore", {
-        cdk: {
-          bucket: {
-            autoDeleteObjects: true,
-            removalPolicy: cdk.RemovalPolicy.DESTROY,
-          },
-        },
-      });
-
       let HNAP_BUCKET = new Bucket(stack, "hnap", {
         cdk: {
           bucket: {
@@ -80,13 +71,14 @@ export default {
         handler: "packages/hnap-bridge/index.handler",
         timeout: 30,
         permissions: ["s3"],
-        bind: [GEOCORE_BUCKET, HNAP_BUCKET],
+        bind: [HNAP_BUCKET],
       });
 
       HNAP_BUCKET.addNotifications(stack, {
         myNotification1: {
           function: HNAP_BRIDGE,
           events: ["object_created"],
+          filters: [{ prefix: "hnap/" }],
         },
       });
 
@@ -104,7 +96,6 @@ export default {
           OIDC_CLIENT_SECRET,
           OIDC_CUSTOM_DOMAIN,
           GEOCORE_API_DOMAIN,
-          GEOCORE_BUCKET,
           userTableConfig,
           FEATURE_SIGN_IN,
         ],
