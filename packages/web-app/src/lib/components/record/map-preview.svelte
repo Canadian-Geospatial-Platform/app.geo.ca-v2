@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
-  import Card from '$lib/components/card/card.svelte';
   import Map from '$lib/components/map/map.svelte';
   import NotVisible from "$lib/components/icons/not-visible.svelte";
 
@@ -45,9 +44,7 @@
     {mapPreviewtext}
   </h2>
   {#if coordinates && showMap}
-    <Card>
-      <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true />
-    </Card>
+    <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true />
   {:else if coordinates}
     <p class="mx-5 md:mx-0">
       {windowTooSmall}

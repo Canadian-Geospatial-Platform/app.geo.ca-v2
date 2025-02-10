@@ -68,7 +68,7 @@
 
 {#each dataResourcesList as dataResource, index}
   <div class="rounded bg-custom-1 px-5 py-4 drop-shadow-[0_0.1875rem_0.375rem_#00000029]">
-    <Accordion bind:this={accordionComponents[index]}>
+    <Accordion>
       {#snippet accordionTitle()}
         <h2 class="font-custom-style-h2-2">
           <a href={dataResource.url}>
