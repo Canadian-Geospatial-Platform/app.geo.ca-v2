@@ -98,6 +98,7 @@ export default {
           GEOCORE_API_DOMAIN,
           userTableConfig,
           FEATURE_SIGN_IN,
+          HNAP_BUCKET,
         ],
       });
 
