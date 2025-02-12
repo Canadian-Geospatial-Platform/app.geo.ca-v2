@@ -13,6 +13,7 @@
     useMap?: boolean; // When false, the map's bounding box is used instead
     mapType?: any;
     footer?: boolean;
+    timeSlider?: boolean;
   }
 
   let {
@@ -24,7 +25,8 @@
     mapProjection = 3857,
     useMap = true,
     mapType = null,
-    footer = false
+    footer = false,
+    timeSlider = false
   }: Props = $props();
 
   let mapId = 'map-' + id;
@@ -64,6 +66,19 @@
         core: ["legend", "data-table"]
       },
       collapsed: true
+    }
+  }
+
+  if (timeSlider) {
+    if (footer) {
+      config.footerBar.tabs.core.push("time-slider");
+    } else {
+      config.footerBar = {
+        tabs: {
+          core: ["time-slider"]
+        },
+        collapsed: true
+      }
     }
   }
 

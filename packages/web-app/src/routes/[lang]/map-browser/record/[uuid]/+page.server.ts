@@ -57,6 +57,20 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		}
 		return parsedAnalyticResponse;
 	};
+	const fetchHasMap = async (id, lang) => {
+		lang = lang == 'fr-ca' ? 'fr' : 'en';
+		let url = 'https://geocore.api.geo.ca/vcs?lang=' + lang + '&id=' + id;
+		let hasMap;
+		try {
+			let vcsResponse = await fetch(url);
+			let vcs = await vcsResponse.json();
+			let rcs = vcs.response.rcs[lang];
+			hasMap = rcs.length > 0;
+		} catch (e) {
+			console.warn('Unable to verify map for ' + id);
+		}
+		return !!hasMap;
+	}
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 	return {
 		t_title_1: {
@@ -75,6 +89,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		related: fetchRelated(params.uuid),
 		analyticRes: fetchAnalytics(params.uuid, lang),
 		t: t,
-		item_v2: record?.features[0]
+		item_v2: record?.features[0],
+		hasMap: await fetchHasMap(params.uuid, lang)
 	};
 };
