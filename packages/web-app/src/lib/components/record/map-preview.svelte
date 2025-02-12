@@ -15,9 +15,6 @@
   const geometry = items?.geometry ? items.geometry : null;
   const coordinates = geometry && geometry?.coordinates ? geometry.coordinates : null;
 
-  //Check if a map exists, or if the bounding box should be used instead
-  const useMap = data.hasMap;
-
   /***************** Time Slider *************************/
   // Note: Geoview checks for a valid time dimension for each map layer before adding the
   // time slider, so even if there is a valid time range here, the tool might not be added.
@@ -56,7 +53,7 @@
     {mapPreviewtext}
   </h2>
   {#if coordinates && showMap}
-    <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true useMap={useMap} timeSlider={useTimeSlider} />
+    <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true timeSlider={useTimeSlider} />
   {:else if coordinates}
     <p class="mx-5 md:mx-0">
       {windowTooSmall}
