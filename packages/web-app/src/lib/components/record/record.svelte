@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { navigating } from '$app/stores';
+  import { navigating, page } from '$app/stores';
+  import MicroData from '$lib/components/microdata/microdata.svelte';
   import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
 	import Description from './description.svelte';
 	import Metadata from './metadata.svelte';
@@ -8,6 +9,8 @@
   import SimilarProducts from './similar-products.svelte';
   import Tabbed from './tabbed/tabbed.svelte';
 </script>
+
+<MicroData item={$page.data.item_v2} />
 
 {#if $navigating}
   <LoadingMask classes="fixed left-0 top-0" />
