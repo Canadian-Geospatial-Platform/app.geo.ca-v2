@@ -20,9 +20,9 @@
   // time slider, so even if there is a valid time range here, the tool might not be added.
   // Since Geoview does most of the error handling, we'll only check if a date range exists
   // and not worry about the format of the dates.
-  // const temporalExtentStart = items?.properties?.extent?.temporalExtent?.start;
-  // const temporalExtentEnd = items?.properties?.extent?.temporalExtent?.end;
-  // let useTimeSlider = !!(temporalExtentStart && temporalExtentEnd);
+  const temporalExtentStart = items?.properties?.extent?.temporalExtent?.start;
+  const temporalExtentEnd = items?.properties?.extent?.temporalExtent?.end;
+  let useTimeSlider = !!(temporalExtentStart && temporalExtentEnd);
 
   // For small screens, don't include the map preview
   let showMap = $state(true);
@@ -53,7 +53,6 @@
     {mapPreviewtext}
   </h2>
   {#if coordinates && showMap}
-    <!--<Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true timeSlider={useTimeSlider} />-->
     <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true timeSlider={useTimeSlider} />
   {:else if coordinates}
     <p class="mx-5 md:mx-0">
