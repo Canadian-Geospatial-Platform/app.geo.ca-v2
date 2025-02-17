@@ -247,6 +247,13 @@
 	@apply text-custom-15;
 }
 
+.font-custom-style-h2-2 {
+	@apply font-lato;
+	@apply font-bold;
+	@apply text-[20px];
+	@apply text-custom-16;
+}
+
 .font-custom-style-h3 {
 	@apply font-open-sans;
 	@apply font-semibold;
