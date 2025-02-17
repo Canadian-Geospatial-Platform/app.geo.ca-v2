@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount } from 'svelte';
   import {clickOutside} from '$lib/components/header/clickOutside';
   import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
   import Navdropdown from '$lib/components/header/navdropdown.svelte';
@@ -16,9 +15,6 @@
 
   let chevronDown = $state(true);
   let active = $state(false);
-  let currentUrl: string;
-  let frenchUrl: string = $state();
-  let englishUrl: string = $state();
 
   function setActive(isActive: boolean, down: boolean, activateScroll: boolean) {
     active = isActive;
@@ -58,11 +54,13 @@
     }
   };
 
-  onMount(() => {
-    currentUrl = $page.url.origin + $page.url.pathname;
-    frenchUrl = currentUrl.replace("en-ca", "fr-ca");
-    englishUrl = currentUrl.replace("fr-ca", "en-ca");
-  });
+  function toggleLanguage(lang) {
+    let currentUrl = $page.url.origin + $page.url.pathname;
+    let url = lang == "fr-ca" ? currentUrl.replace("en-ca", "fr-ca") :
+      currentUrl.replace("fr-ca", "en-ca");
+    return url;
+  }
+
 </script>
 
 <svelte:window onresize={resetNav} />
@@ -108,12 +106,12 @@
       </div>
     </button>
   {:else if linkData?.title && linkData?.title == "English"}
-    <a class="nav-link" href={englishUrl} data-sveltekit-reload>
+    <a class="nav-link" href={toggleLanguage("en-ca")} data-sveltekit-reload>
       <Globe classes="h-[1.25rem] w-[1.25rem] mr-1"/>
       {linkData.title}
     </a>
   {:else if linkData?.title && linkData?.title == "Français"}
-    <a class="nav-link" href={frenchUrl} data-sveltekit-reload>
+    <a class="nav-link" href={toggleLanguage("fr-ca")} data-sveltekit-reload>
       <Globe classes="h-[1.25rem] w-[1.25rem] mr-1"/>
       {linkData.title}
     </a>
