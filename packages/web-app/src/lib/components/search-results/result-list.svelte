@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page, navigating } from '$app/stores';
   import { afterNavigate, goto } from '$app/navigation';
-  import { onMount, tick } from 'svelte';
+  import { tick } from 'svelte';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
   import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
