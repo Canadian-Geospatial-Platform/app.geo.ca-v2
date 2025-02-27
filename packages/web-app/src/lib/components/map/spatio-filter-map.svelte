@@ -128,7 +128,7 @@
       };
 
       // Add bbox polygon to the map
-      layerGeometry.addPolygon(coordinates, bboxOptions, bboxId, groupKey);
+      const bboxPolygon = layerGeometry.addPolygon(coordinates, bboxOptions, bboxId, groupKey);
 
       // Update the coordinates to apply the projection transformation
       layerGeometry.setFeatureCoords(bboxId, coordinates, lonLatProjection);
@@ -140,6 +140,71 @@
       setVerticesFromCoords = (coords: number[][][]) => {
         layerGeometry.setFeatureCoords(bboxId, coords, lonLatProjection);
       };
+
+      /*********** Get Extent From View Custom Button ***********/
+
+      const buttonGroupName = 'buttonGroup';
+      const buttonTooltip = $page.data.lang == "fr-ca" ?
+        "Définir le cadre de délimitation sur l'étendue visible" :
+        "Set bounding box to visible extent";
+
+      const button = {
+        tooltip: buttonTooltip,
+        children: cgpv.react.createElement(
+          "svg",
+          {
+            width: 24,
+            height: 24,
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: 2,
+          },
+          cgpv.react.createElement("rect", { x: 3, y: 3, width: 18, height: 18 }),
+          cgpv.react.createElement("circle", { cx: 3, cy: 3, r: 2 }),
+          cgpv.react.createElement("circle", { cx: 3, cy: 21, r: 2 }),
+          cgpv.react.createElement("circle", { cx: 21, cy: 3, r: 2 }),
+          cgpv.react.createElement("circle", { cx: 21, cy: 21, r: 2 }),
+        ),
+        tooltipPlacement: 'left',
+        onClick: function () {
+          // Get view extent and resolution
+          const viewExtent = map.getView().calculateExtent();
+          const resolution = map.getView().getResolution();
+
+          // Add a small gap between the edge of the map and the view extent
+          const gapPercent = 0.025;
+          const longitudeDifference = viewExtent[2] - viewExtent[0];
+          const longGapSize = longitudeDifference * gapPercent;
+
+          const latitudeDifference = viewExtent[3] - viewExtent[1];
+          const latGapSize = latitudeDifference * gapPercent;
+
+          // For the southern coordinate, add the size of the footerbar to the gap
+          // so the southern edge is not blocked
+          const heightOfFooterBar = resolution * 48;
+          const southGapSize = heightOfFooterBar + latGapSize;
+
+          const viewBboxCoords = [[
+              [viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
+              [viewExtent[2] - longGapSize, viewExtent[1] + southGapSize],
+              [viewExtent[2] - longGapSize, viewExtent[3] - latGapSize],
+              [viewExtent[0] + longGapSize, viewExtent[3] - latGapSize],
+              [viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
+            ]];
+
+          // Set coordinates of bbox
+          bboxPolygon.getGeometry().setCoordinates(viewBboxCoords);
+
+          // Send the coordinates to the parent component. We can convert the coordinates
+          // to longitude and latitude in degrees first
+          const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
+          bboxModify(lonLatCoords);
+        },
+      };
+
+      // Add the button to the map
+      map.navBarApi.createNavbarButton(button, buttonGroupName);
 
       /*********** Translate Interaction ***********/
 
@@ -197,7 +262,7 @@
         // Reset the current modified index
         modifiedIndex = -1;
 
-        // Send the new bbox coordinates back to the parent component.
+        // Send the new bbox coordinates back to the parent component. Convert the coordinates to degrees first.
         const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
         bboxModify(lonLatCoords);
       });
@@ -261,6 +326,12 @@
     }
   });
 </script>
+
+<svelte:head>
+  <!-- TODO: switch back to old link after geoview pull request with modifyDragged event accepted -->
+  <script src="https://lbercovitch.github.io/geoview-leah/cgpv-main.js"></script>
+  <!--<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>-->
+</svelte:head>
 
 <div
   id={mapId}
