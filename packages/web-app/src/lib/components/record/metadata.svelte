@@ -59,13 +59,19 @@
   const sourcesArray = distributor.map((x) => x['organisation'][lang.slice(0, 2)]);
 
   // Use limitations
-  const useLimitationsRaw = properties.constraints.legal[lang.slice(0, 2)];
-  const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
-  const useLimitationsUrl = useLimitationsRaw.match(urlRegEx)[0];
-  const useLimitationsLabel = useLimitationsRaw.split(' (')[0];
-  const useLimitations = '<a href="' + useLimitationsUrl
-    + '" target="_blank" class="underline text-custom-16">'
-    + useLimitationsLabel + '</a>'
+  const legalConstraints = properties.constraints?.legal;
+  let useLimitations = "N/A";
+
+  if (legalConstraints) {
+    const useLimitationsRaw = properties.constraints.legal[lang.slice(0, 2)];
+    const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
+    const useLimitationsUrl = useLimitationsRaw.match(urlRegEx)[0];
+    const useLimitationsLabel = useLimitationsRaw.split(' (')[0];
+    useLimitations = '<a href="' + useLimitationsUrl
+      + '" target="_blank" class="underline text-custom-16">'
+      + useLimitationsLabel + '</a>';
+  }
+
 </script>
 
 <div class="font-custom-style-body-1">

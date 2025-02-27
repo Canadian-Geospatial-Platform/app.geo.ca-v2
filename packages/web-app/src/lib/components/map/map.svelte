@@ -13,6 +13,7 @@
     useMap?: boolean; // When false, the map's bounding box is used instead
     mapType?: any;
     footer?: boolean;
+    timeSlider?: boolean;
   }
 
   let {
@@ -24,7 +25,8 @@
     mapProjection = 3857,
     useMap = true,
     mapType = null,
-    footer = false
+    footer = false,
+    timeSlider = false
   }: Props = $props();
 
   let mapId = 'map-' + id;
@@ -64,6 +66,19 @@
         core: ["legend", "data-table"]
       },
       collapsed: true
+    }
+  }
+
+  if (timeSlider) {
+    if (footer) {
+      config.footerBar.tabs.core.push("time-slider");
+    } else {
+      config.footerBar = {
+        tabs: {
+          core: ["time-slider"]
+        },
+        collapsed: true
+      }
     }
   }
 
@@ -196,7 +211,9 @@
 </script>
 
 <svelte:head>
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
+  <!-- TODO: switch back to old link after geoview pull request with modifyDragged event accepted -->
+  <script src="https://lbercovitch.github.io/geoview-leah/cgpv-main.js"></script>
+  <!--<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>-->
 </svelte:head>
 
 {#if mapType === 'resultList'}
