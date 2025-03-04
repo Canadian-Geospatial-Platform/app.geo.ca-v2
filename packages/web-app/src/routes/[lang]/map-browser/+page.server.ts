@@ -84,7 +84,11 @@ function generateUrl(fetch, searchParams, lang, token) {
 }
 
 function generateSemanticUrl(fetch, searchParams, lang, token) {
-	let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
+	// Testing staging version of semantic search instead of the prod version.
+	// Commenting out prod url out for now in case we decide to switch back.
+	// let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
+	let url = new URL('https://search-recherche.geocore-stage.api.geo.ca/search-opensearch');
+
 	const params = mapSemanticSearchResults(searchParams, lang);
 	// URLSearchParams automatically encodes special characters to the html counterpart.
 	// However, the geocore get requests require the '+' to be unencoded, so
@@ -164,6 +168,7 @@ function mapSemanticSearchResults(searchParams, lang) {
 	    orbit_direction: '',
 	    lang: lang.split('-')[0],
 	    sort: searchParams.get('sort') ?? 'relevancy',
+	    order: searchParams.get('sort') == 'title' ? 'asc' : 'desc',
 	    size: searchParams.get('results-per-page') ?? '10',
 	    from: getMin(searchParams)
 	};
