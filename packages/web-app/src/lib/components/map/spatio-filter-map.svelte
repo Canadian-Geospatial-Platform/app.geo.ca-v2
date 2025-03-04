@@ -208,7 +208,7 @@
 
       /*********** Translate Interaction ***********/
 
-      const translateInteraction = map.initTranslateInteractions(groupKey);
+      const translateInteraction = map.initTranslateOneFeatureInteractions(groupKey);
 
       translateInteraction.onTranslateEnded((sender, payload) => {
         const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
