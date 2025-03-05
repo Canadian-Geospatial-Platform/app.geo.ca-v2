@@ -13,6 +13,7 @@
     useMap?: boolean; // When false, the map's bounding box is used instead
     mapType?: any;
     footer?: boolean;
+    timeSlider?: boolean;
   }
 
   let {
@@ -21,10 +22,11 @@
     dynamic = false,
     width = '100%',
     height = '32rem',
-    mapProjection = 3857,
+    mapProjection = 3978,
     useMap = true,
     mapType = null,
-    footer = false
+    footer = false,
+    timeSlider = false
   }: Props = $props();
 
   let mapId = 'map-' + id;
@@ -64,6 +66,19 @@
         core: ["legend", "data-table"]
       },
       collapsed: true
+    }
+  }
+
+  if (timeSlider) {
+    if (footer) {
+      config.footerBar.tabs.core.push("time-slider");
+    } else {
+      config.footerBar = {
+        tabs: {
+          core: ["time-slider"]
+        },
+        collapsed: true
+      }
     }
   }
 
@@ -149,6 +164,26 @@
       bbox = bbox[0].slice(0, -1);
     }
 
+    // For the Lambert projection (3978), we can add extra points along the top and bottom
+    // edge of the bbox to get it to approximate the curve of the latitude lines.
+    if (mapProjection == 3978 && bbox.length === 4) {
+      // Find which vertices belong to the top and bottom edges.
+      // To do this, we can sort the vertices based on the latitude,
+      // to determine the top and bottom vertices, then find which which
+      // longitude is larger to determine the east and west vertices.
+      const sortByLatitude = bbox.sort((a, b) => a[1] - b[1]);
+      const bottomPoints = [sortByLatitude[0], sortByLatitude[1]];
+      const topPoints = [sortByLatitude[2], sortByLatitude[3]];
+
+      const [bottomWest, bottomEast] = bottomPoints.sort((a, b) => a[0] - b[0]);
+      const [topWest, topEast] = topPoints.sort((a, b) => a[0] - b[0]);
+
+      // Add extra points to the north and south edges to aproximate the curve
+      const northEdge = addVertices(topWest, topEast, 20);
+      const southEdge = addVertices(bottomWest, bottomEast, 20);
+      bbox = southEdge.concat(northEdge.reverse());
+    }
+
     for (const coord of bbox) {
       // Check to make sure coordinates are valid
       if (coord.length != 2 || isNaN(coord[0]) || isNaN(coord[1]) ||
@@ -160,6 +195,21 @@
 
     return bbox;
   }
+
+  // Add additional vertices to a latitudinal edge
+  function addVertices(west, east, numVerticesToAdd) {
+    const fraction = (east[0] - west[0]) / numVerticesToAdd;
+    const latitude = west[1];
+
+    let vertices = [];
+    let newLongitude;
+
+    for (let i = 0; i <= numVerticesToAdd; i++) {
+      newLongitude = west[0] + i * fraction;
+      vertices.push([newLongitude, latitude]);
+    }
+    return vertices;
+  };
 
   onMount(async () => {
     await tick();
@@ -196,7 +246,9 @@
 </script>
 
 <svelte:head>
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
+  <!-- TODO: switch back to old link after geoview pull request with modifyDragged event accepted -->
+  <script src="https://lbercovitch.github.io/geoview-leah/cgpv-main.js"></script>
+  <!--<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>-->
 </svelte:head>
 
 {#if mapType === 'resultList'}

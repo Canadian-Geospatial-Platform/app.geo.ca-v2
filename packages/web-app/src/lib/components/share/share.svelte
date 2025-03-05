@@ -9,7 +9,7 @@
   let shareText = translations?.shareText ? translations["shareText"] : "Share";
 
   // Note: these variables need to be computed to react to changes to the page's url
-  let path = $derived($page.url);
+  let path = $derived($page.url.href);
   let encodedPath = $derived(encodeURIComponent(String(path)));
 
   function handleFacebookLink() {
@@ -31,7 +31,7 @@
   };
 
   function handleEmailLink() {
-    let mailToLink = "mailto:?body=" + path;
+    let mailToLink = "mailto:?body=" + encodeURIComponent(path);
     window.open(mailToLink);
   };
 </script>

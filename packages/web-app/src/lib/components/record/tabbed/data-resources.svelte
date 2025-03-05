@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { parseDataResources } from '$lib/components/record/tabbed/parseDataResources';
-	import SortableTable from "$lib/components/sortable-table/sortable-table.svelte";
+  import Accordion from '$lib/components/accordion/accordion.svelte';
 
   type DataResourcesRow = {
     name: string;
@@ -35,14 +35,6 @@
   const dataResourcesList = parseDataResources(dataResourcesRaw, langShort);
   const uuid = properties.id;
 
-  // Translation of table column labels
-  const tableLabels: DataResourcesRow = {
-    "name": nameText,
-    "type": typeText,
-    "format": formatText,
-    "languages": languagesText
-  };
-
   // TODO: check to make sure these are the up to date download links
   function handleDownloadButtonClick() {
     let downloadUrl = "https://geocore.metadata.geo.ca/" + uuid + ".geojson";
@@ -73,7 +65,48 @@
 <!--    {viewHNAPText}-->
 <!--  </button>-->
 <!--</div>-->
-<SortableTable tableContent={dataResourcesList} {tableLabels} clickableRows={true} />
+
+{#each dataResourcesList as dataResource, index}
+  <div class="rounded bg-custom-1 px-5 py-4 drop-shadow-[0_0.1875rem_0.375rem_#00000029]">
+    <Accordion>
+      {#snippet accordionTitle()}
+        <h2 class="font-custom-style-h2-2">
+          <a href={dataResource.url}>
+            {dataResource.name}
+          </a>
+        </h2>
+      {/snippet}
+      {#snippet accordionContent()}
+        <div  class="mt-5">
+          <div class="bg-custom-5 px-6 py-2.5 border-t border-x border-custom-9">
+            <h3 class="font-custom-style-h3 ">
+              {typeText}
+            </h3>
+            <p class="font-custom-style-body-4">
+              {dataResource.type}
+            </p>
+          </div>
+          <div class="bg-custom-5 px-6 py-2.5 border-t border-x border-custom-9">
+            <h3 class="font-custom-style-h3">
+              {formatText}
+            </h3>
+            <p class="font-custom-style-body-4">
+              {dataResource.format}
+            </p>
+          </div>
+          <div class="bg-custom-5 px-6 py-2.5 border border-custom-9">
+            <h3 class="font-custom-style-h3">
+              {languagesText}
+            </h3>
+            <p class="font-custom-style-body-4">
+              {dataResource.languages}
+            </p>
+          </div>
+        </div>
+      {/snippet}
+    </Accordion>
+  </div>
+{/each}
 
 <style>
   /*button {*/

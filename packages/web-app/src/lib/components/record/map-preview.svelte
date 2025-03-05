@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
-  import Card from '$lib/components/card/card.svelte';
   import Map from '$lib/components/map/map.svelte';
   import NotVisible from "$lib/components/icons/not-visible.svelte";
 
@@ -15,6 +14,15 @@
   const items = data.item_v2;
   const geometry = items?.geometry ? items.geometry : null;
   const coordinates = geometry && geometry?.coordinates ? geometry.coordinates : null;
+
+  /***************** Time Slider *************************/
+  // Note: Geoview checks for a valid time dimension for each map layer before adding the
+  // time slider, so even if there is a valid time range here, the tool might not be added.
+  // Since Geoview does most of the error handling, we'll only check if a date range exists
+  // and not worry about the format of the dates.
+  const temporalExtentStart = items?.properties?.extent?.temporalExtent?.start;
+  const temporalExtentEnd = items?.properties?.extent?.temporalExtent?.end;
+  let useTimeSlider = !!(temporalExtentStart && temporalExtentEnd);
 
   // For small screens, don't include the map preview
   let showMap = $state(true);
@@ -45,9 +53,7 @@
     {mapPreviewtext}
   </h2>
   {#if coordinates && showMap}
-    <Card>
-      <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true />
-    </Card>
+    <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true timeSlider={useTimeSlider} />
   {:else if coordinates}
     <p class="mx-5 md:mx-0">
       {windowTooSmall}
