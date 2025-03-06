@@ -192,7 +192,8 @@
 }
 
 .font-custom-style-body-7 {
-	@apply font-noto-sans;
+	/* Set the font explicitly for firefox with a fall back to system-ui */
+	font-family: Noto Sans, system-ui;
 	@apply font-medium;
 	@apply text-[16px];
 	@apply text-custom-16;

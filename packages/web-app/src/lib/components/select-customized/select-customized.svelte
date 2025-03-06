@@ -153,6 +153,8 @@
 
   .tabCard,
   .categoryFilter {
+    /* Set the font explicitly for firefox with a fall back to system-ui */
+    font-family: Open Sans, system-ui;
     @apply w-full;
   }
 
@@ -160,5 +162,10 @@
   .clear-btn:focus {
     @apply text-custom-1;
     @apply bg-custom-22;
+  }
+
+  option {
+    /* Ensures <option> inherits from <select> specifically for firefox */
+    font-family: inherit;
   }
 </style>
