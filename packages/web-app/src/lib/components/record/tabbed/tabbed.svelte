@@ -9,8 +9,8 @@
   const translations = $page.data.t;
   const dataResources: string = translations?.dataResources ?
     translations["dataResources"] : "Data Resources";
-  const advancedMetaData: string = translations?.advancedMetaData ?
-    translations["advancedMetaData"] : "Advanced Metadata";
+  const advancedMetadata: string = translations?.advancedMetadata ?
+    translations["advancedMetadata"] : "Advanced Metadata";
   const contactData: string = translations?.contactData ?
     translations["contactData"] : "Contact Data";
 
@@ -21,7 +21,7 @@
       value: 1,
       component: DataResources
     }, {
-      label: advancedMetaData,
+      label: advancedMetadata,
       value: 2,
       component: AdvancedMetadata
     }, {
