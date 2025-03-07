@@ -10,7 +10,6 @@
     width?: string;
     height?: string;
     mapProjection?: number;
-    useMap?: boolean; // When false, the map's bounding box is used instead
     mapType?: any;
     footer?: boolean;
     timeSlider?: boolean;
@@ -23,13 +22,12 @@
     width = '100%',
     height = '32rem',
     mapProjection = 3978,
-    useMap = true,
     mapType = null,
     footer = false,
     timeSlider = false
   }: Props = $props();
 
-  let mapId = 'map-' + id;
+  let mapId = 'map-' + mapType + '-' + id;
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
   let center = calculateCenter(coordinates[0]);
@@ -52,13 +50,6 @@
     components: [],
     corePackages: []
   });
-
-  if (useMap) {
-    config.map.listOfGeoviewLayerConfig = [{
-      geoviewLayerType: 'geoCore',
-      geoviewLayerId: id
-    }]
-  }
 
   if (footer) {
     config.footerBar = {
@@ -217,13 +208,32 @@
     cgpv.api.maps[mapId]?.remove(true);
 
     try {
-      await cgpv.api.createMapFromConfig(
-        mapId,
-        sConfig
-      );
+      // Create the layer config to check if the geocore record has a map. It is undefined if no map exists.
+      const geoviewLayerConfig = await cgpv.api.config.createLayerConfig(id, "geoCore", [], mapLang);
+
+      // Add the geocore layer to the map config if it exists
+      if (geoviewLayerConfig) {
+        config.map.listOfGeoviewLayerConfig = [{
+          geoviewLayerType: 'geoCore',
+          geoviewLayerId: id
+        }];
+      }
+
+      // Sometimes, when going to a record page from the search results page
+      // geoview attemps to build the map using the config from the search page.
+      // To stop this, we can assign the map id based on the type of map
+      // (i.e., resultList vs record), then check to make sure the map div exists.
+      // Note: We can safely use document here since it is inside onMount.
+      if (document.getElementById(mapId)) {
+        // Build the map from the config
+        await cgpv.api.createMapFromConfig(
+          mapId,
+          sConfig
+        );
+      }
 
       // Add bounding box when no map is available
-      if (!useMap) {
+      if (!geoviewLayerConfig) {
         let bbox = getBbox(coordinates);
         cgpv.api.maps[mapId]?.layer.geometry.addPolygon(
           [bbox],

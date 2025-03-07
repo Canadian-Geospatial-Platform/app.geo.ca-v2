@@ -145,8 +145,7 @@
               <div class="flex">
                 <Map
                   coordinates={result.coordinates} id={result.id}
-                  dynamic={true} useMap={result.hasMap}
-                  mapType={mapType}
+                  dynamic={true} mapType={mapType}
                 />
               </div>
             {:else}
