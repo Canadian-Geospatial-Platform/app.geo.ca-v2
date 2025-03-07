@@ -25,7 +25,6 @@
   "mapPreview": "Map Preview",
   "maintenance": "Maintenance",
   "metadata": "Metadata",
-  "metadataDescription": "Our metadata is stored in the geoCore format. A geojson containing all the metadata you see here.",
   "name": "Name",
   "north": "North",
   "organization": "Organization",
