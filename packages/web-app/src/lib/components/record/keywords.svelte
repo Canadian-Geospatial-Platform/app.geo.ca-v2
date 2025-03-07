@@ -25,8 +25,8 @@
         class="font-custom-style-body-2 block md:inline"
         href={searchUrl + encodeURI(keyword.replaceAll(' ', '+'))}
       >
-        {i < keywords.length - 1 ? keyword + ', ' : keyword}
-      </a>
+        {keyword}
+      </a>{i < keywords.length - 1 ? ', ' : ''}
     {/each}
   </p>
 </div>
