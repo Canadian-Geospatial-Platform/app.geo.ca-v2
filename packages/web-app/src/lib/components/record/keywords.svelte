@@ -12,7 +12,7 @@
 
   const keywords = properties.keywords.map((x) => x[lang.slice(0, 2)]);
   const mapBrowserUrl = url.origin + '/' + lang + '/map-browser';
-  const searchUrl = mapBrowserUrl + '?search-terms='
+  const searchUrl = mapBrowserUrl + '?search-terms=';
 </script>
 
 <div class="font-custom-style-body-1">
@@ -23,7 +23,7 @@
     {#each keywords as keyword, i}
       <a
         class="font-custom-style-body-2 block md:inline"
-        href={searchUrl + encodeURI(keyword.replaceAll(' ', '+'))}
+        href={searchUrl + encodeURI(keyword.toLowerCase().replaceAll(' ', '+'))}
       >
         {keyword.toLowerCase()}
       </a>{i < keywords.length - 1 ? ', ' : ''}

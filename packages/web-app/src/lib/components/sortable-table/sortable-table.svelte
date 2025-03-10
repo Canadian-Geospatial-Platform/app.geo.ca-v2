@@ -103,7 +103,7 @@
           >
             {#each tableLabelsArray as label}
               <td class="font-custom-style-body-4">
-                {row[label]}
+                {@html row[label]}
               </td>
             {/each}
           </tr>
@@ -111,7 +111,7 @@
           <tr>
             {#each tableLabelsArray as label}
               <td class="font-custom-style-body-4">
-                {row[label]}
+                {@html row[label]}
               </td>
             {/each}
           </tr>

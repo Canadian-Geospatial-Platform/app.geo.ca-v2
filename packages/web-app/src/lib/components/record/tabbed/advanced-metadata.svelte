@@ -34,11 +34,21 @@
   const properties = items.properties;
   const geographicExtent = properties.extent.geographicExtent;
 
+  const url = $page.url;
+  const mapBrowserUrl = url.origin + '/' + lang + '/map-browser';
+  const searchUrl = mapBrowserUrl + '?search-terms=';
+
   const status = properties.status[langShort];
   const maintenance = properties.maintenance[langShort];
   const id = data.uuid;
-  const topicCategoryArray = properties.topicCategory.map((x) => x.label[langShort]);
-  const topicCategory = topicCategoryArray.join(',');
+
+  // Each topic category should be a link back to the search page
+  const topicCategoryArray = properties.topicCategory.map((x) => {
+    const label = x.label[langShort].toLowerCase();
+    return `<a href="${searchUrl}${encodeURIComponent(label)}" class="underline text-custom-16">${label}</a>`;
+  });
+  const topicCategory = topicCategoryArray.join(', ');
+
   const type = properties.type[langShort];
   const north = geographicExtent.north;
   const east = geographicExtent.east;
