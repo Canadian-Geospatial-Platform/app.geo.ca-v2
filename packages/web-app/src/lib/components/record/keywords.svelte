@@ -22,11 +22,11 @@
   <p class="mx-5 md:mx-0 space-y-4">
     {#each keywords as keyword, i}
       <a
-        class="font-custom-style-body-2 block md:inline"
+        class="font-custom-style-body-2 block sm:inline"
         href={searchUrl + encodeURI(keyword.toLowerCase().replaceAll(' ', '+'))}
       >
         {keyword.toLowerCase()}
-      </a>{i < keywords.length - 1 ? ', ' : ''}
+      </a><span class="hidden sm:inline">{i < keywords.length - 1 ? ', ' : ''}</span>
     {/each}
   </p>
 </div>

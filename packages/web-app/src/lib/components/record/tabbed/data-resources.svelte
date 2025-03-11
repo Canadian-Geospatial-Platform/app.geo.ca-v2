@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { parseDataResources } from '$lib/components/record/tabbed/parseDataResources';
-  import Accordion from '$lib/components/accordion/accordion.svelte';
+	import SortableTable from "$lib/components/sortable-table/sortable-table.svelte";
 
   type DataResourcesRow = {
     name: string;
@@ -35,7 +35,14 @@
   const dataResourcesList = parseDataResources(dataResourcesRaw, langShort);
   const uuid = properties.id;
 
-  // TODO: check to make sure these are the up to date download links
+  // Translation of table column labels
+  const tableLabels: DataResourcesRow = {
+    "name": nameText,
+    "type": typeText,
+    "format": formatText,
+    "languages": languagesText
+  };
+
   function handleDownloadButtonClick() {
     let downloadUrl = "https://geocore.metadata.geo.ca/" + uuid + ".geojson";
     window.open(downloadUrl);
@@ -47,72 +54,78 @@
   }
 </script>
 
-<!-- TODO: Commenting this section out for now since
-  these buttons might be moved to the menu instead,
-  waiting on changes to the wireframe -->
+<!-- Geocore and HNAP buttons -->
+<div class="flex flex-col sm:flex-row gap-4 pb-2">
+  <button 
+    class="w-full sm:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"
+    on:click={handleDownloadButtonClick}
+  >
+    {downloadGeoCoreText}
+  </button>
+  <button
+    class="w-full sm:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"
+    on:click={handleViewHNAPButtonClick}
+  >
+    {viewHNAPText}
+  </button>
+</div>
 
-<!--<div class="flex flex-col md:flex-row gap-4">-->
-<!--  <button -->
-<!--    class="w-full md:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"-->
-<!--    on:click={handleDownloadButtonClick}-->
-<!--  >-->
-<!--    {downloadGeoCoreText}-->
-<!--  </button>-->
-<!--  <button-->
-<!--    class="w-full md:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"-->
-<!--    on:click={handleViewHNAPButtonClick}-->
-<!--  >-->
-<!--    {viewHNAPText}-->
-<!--  </button>-->
-<!--</div>-->
+<!-- Large screen table -->
+<div class="hidden md:block">
+  <SortableTable tableContent={dataResourcesList} {tableLabels} clickableRows={true} />
+</div>
 
-{#each dataResourcesList as dataResource, index}
-  <div class="rounded bg-custom-1 px-5 py-4 drop-shadow-[0_0.1875rem_0.375rem_#00000029]">
-    <Accordion>
-      {#snippet accordionTitle()}
-        <h2 class="font-custom-style-h2-2">
-          <a href={dataResource.url}>
-            {dataResource.name}
-          </a>
-        </h2>
-      {/snippet}
-      {#snippet accordionContent()}
-        <div  class="mt-5">
-          <div class="bg-custom-5 px-6 py-2.5 border-t border-x border-custom-9">
-            <h3 class="font-custom-style-h3 ">
-              {typeText}
-            </h3>
-            <p class="font-custom-style-body-4">
-              {dataResource.type}
-            </p>
-          </div>
-          <div class="bg-custom-5 px-6 py-2.5 border-t border-x border-custom-9">
-            <h3 class="font-custom-style-h3">
-              {formatText}
-            </h3>
-            <p class="font-custom-style-body-4">
-              {dataResource.format}
-            </p>
-          </div>
-          <div class="bg-custom-5 px-6 py-2.5 border border-custom-9">
-            <h3 class="font-custom-style-h3">
-              {languagesText}
-            </h3>
-            <p class="font-custom-style-body-4">
-              {dataResource.languages}
-            </p>
-          </div>
-        </div>
-      {/snippet}
-    </Accordion>
-  </div>
-{/each}
+<!-- Small - medium screen table -->
+<div class="block md:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
+  {#each dataResourcesList as dataResource, index}
+    <div class="py-5">
+      <!-- Resource Name -->
+      <h2 class="font-custom-style-h2-2 pb-2 hover:underline">
+        <a href={dataResource.url}>
+          {dataResource.name}
+        </a>
+      </h2>
+
+      <!-- Resource Type -->
+      <div class="block sm:inline pr-3">
+        <h3 class="font-custom-style-h3-2 inline">
+          {typeText}:
+        </h3>
+        <p class="font-custom-style-body-9 inline">
+          {dataResource.type}
+        </p>
+      </div>
+
+      <!-- Resource format -->
+      <div class="block sm:inline pr-3">
+        <h3 class="font-custom-style-h3-2 inline">
+          {formatText}:
+        </h3>
+        <p class="font-custom-style-body-9 inline">
+          {dataResource.format}
+        </p>
+      </div>
+
+      <!-- Resource Languages -->
+      <div class="block sm:inline pr-3">
+        <h3 class="font-custom-style-h3-2 inline">
+          {languagesText}:
+        </h3>
+        <p class="font-custom-style-body-9 inline">
+          {dataResource.languages}
+        </p>
+      </div>
+
+    </div>
+  {/each}
+</div>
 
 <style>
-  /*button {*/
-  /*  @apply px-6;*/
-  /*  @apply py-2;*/
-  /*  @apply border-2;*/
-  /*  @apply border-custom-16;*/
-  /*}*/
+  button {
+    @apply px-6;
+    @apply py-2;
+    @apply border-2;
+    @apply border-custom-16;
+    @apply rounded;
+  }
 </style>

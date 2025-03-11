@@ -73,9 +73,9 @@
               {tableLabels[labelTranslation]}
               <button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
                 {#if sortDirection == 1 && labelTranslation == sortColumn}
-                  <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
-                {:else if sortDirection == 2 && labelTranslation == sortColumn}
                   <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
+                {:else if sortDirection == 2 && labelTranslation == sortColumn}
+                  <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
                 {:else}
                   <SortInactive classes={"inline w-4 h-4"}/>
                 {/if}
