@@ -97,12 +97,12 @@
           <tr
             onclick={() => handleRowClick(row.url)}
             onkeydown={(event) => handleRowClickKeydown(row.url, event)}
-            class="hover:bg-custom-5 hover:cursor-pointer"
+            class="group hover:bg-custom-5 hover:cursor-pointer"
             tabindex="0"
             role="button"
           >
             {#each tableLabelsArray as label}
-              <td class="font-custom-style-body-4">
+              <td class="font-custom-style-body-4 first:text-custom-16 first:font-bold first:group-hover:underline">
                 {@html row[label]}
               </td>
             {/each}
