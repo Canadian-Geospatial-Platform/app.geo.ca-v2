@@ -22,6 +22,7 @@
   const southText = translations?.south ? translations["south"] : "South";
   const spatialRepresentationText = translations?.spatialRepresentation ?
     translations["spatialRepresentation"] : "Spatial Representation";
+  const projectionText = translations?.spatialRepresentation ? translations["projection"] : "Projection";
 
   const labelText = translations?.label ? translations["label"] : "Label";
   const descriptionText = translations?.description ? translations["description"] : "Description";
@@ -55,6 +56,8 @@
   const west = geographicExtent.west;
   const south = geographicExtent.south;
   const spatialRepresentation = properties.spatialRepresentation[langShort];
+  const projectionArray = properties.refSys.map((x) => {return x.code});
+  const projection = projectionArray.join(', ');
 
   // Table Array
   const tableDataArray: Array<AdvMetadataRow> = [
@@ -67,7 +70,8 @@
     {"label": eastText.toUpperCase(),"description": east},
     {"label": westText.toUpperCase(),"description": west},
     {"label": southText.toUpperCase(),"description": south},
-    {"label": spatialRepresentationText.toUpperCase(),"description": spatialRepresentation}
+    {"label": spatialRepresentationText.toUpperCase(),"description": spatialRepresentation},
+    {"label": projectionText.toUpperCase(),"description": projection}
   ]
 
   // Translation of table column labels

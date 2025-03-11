@@ -28,6 +28,7 @@
   "name": "Name",
   "north": "North",
   "organization": "Organization",
+  "projection": "Projection",
   "resources": "Resources",
   "role": "Role",
   "selectCategory": "Select Category",
