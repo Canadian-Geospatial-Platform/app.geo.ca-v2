@@ -23,6 +23,10 @@
   const spatialRepresentationText = translations?.spatialRepresentation ?
     translations["spatialRepresentation"] : "Spatial Representation";
   const projectionText = translations?.spatialRepresentation ? translations["projection"] : "Projection";
+  const dateCreatedText = translations?.dateCreated ? translations["dateCreated"] : "Date Created";
+  const datePublishedText = translations?.datePublished ? translations["datePublished"] : "Date Published";
+  const temporalCoverageText = translations?.temporalCoverage ?
+    translations["temporalCoverage"] : "Temporal Coverage";
 
   const labelText = translations?.label ? translations["label"] : "Label";
   const descriptionText = translations?.description ? translations["description"] : "Description";
@@ -59,6 +63,14 @@
   const projectionArray = properties.refSys.map((x) => {return x.code});
   const projection = projectionArray.join(', ');
 
+  const dates = properties.date;
+  const dateCreatedObj = dates.find((x) => x.dateType.en == 'creation');
+  const dateCreated = dateCreatedObj.date;
+  const datePublishedObj = dates.find((x) => x.dateType.en == 'publication');
+  const datePublished = datePublishedObj.date;
+  const temporalCoverage = properties.extent.temporalExtent.start
+    + ' - ' + properties.extent.temporalExtent.end;
+
   // Table Array
   const tableDataArray: Array<AdvMetadataRow> = [
     {"label": statusText.toUpperCase(),"description": status},
@@ -71,7 +83,10 @@
     {"label": westText.toUpperCase(),"description": west},
     {"label": southText.toUpperCase(),"description": south},
     {"label": spatialRepresentationText.toUpperCase(),"description": spatialRepresentation},
-    {"label": projectionText.toUpperCase(),"description": projection}
+    {"label": projectionText.toUpperCase(),"description": projection},
+    {"label": dateCreatedText.toUpperCase(),"description": dateCreated},
+    {"label": datePublishedText.toUpperCase(),"description": datePublished},
+    {"label": temporalCoverageText.toUpperCase(),"description": temporalCoverage},
   ]
 
   // Translation of table column labels

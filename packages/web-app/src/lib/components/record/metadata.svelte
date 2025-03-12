@@ -36,7 +36,7 @@
   const accessLast30 = data.analyticRes['30'];
   const accessAllTime = data.analyticRes.all;
   let temporalCoverage = properties.extent.temporalExtent.start
-    + ' ' + properties.extent.temporalExtent.end;
+    + ' - ' + properties.extent.temporalExtent.end;
 
   if (lang == 'fr-ca') {
     temporalCoverage = temporalCoverage.replaceAll('null', 'Présent');
