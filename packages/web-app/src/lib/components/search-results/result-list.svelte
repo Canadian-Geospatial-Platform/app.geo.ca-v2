@@ -165,7 +165,8 @@
               {result.title}
             </a>
             <div class="line-clamp-2 pt-1">
-              {result.description}
+              <!-- Remove new line characters -->
+              {result.description.replaceAll('\\n', '')}
             </div>
           </div>
         {/snippet}
