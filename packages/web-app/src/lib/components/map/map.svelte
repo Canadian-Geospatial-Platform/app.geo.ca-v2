@@ -204,8 +204,6 @@
 
   onMount(async () => {
     await tick();
-    // Remove any old copies of the map
-    cgpv.api.maps[mapId]?.remove(true);
 
     try {
       // Create the layer config to check if the geocore record has a map. It is undefined if no map exists.

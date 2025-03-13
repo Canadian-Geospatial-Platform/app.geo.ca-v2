@@ -12,7 +12,13 @@
   }
 
   let { children }: Props = $props();
+
+  const lang = $page.data.lang.slice(0, 2);
 </script>
+
+<svelte:head>
+  <html lang={lang} />
+</svelte:head>
 
 <Header />
 <div

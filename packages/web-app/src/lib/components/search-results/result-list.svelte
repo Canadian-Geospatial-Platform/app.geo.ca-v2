@@ -19,6 +19,8 @@
     translations["mapNotAvailable"] : "Map preview not available";
   const saveSearchParamsText = translations?.saveSearchParams ?
     translations["saveSearchParams"] : "Save Search Parameters";
+  const formatText = translations?.formatParams ? translations["format"] : "Format";
+  const organizationText = translations?.organization ? translations["organization"] : "Organization";
 
   /************* Accordion Components ***************/
   let data = $derived($page.data);
@@ -84,6 +86,34 @@
     goto($page.url, { invalidateAll: true });
   }
 
+  function getFormats(record) {
+    const options = record.options;
+
+    // Get an array of just the format of each record option
+    const formatArray = options.map((x) => {
+      const description = x.description;
+      const descriptionString = lang == 'fr' ? description.fr : description.en;
+      const descriptionArray = descriptionString.split(';');
+
+      // The description string is always in this format 'type;format;language',
+      // so when splitting the string to an array, we can get the format by returning
+      // the item in the second array index.
+      return descriptionArray[1];
+    });
+
+    // Note: In the geocore records, the protocol is sometimes listed as the string 'null',
+    // not just the value null, so we should check for the string to filer it out.
+    // We can also check for 'undefined' as a string too for good measure.
+    // Using indexOf allows us to check for duplicate values since it always returns the
+    // first instance of the value being searched. If it doesn't match the current index,
+    // then it must be a duplicate.
+    const filteredFormats = formatArray.filter((x, index, self) => {
+      return x && x !== 'null' && x != 'undefined' && self.indexOf(x) === index;
+    });
+
+    return filteredFormats.join(', ');
+  }
+
   /****************** Map ******************/
   let mapType = 'resultList';
   let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
@@ -134,13 +164,25 @@
             >
               {result.title}
             </a>
-            <div class="line-clamp-2">
+            <div class="line-clamp-2 pt-1">
               {result.description}
             </div>
           </div>
         {/snippet}
         {#snippet accordionContent()}
-          <div  class="mt-9">
+          <div  class="mt-5">
+            <div class="mb-5">
+              <p>
+                <span class="font-semibold">{organizationText}: </span>
+                {lang == 'fr' ?
+                    result.contact[0].organisation.fr.replaceAll(';', '; ') :
+                    result.contact[0].organisation.en.replaceAll(';', '; ')}
+              </p>
+              <p>
+                <span class="font-semibold">{formatText}: </span>
+                {getFormats(result)}
+              </p>
+            </div>
             {#if result.coordinates}
               <div class="flex">
                 <Map
