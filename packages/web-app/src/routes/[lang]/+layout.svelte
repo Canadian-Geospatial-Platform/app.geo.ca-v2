@@ -17,7 +17,7 @@
 </script>
 
 <svelte:head>
-  <html lang={lang} />
+  <html lang={lang}></html>
 </svelte:head>
 
 <Header />
