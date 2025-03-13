@@ -23,6 +23,7 @@
   const typeText = translations?.type ? translations["type"] : "Type";
   const formatText = translations?.format ? translations["format"] : "Format";
   const languagesText = translations?.languages ? translations["languages"] : "Languages";
+  const resourcesNotAvailable = translations?.resourcesNotAvailable ? translations["resourcesNotAvailable"] : "";
 
   /******************* Data *******************/
   const data = $page.data;
@@ -70,55 +71,61 @@
   </button>
 </div>
 
-<!-- Large screen table -->
-<div class="hidden md:block">
-  <SortableTable tableContent={dataResourcesList} {tableLabels} clickableRows={true} />
-</div>
+{#if dataResourcesList.length > 0}
+  <!-- Large screen table -->
+  <div class="hidden md:block">
+    <SortableTable tableContent={dataResourcesList} {tableLabels} clickableRows={true} />
+  </div>
 
-<!-- Small - medium screen table -->
-<div class="block md:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
-  {#each dataResourcesList as dataResource, index}
-    <div class="py-5">
-      <!-- Resource Name -->
-      <h2 class="font-custom-style-h2-2 pb-2 hover:underline">
-        <a href={dataResource.url}>
-          {dataResource.name}
-        </a>
-      </h2>
+  <!-- Small - medium screen table -->
+  <div class="block md:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
+    {#each dataResourcesList as dataResource, index}
+      <div class="py-5">
+        <!-- Resource Name -->
+        <h2 class="font-custom-style-h2-2 pb-2 hover:underline">
+          <a href={dataResource.url}>
+            {dataResource.name}
+          </a>
+        </h2>
 
-      <!-- Resource Type -->
-      <div class="block sm:inline pr-3">
-        <h3 class="font-custom-style-h3-2 inline">
-          {typeText}:
-        </h3>
-        <p class="font-custom-style-body-9 inline">
-          {dataResource.type}
-        </p>
+        <!-- Resource Type -->
+        <div class="block sm:inline pr-3">
+          <h3 class="font-custom-style-h3-2 inline">
+            {typeText}:
+          </h3>
+          <p class="font-custom-style-body-9 inline">
+            {dataResource.type}
+          </p>
+        </div>
+
+        <!-- Resource format -->
+        <div class="block sm:inline pr-3">
+          <h3 class="font-custom-style-h3-2 inline">
+            {formatText}:
+          </h3>
+          <p class="font-custom-style-body-9 inline">
+            {dataResource.format}
+          </p>
+        </div>
+
+        <!-- Resource Languages -->
+        <div class="block sm:inline pr-3">
+          <h3 class="font-custom-style-h3-2 inline">
+            {languagesText}:
+          </h3>
+          <p class="font-custom-style-body-9 inline">
+            {dataResource.languages}
+          </p>
+        </div>
+
       </div>
-
-      <!-- Resource format -->
-      <div class="block sm:inline pr-3">
-        <h3 class="font-custom-style-h3-2 inline">
-          {formatText}:
-        </h3>
-        <p class="font-custom-style-body-9 inline">
-          {dataResource.format}
-        </p>
-      </div>
-
-      <!-- Resource Languages -->
-      <div class="block sm:inline pr-3">
-        <h3 class="font-custom-style-h3-2 inline">
-          {languagesText}:
-        </h3>
-        <p class="font-custom-style-body-9 inline">
-          {dataResource.languages}
-        </p>
-      </div>
-
-    </div>
-  {/each}
-</div>
+    {/each}
+  </div>
+{:else}
+  <div>
+    {resourcesNotAvailable}
+  </div>
+{/if}
 
 <style>
   button {

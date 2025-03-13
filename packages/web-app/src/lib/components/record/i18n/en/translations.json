@@ -30,6 +30,7 @@
   "organization": "Organization",
   "projection": "Projection",
   "resources": "Resources",
+  "resourcesNotAvailable": "The data resources for this record are unavailable.",
   "role": "Role",
   "selectCategory": "Select Category",
   "similarProducts": "Similar Products",

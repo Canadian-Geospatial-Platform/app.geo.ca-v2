@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import Parsedlinks from '$lib/components/parsed-links/parsed-links.svelte';
+  import Parsedtext from '$lib/components/parsed-text/parsed-text.svelte';
 
   const data = $page.data;
   const lang = data.lang;
@@ -8,8 +8,8 @@
   const properties = items.properties;
 
   const title = lang == 'fr-ca' ? properties.title.fr : properties.title.en;
-  const descriptionRaw = lang == 'fr-ca' ? properties.description.fr : properties.description.en;
-  const description = descriptionRaw.replaceAll(/\n/g, '<br>');
+  const description = lang == 'fr-ca' ? properties.description.fr : properties.description.en;
+
 </script>
 
 <div>
@@ -19,8 +19,8 @@
   <p class="font-custom-style-body-1 mx-5 md:mx-0">
     <!------------------------------------------------------------
       Some descriptions may include links, so we can replace them
-      with anchors using the Parsedlinks component.
+      with anchors using the Parsedtext component.
     -------------------------------------------------------------->
-    <Parsedlinks linkText={description}/>
+    <Parsedtext text={description}/>
   </p>
 </div>

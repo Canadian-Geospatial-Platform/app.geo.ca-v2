@@ -30,6 +30,7 @@
   "organization": "Organisation",
   "projection": "Projection",
   "resources": "Ressources",
+  "resourcesNotAvailable": "Les ressources de données pour cet enregistrement ne sont pas disponibles.",
   "role": "Rôle",
   "selectCategory": "Sélectionnez une catégorie",
   "similarProducts": "Produits similaires",
