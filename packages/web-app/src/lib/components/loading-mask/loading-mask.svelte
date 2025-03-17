@@ -6,7 +6,8 @@
   let { classes = "" }: Props = $props();
 </script>
 
-<div class="{classes} flex justify-center items-center bg-custom-15 w-full h-full z-10">
+<!-- Note: the z-index needs to be 100000 because the loading mask on the geoview maps are 99999 -->
+<div class="{classes} flex justify-center bg-custom-15 w-full h-full z-[100000]">
   <!-- TODO: Change loading annimation to the same as canadian-geospatial-platform for consistency -->
   <div class="loader">
     <div class="inner-loader"></div>

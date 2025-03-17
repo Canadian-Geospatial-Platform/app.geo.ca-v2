@@ -228,9 +228,10 @@
   }
 </script>
 
+<!-- Note: we need the z-index to be 100020 so that it is above the header and the map loading mask (geoview has this set at 99999) -->
 <div
   class={[
-    "fixed flex justify-center z-40 inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
+    "fixed flex justify-center z-[100020] inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
     (!active) && "hidden"
   ]}
 >

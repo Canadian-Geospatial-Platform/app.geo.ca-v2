@@ -13,7 +13,7 @@
 <MicroData item={$page.data.item_v2} />
 
 {#if $navigating}
-  <LoadingMask classes="fixed left-0 top-0" />
+  <LoadingMask classes="fixed left-0 top-0 items-center" />
 {/if}
 <div class="flex flex-col space-y-8">
   <Description />
