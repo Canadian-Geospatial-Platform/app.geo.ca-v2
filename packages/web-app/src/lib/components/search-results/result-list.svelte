@@ -188,7 +188,7 @@
               <div class="flex">
                 <Map
                   coordinates={result.coordinates} id={result.id}
-                  dynamic={true} mapType={mapType}
+                  dynamic={true} mapType={mapType} footer=true
                 />
               </div>
             {:else}
