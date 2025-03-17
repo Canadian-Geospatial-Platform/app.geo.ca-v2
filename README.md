@@ -25,6 +25,7 @@ Once you've created a project and installed dependencies with `npm install`, sta
 - open another terminal
 - `npm run dev` to bind the the previously deployed infrastructure
 - you should now be able to work on you local files and have your dev instance seamlessly connect to your aws ressources.
+- now run the steps under [## Importing Data](#importing-data).
 
 ## Building and deploying
 
@@ -42,3 +43,15 @@ Once you've created a project and installed dependencies with `npm install`, sta
     - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/logout
 
 - deploy from the root of the repository: `npm run sst:deploy:{dev|stage|prod}`
+- import data: todo.
+
+## Importing Data
+
+- locate the `abc-datalake-xyz` bucket for your deployment.
+- upload the data from `data-samples` to the correct location (abc-datalake-xyz/hnap/).
+
+```BASH
+  aws s3 cp data-samples/hnap s3://abc-datalake-xyz/ --recursive
+```
+
+- this will trigger the hnap-bridge lambda and generate the geojson records required for viewing and store them under `abc-datalake-xyz/geojson`. Note that any record not imported this way will return a 404 when viewed.
