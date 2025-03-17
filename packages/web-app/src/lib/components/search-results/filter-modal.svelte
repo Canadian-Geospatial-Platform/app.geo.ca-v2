@@ -234,10 +234,12 @@
     "fixed flex justify-center z-[100020] inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
     (!active) && "hidden"
   ]}
+  onclick={() => closeModal()}
 >
   <form
     class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-full md:w-2/3 h-fit md:mt-2 m-5 md:m-0"
     onsubmit={handleSubmit}
+    onclick={(event) => event.stopPropagation()}
   >
     <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
       <div>
