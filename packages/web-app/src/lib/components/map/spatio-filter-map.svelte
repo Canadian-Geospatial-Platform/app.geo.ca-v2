@@ -102,8 +102,6 @@
 
   onMount(async () => {
     await tick();
-    // Remove any old copies of the map
-    cgpv.api.maps[mapId]?.remove(true);
 
     try {
       await cgpv.api.createMapFromConfig(mapId, sConfig);
