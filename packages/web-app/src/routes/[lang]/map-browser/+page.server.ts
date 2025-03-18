@@ -173,6 +173,9 @@ function getKeyword(searchParams) {
 		keywords = category;
 	}
 
+	// Remove quotation characters, the semantic search throws an error if they are included
+	keywords = keywords.replaceAll('"', '');
+
 	return keywords;
 }
 
