@@ -57,12 +57,12 @@
   // Table Array
   const tableDataArray: Array<ContactRow> = [
     {"label": organizationText.toUpperCase(),"description": organization},
+    {"label": emailText.toUpperCase(),"description": emailLink},
     {"label": addressText.toUpperCase(),"description": address},
     {"label": individualNameText.toUpperCase(),"description": individualName},
     {"label": roleText.toUpperCase(),"description": role},
     {"label": telephoneText.toUpperCase(),"description": telephone},
     {"label": faxText.toUpperCase(),"description": fax},
-    {"label": emailText.toUpperCase(),"description": emailLink},
     {"label": websiteText.toUpperCase(),"description": websiteLink},
     {"label": descriptionText.toUpperCase(),"description": description}
   ]
