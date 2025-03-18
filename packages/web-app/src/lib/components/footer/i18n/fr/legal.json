@@ -1,12 +1,13 @@
 {
-  "logoUrl": "https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png",
-  "logoAlt": "Logo du gouvernement du Canada",
-	"contactUs": "Contactez Nous",
 	"ccmeo": "Centre Canadien de cartographie et d’observation de la terre",
-	"nrcan": "Ressources naturelles Canada",
-	"goc": "Gouvernement du Canada",
+	"cdgi": "GEO.ca fait partie de <a class='underline text-custom-8' href='https://ressources-naturelles.canada.ca/science-et-donnees/science-et-recherche/geomatique/infrastructure-canadienne-donnees-geospatiales/18771>L'infrastructure de données spatiales du Canada</a> (ICDG)",
+  "contactUs": "Contactez Nous",
+  "copyright": "Propulsé par GEO.CA, droits d’auteur © 2025",
+  "email": "geo@nrcan-rncan.gc.ca",
+  "goc": "Gouvernement du Canada",
   "license": "Termes et conditions",
 	"licenceUrl": "https://geo.ca/fr/avis/",
-	"copyright": "Propulsé par GEO.CA, droits d’auteur © 2024",
-  "email": "geo@nrcan-rncan.gc.ca"
+	"logoAlt": "Logo du gouvernement du Canada",
+  "logoUrl": "https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png",
+  "nrcan": "Ressources naturelles Canada"
 }

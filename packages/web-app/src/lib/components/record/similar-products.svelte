@@ -23,7 +23,7 @@
   <ul class="flex flex-col space-y-4 list-outside list-disc py-2 ml-[1.125rem]">
     {#each similarProducts as product}
       <li>
-        <a class="font-custom-style-body-2" href={product.linkUrl} target="_blank">
+        <a class="font-custom-style-body-2" href={product.linkUrl}>
           {product.linkText}
         </a>
         <p class="line-clamp-2">{product.description}</p>

@@ -13,6 +13,7 @@
 	let licenceUrl = legalData?.licenceUrl ? legalData["licenceUrl"] : "";
 	let copyright = legalData?.copyright ? legalData["copyright"] : "";
   let email = legalData?.email ? legalData["email"] : "";
+  let cdgi = legalData?.cdgi ? legalData["cdgi"] : "";
 </script>
 
 <div class="bg-custom-5 font-open-sans">
@@ -32,6 +33,7 @@
       />
       <p><a href={licenceUrl}>{license}</a></p>
       <p>{copyright}</p>
+      <p>{@html cdgi}</p>
     </div>
   </div>
 </div>
@@ -49,11 +51,11 @@
 
   h3 {
     @apply text-lg;
-    @apply font-bold;
+    @apply font-semibold;
   }
 
   p {
-    @apply text-sm;
+    @apply text-base;
   }
 
   a {

@@ -66,7 +66,7 @@
     const useLimitationsUrl = useLimitationsRaw.match(urlRegEx)[0];
     const useLimitationsLabel = useLimitationsRaw.split(' (')[0];
     useLimitations = '<a href="' + useLimitationsUrl
-      + '" target="_blank" class="underline text-custom-16">'
+      + '" class="underline text-custom-16">'
       + useLimitationsLabel + '</a>';
   }
 
