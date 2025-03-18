@@ -7,8 +7,6 @@
 
   // Description
   const metadatatext = translations?.metadata ? translations["metadata"] : "Metadata";
-  const metadataDescriptionText = translations?.metadataDescription ?
-    translations["metadataDescription"] : "";
 
   // Top Section
   const dateCreatedText = translations?.dateCreated ? translations["dateCreated"] : "";
@@ -38,7 +36,7 @@
   const accessLast30 = data.analyticRes['30'];
   const accessAllTime = data.analyticRes.all;
   let temporalCoverage = properties.extent.temporalExtent.start
-    + ' ' + properties.extent.temporalExtent.end;
+    + ' - ' + properties.extent.temporalExtent.end;
 
   if (lang == 'fr-ca') {
     temporalCoverage = temporalCoverage.replaceAll('null', 'Présent');
@@ -78,9 +76,6 @@
   <h2 class="font-custom-style-h2 mb-1 mx-5 md:mx-0">
     {metadatatext}
   </h2>
-  <p class="mx-5 md:mx-0 mb-5">
-    {metadataDescriptionText}
-  </p>
   <Card>
     <div class="card-div flex flex-col lg:flex-row lg:space-x-3 justify-between">
       {#each topSection as [topItemLabel, topItemVal]}

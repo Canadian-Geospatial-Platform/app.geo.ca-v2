@@ -73,9 +73,9 @@
               {tableLabels[labelTranslation]}
               <button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
                 {#if sortDirection == 1 && labelTranslation == sortColumn}
-                  <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
-                {:else if sortDirection == 2 && labelTranslation == sortColumn}
                   <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
+                {:else if sortDirection == 2 && labelTranslation == sortColumn}
+                  <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
                 {:else}
                   <SortInactive classes={"inline w-4 h-4"}/>
                 {/if}
@@ -97,13 +97,13 @@
           <tr
             onclick={() => handleRowClick(row.url)}
             onkeydown={(event) => handleRowClickKeydown(row.url, event)}
-            class="hover:bg-custom-5 hover:cursor-pointer"
+            class="group hover:bg-custom-5 hover:cursor-pointer"
             tabindex="0"
             role="button"
           >
             {#each tableLabelsArray as label}
-              <td class="font-custom-style-body-4">
-                {row[label]}
+              <td class="font-custom-style-body-4 first:text-custom-16 first:font-bold first:group-hover:underline">
+                {@html row[label]}
               </td>
             {/each}
           </tr>
@@ -111,7 +111,7 @@
           <tr>
             {#each tableLabelsArray as label}
               <td class="font-custom-style-body-4">
-                {row[label]}
+                {@html row[label]}
               </td>
             {/each}
           </tr>

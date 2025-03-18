@@ -206,6 +206,13 @@
 	@apply text-custom-20;
 }
 
+.font-custom-style-body-9 {
+	@apply font-lato;
+	@apply font-normal;
+	@apply text-[16px];
+	@apply text-custom-21;
+}
+
 .font-custom-style-button-1 {
 	@apply font-open-sans;
 	@apply font-semibold;
@@ -251,7 +258,7 @@
 .font-custom-style-h2-2 {
 	@apply font-lato;
 	@apply font-bold;
-	@apply text-[20px];
+	@apply text-[18px];
 	@apply text-custom-16;
 }
 
@@ -260,6 +267,13 @@
 	@apply font-semibold;
 	@apply text-[16px];
 	@apply text-custom-7;
+}
+
+.font-custom-style-h3-2 {
+	@apply font-open-sans;
+	@apply font-semibold;
+	@apply text-[16px];
+	@apply text-custom-21;
 }
 
 .font-custom-style-placeholder {

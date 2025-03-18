@@ -37,21 +37,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		totalHits = parsedResponse?.response?.total_hits ?? 0;
 	}
 
-	for (const result of sanitizedResults) {
-		let lang = params.lang == 'fr-ca' ? 'fr' : 'en';
-		let id = result.id;
-		let url = 'https://geocore.api.geo.ca/vcs?lang=' + lang + '&id=' + id;
-		try {
-			let vcsResponse = await fetch(url);
-			let vcs = await vcsResponse.json();
-			let rcs = vcs.response.rcs[lang];
-			let hasMap = rcs.length > 0;
-			result.hasMap = hasMap;
-		} catch (e) {
-			console.warn('Unable to verify map for ' + result.id);
-		}
-	}
-
 	try {
 		userData = await getUserData(cookies);
 	} catch (e) {

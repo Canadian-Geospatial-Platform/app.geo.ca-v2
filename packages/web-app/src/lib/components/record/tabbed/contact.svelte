@@ -31,19 +31,28 @@
   const properties = items.properties;
   const contact = properties.contact[0];
 
-  // TODO: Confirm the full schema of the contact section
   const organization = contact?.organisation ? contact["organisation"][langShort] : "N/A";
   const address = contact?.address ? contact["address"][langShort] : "N/A";
   const individualName = contact?.individual ? contact["individual"][langShort] : "N/A";
-  const role = contact?.role ? contact["role"][langShort] : "N/A";
+
+  // For the english version of the role, the value 'pointOfContact' is really common.
+  // We can replace it with the more readable 'point of contact'.
+  const role = contact?.role ?
+    contact["role"][langShort].replace('pointOfContact', 'point of contact') : "N/A";
+
   const telephone = contact?.telephone ? contact["telephone"][langShort] : "N/A";
   const fax = contact?.fax ? contact["fax"][langShort] : "N/A";
-  const email = contact?.email ? contact["email"][langShort] : "N/A";
-  const website = contact?.onlineResource?.url && 
-    contact["onlineResource"]["url"] != null ?
-    contact["onlineResource"]["url"] : "N/A";
   const description = contact?.onlineResource?.onlineresource_description ?
     contact["onlineResource"]["onlineresource_description"] : "N/A";
+
+  const email = contact?.email ? contact["email"][langShort] : null;
+  const emailLink = email ?
+    `<a href="mailto:${email}" class="underline text-custom-16">${email}</a>` : "N/A";
+
+  const website = contact?.onlineResource?.url &&
+    contact["onlineResource"]["url"] != null ? contact["onlineResource"]["url"] : null;
+  const websiteLink = website ?
+    `<a href="${website}" class="underline text-custom-16">${website}</a>` : "N/A";
 
   // Table Array
   const tableDataArray: Array<ContactRow> = [
@@ -53,8 +62,8 @@
     {"label": roleText.toUpperCase(),"description": role},
     {"label": telephoneText.toUpperCase(),"description": telephone},
     {"label": faxText.toUpperCase(),"description": fax},
-    {"label": emailText.toUpperCase(),"description": email},
-    {"label": websiteText.toUpperCase(),"description": website},
+    {"label": emailText.toUpperCase(),"description": emailLink},
+    {"label": websiteText.toUpperCase(),"description": websiteLink},
     {"label": descriptionText.toUpperCase(),"description": description}
   ]
 

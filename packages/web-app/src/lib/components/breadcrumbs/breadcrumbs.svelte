@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
 
   let geoCaUrl = $derived($page.data.lang == 'en-ca' ?
-    'https://www.geo.ca/home' : 'https://geo.ca/fr/accueil/index.html');
+    'https://geo.ca/home' : 'https://geo.ca/fr/accueil/index.html');
   let appGeoCaUrl = $derived('/' + $page.data.lang + '/map-browser');
 </script>
 

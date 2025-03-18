@@ -22,6 +22,11 @@
   const southText = translations?.south ? translations["south"] : "South";
   const spatialRepresentationText = translations?.spatialRepresentation ?
     translations["spatialRepresentation"] : "Spatial Representation";
+  const projectionText = translations?.spatialRepresentation ? translations["projection"] : "Projection";
+  const dateCreatedText = translations?.dateCreated ? translations["dateCreated"] : "Date Created";
+  const datePublishedText = translations?.datePublished ? translations["datePublished"] : "Date Published";
+  const temporalCoverageText = translations?.temporalCoverage ?
+    translations["temporalCoverage"] : "Temporal Coverage";
 
   const labelText = translations?.label ? translations["label"] : "Label";
   const descriptionText = translations?.description ? translations["description"] : "Description";
@@ -34,17 +39,37 @@
   const properties = items.properties;
   const geographicExtent = properties.extent.geographicExtent;
 
+  const url = $page.url;
+  const mapBrowserUrl = url.origin + '/' + lang + '/map-browser';
+  const searchUrl = mapBrowserUrl + '?search-terms=';
+
   const status = properties.status[langShort];
   const maintenance = properties.maintenance[langShort];
   const id = data.uuid;
-  const topicCategoryArray = properties.topicCategory.map((x) => x.label[langShort]);
-  const topicCategory = topicCategoryArray.join(',');
+
+  // Each topic category should be a link back to the search page
+  const topicCategoryArray = properties.topicCategory.map((x) => {
+    const label = x.label[langShort].toLowerCase();
+    return `<a href="${searchUrl}${encodeURIComponent(label)}" class="underline text-custom-16">${label}</a>`;
+  });
+  const topicCategory = topicCategoryArray.join(', ');
+
   const type = properties.type[langShort];
   const north = geographicExtent.north;
   const east = geographicExtent.east;
   const west = geographicExtent.west;
   const south = geographicExtent.south;
   const spatialRepresentation = properties.spatialRepresentation[langShort];
+  const projectionArray = properties.refSys.map((x) => {return x.code});
+  const projection = projectionArray.join(', ');
+
+  const dates = properties.date;
+  const dateCreatedObj = dates.find((x) => x.dateType.en == 'creation');
+  const dateCreated = dateCreatedObj.date;
+  const datePublishedObj = dates.find((x) => x.dateType.en == 'publication');
+  const datePublished = datePublishedObj.date;
+  const temporalCoverage = properties.extent.temporalExtent.start
+    + ' - ' + properties.extent.temporalExtent.end;
 
   // Table Array
   const tableDataArray: Array<AdvMetadataRow> = [
@@ -57,7 +82,11 @@
     {"label": eastText.toUpperCase(),"description": east},
     {"label": westText.toUpperCase(),"description": west},
     {"label": southText.toUpperCase(),"description": south},
-    {"label": spatialRepresentationText.toUpperCase(),"description": spatialRepresentation}
+    {"label": spatialRepresentationText.toUpperCase(),"description": spatialRepresentation},
+    {"label": projectionText.toUpperCase(),"description": projection},
+    {"label": dateCreatedText.toUpperCase(),"description": dateCreated},
+    {"label": datePublishedText.toUpperCase(),"description": datePublished},
+    {"label": temporalCoverageText.toUpperCase(),"description": temporalCoverage},
   ]
 
   // Translation of table column labels
