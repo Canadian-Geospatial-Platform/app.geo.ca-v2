@@ -1,7 +1,35 @@
+// When there is some type of overlay i.e. the menu or filter modal,
+// we want the scrolling on the main content to be disabled so that only the
+// overlay is active. To achieve this, we can temporarily set the position of
+// the page to 'fixed' to prevent scrolling, and the overflow to 'scroll'
+// to prevent the page from shifting as the scroll is toggled. Setting the
+// top of the body to the scroll position of the window ensures the page
+// doesn't jump to the top when toggling the scroll.
+
 export function toggleScroll(active: Boolean) {
   // Check if 'document' is defined to avoid error during server side rendering
   if (typeof document !== "undefined") {
     const body = document.body;
-    body.style.overflowY = active ? "hidden" : "auto";
+
+    if (active) {
+      // Store the current scroll position
+      const scrollY = window.scrollY;
+      body.style.setProperty("--scroll-y", `${scrollY}px`);
+
+      // Set styles
+      body.style.top = `-${scrollY}px`;
+      body.style.overflowY = "scroll";
+      body.style.position = "fixed";
+    } else {
+      // Get the stored scroll value. For the scrollTo method, convert it to a number
+      const scrollY = parseInt(body.style.getPropertyValue("--scroll-y") || "0", 10);
+
+      // Revert styles
+      body.style.position = "";
+      body.style.top = "";
+      body.style.overflowY = "auto";
+
+      window.scrollTo(0, scrollY);
+    }
   }
 }

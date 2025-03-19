@@ -22,7 +22,7 @@
 
 <Header />
 <div
-  class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen pt-24 "
+  class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen pt-4"
   data-sveltekit-reload={$updated ? '' : 'off'}
 >
   <Breadcrumbs />
