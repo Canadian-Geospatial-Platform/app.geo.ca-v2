@@ -21,9 +21,9 @@ Once you've created a project and installed dependencies with `npm install`, sta
     - http://localhost:5173/en-ca/sign-in/logout
     - http://localhost:5173/fr-ca/sign-in/logout
 
-- `npm run sst:dev` to deploy the required code to the cloud.
+- `npm run dev` to deploy the required code to the cloud.
 - open another terminal
-- `npm run dev` to bind the the previously deployed infrastructure
+- `cd packages/web-app/ && npm run dev` to bind the the previously deployed infrastructure
 - you should now be able to work on you local files and have your dev instance seamlessly connect to your aws ressources.
 - now run the steps under [## Importing Data](#importing-data).
 
