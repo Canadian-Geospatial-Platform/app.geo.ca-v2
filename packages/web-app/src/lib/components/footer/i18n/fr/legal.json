@@ -1,6 +1,9 @@
 {
   "ccmeo": "Centre Canadien de cartographie et d’observation de la terre",
-  "cdgi": "GEO.ca fait partie de <a class='underline text-custom-8' href='https://ressources-naturelles.canada.ca/science-et-donnees/science-et-recherche/geomatique/infrastructure-canadienne-donnees-geospatiales/18771'>L'infrastructure de données spatiales du Canada</a> (ICDG)",
+  "cdgi": "GEO.ca fait partie de",
+  "cdgiAcronym": "(ICDG)",
+  "cdgiLink": "https://ressources-naturelles.canada.ca/science-et-donnees/science-et-recherche/geomatique/infrastructure-canadienne-donnees-geospatiales/18771",
+  "cdgiLinkText": "L'infrastructure de données spatiales du Canada",
   "contactUs": "Contactez Nous",
   "copyright": "Propulsé par GEO.CA, droits d’auteur © 2025",
   "email": "geo@nrcan-rncan.gc.ca",

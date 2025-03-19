@@ -14,6 +14,9 @@
 	let copyright = legalData?.copyright ? legalData["copyright"] : "";
   let email = legalData?.email ? legalData["email"] : "";
   let cdgi = legalData?.cdgi ? legalData["cdgi"] : "";
+  let cdgiLink = legalData?.cdgiLink ? legalData["cdgiLink"] : "";
+  let cdgiLinkText = legalData?.cdgiLinkText ? legalData["cdgiLinkText"] : "";
+  let cdgiAcronym = legalData?.cdgiAcronym ? legalData["cdgiAcronym"] : "";
 </script>
 
 <div class="bg-custom-5 font-open-sans">
@@ -33,7 +36,13 @@
       />
       <p><a href={licenceUrl}>{license}</a></p>
       <p>{copyright}</p>
-      <p>{@html cdgi}</p>
+      <p>
+        {cdgi}
+        <a href={cdgiLink}>
+          {cdgiLinkText}
+        </a>
+        {cdgiAcronym}
+      </p>
     </div>
   </div>
 </div>
