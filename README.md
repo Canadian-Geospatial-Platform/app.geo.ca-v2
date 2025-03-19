@@ -51,7 +51,7 @@ Once you've created a project and installed dependencies with `npm install`, sta
 - upload the data from `data-samples` to the correct location (abc-datalake-xyz/hnap/).
 
 ```BASH
-  aws s3 cp data-samples/hnap s3://abc-datalake-xyz/ --recursive
+  aws s3 cp data-samples/ s3://abc-datalake-xyz/ --recursive
 ```
 
 - this will trigger the hnap-bridge lambda and generate the geojson records required for viewing and store them under `abc-datalake-xyz/geojson`. Note that any record not imported this way will return a 404 when viewed.
