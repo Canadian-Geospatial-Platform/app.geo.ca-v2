@@ -111,7 +111,7 @@
       return x && x !== 'null' && x != 'undefined' && self.indexOf(x) === index;
     });
 
-    return filteredFormats.join(', ');
+    return filteredFormats;
   }
 
   /****************** Map ******************/
@@ -179,9 +179,11 @@
                     result.contact[0].organisation.fr.replaceAll(';', '; ') :
                     result.contact[0].organisation.en.replaceAll(';', '; ')}
               </p>
-              <p>
+              <p class="mt-2">
                 <span class="font-semibold">{formatText}: </span>
-                {getFormats(result)}
+                {#each getFormats(result) as format, i}
+                  <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
+                {/each}
               </p>
             </div>
             {#if result.coordinates}
