@@ -12,17 +12,7 @@
   </h2>
   <!-- TODO: Update feedback text -->
   <div>
-    {#if lang == 'en-ca'}
-      <h2>Welcome to the app.geo.ca Beta!</h2>
-      <br />
-      <p>
-        We're thrilled to have you on board as we explore the exciting world of geospatial data.
-        Your feedback is invaluable to us! If you encounter any issues, have suggestions, or simply
-        want to share your thoughts, please reach out to us at
-        <a class="underline text-custom-16" href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a>
-        . Let's make this platform even better together!
-      </p>
-    {:else}
+    {#if lang == 'fr-ca'}
       <h2>Bienvenue dans la version bêta d'app.geo.ca !</h2>
       <br />
       <p>
@@ -32,6 +22,16 @@
         n'hésitez pas à nous contacter à l'adresse
         <a class="underline text-custom-16" href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a>
         . Construisons ensemble une plateforme encore meilleure !
+      </p>
+    {:else}
+      <h2>Welcome to the app.geo.ca Beta!</h2>
+      <br />
+      <p>
+        We're thrilled to have you on board as we explore the exciting world of geospatial data.
+        Your feedback is invaluable to us! If you encounter any issues, have suggestions, or simply
+        want to share your thoughts, please reach out to us at
+        <a class="underline text-custom-16" href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a>
+        . Let's make this platform even better together!
       </p>
     {/if}
   </div>
