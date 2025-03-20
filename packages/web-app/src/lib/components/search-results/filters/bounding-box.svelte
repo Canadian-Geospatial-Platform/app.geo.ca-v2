@@ -112,10 +112,10 @@
   }
 
   export function getBBox() {
-    let northEl = inputs['spatio-temporal-north'];
-    let eastEl = inputs['spatio-temporal-east'];
-    let southEl = inputs['spatio-temporal-south'];
-    let westEl = inputs['spatio-temporal-west'];
+    let northEl = inputs[coordinatesId + '-north'];
+    let eastEl = inputs[coordinatesId + '-east'];
+    let southEl = inputs[coordinatesId + '-south'];
+    let westEl = inputs[coordinatesId + '-west'];
     let bbox = null;
 
     if (northEl && eastEl && southEl && westEl) {
@@ -151,17 +151,17 @@
       i > 0 && coord[0] < arr[i - 1][0]
     )[0];
 
-    inputs['spatio-temporal-north'].value = Math.round(northVal * 100000) / 100000;
-    inputs['spatio-temporal-east'].value = Math.round(eastVal * 100000) / 100000;
-    inputs['spatio-temporal-south'].value = Math.round(southVal * 100000) / 100000;
-    inputs['spatio-temporal-west'].value = Math.round(westVal * 100000) / 100000;
+    inputs[coordinatesId + '-north'].value = Math.round(northVal * 100000) / 100000;
+    inputs[coordinatesId + '-east'].value = Math.round(eastVal * 100000) / 100000;
+    inputs[coordinatesId + '-south'].value = Math.round(southVal * 100000) / 100000;
+    inputs[coordinatesId + '-west'].value = Math.round(westVal * 100000) / 100000;
   }
   
   function getCoordinates() {
-    let northVal = inputs['spatio-temporal-north']?.value ?? northCoord;
-    let eastVal = inputs['spatio-temporal-east']?.value ?? eastCoord;
-    let southVal = inputs['spatio-temporal-south']?.value ?? southCoord;
-    let westVal = inputs['spatio-temporal-west']?.value ?? westCoord;
+    let northVal = inputs[coordinatesId + '-north']?.value ?? northCoord;
+    let eastVal = inputs[coordinatesId + '-east']?.value ?? eastCoord;
+    let southVal = inputs[coordinatesId + '-south']?.value ?? southCoord;
+    let westVal = inputs[coordinatesId + '-west']?.value ?? westCoord;
 
     return [
       [
