@@ -8,6 +8,7 @@
   import Map from '$lib/components/map/map.svelte';
   import Pagination from '$lib/components/pagination/pagination.svelte';
   import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
+  import NotVisible from "$lib/components/icons/not-visible.svelte";
 
   /************* User Data ***************/
   const userId = $page.data.userData?.uuid;
@@ -21,6 +22,7 @@
     translations["saveSearchParams"] : "Save Search Parameters";
   const formatText = translations?.formatParams ? translations["format"] : "Format";
   const organizationText = translations?.organization ? translations["organization"] : "Organization";
+  const windowTooSmall = translations?.windowTooSmall ? translations["windowTooSmall"] : "";
 
   /************* Accordion Components ***************/
   let data = $derived($page.data);
@@ -29,6 +31,10 @@
   // When the page data changes, close all of the accordions.
   // This will reset the maps.
   $effect(() => {
+    closeAllAccordions();
+  });
+
+  function closeAllAccordions() {
     if (data) {
       accordionComponents.forEach((accordion) => {
         if (accordion) {
@@ -36,7 +42,7 @@
         }
       })
     }
-  });
+  }
 
   /****************** Sorting ******************/
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
@@ -128,6 +134,9 @@
   });
 </script>
 
+<!-- When the window is resized, we can close each accordion to reset the map variables. -->
+<svelte:window onresize={closeAllAccordions} />
+
 <Card>
   {#if $navigating}
     <LoadingMask classes="absolute bottom-0 right-0 pt-28"/>
@@ -172,6 +181,8 @@
         {/snippet}
         {#snippet accordionContent()}
           <div  class="mt-5">
+
+            <!-- Record Details -->
             <div class="mb-5">
               <p>
                 <span class="font-semibold">{organizationText}: </span>
@@ -186,16 +197,30 @@
                 {/each}
               </p>
             </div>
+
+            <!-- Map -->
+            <!-- Note: We will only show a map for screens larger than 640px -->
             {#if result.coordinates}
-              <div class="flex">
+              <div class="hidden sm:flex">
                 <Map
                   coordinates={result.coordinates} id={result.id}
                   dynamic={true} mapType={mapType} footer=true
                 />
               </div>
+              <div class="sm:hidden">
+                <p class="md:mx-0">
+                  {windowTooSmall}
+                </p>
+                <div class="mt-5 bg-[url('/map-not-available.png')] bg-cover max-w-full h-60">
+                  <div class="bg-black/35 w-full h-full flex items-center justify-center">
+                    <NotVisible classes="text-custom-1 h-32"/>
+                  </div>
+                </div>
+              </div>
             {:else}
               {mapNotAvailableText}
             {/if}
+
           </div>
         {/snippet}
       </Accordion>
