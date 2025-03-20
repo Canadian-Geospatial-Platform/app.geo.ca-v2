@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 		const parsedCollectionsResponse = await collectionsResponse.json();
 		const related = [];
-		if (parsedCollectionsResponse.parent !== null) {
+		if (parsedCollectionsResponse.parent) {
 			related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
 		}
 		if (parsedCollectionsResponse.sibling_count > 0) {
@@ -58,6 +58,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		return parsedAnalyticResponse;
 	};
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
+
+    const analyticRes = await fetchAnalytics(params.uuid, lang);
+    const result = await fetchResult(params.uuid, lang);
+    const related = await fetchRelated(params.uuid);
+
 	return {
 		t_title_1: {
 			text:
@@ -71,9 +76,9 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		lang: params.lang,
 		uuid: params.uuid,
 		test: 'test',
-		result: fetchResult(params.uuid, lang),
-		related: fetchRelated(params.uuid),
-		analyticRes: fetchAnalytics(params.uuid, lang),
+		result: result,
+		related: related,
+		analyticRes: analyticRes,
 		t: t,
 		item_v2: record?.features[0]
 	};

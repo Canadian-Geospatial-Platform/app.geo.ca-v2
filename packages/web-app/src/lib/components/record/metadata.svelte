@@ -33,8 +33,8 @@
   const dateCreated = dateCreatedObj.date;
   const datePublishedObj = dates.find((x) => x.dateType.en == 'publication');
   const datePublished = datePublishedObj.date;
-  const accessLast30 = data.analyticRes['30'];
-  const accessAllTime = data.analyticRes.all;
+  const accessLast30 = data.analyticRes && data.analyticRes["30"] ? data.analyticRes["30"] : "N/A";
+  const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
   let temporalCoverage = properties.extent.temporalExtent.start
     + ' - ' + properties.extent.temporalExtent.end;
 

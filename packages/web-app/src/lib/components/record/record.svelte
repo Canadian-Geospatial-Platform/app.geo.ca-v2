@@ -8,6 +8,8 @@
   import Keywords from './keywords.svelte';
   import SimilarProducts from './similar-products.svelte';
   import Tabbed from './tabbed/tabbed.svelte';
+
+  const similarProducts = $page.data.related;
 </script>
 
 <MicroData item={$page.data.item_v2} />
@@ -21,6 +23,8 @@
   <MapPreview />
   <Tabbed />
   <Keywords />
-  <!-- TODO: Uncomment SimilarProducts when the component no longer uses placeholder data -->
-  <!-- <SimilarProducts /> -->
+  <!-- Only add Similar products if they exist -->
+  {#if similarProducts.length > 0}
+    <SimilarProducts />
+  {/if}
 </div>
