@@ -139,7 +139,7 @@
 
 <Card>
   {#if $navigating}
-    <LoadingMask classes="absolute bottom-0 right-0 pt-28"/>
+    <LoadingMask classes="absolute top-0 right-0 pt-28 min-h-80"/>
   {/if}
   <!-- Header -->
   <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">

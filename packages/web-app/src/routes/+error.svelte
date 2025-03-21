@@ -1,10 +1,15 @@
 <script lang="ts">
   import '../app.css';
-  import { page } from '$app/stores';
+  import { navigating, page } from '$app/stores';
   import Header from '$lib/components/header/header.svelte';
   import Footer from '$lib/components/footer/footer.svelte';
   import Feedback from '$lib/components/feedback/feedback.svelte';
+  import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
 </script>
+
+{#if $navigating}
+  <LoadingMask classes="fixed left-0 top-0 items-center" />
+{/if}
 
 <Header />
 <div class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen pt-4">

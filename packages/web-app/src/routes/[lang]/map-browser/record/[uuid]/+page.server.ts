@@ -2,6 +2,7 @@ import type { PageServerLoad } from './$types';
 import { getRecord } from '$lib/db/record.ts';
 import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
+import { error } from '@sveltejs/kit';
 
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
@@ -13,40 +14,42 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		record = await getRecord(params.uuid);
 	} catch (e) {
 		console.warn('error fetching record for microdata:\n', e);
+		// If the record doesn't exist, throw an error so that the page is routed to +error.svelte
+		throw error(404, 'Record not found');
 	}
 
 	// @ts-ignore
-	const fetchResult = async (id, lang) => {
-		const idResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
-		const parsedIDResponse = await idResponse.json();
-		return parsedIDResponse;
-	};
 	const fetchRelated = async (id) => {
-		const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
-		const parsedCollectionsResponse = await collectionsResponse.json();
-		const related = [];
-		if (parsedCollectionsResponse.parent) {
-			related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
+		try {
+			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
+			const parsedCollectionsResponse = await collectionsResponse.json();
+			const related = [];
+			if (parsedCollectionsResponse.parent) {
+				related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
+			}
+			if (parsedCollectionsResponse.sibling_count > 0) {
+				parsedCollectionsResponse.sibling.forEach((s) => {
+					related.push({ ...s, ...{ type: 'member' } });
+				});
+			}
+			if (parsedCollectionsResponse.child_count > 0) {
+				parsedCollectionsResponse.child.forEach((s) => {
+					related.push({ ...s, ...{ type: 'member' } });
+				});
+			}
+			return related;
+		} catch (e) {
+			console.error('Error fetching related items:', e);
+			return []; // Return empty array if fetch fails
 		}
-		if (parsedCollectionsResponse.sibling_count > 0) {
-			parsedCollectionsResponse.sibling.forEach((s) => {
-				related.push({ ...s, ...{ type: 'member' } });
-			});
-		}
-		if (parsedCollectionsResponse.child_count > 0) {
-			parsedCollectionsResponse.child.forEach((s) => {
-				related.push({ ...s, ...{ type: 'member' } });
-			});
-		}
-		return related;
 	};
-	const fetchAnalytics = async (id, lang) => {
-		const analyticResponse = await fetch(
-			`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
-		);
 
+	const fetchAnalytics = async (id, lang) => {
 		let parsedAnalyticResponse;
 		try {
+			const analyticResponse = await fetch(
+				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
+			);
 			parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
 		} catch (e) {
 			console.error(
@@ -57,10 +60,10 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		}
 		return parsedAnalyticResponse;
 	};
+
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 
     const analyticRes = await fetchAnalytics(params.uuid, lang);
-    const result = await fetchResult(params.uuid, lang);
     const related = await fetchRelated(params.uuid);
 
 	return {
@@ -76,7 +79,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		lang: params.lang,
 		uuid: params.uuid,
 		test: 'test',
-		result: result,
 		related: related,
 		analyticRes: analyticRes,
 		t: t,
