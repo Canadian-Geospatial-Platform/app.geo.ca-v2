@@ -17,100 +17,132 @@
     "filterList": [
       {
         "label": "Agriculture and Agri-Food Canada",
-        "value": "Agriculture+and+Agri-Food+Canada"
+        "value": "Agriculture+and+Agri-Food+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Canadian Heritage",
-        "value": "Canadian+Heritage"
+        "value": "Canadian+Heritage",
+        "subCategory": "fed"
       }, {
         "label": "Canadian Northern Economic Development Agency",
-        "value": "Canadian+Northern+Economic+Development+Agency"
+        "value": "Canadian+Northern+Economic+Development+Agency",
+        "subCategory": "fed"
       }, {
         "label": "Canadian Nuclear Safety Commission",
-        "value": "Canadian+Nuclear+Safety+Commission"
+        "value": "Canadian+Nuclear+Safety+Commission",
+        "subCategory": "fed"
       }, {
         "label": "Canadian Space Agency",
-        "value": "Canadian+Space+Agency"
+        "value": "Canadian+Space+Agency",
+        "subCategory": "fed"
       }, {
         "label": "Department of Justice",
-        "value": "Department+of+Justice"
+        "value": "Department+of+Justice",
+        "subCategory": "fed"
       }, {
         "label": "Elections Canada",
-        "value": "Elections+Canada"
+        "value": "Elections+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Employment and Social Development Canada",
-        "value": "Employment+and+Social+Development+Canada"
+        "value": "Employment+and+Social+Development+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Environment and Climate Change Canada",
-        "value": "Environment+and+Climate+Change+Canada"
+        "value": "Environment+and+Climate+Change+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Fisheries and Oceans Canada",
-        "value": "Fisheries+and+Oceans+Canada"
+        "value": "Fisheries+and+Oceans+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Government and Municipalities of Québec",
-        "value": "Government+and+Municipalities+of+Québec"
+        "value": "Government+and+Municipalities+of+Québec",
+        "subCategory": "prov"
       }, {
         "label": "Government of Alberta",
-        "value": "Government+of+Alberta"
+        "value": "Government+of+Alberta",
+        "subCategory": "prov"
       }, {
         "label": "Government of British Columbia",
-        "value": "Government+of+British+Columbia"
+        "value": "Government+of+British+Columbia",
+        "subCategory": "prov"
       }, {
         "label": "Government of Manitoba",
-        "value": "Government+of+Manitoba"
+        "value": "Government+of+Manitoba",
+        "subCategory": "prov"
       }, {
         "label": "Government of New Brunswick",
-        "value": "Government+of+New+Brunswick"
+        "value": "Government+of+New+Brunswick",
+        "subCategory": "prov"
       }, {
         "label": "Government of Newfoundland and Labrador",
-        "value": "Government+of+Newfoundland+and+Labrador"
+        "value": "Government+of+Newfoundland+and+Labrador",
+        "subCategory": "prov"
       }, {
         "label": "Government of Northwest Territories",
-        "value": "Government+of+Northwest+Territories"
+        "value": "Government+of+Northwest+Territories",
+        "subCategory": "prov"
       }, {
         "label": "Government of Nova Scotia",
-        "value": "Government+of+Nova+Scotia"
+        "value": "Government+of+Nova+Scotia",
+        "subCategory": "prov"
       }, {
         "label": "Government of Nunavut",
-        "value": "Government+of+Nunavut"
+        "value": "Government+of+Nunavut",
+        "subCategory": "prov"
       }, {
         "label": "Government of Ontario",
-        "value": "Government+of+Ontario"
+        "value": "Government+of+Ontario",
+        "subCategory": "prov"
       }, {
         "label": "Government of Prince Edward Island",
-        "value": "Government+of+Prince+Edward+Island"
+        "value": "Government+of+Prince+Edward+Island",
+        "subCategory": "prov"
       }, {
         "label": "Government of Saskatchewan",
-        "value": "Government+of+Saskatchewan"
+        "value": "Government+of+Saskatchewan",
+        "subCategory": "prov"
       }, {
         "label": "Government of Yukon",
-        "value": "Government+of+Yukon"
+        "value": "Government+of+Yukon",
+        "subCategory": "prov"
       }, {
         "label": "Impact Assessment Agency of Canada",
-        "value": "Impact+Assessment+Agency+of+Canada"
+        "value": "Impact+Assessment+Agency+of+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Indigenous Services Canada",
-        "value": "Indigenous+Services+Canada"
+        "value": "Indigenous+Services+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Innovation, Science and Economic Development Canada",
-        "value": "Innovation,+Science+and+Economic+Development"
+        "value": "Innovation,+Science+and+Economic+Development",
+        "subCategory": "fed"
       }, {
         "label": "National Defense",
-        "value": "National+Defense"
+        "value": "National+Defense",
+        "subCategory": "fed"
       }, {
         "label": "Natural Resources Canada",
-        "value": "Natural+Resources+Canada"
+        "value": "Natural+Resources+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Parks Canada",
-        "value": "Parks+Canada"
+        "value": "Parks+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Public Health Agency of Canada",
-        "value": "Public+Health+Agency+of+Canada"
+        "value": "Public+Health+Agency+of+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Statistics Canada",
-        "value": "Statistics+Canada"
+        "value": "Statistics+Canada",
+        "subCategory": "fed"
       }, {
         "label": "Transport Canada",
-        "value": "Transport+Canada"
+        "value": "Transport+Canada",
+        "subCategory": "fed"
       }
     ]
   }, {
