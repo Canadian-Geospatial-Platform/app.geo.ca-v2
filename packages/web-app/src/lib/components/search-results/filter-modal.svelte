@@ -230,11 +230,17 @@
 
 <!-- Note: we need the z-index to be 100020 so that it is above the header and the map loading mask (geoview has this set at 99999) -->
 <div
+  role="dialog"
+  aria-modal="true"
+  tabindex="0"
   class={[
     "fixed flex justify-center z-[100020] inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
     (!active) && "hidden"
   ]}
   onclick={() => closeModal()}
+  onkeydown={(event) => {
+    if (event.key === "Escape") closeModal();
+  }}
 >
   <form
     class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-full md:w-2/3 h-fit md:mt-2 m-5 md:m-0"
