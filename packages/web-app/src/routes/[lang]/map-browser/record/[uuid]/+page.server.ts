@@ -3,6 +3,7 @@ import { getRecord } from '$lib/db/record.ts';
 import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
+import { parseText } from '$lib/utils/parse-text.ts';
 
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
@@ -66,6 +67,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
     const analyticRes = await fetchAnalytics(params.uuid, lang);
     const related = await fetchRelated(params.uuid);
 
+    let item_v2 = record?.features[0];
+
+    if (item_v2.properties.description) {
+        item_v2.properties.description.en = parseText(item_v2.properties.description.en);
+        item_v2.properties.description.fr = parseText(item_v2.properties.description.fr);
+    }
+
 	return {
 		t_title_1: {
 			text:
@@ -82,6 +90,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		related: related,
 		analyticRes: analyticRes,
 		t: t,
-		item_v2: record?.features[0]
+		item_v2: item_v2
 	};
 };
