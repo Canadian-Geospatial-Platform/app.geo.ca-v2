@@ -69,9 +69,16 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
     let item_v2 = record?.features[0];
 
-    if (item_v2.properties.description) {
+    if (item_v2?.properties.description) {
         item_v2.properties.description.en = parseText(item_v2.properties.description.en);
         item_v2.properties.description.fr = parseText(item_v2.properties.description.fr);
+    }
+
+    // For the english version of the role, the value 'pointOfContact' is really common.
+    // We can replace it with the more readable 'point of contact'.
+    if (item_v2?.properties?.contact?.[0]?.role?.en) {
+        item_v2.properties.contact[0].role.en =
+            item_v2.properties.contact[0].role.en.replace('pointOfContact', 'point of contact');
     }
 
 	return {

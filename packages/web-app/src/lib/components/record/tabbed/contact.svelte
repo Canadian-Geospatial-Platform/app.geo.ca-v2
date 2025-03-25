@@ -34,11 +34,7 @@
   const organization = contact?.organisation ? contact["organisation"][langShort] : "N/A";
   const address = contact?.address ? contact["address"][langShort] : "N/A";
   const individualName = contact?.individual ? contact["individual"][langShort] : "N/A";
-
-  // For the english version of the role, the value 'pointOfContact' is really common.
-  // We can replace it with the more readable 'point of contact'.
-  const role = contact?.role ?
-    contact["role"][langShort].replace('pointOfContact', 'point of contact') : "N/A";
+  const role = contact?.role ? contact["role"][langShort] : "N/A";
 
   const telephone = contact?.telephone ? contact["telephone"][langShort] : "N/A";
   const fax = contact?.fax ? contact["fax"][langShort] : "N/A";
