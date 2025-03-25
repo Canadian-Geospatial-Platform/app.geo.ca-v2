@@ -259,7 +259,7 @@
   </div>
 {/if}
 <p class="mb-3" >{spatialInstructions}</p>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-[36rem]">
   {#each labels as { label, id, max, placeHolder }}
     <div class="flex flex-col">
       <label for={id}>
