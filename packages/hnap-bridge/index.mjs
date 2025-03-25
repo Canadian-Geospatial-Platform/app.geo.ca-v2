@@ -3,7 +3,8 @@ import aws from "aws-sdk";
 import { Bucket } from "sst/node/bucket";
 import { getCodeList } from "./codelists.js"; // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
 const s3 = new aws.S3();
-const OUTPUT_BUCKET_NAME = Bucket.hnap.bucketName;
+const OUTPUT_BUCKET_NAME =
+  "josh-app-geo-ca-v2-site-hnapbucket52dd17a1-vuvayqpetbyw"; //Bucket.hnap.bucketName;
 var languageCode; // defined globally as it is widely used and unchanging.
 
 export const handler = async (event, context, callback) => {
@@ -607,11 +608,26 @@ function parseGeographicFeatures(geographicExtent) {
           type: "Polygon",
           coordinates: [
             [
-              [parseFloat(geographicExtent.west), parseFloat(geographicExtent.south)],
-              [parseFloat(geographicExtent.east), parseFloat(geographicExtent.south)],
-              [parseFloat(geographicExtent.east), parseFloat(geographicExtent.north)],
-              [parseFloat(geographicExtent.west), parseFloat(geographicExtent.north)],
-              [parseFloat(geographicExtent.west), parseFloat(geographicExtent.south)],
+              [
+                parseFloat(geographicExtent.west),
+                parseFloat(geographicExtent.south),
+              ],
+              [
+                parseFloat(geographicExtent.east),
+                parseFloat(geographicExtent.south),
+              ],
+              [
+                parseFloat(geographicExtent.east),
+                parseFloat(geographicExtent.north),
+              ],
+              [
+                parseFloat(geographicExtent.west),
+                parseFloat(geographicExtent.north),
+              ],
+              [
+                parseFloat(geographicExtent.west),
+                parseFloat(geographicExtent.south),
+              ],
             ],
           ],
         },
@@ -777,3 +793,4 @@ async function getPlugins(id) {
   const geocoreData = await getLatestGeocoreData(id);
   return geocoreData?.features?.[0]?.properties?.plugins;
 }
+
