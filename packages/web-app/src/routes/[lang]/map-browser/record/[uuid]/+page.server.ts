@@ -14,9 +14,9 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	try {
 		record = await getRecord(params.uuid);
 	} catch (e) {
-		console.warn('error fetching record for microdata:\n', e);
+		console.warn('error fetching record ' + params.uuid + ' for microdata:\n', e);
 		// If the record doesn't exist, throw an error so that the page is routed to +error.svelte
-		throw error(404, 'Record not found');
+		throw error(404, 'Record ' + params.uuid + ' not found');
 	}
 
 	// @ts-ignore

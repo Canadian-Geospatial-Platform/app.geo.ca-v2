@@ -24,5 +24,13 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
   }
 
+  // If the request is for fetch-esri-worker-script.worker.js.map,
+  // return a 204 No Content response to prevent errors from missing source maps.
+  // This is necessary because GeoView's FetchEsriWorker script may reference source maps
+  // that are not included in the build, triggering unnecessary 404 errors.
+  if (event.url.pathname.endsWith('fetch-esri-worker-script.worker.js.map')) {
+    return new Response(null, { status: 204 });
+  }
+
   return resolve(event);
 };
