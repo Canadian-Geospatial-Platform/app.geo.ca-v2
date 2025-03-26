@@ -21,7 +21,11 @@
 
 <ol class="flex flex-wrap px-5 md:px-0 gap-1">
   {#each breadcrumbs as breadcrumb, i}
-    {#if i < breadcrumbs.length - 1}
+    <!--
+      A link isn't needed for the current page, but the search
+      page link should always available from +error.svelte.
+    -->
+    {#if i < breadcrumbs.length - 1 || $page.error}
       <li><a href={breadcrumb.href}>{breadcrumb.text}</a> /</li>
     {:else}
       <li>{breadcrumb.text}</li>

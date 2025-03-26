@@ -41,6 +41,14 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	} catch (e) {
 		console.warn(e);
 	}
+
+	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser';
+	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateUrl = url.href.replace(params.lang, alternateLang);
+	const metaDescription = params.lang == 'fr-ca' ?
+	  'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.' :
+	  'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.';
+
 	return {
 		lang: params.lang,
 		results: sanitizedResults,
@@ -49,7 +57,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		end: getMin(url.searchParams) + sanitizedResults.length,
 		analytics: analytics,
 		searchMode: searchMode,
-		totalHits: totalHits
+		totalHits: totalHits,
+		canonicalUrl: canonicalUrl,
+		alternateUrl: alternateUrl,
+		alternateLang: alternateLang,
+		metaDescription: metaDescription,
 	};
 };
 

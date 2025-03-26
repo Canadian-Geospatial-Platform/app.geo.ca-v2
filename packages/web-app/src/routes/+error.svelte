@@ -5,6 +5,7 @@
   import Footer from '$lib/components/footer/footer.svelte';
   import Feedback from '$lib/components/feedback/feedback.svelte';
   import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
+  import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
 </script>
 
 {#if $navigating}
@@ -13,6 +14,7 @@
 
 <Header />
 <div class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen pt-4">
+  <Breadcrumbs />
   <div class="grow">
     {#if $page.data.lang == 'fr-ca'}
       Oups... Une erreur s'est produite. N'hésitez pas à le signaler en nous envoyant un email à

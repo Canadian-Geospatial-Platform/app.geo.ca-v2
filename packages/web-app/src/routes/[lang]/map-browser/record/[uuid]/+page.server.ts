@@ -81,6 +81,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
             item_v2.properties.contact[0].role.en.replace('pointOfContact', 'point of contact');
     }
 
+    const canonicalUrl = url.origin + '/' + lang + '/map-browser/record/' + params.uuid;
+	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateUrl = url.href.replace(lang, alternateLang);
+	const metaDescription = params.lang == 'fr-ca' ?
+	  "La page de métadonnées et la carte de l'enregistrement GeoCore " +  params.uuid :
+	  "The metadata page and map for the GeoCore record " +  params.uuid;
+
 	return {
 		t_title_1: {
 			text:
@@ -97,6 +104,10 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		related: related,
 		analyticRes: analyticRes,
 		t: t,
-		item_v2: item_v2
+		item_v2: item_v2,
+		canonicalUrl: canonicalUrl,
+		alternateUrl: alternateUrl,
+		alternateLang: alternateLang,
+		metaDescription: metaDescription,
 	};
 };
