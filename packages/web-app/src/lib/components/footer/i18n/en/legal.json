@@ -1,12 +1,16 @@
 {
-  "logoUrl": "https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png",
-  "logoAlt": "Government of Canada Logo",
-	"contactUs": "Contact Us",
-	"ccmeo": "Canada Centre for Mapping and Earth Observation",
-	"nrcan": "Natural Resources Canada",
-	"goc": "Government of Canada",
+  "ccmeo": "Canada Centre for Mapping and Earth Observation",
+  "cdgi": "GEO.ca is part of the",
+  "cdgiAcronym": "(CGDI)",
+  "cdgiLink": "href='https://natural-resources.canada.ca/science-and-data/science-and-research/geomatics/canadas-spatial-data-infrastructure/10783",
+  "cdgiLinkText": "Canadian Geospatial Data Infrastructure",
+  "contactUs": "Contact Us",
+  "copyright": "Powered by GEO.ca, Copyright © 2025",
+  "email": "geo@nrcan-rncan.gc.ca",
+  "goc": "Government of Canada",
   "license": "Terms and Conditions",
-	"licenceUrl": "https://geo.ca/terms-and-conditions/",
-	"copyright": "Powered by GEO.ca, Copyright © 2024",
-  "email": "geo@nrcan-rncan.gc.ca"
+  "licenceUrl": "https://geo.ca/terms-and-conditions/",
+  "logoAlt": "Government of Canada Logo",
+  "logoUrl": "https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png",
+  "nrcan": "Natural Resources Canada"
 }

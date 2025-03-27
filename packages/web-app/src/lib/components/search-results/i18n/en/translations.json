@@ -34,6 +34,7 @@
   "validatorTooBig": "Value must be less than or equal to ",
   "validatorTooSmall": "Value must be greater than or equal to ",
   "west": "West",
+  "windowTooSmall": "The map for this resource is unavailable at your current screen resolution. Please switch to a larger screen to view the map. We apologize for any inconvenience this may cause.",
   "within": "Within",
   "youMay": "You may also like"
 }

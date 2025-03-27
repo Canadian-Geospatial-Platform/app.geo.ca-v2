@@ -10,7 +10,8 @@
   const logoSrc = translations?.logoSrc ? translations["logoSrc"] : "";
 </script>
 
-<div class="fixed w-full h-20 px-5 md:px-0 border-b-4 border-custom-16 shadow-lg bg-custom-1 z-30">
+<!-- Note: the z-index needs to be 100010 because the loading mask on the geoview maps are 99999 -->
+<div class="sticky top-0 w-full h-20 px-5 md:px-0 border-b-4 border-custom-16 shadow-lg bg-custom-1 z-[100010]">
   <div class="grid grid-cols-2 h-full md:grid-cols-6 content-width">
     <a href={logoHref} data-sveltekit-reload class="grid">
       <img 

@@ -4,7 +4,6 @@ import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/db/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results.ts';
-import Organizations from '$lib/components/search-results/filters/organizations.svelte';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let searchMode = params?.searchMethod == 'classic' ? 'classic' : 'semantic';
@@ -42,6 +41,14 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	} catch (e) {
 		console.warn(e);
 	}
+
+	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser';
+	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateUrl = url.href.replace(params.lang, alternateLang);
+	const metaDescription = params.lang == 'fr-ca' ?
+	  'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.' :
+	  'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.';
+
 	return {
 		lang: params.lang,
 		results: sanitizedResults,
@@ -50,7 +57,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		end: getMin(url.searchParams) + sanitizedResults.length,
 		analytics: analytics,
 		searchMode: searchMode,
-		totalHits: totalHits
+		totalHits: totalHits,
+		canonicalUrl: canonicalUrl,
+		alternateUrl: alternateUrl,
+		alternateLang: alternateLang,
+		metaDescription: metaDescription,
 	};
 };
 
@@ -172,6 +183,9 @@ function getKeyword(searchParams) {
 	} else if (category) {
 		keywords = category;
 	}
+
+	// Remove quotation characters, the semantic search throws an error if they are included
+	keywords = keywords.replaceAll('"', '');
 
 	return keywords;
 }

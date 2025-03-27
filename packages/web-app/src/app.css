@@ -116,16 +116,14 @@
 	@apply font-open-sans;
 	@apply font-semibold;
 	@apply text-[16px];
-	@apply text-custom-17;
-	@apply tracking-[0.06em];
+	@apply text-custom-1;
 }
 
 .font-custom-style-footer-2 {
 	@apply font-open-sans;
-	@apply font-light;
+	@apply font-normal;
 	@apply text-[16px];
-	@apply text-custom-17;
-	@apply tracking-wider;
+	@apply text-custom-1;
 }
 
 .font-custom-style-header-1 {

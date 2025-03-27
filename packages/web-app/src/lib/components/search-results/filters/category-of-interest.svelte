@@ -67,7 +67,7 @@
   <h3 class="font-custom-style-h3 mb-5">
     {categoryOfInterestText}
   </h3>
-  <div class="w-full lg:w-[60%]">
+  <div class="w-full md:max-w-md">
     <SelectCustomized
       optionsData={categories}
       removableSelection={true}

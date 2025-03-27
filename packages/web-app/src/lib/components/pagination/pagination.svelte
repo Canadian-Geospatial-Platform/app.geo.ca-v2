@@ -124,9 +124,8 @@
     @apply justify-center;
     @apply bg-custom-1;
     @apply h-11;
-    @apply w-11;
-    @apply md:h-7;
-    @apply md:w-7;
+    @apply sm:h-7;
+    @apply sm:w-7;
     @apply rounded;
   }
 
@@ -138,14 +137,14 @@
   
   .pagination-width {
     @apply box-border;
-    @apply md:box-content;
+    @apply sm:box-content;
     width: calc(100% + 2.5rem);
-    @apply md:w-fit;
+    @apply sm:w-fit;
     @apply mx-[-1.25rem];
-    @apply md:mx-0;
+    @apply sm:mx-0;
     @apply py-2.5;
-    @apply md:py-1.5;
+    @apply sm:py-1.5;
     @apply px-5;
-    @apply md:px-1.5;
+    @apply sm:px-1.5;
   }
 </style>

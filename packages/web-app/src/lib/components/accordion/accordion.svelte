@@ -11,7 +11,13 @@
     open = false;
   }
 
-  function handleButtonClick() {
+  function handleButtonClick(event) {
+    // Do nothing if an <a> was clicked, this prevents the search results
+    // page from loading maps unnecessarily
+    if (event.target.closest('a')) {
+      return;
+    }
+
     open = !open;
   }
 </script>

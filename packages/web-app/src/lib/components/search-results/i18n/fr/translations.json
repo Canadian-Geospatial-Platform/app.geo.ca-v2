@@ -34,6 +34,7 @@
   "validatorTooBig": "La valeur doit être inférieure ou égale à ",
   "validatorTooSmall": "La valeur doit être supérieure ou égale à ",
   "west": "Ouest",
+  "windowTooSmall": "La carte de cette ressource n'est pas disponible avec votre résolution d'écran actuelle. Veuillez passer à un écran plus grand pour afficher la carte. On s'excuse pour tout inconvénient que ça pourrait causer.",
   "within": "À l’intérieur",
   "youMay": "Vous pouvez aussi aimer"
 }
