@@ -24,6 +24,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
   }
 
+  // todo: remove this hack when geoview have fixed the [issue](https://github.com/Canadian-Geospatial-Platform/geoview/issues/2816). 
   // If the request is for fetch-esri-worker-script.worker.js.map,
   // return a 204 No Content response to prevent errors from missing source maps.
   // This is necessary because GeoView's FetchEsriWorker script may reference source maps
