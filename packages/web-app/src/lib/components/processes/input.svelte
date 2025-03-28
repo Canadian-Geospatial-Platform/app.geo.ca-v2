@@ -3,7 +3,7 @@
 
     interface Props {
         name: string;
-        definition: JSON;
+        definition: object;
         value: any;
     }
 
@@ -28,7 +28,7 @@
       if (type == "object") {
         if (format == "ogc-bbox") {
           let bbox = input.getBBox();
-          return {bbox: [bbox.west, bbox.south, bbox.east, bbox.north]};
+          return {bbox: [parseFloat(bbox.west), parseFloat(bbox.south), parseFloat(bbox.east), parseFloat(bbox.north)]};
         }
       } else {
         return value;

@@ -6,6 +6,10 @@
 	let promise: Promise<Response> | undefined;
 	let stopPoller: Function | undefined;
 
+	type Error = {
+		message: string;
+	};
+
 	interface Props {
 		active?: boolean;
 		t: any;
@@ -13,10 +17,12 @@
 
 	let { active = $bindable(false), t }: Props = $props();
 
+	let jobId: string | undefined = $state();
 	let statusJson: object | undefined = $state();
 	let resultLink: string | undefined = $state();
 
-	let processSuccessful: boolean = $state();
+	let processSuccessful: boolean = $state(false);
+	let error: Error | undefined = $state();
 
 	// Submit the execution request
 	export function execute(request: object, url: string) {
@@ -31,13 +37,15 @@
 
 	function handleResponse(response: Response) {
 		if (response.status != 201 || !response.headers.get('location')) {
-			// TODO: Error
+			error = { message: 'Expected HTTP 201 response but got ' + `${response.status}` };
+			return;
 		}
 
 		let statusLink = response.headers.get('location');
 
 		response.json().then((json) => {
 			statusJson = json;
+			jobId = json.jobID;
 
 			[promise, stopPoller] = poll(
 				async () => {
@@ -71,7 +79,8 @@
 
 			promise.then((response: Response) => {
 				let resultEndpoint: string = statusJson.links.find(
-					(link: object) => link.rel == 'result'
+					(link: object) =>
+						link.rel == 'http://www.opengis.net/def/rel/ogc/1.0/results' || link.rel == 'result'
 				)?.href;
 				console.log('Result Endpoint: ' + resultEndpoint);
 
@@ -79,8 +88,10 @@
 					console.log('Getting Result URL...');
 					fetch(resultEndpoint).then((response) => {
 						console.log('Request Status:' + response.status);
-						if (response.status != 204 || !response.headers.get('link')) {
-							// TODO: Error
+						if (response.status != 204) {
+							error = { message: 'Expected HTTP 204 but got ' + `${response.status}` };
+						} else if (!response.headers.get('link')) {
+							error = { message: "Response does not contain a 'link' header." };
 						}
 
 						let link = response.headers
@@ -88,8 +99,14 @@
 							?.split(',')
 							.find((link) => link.includes('; rel="result"'))
 							?.split(';')[0];
-						console.log('Link: ' + link);
-						resultLink = link?.substring(1, link.length - 1);
+
+						if (!link) {
+							error = { message: 'No valid result url found in link header.' };
+						} else {
+							console.log('Link: ' + link);
+							resultLink = link?.substring(1, link.length - 1);
+							console.log('Parsed Link: ' + resultLink);
+						}
 					});
 				}
 			});
@@ -110,6 +127,40 @@
 		promise = undefined;
 		stopPoller = undefined;
 	}
+
+	function openIn3d() {
+		window.open(
+			'http://fhimp-chris-test.s3-website.ca-central-1.amazonaws.com/?sessionID=' + jobId,
+			'_blank'
+		);
+		fetch(
+			'https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=' +
+				jobId,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					type: 'KML',
+					args: [
+						{
+							uid: '45665454654hgj6546546545455646546',
+							url: `${resultLink}`,
+							title: 'Flood Mapping KML result',
+							description: 'Flood Mapping KML result',
+							type: 'KML',
+							serviceInfo: {
+								serviceTitle: 'KML',
+								serviceId: 'KML-5919515191',
+								serviceUrl: `${resultLink}`
+							}
+						}
+					]
+				}),
+				headers: {
+					'Content-Type': 'application/json; charset=UTF-8'
+				}
+			}
+		);
+	}
 </script>
 
 <div
@@ -124,7 +175,7 @@
 		<div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
 			<div>
 				<h1 class="font-custom-style-h1-2">{t['status']}</h1>
-				{#if statusJson}
+				{#if jobId}
 					<p>{t['jobStatusIntro']}</p>
 					<ul>
 						<li>{t['createdOn']} {statusJson.created}</li>
@@ -135,13 +186,16 @@
 						<li>{t['progress']} {statusJson.progress}%</li>
 						<li>{t['message']} {statusJson.message}</li>
 					</ul>
-					{#if statusJson.status == 'successful'}
-						<p>{t['result']} <a href={resultLink}>{t['download']}</a></p>
+					{#if processSuccessful && !resultLink}
+						<p>Error: Failed to get result URL.</p>
 					{/if}
+				{:else if error}
+					<p>Error: Invalid Response</p>
+					<p>{error.message}</p>
 				{/if}
 			</div>
 		</div>
-		<div class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end">
+		<div id="close-button" class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end">
 			<button
 				type="button"
 				class="flex justify-center items-center border border-custom-16 rounded-[50%]
@@ -152,13 +206,16 @@
 				<Close classes="h-4 md:h-[1.3125rem]" />
 			</button>
 		</div>
-		<div
+		<!-- <div class="col-span-6 gap-5 px-5 pb-5 pt-8 font-custom-style-body-1"> -->
+			<!-- <MapPreview /> -->
+		<!-- </div> -->
+		<div id="bottom-buttons"
 			class="grid grid-cols-1 md:grid-cols-2 col-span-6 bg-custom-5 md:border-t border-custom-21 px-5 py-7 md:py-[1.125rem] gap-y-8"
 		>
 			<div>
 				<a
 					href={resultLink}
-					class="row-start-1 md:row-start-2 w-auto md:w-auto justify-self-start h-12 md:h-auto {processSuccessful
+					class="row-start-1 md:row-start-2 w-auto md:w-auto justify-self-start h-12 md:h-auto {resultLink
 						? 'button-3'
 						: 'button-3-disabled'}"
 				>
@@ -166,20 +223,20 @@
 				</a>
 				<a
 					href={resultLink}
-					class="row-start-2 md:row-start-2 w-auto md:w-auto justify-self-start h-12 md:h-auto {processSuccessful
+					class="row-start-2 md:row-start-2 w-auto md:w-auto justify-self-start h-12 md:h-auto {resultLink
 						? 'button-3'
 						: 'button-3-disabled'}"
 				>
 					{t['openIn2D']}
 				</a>
-				<a
-					href={resultLink}
-					class="row-start-2 md:row-start-2 w-auto md:w-auto justify-self-start h-12 md:h-auto {processSuccessful
+				<button
+					onclick={openIn3d}
+					class="row-start-2 md:row-start-2 w-auto md:w-auto justify-self-start h-12 md:h-auto {resultLink
 						? 'button-3'
 						: 'button-3-disabled'}"
 				>
 					{t['openIn3D']}
-				</a>
+				</button>
 			</div>
 			<button
 				class="w-full md:w-auto justify-self-end button-5 h-12 md:h-auto shadow-[0rem_0.1875rem_0.375rem_#00000029]"
