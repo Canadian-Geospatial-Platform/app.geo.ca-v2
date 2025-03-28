@@ -28,7 +28,7 @@
   "name": "Nom",
   "north": "Nord",
   "organization": "Organisation",
-  "openIn3D": "FR_Open In 3D",
+  "openIn3D": "FR_3D View",
   "projection": "Projection",
   "resources": "Ressources",
   "resourcesNotAvailable": "Les ressources de données pour cet enregistrement ne sont pas disponibles.",

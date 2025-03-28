@@ -171,10 +171,10 @@
                 {#if label === 'button_3d'}
                   {#if SUPPORTED_3D_TYPES.includes(row.format)}
                     <button
-                      class="bg-custom-16 text-custom-1 font-custom-style-body-5"
+                      class="button-5"
                       onclick={(e) => openIn3D(e, row)}
                     >
-                      {@html translations?.languages ? translations['openIn3D'] : 'Open In 3D'}
+                      {@html translations?.languages ? translations['openIn3D'] : '3D View'}
                     </button>
                   {/if}
                 {:else}
