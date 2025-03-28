@@ -81,27 +81,26 @@
         sessionStorage.setItem("sessionId3d", sessionID);
     }
     e.stopPropagation();
-	//var popupPlayer= window.open('', 'popupPlayer', 'width=150,height=100') ;
+	// //var popupPlayer= window.open('', 'popupPlayer', 'width=150,height=100') ;
 	
-	let winref = window.open(
-		`https://dyb0tihhksw75.cloudfront.net/?sessionID=${sessionID}`,
-        '3d',
-        'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
-	);
-	await new Promise(r => setTimeout(r, 5000));
-	//if(winref.location.href == 'about:blank' ){
-	//	popupPlayer.location = playerUrl ;
-	//}
-	fetch(`https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=${sessionID}`, {
-      method: 'POST',
-      body: JSON.stringify(create3dRequestBody(properties, row)),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    })
-      .then((response) => response.json())
-	  .then(data => console.log(data));
-	/*
+	// let winref = window.open(
+	// 	`https://dyb0tihhksw75.cloudfront.net/?sessionID=${sessionID}`,
+	//         '3d',
+	//         'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
+	// );
+	// //if(winref.location.href == 'about:blank' ){
+	// //	popupPlayer.location = playerUrl ;
+	// //}
+	// fetch(`https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=${sessionID}`, {
+	//       method: 'POST',
+	//       body: JSON.stringify(create3dRequestBody(properties, row)),
+	//       headers: {
+	//         'Content-type': 'application/json; charset=UTF-8'
+	//       }
+	//     })
+	//       .then((response) => response.json())
+	//   .then(data => console.log(data));
+	
     fetch(`https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=${sessionID}`, {
       method: 'POST',
       body: JSON.stringify(create3dRequestBody(properties, row)),
@@ -126,7 +125,6 @@
           );
         }
       });
-	*/
   }
 </script>
 
