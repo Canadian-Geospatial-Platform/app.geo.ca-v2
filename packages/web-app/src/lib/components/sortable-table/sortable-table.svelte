@@ -70,7 +70,7 @@
 
   // TODO: fix type definition to remove 'any'.
   // The row object should be a single row of a tableContent array
-  function openIn3D(e: Event, row: any) {
+  async function openIn3D(e: Event, row: any) {
     let sessionID = sessionStorage.getItem("sessionId3d");
     if (!sessionID) {
         if (location.protocol !== "https:") {
@@ -81,11 +81,17 @@
         sessionStorage.setItem("sessionId3d", sessionID);
     }
     e.stopPropagation();
-	window.open(
+	//var popupPlayer= window.open('', 'popupPlayer', 'width=150,height=100') ;
+	
+	let winref = window.open(
 		`https://dyb0tihhksw75.cloudfront.net/?sessionID=${sessionID}`,
         '3d',
         'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
 	);
+	await new Promise(r => setTimeout(r, 5000));
+	//if(winref.location.href == 'about:blank' ){
+	//	popupPlayer.location = playerUrl ;
+	//}
 	fetch(`https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=${sessionID}`, {
       method: 'POST',
       body: JSON.stringify(create3dRequestBody(properties, row)),
