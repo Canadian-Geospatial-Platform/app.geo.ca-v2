@@ -8,6 +8,7 @@
     type: string;
     format: string;
     languages: string;
+    button_3d: string;
   };
 
   /******************* Translations *******************/
@@ -41,7 +42,8 @@
     "name": nameText,
     "type": typeText,
     "format": formatText,
-    "languages": languagesText
+    "languages": languagesText,
+    "button_3d": ""
   };
 
   function handleDownloadButtonClick() {
@@ -74,7 +76,7 @@
 {#if dataResourcesList.length > 0}
   <!-- Large screen table -->
   <div class="hidden md:block">
-    <SortableTable tableContent={dataResourcesList} {tableLabels} clickableRows={true} />
+    <SortableTable tableContent={dataResourcesList} {tableLabels} {properties} clickableRows={true} />
   </div>
 
   <!-- Small - medium screen table -->

@@ -11,7 +11,7 @@ const getRecord = async (uuid) => {
 		try {
 			const { Body } = await s3Client.send(
 				new GetObjectCommand({
-					Bucket: 'josh-app-geo-ca-v2-site-hnapbucket52dd17a1-vuvayqpetbyw', //Bucket.hnap.bucketName,
+					Bucket: Bucket.hnap.bucketName,
 					Key: key
 				})
 			);

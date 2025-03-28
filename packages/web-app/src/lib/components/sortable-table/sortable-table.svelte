@@ -1,7 +1,12 @@
 <script lang="ts">
+	import { page } from "$app/stores";
 	import SortDown from "$lib/components/icons/sort-down.svelte";
 	import SortInactive from "$lib/components/icons/sort-inactive.svelte";
 	import SortUp from "$lib/components/icons/sort-up.svelte";
+	import { create3dRequestBody, SUPPORTED_3D_TYPES } from "$lib/utils/utils3d";
+
+  /******************* Translations *******************/
+  const translations = $page.data.t;
 
   // TODO: fix type definition to remove 'any'
   // Every item in the array should have the same set of keys,
@@ -14,9 +19,10 @@
     tableLabels: any;
     // Requires a url attriute in the tableContent array
     clickableRows: boolean;
+    properties: any;
   }
 
-  let { tableContent, tableLabels, clickableRows }: Props = $props();
+  let { tableContent, tableLabels, clickableRows, properties }: Props = $props();
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -61,6 +67,61 @@
       window.open(url);
     }
   }
+
+  // TODO: fix type definition to remove 'any'.
+  // The row object should be a single row of a tableContent array
+  function openIn3D(e: Event, row: any) {
+    let sessionID = sessionStorage.getItem("sessionId3d");
+    if (!sessionID) {
+        if (location.protocol !== "https:") {
+            sessionID = (Math.random() * 1e16).toFixed(0).toString();
+        } else {
+            sessionID = self.crypto.randomUUID();
+        }
+        sessionStorage.setItem("sessionId3d", sessionID);
+    }
+    e.stopPropagation();
+	window.open(
+		`https://dyb0tihhksw75.cloudfront.net/?sessionID=${sessionID}`,
+        '3d',
+        'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
+	);
+	fetch(`https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=${sessionID}`, {
+      method: 'POST',
+      body: JSON.stringify(create3dRequestBody(properties, row)),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    })
+      .then((response) => response.json())
+	  .then(data => console.log(data));
+	/*
+    fetch(`https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=${sessionID}`, {
+      method: 'POST',
+      body: JSON.stringify(create3dRequestBody(properties, row)),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.clientOpened) {
+          let winref = window.open(
+            '',
+            '3d',
+            'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
+          );
+          winref?.focus();
+        } else {
+          window.open(
+            `https://dyb0tihhksw75.cloudfront.net/?sessionID=${sessionID}`,
+            '3d',
+            'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
+          );
+        }
+      });
+	*/
+  }
 </script>
 
 <div class="overflow-auto">
@@ -103,7 +164,18 @@
           >
             {#each tableLabelsArray as label}
               <td class="font-custom-style-body-4 first:text-custom-16 first:font-bold first:group-hover:underline">
-                {@html row[label]}
+                {#if label === 'button_3d'}
+                  {#if SUPPORTED_3D_TYPES.includes(row.format)}
+                    <button
+                      class="bg-custom-16 text-custom-1 font-custom-style-body-5"
+                      onclick={(e) => openIn3D(e, row)}
+                    >
+                      {@html translations?.languages ? translations['openIn3D'] : 'Open In 3D'}
+                    </button>
+                  {/if}
+                {:else}
+                  {@html row[label]}
+                {/if}
               </td>
             {/each}
           </tr>

@@ -3,8 +3,7 @@ import aws from "aws-sdk";
 import { Bucket } from "sst/node/bucket";
 import { getCodeList } from "./codelists.js"; // taken from https://raw.githubusercontent.com/Canadian-Geospatial-Platform/HNAP_JSON_Codelist/main/loc/codelists.json
 const s3 = new aws.S3();
-const OUTPUT_BUCKET_NAME =
-  "josh-app-geo-ca-v2-site-hnapbucket52dd17a1-vuvayqpetbyw"; //Bucket.hnap.bucketName;
+const OUTPUT_BUCKET_NAME = Bucket.hnap.bucketName;
 var languageCode; // defined globally as it is widely used and unchanging.
 
 export const handler = async (event, context, callback) => {

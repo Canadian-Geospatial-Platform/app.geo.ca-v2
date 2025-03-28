@@ -44,7 +44,8 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string) {
       'type': type,
       'format': format,
       'languages': language,
-      'url': url
+      'url': url,
+      'button_3d': resource
     });
   }
 
