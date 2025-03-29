@@ -47,14 +47,19 @@
       },
     },
     theme: 'geo.ca',
-    components: [],
-    corePackages: []
+    components: ['north-arrow', 'overview-map'],
+    corePackages: [],
+    appBar: {
+      tabs: {
+        core: ['legend']
+      }
+    }
   });
 
   if (footer) {
     config.footerBar = {
       tabs: {
-        core: ["legend", "data-table", "details"]
+        core: ['legend', 'layers', 'details', 'data-table']
       },
       collapsed: true
     }
