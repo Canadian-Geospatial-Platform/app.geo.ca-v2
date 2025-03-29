@@ -17,7 +17,7 @@
   const translations = $page.data.t;
 
   const mapNotAvailableText = translations?.mapNotAvailable ?
-    translations["mapNotAvailable"] : "Map preview not available";
+    translations["mapNotAvailable"] : "Map not available";
   const saveSearchParamsText = translations?.saveSearchParams ?
     translations["saveSearchParams"] : "Save Search Parameters";
   const formatText = translations?.formatParams ? translations["format"] : "Format";

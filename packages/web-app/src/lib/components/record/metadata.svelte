@@ -53,8 +53,18 @@
   ];
 
   // Sources
+  const title = properties.title[lang.slice(0, 2)];
   const distributor = properties.distributor;
-  const sourcesArray = distributor.map((x) => x['organisation'][lang.slice(0, 2)]);
+  const distributorOrgArray = distributor.map((x) => x['organisation'][lang.slice(0, 2)]);
+
+  const publisher = properties.cited;
+  const publisherOrgArray = publisher.map((x) => x['organisation'][lang.slice(0, 2)]);
+  const onlineResourceArray = publisher.map((x) => {
+    // Only return the resource if it is a link
+    if (x?.onlineResource?.onlineResource && x?.onlineResource?.onlineResource_Protocol === 'http') {
+      return x.onlineResource.onlineResource;
+    }
+  });
 
   // Use limitations
   const legalConstraints = properties.constraints?.legal;
@@ -87,9 +97,37 @@
     </div>
     <div class="card-div">
       <h3 class="font-semibold">{sourcesText}</h3>
-      {#each sourcesArray as source}
-        <p>{source}</p>
-      {/each}
+      <!--
+        Citation entries should be in this format:
+          Publisher organization. (published date). <i>Name of resource</i>.
+          Distributor organization. url link to resource (if it exists).
+
+        Note: This assumes that there is one distributor entry per publisher listed
+        in the metadata and that the entries in each array index match. In most cases
+        there is only one publisher and distributor per resource, but we should check
+        for others just in case.
+      -->
+      <div class="space-y-4">
+        {#each publisherOrgArray as publisher, i}
+          <p>
+            {#if publisher}
+              {publisher.replaceAll(';', '; ')}.
+            {/if}
+            {#if datePublished}
+              ({datePublished}).
+            {/if}
+            {#if title}
+              <span class="italic">{title}.</span>
+            {/if}
+            {#if distributorOrgArray[i]}
+              {distributorOrgArray[i].replaceAll(';', '; ')}.
+            {/if}
+            {#if onlineResourceArray[i]}
+              <a href={onlineResourceArray[i]} class="underline text-custom-16">{onlineResourceArray[i]}</a>
+            {/if}
+          </p>
+        {/each}
+      </div>
     </div>
     <div class="card-div">
       <h3 class="font-semibold">{useLimitationsText}</h3>
