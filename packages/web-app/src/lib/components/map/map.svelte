@@ -54,7 +54,7 @@
   if (footer) {
     config.footerBar = {
       tabs: {
-        core: ["legend", "data-table"]
+        core: ["legend", "data-table", "details"]
       },
       collapsed: true
     }

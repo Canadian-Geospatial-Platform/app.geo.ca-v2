@@ -14,9 +14,9 @@
   const translations = $page.data.t;
 
   // Buttons
-  const downloadGeoCoreText = translations?.downloadGeoCore ?
-    translations["downloadGeoCore"] : "Download GeoCore";
-  const viewHNAPText = translations?.viewHNAP ? translations["viewHNAP"] : "View HNAP Record";
+  const downloadMetadataText = translations?.downloadMetadata ?
+    translations["downloadMetadata"] : "Download Metadata";
+  const viewISO1915Text = translations?.viewISO1915 ? translations["viewISO1915"] : "View ISO1915 Record";
 
   // Row labels
   const nameText = translations?.name ? translations["name"] : "Name";
@@ -49,7 +49,7 @@
     window.open(downloadUrl);
   };
 
-  function handleViewHNAPButtonClick() {
+  function handleViewISO1915ButtonClick() {
     let downloadUrl = "https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&version=2.0.2&request=GetRecordById&outputSchema=csw:IsoRecord&ElementSetName=full&id=" + uuid;
     window.open(downloadUrl);
   }
@@ -61,13 +61,13 @@
     class="w-full sm:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"
     on:click={handleDownloadButtonClick}
   >
-    {downloadGeoCoreText}
+    {downloadMetadataText}
   </button>
   <button
     class="w-full sm:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"
-    on:click={handleViewHNAPButtonClick}
+    on:click={handleViewISO1915ButtonClick}
   >
-    {viewHNAPText}
+    {viewISO1915Text}
   </button>
 </div>
 
