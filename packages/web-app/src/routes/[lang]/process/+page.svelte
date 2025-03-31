@@ -65,23 +65,23 @@
 </script>
 
 <div class="flex flex-col gap-4">
-  <h1 class="font-custom-style-h1">{process.title}</h1>
-  <h4>{process.description}</h4>
+  <h1 class="font-custom-style-h1  px-5 md:px-0">{process.title}</h1>
+  <h4 class="px-5 md:px-0">{process.description}</h4>
 
-  <h2 class="font-custom-style-h2">{t["input"]}</h2>
-  <div class="relative flex flex-col gap-4 mb-2 mt-[-0.75em] font-open-sans px-5 md:px-0">
+  <h2 class="font-custom-style-h2 px-5 md:px-0">{t["input"]}</h2>
+  <div class="relative flex flex-col gap-4 mb-2 mt-[-0.75em] font-open-sans">
     {#each Object.keys(inputs) as input}
       <Input name={input} definition={inputs[input]} bind:this={inputElements[input]}/>
     {/each}
   </div>
 
-  <h2 class="font-custom-style-h2">{t["output"]}</h2>
+  <h2 class="font-custom-style-h2 px-5 md:px-0">{t["output"]}</h2>
   <div class="relative flex flex-col gap-4 mb-2 mt-[-0.75em] font-open-sans px-5 md:px-0">
     {#each Object.keys(outputs) as output}
       <!-- <div class="flex flex-col gap-2 font-open-sans px-5 md:px-0"> -->
       <div>
         <input type="radio" id="{output}" value="{output}" name="output" bind:group={selectedOutput}>
-        <label for="{output}">{outputs[output].title} ({output})</label>
+        <label for="{output}" style="font-weight: 600;">{outputs[output].title} ({output})</label>
         <p>{outputs[output].description}</p>
       </div>
     {/each}

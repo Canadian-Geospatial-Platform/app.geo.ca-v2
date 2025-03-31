@@ -269,7 +269,7 @@
 			id="bottom-buttons"
 			class="grid grid-cols-1 md:grid-cols-2 col-span-6 bg-custom-5 md:border-t border-custom-21 px-5 py-7 md:py-[1.125rem] gap-y-8"
 		>
-			<div>
+			<div class="flex flex-col md:flex-row gap-4">
 				<a
 					href={resultLink}
 					class="row-start-1 md:row-start-2 w-auto md:w-auto justify-self-start h-12 md:h-auto {resultLink
