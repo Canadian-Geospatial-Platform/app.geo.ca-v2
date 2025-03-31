@@ -21,7 +21,7 @@
     }
   };
 
-  let selectedOutput = $state(null);
+  let selectedOutput = $state(Object.keys(outputs)[0]);
 
   let bbox = $state();
   let active = $state(true);

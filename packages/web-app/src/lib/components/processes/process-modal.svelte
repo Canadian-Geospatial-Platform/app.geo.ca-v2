@@ -129,13 +129,18 @@
 	}
 
 	function openIn3d() {
-		window.open(
-			'http://fhimp-chris-test.s3-website.ca-central-1.amazonaws.com/?sessionID=' + jobId,
-			'_blank'
-		);
+		let sessionID = sessionStorage.getItem('sessionId3d');
+		if (!sessionID) {
+			if (location.protocol !== 'https:') {
+				sessionID = (Math.random() * 1e16).toFixed(0).toString();
+			} else {
+				sessionID = self.crypto.randomUUID();
+			}
+			sessionStorage.setItem('sessionId3d', sessionID);
+		}
+
 		fetch(
-			'https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=' +
-				jobId,
+			`https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=${sessionID}`,
 			{
 				method: 'POST',
 				body: JSON.stringify({
@@ -156,10 +161,58 @@
 					]
 				}),
 				headers: {
-					'Content-Type': 'application/json; charset=UTF-8'
+					'Content-type': 'application/json; charset=UTF-8'
 				}
 			}
-		);
+		)
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.clientOpened) {
+					let winref = window.open(
+						'',
+						'3d',
+						'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
+					);
+					winref?.focus();
+				} else {
+					window.open(
+						`https://dyb0tihhksw75.cloudfront.net/?sessionID=${sessionID}`,
+						'3d',
+						'menubar=no,location=no,toolbar=no,status=no,directories=no,resizable=yes'
+					);
+				}
+			});
+		// window.open(
+		// 	'http://fhimp-chris-test.s3-website.ca-central-1.amazonaws.com/?sessionID=' + jobId,
+		// 	'_blank'
+		// );
+		// fetch(
+		// 	'https://syxgzh0xkc.execute-api.ca-central-1.amazonaws.com/fhimp_dev/3d/test-sock?sessionID=' +
+		// 		jobId,
+		// 	{
+		// 		method: 'POST',
+		// 		body: JSON.stringify({
+		// 			type: 'KML',
+		// 			args: [
+		// 				{
+		// 					uid: '45665454654hgj6546546545455646546',
+		// 					url: `${resultLink}`,
+		// 					title: 'Flood Mapping KML result',
+		// 					description: 'Flood Mapping KML result',
+		// 					type: 'KML',
+		// 					serviceInfo: {
+		// 						serviceTitle: 'KML',
+		// 						serviceId: 'KML-5919515191',
+		// 						serviceUrl: `${resultLink}`
+		// 					}
+		// 				}
+		// 			]
+		// 		}),
+		// 		headers: {
+		// 			'Content-Type': 'application/json; charset=UTF-8'
+		// 		}
+		// 	}
+		// );
 	}
 </script>
 
@@ -195,7 +248,10 @@
 				{/if}
 			</div>
 		</div>
-		<div id="close-button" class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end">
+		<div
+			id="close-button"
+			class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end"
+		>
 			<button
 				type="button"
 				class="flex justify-center items-center border border-custom-16 rounded-[50%]
@@ -207,9 +263,10 @@
 			</button>
 		</div>
 		<!-- <div class="col-span-6 gap-5 px-5 pb-5 pt-8 font-custom-style-body-1"> -->
-			<!-- <MapPreview /> -->
+		<!-- <MapPreview /> -->
 		<!-- </div> -->
-		<div id="bottom-buttons"
+		<div
+			id="bottom-buttons"
 			class="grid grid-cols-1 md:grid-cols-2 col-span-6 bg-custom-5 md:border-t border-custom-21 px-5 py-7 md:py-[1.125rem] gap-y-8"
 		>
 			<div>
