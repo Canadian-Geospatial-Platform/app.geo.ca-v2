@@ -131,8 +131,12 @@
   <div class="flex flex-row flex-wrap lg:flex-nowrap gap-x-4 gap-y-1 lg:gap-x-7 font-custom-style-body-8">
     <div>{datasetsText}: {datasets}</div>
     <div>{contributorsText}: {contributors}</div>
-    <div>{applicationsText}: {applications}</div>
-    <div>{apisText}: {apis}</div>
-    <div>{collectionsText}: {collections}</div>
+    <!--
+      TODO: Uncomment when we have a query to get this data.
+      For now it is always 'N/A' so we don't need to display it.
+    -->
+    <!--<div>{applicationsText}: {applications}</div>-->
+    <!--<div>{apisText}: {apis}</div>-->
+    <!--<div>{collectionsText}: {collections}</div>-->
   </div>
 </Card>
