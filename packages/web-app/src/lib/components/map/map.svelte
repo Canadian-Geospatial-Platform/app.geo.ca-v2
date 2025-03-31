@@ -51,7 +51,7 @@
     corePackages: [],
     appBar: {
       tabs: {
-        core: ['legend']
+        core: ['geolocator', 'legend']
       }
     }
   });
