@@ -204,7 +204,7 @@
               <div class="hidden sm:flex">
                 <Map
                   coordinates={result.coordinates} id={result.id}
-                  dynamic={true} mapType={mapType} footer=true
+                  dynamic={true} mapType={mapType} footer={false}
                 />
               </div>
               <div class="sm:hidden">
