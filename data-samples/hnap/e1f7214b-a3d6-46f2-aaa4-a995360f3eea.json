@@ -1,0 +1,1406 @@
+{
+    "@xmlns": "http://www.isotc211.org/2005/gmd",
+    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+    "@xmlns:gfc": "http://www.isotc211.org/2005/gfc",
+    "@xmlns:gmd": "http://www.isotc211.org/2005/gmd",
+    "@xmlns:gmi": "http://www.isotc211.org/2005/gmi",
+    "@xmlns:gml": "http://www.opengis.net/gml/3.2",
+    "@xmlns:gmx": "http://www.isotc211.org/2005/gmx",
+    "@xmlns:gsr": "http://www.isotc211.org/2005/gsr",
+    "@xmlns:gss": "http://www.isotc211.org/2005/gss",
+    "@xmlns:gts": "http://www.isotc211.org/2005/gts",
+    "@xmlns:srv": "http://www.isotc211.org/2005/srv",
+    "@xmlns:xlink": "http://www.w3.org/1999/xlink",
+    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+    "@xsi:schemaLocation": "http://www.isotc211.org/2005/gmd http://nap.geogratis.gc.ca/metadata/tools/schemas/metadata/can-cgsb-171.100-2009-a/gmd/gmd.xsd http://www.isotc211.org/2005/srv http://nap.geogratis.gc.ca/metadata/tools/schemas/metadata/can-cgsb-171.100-2009-a/srv/srv.xsd http://www.geconnections.org/nap/napMetadataTools/napXsd/napm http://nap.geogratis.gc.ca/metadata/tools/schemas/metadata/can-cgsb-171.100-2009-a/napm/napm.xsd",
+    "gmd:fileIdentifier": {
+        "gco:CharacterString": {
+            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+            "#text": "e1f7214b-a3d6-46f2-aaa4-a995360f3eea"
+        }
+    },
+    "gmd:language": {
+        "gco:CharacterString": {
+            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+            "#text": "eng; CAN"
+        }
+    },
+    "gmd:characterSet": {
+        "gmd:MD_CharacterSetCode": {
+            "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_95",
+            "@codeListValue": "RI_458",
+            "#text": "utf8; utf8"
+        }
+    },
+    "gmd:hierarchyLevel": {
+        "gmd:MD_ScopeCode": {
+            "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_108",
+            "@codeListValue": "RI_623",
+            "#text": "series; série"
+        }
+    },
+    "gmd:contact": {
+        "gmd:CI_ResponsibleParty": {
+            "gmd:individualName": {
+                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                "@gco:nilReason": "missing",
+                "gco:CharacterString": null
+            },
+            "gmd:organisationName": {
+                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                "gco:CharacterString": {
+                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                    "#text": "Compusult Ltd."
+                },
+                "gmd:PT_FreeText": {
+                    "gmd:textGroup": {
+                        "gmd:LocalisedCharacterString": {
+                            "@locale": "#fra",
+                            "#text": "Compusult Ltd."
+                        }
+                    }
+                }
+            },
+            "gmd:positionName": {
+                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                "@gco:nilReason": "missing",
+                "gco:CharacterString": null,
+                "gmd:PT_FreeText": {
+                    "gmd:textGroup": {
+                        "gmd:LocalisedCharacterString": {
+                            "@locale": "#fra"
+                        }
+                    }
+                }
+            },
+            "gmd:contactInfo": {
+                "gmd:CI_Contact": {
+                    "gmd:phone": {
+                        "gmd:CI_Telephone": {
+                            "gmd:voice": {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "1-709-745-7914"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "1-709-745-7914"
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:facsimile": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "@gco:nilReason": "missing",
+                                "gco:CharacterString": null
+                            }
+                        }
+                    },
+                    "gmd:address": {
+                        "gmd:CI_Address": {
+                            "gmd:deliveryPoint": {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "40 Bannister Street"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "40 rue Bannister"
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:city": {
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Mount Pearl"
+                                }
+                            },
+                            "gmd:administrativeArea": {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Newfoundland and Labrador"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Terre-Neuve et Labrador"
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:postalCode": {
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "A1N 1W1"
+                                }
+                            },
+                            "gmd:country": {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Canada"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Canada"
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:electronicMailAddress": {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "support@compusult.com"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "support@compusult.com"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "gmd:onlineResource": {
+                        "gmd:CI_OnlineResource": {
+                            "gmd:linkage": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "@gco:nilReason": "missing",
+                                "gmd:URL": null
+                            },
+                            "gmd:protocol": {
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "http"
+                                }
+                            }
+                        }
+                    },
+                    "gmd:hoursOfService": {
+                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                        "@gco:nilReason": "missing",
+                        "gco:CharacterString": null,
+                        "gmd:PT_FreeText": {
+                            "gmd:textGroup": {
+                                "gmd:LocalisedCharacterString": {
+                                    "@locale": "#fra"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "gmd:role": {
+                "gmd:CI_RoleCode": {
+                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_90",
+                    "@codeListValue": "RI_414",
+                    "#text": "pointOfContact; contact"
+                }
+            }
+        }
+    },
+    "gmd:dateStamp": {
+        "gco:DateTime": {
+            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+            "#text": "2022-04-08T19:14:01"
+        }
+    },
+    "gmd:metadataStandardName": {
+        "@xsi:type": "gmd:PT_FreeText_PropertyType",
+        "gco:CharacterString": {
+            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+            "#text": "Flood Mapping"
+        },
+        "gmd:PT_FreeText": {
+            "gmd:textGroup": {
+                "gmd:LocalisedCharacterString": {
+                    "@locale": "#fra",
+                    "#text": "Cartographie des inondations"
+                }
+            }
+        }
+    },
+    "gmd:metadataStandardVersion": {
+        "gco:CharacterString": {
+            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+            "#text": "CAN/CGSB-171.100-2009"
+        }
+    },
+    "gmd:dataSetURI": {
+        "@gco:nilReason": "missing",
+        "gco:CharacterString": null
+    },
+    "gmd:locale": {
+        "gmd:PT_Locale": {
+            "@id": "fra",
+            "gmd:languageCode": {
+                "gmd:LanguageCode": {
+                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_116",
+                    "@codeListValue": "fra",
+                    "#text": "French; Français"
+                }
+            },
+            "gmd:country": {
+                "gmd:Country": {
+                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_117",
+                    "@codeListValue": "CAN",
+                    "#text": "Canada; Canada"
+                }
+            },
+            "gmd:characterEncoding": {
+                "gmd:MD_CharacterSetCode": {
+                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_95",
+                    "@codeListValue": "RI_458",
+                    "#text": "utf8; utf8"
+                }
+            }
+        }
+    },
+    "gmd:referenceSystemInfo": {
+        "gmd:MD_ReferenceSystem": {
+            "gmd:referenceSystemIdentifier": {
+                "gmd:RS_Identifier": {
+                    "gmd:code": {
+                        "gco:CharacterString": {
+                            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                            "#text": "EPSG:4326"
+                        }
+                    },
+                    "gmd:codeSpace": {
+                        "gco:CharacterString": {
+                            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                            "#text": "http://www.epsg-registry.org"
+                        }
+                    },
+                    "gmd:version": {
+                        "gco:CharacterString": {
+                            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                            "#text": "8.9.2"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "gmd:identificationInfo": {
+        "gmd:MD_DataIdentification": {
+            "gmd:citation": {
+                "gmd:CI_Citation": {
+                    "gmd:title": {
+                        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                        "gco:CharacterString": {
+                            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                            "#text": "Flood Mapping"
+                        },
+                        "gmd:PT_FreeText": {
+                            "gmd:textGroup": {
+                                "gmd:LocalisedCharacterString": {
+                                    "@locale": "#fra",
+                                    "#text": "Cartographie des inondations"
+                                }
+                            }
+                        }
+                    },
+                    "gmd:date": [
+                        {
+                            "gmd:CI_Date": {
+                                "gmd:date": {
+                                    "gco:Date": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "2024-03-19"
+                                    }
+                                },
+                                "gmd:dateType": {
+                                    "gmd:CI_DateTypeCode": {
+                                        "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_87",
+                                        "@codeListValue": "RI_366",
+                                        "#text": "creation; création"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "gmd:CI_Date": {
+                                "gmd:date": {
+                                    "gco:Date": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "2024-03-19"
+                                    }
+                                },
+                                "gmd:dateType": {
+                                    "gmd:CI_DateTypeCode": {
+                                        "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_87",
+                                        "@codeListValue": "RI_368",
+                                        "#text": "revision; révision"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "gmd:CI_Date": {
+                                "gmd:date": {
+                                    "gco:Date": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "2024-03-19"
+                                    }
+                                },
+                                "gmd:dateType": {
+                                    "gmd:CI_DateTypeCode": {
+                                        "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_87",
+                                        "@codeListValue": "RI_367",
+                                        "#text": "publication; publication"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "gmd:citedResponsibleParty": {
+                        "gmd:CI_ResponsibleParty": {
+                            "gmd:individualName": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "@gco:nilReason": "missing",
+                                "gco:CharacterString": null
+                            },
+                            "gmd:organisationName": {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Compusult Ltd."
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Compusult Ltd."
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:positionName": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "@gco:nilReason": "missing",
+                                "gco:CharacterString": null,
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra"
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:contactInfo": {
+                                "gmd:CI_Contact": {
+                                    "gmd:phone": {
+                                        "gmd:CI_Telephone": {
+                                            "gmd:voice": {
+                                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "1-709-745-7914"
+                                                },
+                                                "gmd:PT_FreeText": {
+                                                    "gmd:textGroup": {
+                                                        "gmd:LocalisedCharacterString": {
+                                                            "@locale": "#fra",
+                                                            "#text": "1-709-745-7914"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "gmd:facsimile": {
+                                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                "@gco:nilReason": "missing",
+                                                "gco:CharacterString": null
+                                            }
+                                        }
+                                    },
+                                    "gmd:address": {
+                                        "gmd:CI_Address": {
+                                            "gmd:deliveryPoint": {
+                                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "40 Bannister Street"
+                                                },
+                                                "gmd:PT_FreeText": {
+                                                    "gmd:textGroup": {
+                                                        "gmd:LocalisedCharacterString": {
+                                                            "@locale": "#fra",
+                                                            "#text": "40 rue Bannister"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "gmd:city": {
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "Mount Pearl"
+                                                }
+                                            },
+                                            "gmd:administrativeArea": {
+                                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "Newfoundland and Labrador"
+                                                },
+                                                "gmd:PT_FreeText": {
+                                                    "gmd:textGroup": {
+                                                        "gmd:LocalisedCharacterString": {
+                                                            "@locale": "#fra",
+                                                            "#text": "Terre-Neuve et Labrador"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "gmd:postalCode": {
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "A1N 1W1"
+                                                }
+                                            },
+                                            "gmd:country": {
+                                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "Canada"
+                                                },
+                                                "gmd:PT_FreeText": {
+                                                    "gmd:textGroup": {
+                                                        "gmd:LocalisedCharacterString": {
+                                                            "@locale": "#fra",
+                                                            "#text": "Canada"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "gmd:electronicMailAddress": {
+                                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "support@compusult.com"
+                                                },
+                                                "gmd:PT_FreeText": {
+                                                    "gmd:textGroup": {
+                                                        "gmd:LocalisedCharacterString": {
+                                                            "@locale": "#fra",
+                                                            "#text": "support@compusult.com"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "gmd:onlineResource": {
+                                        "gmd:CI_OnlineResource": {
+                                            "gmd:linkage": {
+                                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                "@gco:nilReason": "missing",
+                                                "gmd:URL": null
+                                            },
+                                            "gmd:protocol": {
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "http"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "gmd:hoursOfService": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                        "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                        "@gco:nilReason": "missing",
+                                        "gco:CharacterString": null,
+                                        "gmd:PT_FreeText": {
+                                            "gmd:textGroup": {
+                                                "gmd:LocalisedCharacterString": {
+                                                    "@locale": "#fra"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:role": {
+                                "gmd:CI_RoleCode": {
+                                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_90",
+                                    "@codeListValue": "RI_414",
+                                    "#text": "pointOfContact; contact"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "gmd:abstract": {
+                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                "gco:CharacterString": {
+                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                    "#text": "This process allows a user to specify a expected sea level rise and area of interest, returning an image representing land that would be flooded."
+                },
+                "gmd:PT_FreeText": {
+                    "gmd:textGroup": {
+                        "gmd:LocalisedCharacterString": {
+                            "@locale": "#fra",
+                            "#text": "Ce processus permet à un utilisateur de spécifier une élévation attendue du niveau de la mer et une zone d’intérêt, renvoyant une image représentant une terre qui serait inondée."
+                        }
+                    }
+                }
+            },
+            "gmd:status": {
+                "gmd:MD_ProgressCode": {
+                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_106",
+                    "@codeListValue": "RI_593",
+                    "#text": "completed; complété"
+                }
+            },
+            "gmd:resourceMaintenance": {
+                "gmd:MD_MaintenanceInformation": {
+                    "gmd:maintenanceAndUpdateFrequency": {
+                        "gmd:MD_MaintenanceFrequencyCode": {
+                            "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_102",
+                            "@codeListValue": "RI_539",
+                            "#text": "annually; annuel"
+                        }
+                    }
+                }
+            },
+            "gmd:graphicOverview": {
+                "gmd:MD_BrowseGraphic": {
+                    "gmd:fileName": {
+                        "gco:CharacterString": null
+                    }
+                }
+            },
+            "gmd:descriptiveKeywords": [
+                {
+                    "gmd:MD_Keywords": {
+                        "gmd:keyword": [
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Digital Elevation Model"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Modèle numérique d'élévation"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Digital Surface Model"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Modèle numérique de surface"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Digital Terrain Model"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Modèle numérique de terrain"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "LiDAR"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "LiDAR"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Shaded Relief"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Relief ombré"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Color Shaded Relief"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Relief ombré couleur"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Slope Map"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Carte de pente"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Aspect Map"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Carte d'aspect"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Mosaic"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Mosaïque"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "ArcticSDI_DEM"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "IDS-Arctique_MNE"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Digital elevation data"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Données numériques d'élévation"
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        "gmd:type": {
+                            "gmd:MD_KeywordTypeCode": {
+                                "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_101",
+                                "@codeListValue": "RI_528",
+                                "#text": "theme; thème"
+                            }
+                        }
+                    }
+                },
+                {
+                    "gmd:MD_Keywords": {
+                        "gmd:keyword": [
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Earth sciences"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Sciences de la terre"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Gas industry"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Industrie gazière"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Steel"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Acier"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Coal"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Charbon"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Oil sands"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Sables bitumineux"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Recycling"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Recyclage"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Metals"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Métal"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Minerals"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Minerai"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Mining industry"
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Industrie minière"
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        "gmd:type": {
+                            "gmd:MD_KeywordTypeCode": {
+                                "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_101",
+                                "@codeListValue": "RI_528",
+                                "#text": "theme; thème"
+                            }
+                        },
+                        "gmd:thesaurusName": {
+                            "gmd:CI_Citation": {
+                                "gmd:title": {
+                                    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                    "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                    "gco:CharacterString": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "Government of Canada Core Subject Thesaurus"
+                                    },
+                                    "gmd:PT_FreeText": {
+                                        "gmd:textGroup": {
+                                            "gmd:LocalisedCharacterString": {
+                                                "@locale": "#fra",
+                                                "#text": "Thésaurus des sujets de base du gouvernement du Canada"
+                                            }
+                                        }
+                                    }
+                                },
+                                "gmd:date": [
+                                    {
+                                        "gmd:CI_Date": {
+                                            "gmd:date": {
+                                                "gco:Date": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "2004"
+                                                }
+                                            },
+                                            "gmd:dateType": {
+                                                "gmd:CI_DateTypeCode": {
+                                                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_87",
+                                                    "@codeListValue": "RI_366",
+                                                    "#text": "creation; création"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "gmd:CI_Date": {
+                                            "gmd:date": {
+                                                "gco:Date": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "2016-07-04"
+                                                }
+                                            },
+                                            "gmd:dateType": {
+                                                "gmd:CI_DateTypeCode": {
+                                                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_87",
+                                                    "@codeListValue": "RI_367",
+                                                    "#text": "publication; publication"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ],
+                                "gmd:citedResponsibleParty": {
+                                    "gmd:CI_ResponsibleParty": {
+                                        "gmd:organisationName": {
+                                            "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                            "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                            "gco:CharacterString": {
+                                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                "#text": "Government of Canada; Library and Archives Canada"
+                                            },
+                                            "gmd:PT_FreeText": {
+                                                "gmd:textGroup": {
+                                                    "gmd:LocalisedCharacterString": {
+                                                        "@locale": "#fra",
+                                                        "#text": "Gouvernement du Canada; Bibliothèque et Archives Canada"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "gmd:role": {
+                                            "gmd:CI_RoleCode": {
+                                                "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_90",
+                                                "@codeListValue": "RI_409",
+                                                "#text": "custodian; conservateur"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "gmd:resourceConstraints": {
+                "gmd:MD_LegalConstraints": {
+                    "gmd:useLimitation": {
+                        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                        "gco:CharacterString": {
+                            "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                            "#text": "Open Government Licence - Canada (http://open.canada.ca/en/open-government-licence-canada)"
+                        },
+                        "gmd:PT_FreeText": {
+                            "gmd:textGroup": {
+                                "gmd:LocalisedCharacterString": {
+                                    "@locale": "#fra",
+                                    "#text": "Licence du gouvernement ouvert - Canada (http://ouvert.canada.ca/fr/licence-du-gouvernement-ouvert-canada)"
+                                }
+                            }
+                        }
+                    },
+                    "gmd:accessConstraints": {
+                        "gmd:MD_RestrictionCode": {
+                            "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_107",
+                            "@codeListValue": "RI_606",
+                            "#text": "license; licence"
+                        }
+                    },
+                    "gmd:useConstraints": {
+                        "gmd:MD_RestrictionCode": {
+                            "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_107",
+                            "@codeListValue": "RI_606",
+                            "#text": "license; licence"
+                        }
+                    },
+                    "gmd:otherConstraints": {
+                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                        "@gco:nilReason": "missing",
+                        "gco:CharacterString": null,
+                        "gmd:PT_FreeText": {
+                            "gmd:textGroup": {
+                                "gmd:LocalisedCharacterString": {
+                                    "@locale": "#fra"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "gmd:spatialRepresentationType": {
+                "gmd:MD_SpatialRepresentationTypeCode": {
+                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_109",
+                    "@codeListValue": "RI_635",
+                    "#text": "vector; vecteur"
+                }
+            },
+            "gmd:language": [
+                {
+                    "gco:CharacterString": {
+                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                        "#text": "eng"
+                    }
+                },
+                {
+                    "gco:CharacterString": {
+                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                        "#text": "fra"
+                    }
+                }
+            ],
+            "gmd:characterSet": {
+                "gmd:MD_CharacterSetCode": {
+                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_95",
+                    "@codeListValue": "RI_458",
+                    "#text": "utf8; utf8"
+                }
+            },
+            "gmd:topicCategory": {
+                "gmd:MD_TopicCategoryCode": "elevation"
+            },
+            "gmd:environmentDescription": {
+                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                "@gco:nilReason": "missing",
+                "gco:CharacterString": null
+            },
+            "gmd:extent": [
+                {
+                    "gmd:EX_Extent": {
+                        "gmd:temporalElement": {
+                            "gmd:EX_TemporalExtent": {
+                                "gmd:extent": {
+                                    "gml:TimePeriod": {
+                                        "@xmlns:gml": "http://www.opengis.net/gml/3.2",
+                                        "@gml:id": "d2403389e866",
+                                        "gml:beginPosition": "2020-01",
+                                        "gml:endPosition": "2020-12"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "gmd:EX_Extent": {
+                        "gmd:geographicElement": {
+                            "gmd:EX_GeographicBoundingBox": {
+                                "gmd:westBoundLongitude": {
+                                    "gco:Decimal": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "-142.00"
+                                    }
+                                },
+                                "gmd:eastBoundLongitude": {
+                                    "gco:Decimal": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "-52.00"
+                                    }
+                                },
+                                "gmd:southBoundLatitude": {
+                                    "gco:Decimal": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "41.00"
+                                    }
+                                },
+                                "gmd:northBoundLatitude": {
+                                    "gco:Decimal": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "84.00"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "gmd:supplementalInformation": {
+                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                "@gco:nilReason": "missing",
+                "gco:CharacterString": null
+            }
+        }
+    },
+    "gmd:distributionInfo": {
+        "gmd:MD_Distribution": {
+            "gmd:distributionFormat": [
+                {
+                    "gmd:MD_Format": {
+                        "gmd:name": {
+                            "gco:CharacterString": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "#text": "OGC API Process"
+                            }
+                        },
+                        "gmd:version": {
+                            "gco:CharacterString": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "#text": "1.0.0"
+                            }
+                        }
+                    }
+                }
+            ],
+            "gmd:distributor": {
+                "gmd:MD_Distributor": {
+                    "gmd:distributorContact": {
+                        "gmd:CI_ResponsibleParty": {
+                            "gmd:individualName": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "@gco:nilReason": "missing",
+                                "gco:CharacterString": null
+                            },
+                            "gmd:organisationName": {
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "gco:CharacterString": {
+                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                    "#text": "Compusult Ltd."
+                                },
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra",
+                                            "#text": "Compusult Ltd."
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:positionName": {
+                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                "@gco:nilReason": "missing",
+                                "gco:CharacterString": null,
+                                "gmd:PT_FreeText": {
+                                    "gmd:textGroup": {
+                                        "gmd:LocalisedCharacterString": {
+                                            "@locale": "#fra"
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:contactInfo": {
+                                "gmd:CI_Contact": {
+                                    "gmd:address": {
+                                        "gmd:CI_Address": {
+                                            "gmd:electronicMailAddress": {
+                                                "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                                "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "support@compusult.com"
+                                                },
+                                                "gmd:PT_FreeText": {
+                                                    "gmd:textGroup": {
+                                                        "gmd:LocalisedCharacterString": {
+                                                            "@locale": "#fra",
+                                                            "#text": "support@compusult.com"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "gmd:onlineResource": {
+                                        "gmd:CI_OnlineResource": {
+                                            "gmd:linkage": {
+                                                "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                "@gco:nilReason": "missing",
+                                                "gmd:URL": null
+                                            },
+                                            "gmd:protocol": {
+                                                "gco:CharacterString": {
+                                                    "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                                    "#text": "http"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "gmd:hoursOfService": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                        "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                        "@gco:nilReason": "missing",
+                                        "gco:CharacterString": null,
+                                        "gmd:PT_FreeText": {
+                                            "gmd:textGroup": {
+                                                "gmd:LocalisedCharacterString": {
+                                                    "@locale": "#fra"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "gmd:role": {
+                                "gmd:CI_RoleCode": {
+                                    "@codeList": "http://nap.geogratis.gc.ca/metadata/register/napMetadataRegister.xml#IC_90",
+                                    "@codeListValue": "RI_412",
+                                    "#text": "distributor; distributeur"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "gmd:transferOptions": [
+                {
+                    "gmd:MD_DigitalTransferOptions": {
+                        "gmd:onLine": {
+                            "gmd:CI_OnlineResource": {
+                                "gmd:linkage": {
+                                    "gmd:URL": "https://d6g0331e16.execute-api.ca-central-1.amazonaws.com/Stage/processes/FloodMapping"
+                                },
+                                "gmd:protocol": {
+                                    "gco:CharacterString": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "HTTPS"
+                                    }
+                                },
+                                "gmd:name": {
+                                    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                    "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                    "gco:CharacterString": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "Flood Mapping OGC API Process"
+                                    },
+                                    "gmd:PT_FreeText": {
+                                        "gmd:textGroup": {
+                                            "gmd:LocalisedCharacterString": {
+                                                "@locale": "#fra",
+                                                "#text": "Processus de cartographie des inondations de l'API OGC"
+                                            }
+                                        }
+                                    }
+                                },
+                                "gmd:description": {
+                                    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                    "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                    "gco:CharacterString": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "API;JSON;eng"
+                                    },
+                                    "gmd:PT_FreeText": {
+                                        "gmd:textGroup": {
+                                            "gmd:LocalisedCharacterString": {
+                                                "@locale": "#fra",
+                                                "#text": "API;JSON;fra"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "gmd:MD_DigitalTransferOptions": {
+                        "gmd:onLine": {
+                            "gmd:CI_OnlineResource": {
+                                "gmd:linkage": {
+                                    "gmd:URL": "https://d6g0331e16.execute-api.ca-central-1.amazonaws.com/en-ca/process/"
+                                },
+                                "gmd:protocol": {
+                                    "gco:CharacterString": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "HTTPS"
+                                    }
+                                },
+                                "gmd:name": {
+                                    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                    "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                    "gco:CharacterString": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "User Interface for Flood Mapping OGC API Process"
+                                    },
+                                    "gmd:PT_FreeText": {
+                                        "gmd:textGroup": {
+                                            "gmd:LocalisedCharacterString": {
+                                                "@locale": "#fra",
+                                                "#text": "Interface utilisateur pour le processus API OGC de cartographie des inondations"
+                                            }
+                                        }
+                                    }
+                                },
+                                "gmd:description": {
+                                    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                                    "@xsi:type": "gmd:PT_FreeText_PropertyType",
+                                    "gco:CharacterString": {
+                                        "@xmlns:gco": "http://www.isotc211.org/2005/gco",
+                                        "#text": "Application;HTML;eng"
+                                    },
+                                    "gmd:PT_FreeText": {
+                                        "gmd:textGroup": {
+                                            "gmd:LocalisedCharacterString": {
+                                                "@locale": "#fra",
+                                                "#text": "Application;HTML;fra"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -260,6 +260,9 @@
 
 <svelte:head>
   <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
+  <!-- TODO: switch back to old link after geoview pull request with modifyDragged event accepted -->
+  <!-- <script src="https://lbercovitch.github.io/geoview-leah/cgpv-main.js"></script> -->
+  <!--<script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>-->
 </svelte:head>
 
 {#if mapType === 'resultList'}

@@ -1,0 +1,20 @@
+{
+  "input": "Entrées",
+  "output": "Sortir",
+  "reset": "Réinitialiser",
+  "submit": "Soumettre",
+  "jobStatusIntro": "Voici le statut du travail nouvellement créé :",
+  "createdOn": "Créé le :",
+  "startedOn": "Commencé le :",
+  "updatedOn": "Mis à jour le :",
+  "finishedOn": "Terminé le :",
+  "statusColon": "Statut :",
+  "progress": "Progrès :",
+  "message": "Message :",
+  "result": "Résultat :",
+  "download": "Télécharger",
+  "openIn2D": "Ouvrir en 2D",
+  "openIn3D": "Ouvrir en 3D",
+  "close": "Fermer",
+  "status": "Statut"
+}
