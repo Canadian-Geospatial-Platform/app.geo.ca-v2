@@ -27,6 +27,7 @@
   "metadata": "Metadata",
   "name": "Name",
   "north": "North",
+  "openIn3D": "3D View",
   "organization": "Organization",
   "projection": "Projection",
   "resources": "Resources",

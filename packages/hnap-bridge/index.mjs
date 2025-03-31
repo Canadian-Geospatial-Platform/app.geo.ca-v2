@@ -607,11 +607,26 @@ function parseGeographicFeatures(geographicExtent) {
           type: "Polygon",
           coordinates: [
             [
-              [parseFloat(geographicExtent.west), parseFloat(geographicExtent.south)],
-              [parseFloat(geographicExtent.east), parseFloat(geographicExtent.south)],
-              [parseFloat(geographicExtent.east), parseFloat(geographicExtent.north)],
-              [parseFloat(geographicExtent.west), parseFloat(geographicExtent.north)],
-              [parseFloat(geographicExtent.west), parseFloat(geographicExtent.south)],
+              [
+                parseFloat(geographicExtent.west),
+                parseFloat(geographicExtent.south),
+              ],
+              [
+                parseFloat(geographicExtent.east),
+                parseFloat(geographicExtent.south),
+              ],
+              [
+                parseFloat(geographicExtent.east),
+                parseFloat(geographicExtent.north),
+              ],
+              [
+                parseFloat(geographicExtent.west),
+                parseFloat(geographicExtent.north),
+              ],
+              [
+                parseFloat(geographicExtent.west),
+                parseFloat(geographicExtent.south),
+              ],
             ],
           ],
         },
@@ -777,3 +792,4 @@ async function getPlugins(id) {
   const geocoreData = await getLatestGeocoreData(id);
   return geocoreData?.features?.[0]?.properties?.plugins;
 }
+

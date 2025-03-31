@@ -1,0 +1,20 @@
+{
+  "input": "Inputs",
+  "output": "Outputs",
+  "reset": "Reset",
+  "submit": "Submit",
+  "jobStatusIntro": "The following is the status of the newly created Job:",
+  "createdOn": "Created On:",
+  "startedOn": "Started On:",
+  "updatedOn": "Updated On:",
+  "finishedOn": "Finished On:",
+  "statusColon": "Status:",
+  "progress": "Progress:",
+  "message": "Message:",
+  "result": "Result:",
+  "download": "Download",
+  "openIn2D": "Open in 2D",
+  "openIn3D": "Open in 3D",
+  "close": "Close",
+  "status": "Status"
+}
