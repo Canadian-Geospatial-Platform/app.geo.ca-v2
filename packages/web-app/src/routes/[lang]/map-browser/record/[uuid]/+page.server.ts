@@ -22,22 +22,9 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// @ts-ignore
 	const fetchRelated = async (id) => {
 		try {
-			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
+			const collectionsResponse = await fetch(`https://geocore.api.geo.ca/id/v2?id=${id}&lang=${lang}`);
 			const parsedCollectionsResponse = await collectionsResponse.json();
-			const related = [];
-			if (parsedCollectionsResponse.parent) {
-				related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
-			}
-			if (parsedCollectionsResponse.sibling_count > 0) {
-				parsedCollectionsResponse.sibling.forEach((s) => {
-					related.push({ ...s, ...{ type: 'member' } });
-				});
-			}
-			if (parsedCollectionsResponse.child_count > 0) {
-				parsedCollectionsResponse.child.forEach((s) => {
-					related.push({ ...s, ...{ type: 'member' } });
-				});
-			}
+			const related = parsedCollectionsResponse?.body?.Items?.[0]?.similarity ?? [];
 			return related;
 		} catch (e) {
 			console.error('Error fetching related items:', e);
@@ -49,13 +36,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		let parsedAnalyticResponse;
 		try {
 			const analyticResponse = await fetch(
-				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
+				`https://geocore.api.geo.ca/analytics/10?uuid=${id}&lang=${lang}`
 			);
 			parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
 		} catch (e) {
 			console.error(
 				'error fetching analytics from:',
-				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}\nerror message:`,
+				`https://geocore.api.geo.ca/analytics/10?uuid=${id}&lang=${lang}\nerror message:`,
 				e
 			);
 		}

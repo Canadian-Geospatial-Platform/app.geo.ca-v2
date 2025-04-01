@@ -265,7 +265,7 @@
 {#if mapType === 'resultList'}
   <div
     id={mapId}
-    class="bg-blue-500/5 w-full h-64 md:h-80 lg:h-96 xl:h-[28rem] 2xl:h-[32rem]"
+    class="bg-blue-500/5 w-full aspect-video"
     data-config={sConfig}
     data-lang={mapLang}
   ></div>
