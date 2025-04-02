@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// @ts-ignore
 	const fetchRelated = async (id) => {
 		try {
-			const collectionsResponse = await fetch(`https://geocore.api.geo.ca/id/v2?id=${id}&lang=${lang}`);
+			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 			const parsedCollectionsResponse = await collectionsResponse.json();
 			const related = parsedCollectionsResponse?.body?.Items?.[0]?.similarity ?? [];
 			return related;
@@ -36,13 +36,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		let parsedAnalyticResponse;
 		try {
 			const analyticResponse = await fetch(
-				`https://geocore.api.geo.ca/analytics/10?uuid=${id}&lang=${lang}`
+				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
 			);
 			parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
 		} catch (e) {
 			console.error(
 				'error fetching analytics from:',
-				`https://geocore.api.geo.ca/analytics/10?uuid=${id}&lang=${lang}\nerror message:`,
+				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}\nerror message:`,
 				e
 			);
 		}
