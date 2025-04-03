@@ -13,6 +13,7 @@
     mapType?: any;
     footer?: boolean;
     timeSlider?: boolean;
+    chart?: boolean;
   }
 
   let {
@@ -24,7 +25,8 @@
     mapProjection = 3978,
     mapType = null,
     footer = false,
-    timeSlider = false
+    timeSlider = false,
+    chart = false,
   }: Props = $props();
 
   let mapId = 'map-' + mapType + '-' + id;
@@ -59,7 +61,7 @@
   if (footer) {
     config.footerBar = {
       tabs: {
-        core: ['legend', 'layers', 'details', 'data-table']
+        core: ['layers', 'details', 'data-table']
       },
       collapsed: true
     }
@@ -72,6 +74,19 @@
       config.footerBar = {
         tabs: {
           core: ["time-slider"]
+        },
+        collapsed: true
+      }
+    }
+  }
+
+  if (chart) {
+    if (footer) {
+      config.footerBar.tabs.core.push("geochart");
+    } else {
+      config.footerBar = {
+        tabs: {
+          core: ["geochart"]
         },
         collapsed: true
       }
