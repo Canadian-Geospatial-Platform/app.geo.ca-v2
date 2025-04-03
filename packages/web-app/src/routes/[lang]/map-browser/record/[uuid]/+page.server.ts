@@ -5,9 +5,14 @@ import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
 import { parseText } from '$lib/utils/parse-text.ts';
 
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
-
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
+    // The "sst/node/config" package dynamically binds resources at runtime.
+    // Importing it at the top level would cause build-time errors because SST resources
+    // are not available during the build process. To avoid this, we import it inside
+    // the `load()` function so it's only accessed when the server is running.
+    const config = await import("sst/node/config");
+	const GEOCORE_API_DOMAIN = config.Config.GEOCORE_API_DOMAIN;
+
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	let record;
