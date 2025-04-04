@@ -16,10 +16,15 @@ export function toggleScroll(active: Boolean) {
       const scrollY = window.scrollY;
       body.style.setProperty("--scroll-y", `${scrollY}px`);
 
+      // Store the current scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      body.style.setProperty("--scrollbar-width", `${scrollbarWidth}px`);
+
       // Set styles
       body.style.top = `-${scrollY}px`;
-      body.style.overflowY = "scroll";
+      body.style.overflow = "hidden";
       body.style.position = "fixed";
+      body.style.width = `calc(100vw - ${scrollbarWidth}px)`;
     } else {
       // Get the stored scroll value. For the scrollTo method, convert it to a number
       const scrollY = parseInt(body.style.getPropertyValue("--scroll-y") || "0", 10);
@@ -27,7 +32,8 @@ export function toggleScroll(active: Boolean) {
       // Revert styles
       body.style.position = "";
       body.style.top = "";
-      body.style.overflowY = "auto";
+      body.style.overflow = "";
+      body.style.width = "";
 
       window.scrollTo(0, scrollY);
     }

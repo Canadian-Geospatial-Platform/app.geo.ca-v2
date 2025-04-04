@@ -24,6 +24,9 @@
   const temporalExtentEnd = items?.properties?.extent?.temporalExtent?.end;
   let useTimeSlider = !!(temporalExtentStart && temporalExtentEnd);
 
+  /***************** Chart ****************************/
+  const addChart = true;
+
   // For small screens, don't include the map
   let showMap = $state(true);
 
@@ -53,7 +56,15 @@
     {mapText}
   </h2>
   {#if coordinates && showMap}
-    <Map {coordinates} id={uuid} dynamic=true mapType="record" footer=true timeSlider={useTimeSlider} />
+    <Map
+      {coordinates}
+      id={uuid}
+      dynamic={true}
+      mapType="record"
+      footer={true}
+      timeSlider={useTimeSlider}
+      chart={addChart}
+    />
   {:else if coordinates}
     <p class="mx-5 md:mx-0">
       {windowTooSmall}

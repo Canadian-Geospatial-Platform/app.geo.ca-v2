@@ -5,9 +5,14 @@ import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
 import { parseText } from '$lib/utils/parse-text.ts';
 
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
-
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
+    // The "sst/node/config" package dynamically binds resources at runtime.
+    // Importing it at the top level would cause build-time errors because SST resources
+    // are not available during the build process. To avoid this, we import it inside
+    // the `load()` function so it's only accessed when the server is running.
+    const config = await import("sst/node/config");
+	const GEOCORE_API_DOMAIN = config.Config.GEOCORE_API_DOMAIN;
+
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	let record;
@@ -22,22 +27,9 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// @ts-ignore
 	const fetchRelated = async (id) => {
 		try {
-			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
+			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 			const parsedCollectionsResponse = await collectionsResponse.json();
-			const related = [];
-			if (parsedCollectionsResponse.parent) {
-				related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
-			}
-			if (parsedCollectionsResponse.sibling_count > 0) {
-				parsedCollectionsResponse.sibling.forEach((s) => {
-					related.push({ ...s, ...{ type: 'member' } });
-				});
-			}
-			if (parsedCollectionsResponse.child_count > 0) {
-				parsedCollectionsResponse.child.forEach((s) => {
-					related.push({ ...s, ...{ type: 'member' } });
-				});
-			}
+			const related = parsedCollectionsResponse?.body?.Items?.[0]?.similarity ?? [];
 			return related;
 		} catch (e) {
 			console.error('Error fetching related items:', e);
