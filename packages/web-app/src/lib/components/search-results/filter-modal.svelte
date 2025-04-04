@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { updateTempCategoryOfInterest } from '$lib/components/search-results/store';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
+  import { clickOutside } from '$lib/components/component-utils/clickOutside';
   import Close from '$lib/components/icons/close.svelte';
   import Search from '$lib/components/icons/search.svelte';
   import CategoryOfInterest from '$lib/components/search-results/filters/category-of-interest.svelte';
@@ -99,6 +100,10 @@
 
     closeModal();
   }
+
+  function handleClickOutside(event: Event) {
+    closeModal();
+	};
 
   /************* utility methods ***************/
   export function setFiltersFromURL() {
@@ -237,7 +242,6 @@
     "fixed flex justify-center z-[100020] inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
     (!active) && "hidden"
   ]}
-  onclick={() => closeModal()}
   onkeydown={(event) => {
     if (event.key === "Escape") closeModal();
   }}
@@ -245,7 +249,8 @@
   <form
     class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-full md:w-2/3 h-fit md:mt-2 m-5 md:m-0"
     onsubmit={handleSubmit}
-    onclick={(event) => event.stopPropagation()}
+    use:clickOutside
+    onclick_outside={() => handleClickOutside()}
   >
     <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
       <div>
