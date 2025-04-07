@@ -102,7 +102,9 @@
   }
 
   function handleClickOutside(event: Event) {
-    closeModal();
+    if (active) {
+      closeModal();
+    }
 	};
 
   /************* utility methods ***************/
