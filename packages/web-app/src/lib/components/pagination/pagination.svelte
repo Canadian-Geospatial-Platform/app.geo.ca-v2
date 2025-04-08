@@ -29,6 +29,7 @@
   import Chevronright from "$lib/components/icons/chevronright.svelte";
   import { page } from '$app/stores';
   import { afterNavigate } from '$app/navigation';
+  import { formatNumber } from '$lib/utils/format-number.ts';
 
   interface Props {
     totalItems?: number;
@@ -105,7 +106,7 @@
       ]}
       onclick={() => handlePageClick(page)}
     >
-      {page}
+      {formatNumber(page)}
     </button>
   {/each}
   <button

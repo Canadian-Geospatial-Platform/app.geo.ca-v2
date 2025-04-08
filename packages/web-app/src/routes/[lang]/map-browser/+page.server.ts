@@ -4,6 +4,7 @@ import { addToMapCart, removeFromMapCart } from '$lib/actions.ts';
 import { getUserData } from '$lib/db/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results.ts';
+import { formatNumber } from '$lib/utils/format-number.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let searchMode = params?.searchMethod == 'classic' ? 'classic' : 'semantic';
@@ -103,6 +104,15 @@ async function getAnalytics(fetch) {
 		parsedAnalytics = await analytics.json();
 	} catch (e) {
 		console.error(e);
+	}
+
+	for (let i = 0; i < parsedAnalytics.Items.length; i++) {
+		let item = parsedAnalytics.Items[i];
+		let total = item?.total;
+		let organization = item?.organization;
+
+		parsedAnalytics.Items[i].total = total ? formatNumber(total) : 'N/A';
+		parsedAnalytics.Items[i].organization = organization ? formatNumber(organization) : 'N/A';
 	}
 
 	return parsedAnalytics?.Items[0] ?? {};

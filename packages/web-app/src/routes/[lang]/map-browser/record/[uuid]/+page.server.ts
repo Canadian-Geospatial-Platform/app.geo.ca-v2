@@ -4,6 +4,7 @@ import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
 import { parseText } from '$lib/utils/parse-text.ts';
+import { formatNumber } from '$lib/utils/format-number.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
     // The "sst/node/config" package dynamically binds resources at runtime.
@@ -57,6 +58,15 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 
     const analyticRes = await fetchAnalytics(params.uuid, lang);
+
+    if (analyticRes['30']) {
+		analyticRes['30'] = formatNumber(analyticRes['30']);
+    }
+
+    if (analyticRes.all) {
+		analyticRes.all = formatNumber(analyticRes.all);
+    }
+
     const related = await fetchRelated(params.uuid);
 
     let item_v2 = record?.features[0];
