@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
 
   const translations = $page.data.t;
-  const similarProductsText = translations?.similarProducts ? translations["similarProducts"] : "Related Products";
+  const similarProductsText = translations?.similarProducts ? translations["similarProducts"] : "Similar products";
 
   const data = $page.data;
   const lang = data.lang;

@@ -8,11 +8,11 @@
   /******************* Translations *******************/
   const translations = $page.data.t;
   const dataResources: string = translations?.dataResources ?
-    translations["dataResources"] : "Data Resources";
+    translations["dataResources"] : "Data resources";
   const advancedMetadata: string = translations?.advancedMetadata ?
-    translations["advancedMetadata"] : "Advanced Metadata";
+    translations["advancedMetadata"] : "Advanced metadata";
   const contactData: string = translations?.contactData ?
-    translations["contactData"] : "Contact Data";
+    translations["contactData"] : "Contact data";
 
   /******************* Data *******************/
   const tabContentArray = [

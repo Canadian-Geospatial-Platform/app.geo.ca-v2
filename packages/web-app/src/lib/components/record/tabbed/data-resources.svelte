@@ -55,22 +55,6 @@
   }
 </script>
 
-<!-- Geocore and HNAP buttons -->
-<div class="flex flex-col sm:flex-row gap-4 pb-2">
-  <button 
-    class="w-full sm:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"
-    on:click={handleDownloadButtonClick}
-  >
-    {downloadMetadataText}
-  </button>
-  <button
-    class="w-full sm:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"
-    on:click={handleViewISO1915ButtonClick}
-  >
-    {viewISO1915Text}
-  </button>
-</div>
-
 {#if dataResourcesList.length > 0}
   <!-- Large screen table -->
   <div class="hidden md:block">
@@ -126,6 +110,22 @@
     {resourcesNotAvailable}
   </div>
 {/if}
+
+<!-- Geocore and HNAP buttons -->
+<div class="flex flex-col sm:flex-row gap-4 pt-2">
+  <button
+    class="w-full sm:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"
+    on:click={handleDownloadButtonClick}
+  >
+    {downloadMetadataText}
+  </button>
+  <button
+    class="w-full sm:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"
+    on:click={handleViewISO1915ButtonClick}
+  >
+    {viewISO1915Text}
+  </button>
+</div>
 
 <style>
   button {

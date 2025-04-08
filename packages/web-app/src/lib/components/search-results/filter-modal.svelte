@@ -105,7 +105,7 @@
     if (active) {
       closeModal();
     }
-	};
+  };
 
   /************* utility methods ***************/
   export function setFiltersFromURL() {

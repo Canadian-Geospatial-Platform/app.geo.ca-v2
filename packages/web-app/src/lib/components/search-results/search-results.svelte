@@ -6,9 +6,9 @@
   /************* Translations ***************/
   const translations = $page.data.t;
 
-  const listViewText = translations?.listView ? translations["listView"] : "List View";
+  const listViewText = translations?.listView ? translations["listView"] : "List view";
   const searchResultsText = translations?.searchResults ?
-    translations["searchResults"] : "Search Results";
+    translations["searchResults"] : "Search results";
   const youMayText = translations?.youMay ? translations["youMay"] : "You may also like";
 
   let resultMessage = $derived($page.data.resultMessage);
