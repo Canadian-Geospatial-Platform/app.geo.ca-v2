@@ -37,15 +37,17 @@
 <div class="space-y-[1.125rem] lg:columns-2">
   {#each organizations.filterList as filterListItem}
     {#if filterListItem.subCategory == 'fed'}
-      <CheckboxCustomized
-        checkboxId={organizations.section + "-" + filterListItem.value}
-        checkboxName={organizations.section + "-" + filterListItem.value}
-        checkboxLabel={filterListItem.label}
-        checked={checkedStates[filterListItem.value] || false}
-        checkedStateChange={
-          (event) => checkedStates[filterListItem.value] = event.target.checked
-        }
-      />
+      <div class="break-inside-avoid">
+        <CheckboxCustomized
+          checkboxId={organizations.section + "-" + filterListItem.value}
+          checkboxName={organizations.section + "-" + filterListItem.value}
+          checkboxLabel={filterListItem.label}
+          checked={checkedStates[filterListItem.value] || false}
+          checkedStateChange={
+            (event) => checkedStates[filterListItem.value] = event.target.checked
+          }
+        />
+      </div>
     {/if}
   {/each}
 </div>
@@ -57,15 +59,17 @@
 <div class="space-y-[1.125rem] lg:columns-2">
   {#each organizations.filterList as filterListItem}
     {#if filterListItem.subCategory == 'prov'}
-      <CheckboxCustomized
-        checkboxId={organizations.section + "-" + filterListItem.value}
-        checkboxName={organizations.section + "-" + filterListItem.value}
-        checkboxLabel={filterListItem.label}
-        checked={checkedStates[filterListItem.value] || false}
-        checkedStateChange={
-          (event) => checkedStates[filterListItem.value] = event.target.checked
-        }
-      />
+      <div class="break-inside-avoid">
+        <CheckboxCustomized
+          checkboxId={organizations.section + "-" + filterListItem.value}
+          checkboxName={organizations.section + "-" + filterListItem.value}
+          checkboxLabel={filterListItem.label}
+          checked={checkedStates[filterListItem.value] || false}
+          checkedStateChange={
+            (event) => checkedStates[filterListItem.value] = event.target.checked
+          }
+        />
+      </div>
     {/if}
   {/each}
 </div>
