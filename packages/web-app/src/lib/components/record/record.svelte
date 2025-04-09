@@ -9,7 +9,7 @@
   import SimilarProducts from './similar-products.svelte';
   import Tabbed from './tabbed/tabbed.svelte';
 
-  const similarProducts = $page.data.related;
+  const similarProducts = $page.data.similar;
 </script>
 
 <MicroData item={$page.data.item_v2} />

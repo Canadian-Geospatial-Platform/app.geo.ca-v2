@@ -73,12 +73,6 @@
   }
 
   function handlePageClick(page: number) {
-    // Go to the top of the page with new page load
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-
     currentPage = page;
     pageChange(page);
   }

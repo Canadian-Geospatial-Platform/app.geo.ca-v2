@@ -86,6 +86,12 @@
   }
 
   function changePage(event: CustomEvent) {
+    // Go to the top of the page with new page load
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
     currentPage = event;
     $page.url.searchParams.set('page-number', `${currentPage - 1}`);
     $page.url.searchParams.set('results-per-page', `${itemsPerPage}`);

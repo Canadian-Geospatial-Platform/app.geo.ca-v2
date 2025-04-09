@@ -26,11 +26,38 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	}
 
 	// @ts-ignore
-	const fetchRelated = async (id) => {
+	const fetchSimilar = async (id) => {
 		try {
 			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
 			const parsedCollectionsResponse = await collectionsResponse.json();
-			const related = parsedCollectionsResponse?.body?.Items?.[0]?.similarity ?? [];
+			const similar = parsedCollectionsResponse?.body?.Items?.[0]?.similarity ?? [];
+			return similar;
+		} catch (e) {
+			console.error('Error fetching similar items:', e);
+			return []; // Return empty array if fetch fails
+		}
+	};
+	
+	const fetchRelated = async (id) => {
+		try {
+			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
+			const parsedCollectionsResponse = await collectionsResponse.json();
+			const related = [];
+
+			if (parsedCollectionsResponse.parent) {
+				related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
+			}
+			if (parsedCollectionsResponse.sibling_count > 0) {
+				parsedCollectionsResponse.sibling.forEach((s) => {
+					related.push({ ...s, ...{ type: 'member' } });
+				});
+			}
+			if (parsedCollectionsResponse.child_count > 0) {
+				parsedCollectionsResponse.child.forEach((s) => {
+					related.push({ ...s, ...{ type: 'member' } });
+				});
+			}
+
 			return related;
 		} catch (e) {
 			console.error('Error fetching related items:', e);
@@ -67,6 +94,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		analyticRes.all = formatNumber(analyticRes.all);
     }
 
+    const similar = await fetchSimilar(params.uuid);
     const related = await fetchRelated(params.uuid);
 
     let item_v2 = record?.features[0];
@@ -103,6 +131,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		lang: params.lang,
 		uuid: params.uuid,
 		test: 'test',
+		similar: similar,
 		related: related,
 		analyticRes: analyticRes,
 		t: t,

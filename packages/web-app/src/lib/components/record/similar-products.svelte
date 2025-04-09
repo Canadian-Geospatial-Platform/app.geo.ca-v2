@@ -2,12 +2,12 @@
   import { page } from '$app/stores';
 
   const translations = $page.data.t;
-  const similarProductsText = translations?.similarProducts ? translations["similarProducts"] : "Similar products";
+  const similarProductsText = translations?.similarProducts ? translations["similarProducts"] : "Similar records";
 
   const data = $page.data;
   const lang = data.lang;
   const urlPrefix = $page.url.origin + '/' + lang + '/map-browser/record/';
-  const similarProducts = data.related;
+  const similarProducts = data.similar;
 
 </script>
 
