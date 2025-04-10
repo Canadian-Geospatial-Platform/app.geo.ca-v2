@@ -6,7 +6,7 @@
   const dateModifiedText: string = lang == 'fr-ca' ? 'Date modifiée' : 'Date Modified';
 
   //TODO: Date should not be hardcoded
-  const dateModified: string = '2024-12-03';
+  const dateModified: string = '2025-04-07';
 </script>
 
 <div

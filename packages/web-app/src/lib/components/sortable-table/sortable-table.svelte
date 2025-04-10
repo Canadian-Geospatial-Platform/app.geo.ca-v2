@@ -14,9 +14,20 @@
     tableLabels: any;
     // Requires a url attriute in the tableContent array
     clickableRows: boolean;
+    // currentPage and itemsPerPage are only needed when paginated is true
+    paginated: boolean;
+    currentPage: number;
+    itemsPerPage: number;
   }
 
-  let { tableContent, tableLabels, clickableRows }: Props = $props();
+  let {
+    tableContent,
+    tableLabels,
+    clickableRows,
+    paginated = false,
+    currentPage = 0,
+    itemsPerPage = 0,
+  }: Props = $props();
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -30,6 +41,15 @@
   let sortDirection: sortDirectionState = $state(0);
   // Unsorted by default
   let sortedTableContent = $state(tableContent);
+
+  let currentPageItems = $derived(
+    sortedTableContent.slice(
+      ((currentPage - 1) * itemsPerPage),
+      ((currentPage) * itemsPerPage)
+    )
+  );
+
+  let visibleRows = $derived(paginated ? currentPageItems : sortedTableContent);
 
   function handleSortButtonClick(sortLable: string) {
     if (sortLable == sortColumn) {
@@ -73,9 +93,9 @@
               {tableLabels[labelTranslation]}
               <button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
                 {#if sortDirection == 1 && labelTranslation == sortColumn}
-                  <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
-                {:else if sortDirection == 2 && labelTranslation == sortColumn}
                   <SortUp classes={"inline w-4 h-4 text-custom-16"}/>
+                {:else if sortDirection == 2 && labelTranslation == sortColumn}
+                  <SortDown classes={"inline w-4 h-4 text-custom-16"}/>
                 {:else}
                   <SortInactive classes={"inline w-4 h-4"}/>
                 {/if}
@@ -86,7 +106,7 @@
       </tr>
     </thead>
     <tbody>
-      {#each sortedTableContent as row}
+      {#each visibleRows as row}
         {#if clickableRows && row?.url}
           <!--
             Adding a tab index ensures that each clickable row can

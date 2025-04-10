@@ -3,7 +3,7 @@
 
   const lang = $page.data.lang;
   const title = lang == 'fr-ca' ?
-    "Nous apprécions vos commentaires" : "We Value Your Feedback";
+    "Nous apprécions vos commentaires" : "We value your feedback";
 </script>
 
 <div class="font-custom-style-body-1 px-5 md:px-0">

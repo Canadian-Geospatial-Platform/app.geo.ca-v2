@@ -4,10 +4,16 @@ import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
 import { parseText } from '$lib/utils/parse-text.ts';
-
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
+import { formatNumber } from '$lib/utils/format-number.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
+    // The "sst/node/config" package dynamically binds resources at runtime.
+    // Importing it at the top level would cause build-time errors because SST resources
+    // are not available during the build process. To avoid this, we import it inside
+    // the `load()` function so it's only accessed when the server is running.
+    const config = await import("sst/node/config");
+	const GEOCORE_API_DOMAIN = config.Config.GEOCORE_API_DOMAIN;
+
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	let record;
@@ -20,11 +26,24 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	}
 
 	// @ts-ignore
+	const fetchSimilar = async (id) => {
+		try {
+			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
+			const parsedCollectionsResponse = await collectionsResponse.json();
+			const similar = parsedCollectionsResponse?.body?.Items?.[0]?.similarity ?? [];
+			return similar;
+		} catch (e) {
+			console.error('Error fetching similar items:', e);
+			return []; // Return empty array if fetch fails
+		}
+	};
+	
 	const fetchRelated = async (id) => {
 		try {
 			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 			const parsedCollectionsResponse = await collectionsResponse.json();
 			const related = [];
+
 			if (parsedCollectionsResponse.parent) {
 				related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
 			}
@@ -38,6 +57,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 					related.push({ ...s, ...{ type: 'member' } });
 				});
 			}
+
 			return related;
 		} catch (e) {
 			console.error('Error fetching related items:', e);
@@ -65,6 +85,16 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 
     const analyticRes = await fetchAnalytics(params.uuid, lang);
+
+    if (analyticRes['30']) {
+		analyticRes['30'] = formatNumber(analyticRes['30']);
+    }
+
+    if (analyticRes.all) {
+		analyticRes.all = formatNumber(analyticRes.all);
+    }
+
+    const similar = await fetchSimilar(params.uuid);
     const related = await fetchRelated(params.uuid);
 
     let item_v2 = record?.features[0];
@@ -101,6 +131,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		lang: params.lang,
 		uuid: params.uuid,
 		test: 'test',
+		similar: similar,
 		related: related,
 		analyticRes: analyticRes,
 		t: t,

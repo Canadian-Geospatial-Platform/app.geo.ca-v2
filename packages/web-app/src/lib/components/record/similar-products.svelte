@@ -2,12 +2,12 @@
   import { page } from '$app/stores';
 
   const translations = $page.data.t;
-  const similarProductsText = translations?.similarProducts ? translations["similarProducts"] : "Similar Products";
+  const similarProductsText = translations?.similarProducts ? translations["similarProducts"] : "Similar records";
 
   const data = $page.data;
   const lang = data.lang;
   const urlPrefix = $page.url.origin + '/' + lang + '/map-browser/record/';
-  const similarProducts = data.related;
+  const similarProducts = data.similar;
 
 </script>
 
@@ -18,8 +18,8 @@
   <ul class="flex flex-col space-y-4 list-outside py-2 list-none sm:list-disc sm:ml-[1.125rem]">
     {#each similarProducts as product}
       <li data-sveltekit-reload>
-        <a class="font-custom-style-body-2" href={urlPrefix + product.id}>
-          {lang == 'fr-ca' ? product.description_fr : product.description_en}
+        <a class="font-custom-style-body-2" href={urlPrefix + product.features_properties_id}>
+          {lang == 'fr-ca' ? product.features_properties_title_fr : product.features_properties_title_en}
         </a>
       </li>
     {/each}

@@ -10,6 +10,7 @@ import enSortOptions from '$lib/components/search-results/i18n/en/sort-options.j
 import frSortOptions from '$lib/components/search-results/i18n/fr/sort-options.json';
 import enSortOptionsSemantic from '$lib/components/search-results/i18n/en/sort-options-semantic.json';
 import frSortOptionsSemantic from '$lib/components/search-results/i18n/fr/sort-options-semantic.json';
+import { formatNumber } from '$lib/utils/format-number.ts';
 
 export const load: PageLoad = ({ params, data, url }) => {
   let searchMode = data.searchMode ? data.searchMode : 'semantic';
@@ -65,12 +66,17 @@ function parsePageMessage(lang, url, totalResults) {
   let perPage = !isNaN(perPageParam) ? perPageParam : 10;
   let totalPages = Math.ceil(totalResults / perPage);
 
+  totalResults = formatNumber(totalResults);
+  pageNumber = formatNumber(pageNumber);
+  perPage = formatNumber(perPage);
+  totalPages = formatNumber(totalPages);
+
   if (lang == 'fr-ca') {
-    datasetsText = totalResults == 1 ? 'Ensemble de données' : 'Ensembles de données';
+    datasetsText = totalResults == '1' ? 'Ensemble de données' : 'Ensembles de données';
     pageOfText = 'Page ' + pageNumber + ' sur ' + totalPages;
     message = totalResults + ' ' + datasetsText + ', ' + pageOfText;
   } else {
-    datasetsText = totalResults == 1 ? 'Dataset' : 'Datasets';
+    datasetsText = totalResults == '1' ? 'Dataset' : 'Datasets';
     pageOfText = 'Page ' + pageNumber + ' of ' + totalPages;
     message = totalResults + ' ' + datasetsText + ', ' + pageOfText;
   }
@@ -84,8 +90,10 @@ function parseResultMessage(lang, url, totalResults) {
   let searchParams = url.searchParams;
   let searchTerm = searchParams.get('search-terms');
 
+  totalResults = formatNumber(totalResults);
+
   if (lang == 'fr-ca') {
-    datasetsText = totalResults == 1 ? 'ensemble de données' : 'ensembles de données';
+    datasetsText = totalResults == '1' ? 'ensemble de données' : 'ensembles de données';
     if (searchTerm) {
       message = "Nous avons trouvé " + totalResults + " " + datasetsText + " pour le mot-clé « "
         + searchTerm + " ». Vous pouvez continuer à explorer les résultats de recherche dans la liste ci-dessous."
@@ -95,7 +103,7 @@ function parseResultMessage(lang, url, totalResults) {
         + "filtres pour certaines options avancées."
     }
   } else {
-    datasetsText = totalResults == 1 ? 'dataset' : 'datasets';
+    datasetsText = totalResults == '1' ? 'dataset' : 'datasets';
     if (searchTerm) {
       message = "We have found " + totalResults + " " + datasetsText + " for the keyword \""
         + searchTerm + "\". You can continue exploring the search results in the list below."

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import {clickOutside} from '$lib/components/header/clickOutside';
-  import { toggleScroll } from "$lib/components/component-utils/toggleScroll";
+  import { clickOutside } from '$lib/components/component-utils/clickOutside';
+  import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
   import Navdropdown from '$lib/components/header/navdropdown.svelte';
   import Chevronup from '$lib/components/icons/chevronup.svelte';
   import Chevrondown from '$lib/components/icons/chevrondown.svelte';

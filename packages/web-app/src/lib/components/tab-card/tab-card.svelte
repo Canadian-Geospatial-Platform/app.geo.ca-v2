@@ -54,7 +54,7 @@
       <!-------------- Tabs for large screens -------------->
       {#each tabContentArray as tab}
         <button
-          class={["hidden lg:flex items-center h-9 px-5 font-custom-style-body-3",
+          class={["hidden lg:flex items-center min-h-9 px-5 font-custom-style-body-3",
             "bg-custom-5 border-b-[0.1875rem] border-custom-16",
             (tab.value == activeTabId) && "active"
           ]}

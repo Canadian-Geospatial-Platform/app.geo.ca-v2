@@ -40,9 +40,9 @@ export default {
 				'tabbed-title': 'calc(100% - 135px)',
 			},
 			fontFamily: {
-				'open-sans': ['"Open Sans"'],
-				'noto-sans': ['"Noto Sans"'],
-				'lato': ['"Lato"']
+				'open-sans': ['"Open Sans"', 'Helvetica', 'Arial', 'sans-serif'],
+				'noto-sans': ['"Noto Sans"', 'Helvetica', 'Arial', 'sans-serif'],
+				'lato': ['"Lato"', 'Helvetica', 'Arial', 'sans-serif']
 			},
 		}
 	},
