@@ -11,6 +11,9 @@
 
   /******************* Translations *******************/
   const translations = $page.data.t;
+  const relatedProductsNotAvailable = translations?.relatedProductsNotAvailable ?
+    translations["relatedProductsNotAvailable"] :
+    "The related products for this record are unavailable.";
 
   // Row labels
   const nameText = translations?.name ? translations["name"] : "Name";
@@ -47,22 +50,27 @@
     currentPage = event;
   }
 </script>
-
-<SortableTable
-  tableContent={tableDataArray}
-  tableLabels={tableLabels}
-  clickableRows={true}
-  paginated={true}
-  currentPage={currentPage}
-  itemsPerPage={itemsPerPage}
-/>
-{#if tableDataArray.length > itemsPerPage}
-  <div class="flex justify-end w-full">
-    <Pagination
-      totalItems={total}
-      itemsPerPage={itemsPerPage}
-      bind:currentPage={currentPage}
-      pageChange={changePage}
-    />
+{#if tableDataArray.length == 0}
+  <div>
+    {relatedProductsNotAvailable}
   </div>
+{:else}
+  <SortableTable
+    tableContent={tableDataArray}
+    tableLabels={tableLabels}
+    clickableRows={true}
+    paginated={true}
+    currentPage={currentPage}
+    itemsPerPage={itemsPerPage}
+  />
+  {#if tableDataArray.length > itemsPerPage}
+    <div class="flex justify-end w-full">
+      <Pagination
+        totalItems={total}
+        itemsPerPage={itemsPerPage}
+        bind:currentPage={currentPage}
+        pageChange={changePage}
+      />
+    </div>
+  {/if}
 {/if}
