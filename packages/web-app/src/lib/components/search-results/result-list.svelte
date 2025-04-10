@@ -4,7 +4,7 @@
   import { tick } from 'svelte';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
-  import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
+  import ResultListSkeleton from '$lib/components/loading-mask/result-list-skeleton.svelte';
   import Map from '$lib/components/map/map.svelte';
   import Pagination from '$lib/components/pagination/pagination.svelte';
   import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
@@ -145,100 +145,101 @@
 
 <Card>
   {#if $navigating}
-    <LoadingMask classes="absolute top-0 right-0 pt-28 min-h-80"/>
-  {/if}
-  <!-- Header -->
-  <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
-    <p class="font-custom-style-body-6">
-      {pageMessage}
-    </p>
-    <div class="flex flex-row gap-3 md:gap-5">
-      <div>
-        <SelectCustomized
-          selectType='resultList'
-          optionsData={sortBySelectData}
-          bind:selected={selected}
-          selectedChange={changeSort}
-        />
+    <ResultListSkeleton numRecords={results.length} />
+  {:else}
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
+      <p class="font-custom-style-body-6">
+        {pageMessage}
+      </p>
+      <div class="flex flex-row gap-3 md:gap-5">
+        <div>
+          <SelectCustomized
+            selectType='resultList'
+            optionsData={sortBySelectData}
+            bind:selected={selected}
+            selectedChange={changeSort}
+          />
+        </div>
+        {#if userId}
+          <!-- TODO: Add a method for this button -->
+          <button class="button-3">{saveSearchParamsText}</button>
+        {/if}
       </div>
-      {#if userId}
-        <!-- TODO: Add a method for this button -->
-        <button class="button-3">{saveSearchParamsText}</button>
-      {/if}
     </div>
-  </div>
-  <!-- List -->
-  {#each results as result, index}
-    <div class="bg-custom-1 px-5 py-4">
-      <Accordion bind:this={accordionComponents[index]}>
-        {#snippet accordionTitle()}
-          <div>
-            <a
-              href={hrefPrefix + result.id}
-              class="uppercase underline font-custom-style-header-2"
-            >
-              {result.title}
-            </a>
-            <div class="line-clamp-2 pt-1">
-              <!-- Remove new line characters -->
-              {result.description.replaceAll('\\n', '')}
-            </div>
-          </div>
-        {/snippet}
-        {#snippet accordionContent()}
-          <div  class="mt-5">
-
-            <!-- Record Details -->
-            <div class="mb-5">
-              <p>
-                <span class="font-semibold">{organizationText}: </span>
-                {lang == 'fr' ?
-                    result.contact[0].organisation.fr.replaceAll(';', '; ') :
-                    result.contact[0].organisation.en.replaceAll(';', '; ')}
-              </p>
-              <p class="mt-2">
-                <span class="font-semibold">{formatText}: </span>
-                {#each getFormats(result) as format, i}
-                  <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
-                {/each}
-              </p>
-            </div>
-
-            <!-- Map -->
-            <!-- Note: We will only show a map for screens larger than 640px -->
-            {#if result.coordinates}
-              <div class="hidden sm:flex">
-                <Map
-                  coordinates={result.coordinates} id={result.id}
-                  dynamic={true} mapType={mapType} footer={false}
-                />
+    <!-- List -->
+    {#each results as result, index}
+      <div class="bg-custom-1 px-5 py-4">
+        <Accordion bind:this={accordionComponents[index]}>
+          {#snippet accordionTitle()}
+            <div>
+              <a
+                href={hrefPrefix + result.id}
+                class="uppercase underline font-custom-style-header-2"
+              >
+                {result.title}
+              </a>
+              <div class="line-clamp-2 pt-1">
+                <!-- Remove new line characters -->
+                {result.description.replaceAll('\\n', '')}
               </div>
-              <div class="sm:hidden">
-                <p class="md:mx-0">
-                  {windowTooSmall}
+            </div>
+          {/snippet}
+          {#snippet accordionContent()}
+            <div  class="mt-5">
+
+              <!-- Record Details -->
+              <div class="mb-5">
+                <p>
+                  <span class="font-semibold">{organizationText}: </span>
+                  {lang == 'fr' ?
+                      result.contact[0].organisation.fr.replaceAll(';', '; ') :
+                      result.contact[0].organisation.en.replaceAll(';', '; ')}
                 </p>
-                <div class="mt-5 bg-[url('/map-not-available.png')] bg-cover max-w-full h-60">
-                  <div class="bg-black/35 w-full h-full flex items-center justify-center">
-                    <NotVisible classes="text-custom-1 h-32"/>
+                <p class="mt-2">
+                  <span class="font-semibold">{formatText}: </span>
+                  {#each getFormats(result) as format, i}
+                    <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
+                  {/each}
+                </p>
+              </div>
+
+              <!-- Map -->
+              <!-- Note: We will only show a map for screens larger than 640px -->
+              {#if result.coordinates}
+                <div class="hidden sm:flex">
+                  <Map
+                    coordinates={result.coordinates} id={result.id}
+                    dynamic={true} mapType={mapType} footer={false}
+                  />
+                </div>
+                <div class="sm:hidden">
+                  <p class="md:mx-0">
+                    {windowTooSmall}
+                  </p>
+                  <div class="mt-5 bg-[url('/map-not-available.png')] bg-cover max-w-full h-60">
+                    <div class="bg-black/35 w-full h-full flex items-center justify-center">
+                      <NotVisible classes="text-custom-1 h-32"/>
+                    </div>
                   </div>
                 </div>
-              </div>
-            {:else}
-              {mapNotAvailableText}
-            {/if}
+              {:else}
+                {mapNotAvailableText}
+              {/if}
 
-          </div>
-        {/snippet}
-      </Accordion>
+            </div>
+          {/snippet}
+        </Accordion>
+      </div>
+    {/each}
+    <!-- Pagination -->
+    <div class="flex justify-end w-full">
+      <Pagination
+        totalItems={total}
+        {itemsPerPage}
+        bind:currentPage={currentPage}
+        pageChange={changePage}
+      />
     </div>
-  {/each}
-  <!-- Pagination -->
-  <div class="flex justify-end w-full">
-    <Pagination
-      totalItems={total}
-      {itemsPerPage}
-      bind:currentPage={currentPage}
-      pageChange={changePage}
-    />
-  </div>
+  {/if}
 </Card>
