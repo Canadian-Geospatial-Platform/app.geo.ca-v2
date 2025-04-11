@@ -15,7 +15,6 @@
 
   let { children }: Props = $props();
   let showLeavingSitePopup = $state(false);
-
   const lang = $page.data.lang?.slice(0, 2) ?? 'en';
 
   // Set the language of the page. This needs to be done using onMount to
@@ -43,8 +42,9 @@
         // delay navigation to allow for users to read the message
         event.preventDefault();
         setTimeout(() => {
+          showLeavingSitePopup = false;
           window.location.href = href;
-        }, 1000);
+        }, 1800);
       }
     };
 

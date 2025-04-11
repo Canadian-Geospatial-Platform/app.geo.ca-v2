@@ -26,7 +26,7 @@
           </div>
           <!-- Expand button placeholder -->
           <div class="col-span-1 col-start-12 self-center">
-            <div class="mt-1 mr-3 h-6 md:h-9 w-6 md:w-9 div-fill" />
+            <div class="mt-1 mr-3 h-6 md:h-9 w-6 md:w-9 div-fill"></div>
           </div>
         </div>
       </div>
