@@ -44,7 +44,7 @@
         setTimeout(() => {
           showLeavingSitePopup = false;
           window.location.href = href;
-        }, 1800);
+        }, 2000);
       }
     };
 
