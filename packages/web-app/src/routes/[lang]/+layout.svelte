@@ -32,7 +32,7 @@
 
       const href = anchor.href;
       const isExternal = href
-        && !href.startsWith($page.url.origin)
+        && !href.includes($page.url.host)
         && !href.includes('geo.ca')
         && !href.startsWith('mailto');
 
