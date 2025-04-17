@@ -177,11 +177,14 @@
               href={hrefPrefix + result.id}
               class="uppercase underline font-custom-style-header-2"
             >
-              {result.title}
+              {lang == 'fr' ? result.title_fr : result.title_en}
             </a>
             <div class="line-clamp-2 pt-1">
               <!-- Remove new line characters -->
-              {result.description.replaceAll('\\n', '')}
+              {lang == 'fr' ?
+                result.description_fr.replaceAll('\\n', '') :
+                result.description_en.replaceAll('\\n', '')
+              }
             </div>
           </div>
         {/snippet}

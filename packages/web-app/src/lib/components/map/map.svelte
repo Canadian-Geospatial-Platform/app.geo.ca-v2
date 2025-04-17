@@ -253,7 +253,7 @@
       // Add bounding box when no map is available
       if (!geoviewLayerConfig) {
         let bbox = getBbox(coordinates);
-        cgpv.api.maps[mapId]?.layer.geometry.addPolygon(
+        cgpv.api.getMapViewer(mapId)?.layer.geometry.addPolygon(
           [bbox],
           {
             style: {
