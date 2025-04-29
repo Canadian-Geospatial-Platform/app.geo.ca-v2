@@ -4,7 +4,7 @@
   import { tick } from 'svelte';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
-  import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
+  import ResultListSkeleton from '$lib/components/loading-mask/result-list-skeleton.svelte';
   import Map from '$lib/components/map/map.svelte';
   import Pagination from '$lib/components/pagination/pagination.svelte';
   import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
@@ -145,8 +145,8 @@
 
 <Card>
   {#if $navigating}
-    <LoadingMask classes="absolute top-0 right-0 pt-28 min-h-80"/>
-  {/if}
+    <ResultListSkeleton numRecords={results.length} />
+  {:else}
   <!-- Header -->
   <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
     <p class="font-custom-style-body-6">
@@ -177,11 +177,14 @@
               href={hrefPrefix + result.id}
               class="uppercase underline font-custom-style-header-2"
             >
-              {result.title}
+              {lang == 'fr' ? result.title_fr : result.title_en}
             </a>
             <div class="line-clamp-2 pt-1">
               <!-- Remove new line characters -->
-              {result.description.replaceAll('\\n', '')}
+              {lang == 'fr' ?
+                result.description_fr.replaceAll('\\n', '') :
+                result.description_en.replaceAll('\\n', '')
+              }
             </div>
           </div>
         {/snippet}
@@ -241,4 +244,5 @@
       pageChange={changePage}
     />
   </div>
+  {/if}
 </Card>

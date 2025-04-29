@@ -157,7 +157,7 @@ function mapSemanticSearchResults(searchParams, lang) {
 	  west + "," + south + "," + east + "," + north : "";
 	let ret = {
 		// Revisit which search method is better after user testing
-	    method: 'HybridSearch', // 'SemanticSearch',
+	    method: 'SemanticSearch', // 'HybridSearch',
 	    q: getKeyword(searchParams),
 	    bbox: bbox,
 	    relation: searchParams.get('relation') ?? 'intersects',

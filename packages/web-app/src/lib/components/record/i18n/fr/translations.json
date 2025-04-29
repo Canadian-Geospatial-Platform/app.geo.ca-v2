@@ -30,6 +30,7 @@
   "organization": "Organisation",
   "projection": "Projection",
   "relatedProducts": "Produits connexes",
+  "relatedProductsNotAvailable": "Les produits connexes pour cet enregistrement ne sont pas disponibles.",
   "resources": "Ressources",
   "resourcesNotAvailable": "Les ressources de données pour cet enregistrement ne sont pas disponibles.",
   "role": "Rôle",

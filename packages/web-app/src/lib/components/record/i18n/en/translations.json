@@ -30,6 +30,7 @@
   "organization": "Organization",
   "projection": "Projection",
   "relatedProducts": "Related products",
+  "relatedProductsNotAvailable": "The related products for this record are unavailable.",
   "resources": "Resources",
   "resourcesNotAvailable": "The data resources for this record are unavailable.",
   "role": "Role",
