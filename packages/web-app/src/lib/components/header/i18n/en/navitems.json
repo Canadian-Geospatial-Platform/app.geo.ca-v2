@@ -71,6 +71,10 @@
       }
     ]
   },
+  "myMap": {
+    "title": "MyMap",
+    "href": "/en-ca/my-map"
+  },
   "lang": {
     "title": "Français",
     "href": "/fr-ca/map-browser"

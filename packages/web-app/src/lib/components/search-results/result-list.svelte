@@ -1,14 +1,16 @@
 <script lang="ts">
   import { page, navigating } from '$app/stores';
   import { afterNavigate, goto } from '$app/navigation';
-  import { tick } from 'svelte';
+  import { tick, onMount } from 'svelte';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
   import ResultListSkeleton from '$lib/components/loading-mask/result-list-skeleton.svelte';
   import Map from '$lib/components/map/map.svelte';
   import Pagination from '$lib/components/pagination/pagination.svelte';
   import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
-  import NotVisible from "$lib/components/icons/not-visible.svelte";
+  import NotVisible from '$lib/components/icons/not-visible.svelte';
+  import Heart from '$lib/components/icons/heart.svelte';
+  import HeartFilled from '$lib/components/icons/heart-filled.svelte';
 
   /************* User Data ***************/
   const userId = $page.data.userData?.uuid;
@@ -126,6 +128,47 @@
     return filteredFormats;
   }
 
+  /****************** MyMap Resources ******************/
+  let favouriteRecordList = $state($page.data?.userData?.mapCart ? [...$page.data?.userData?.mapCart] : []);
+
+  async function handleFavouriteClick(recordId) {
+
+    if (!favouriteRecordList.includes(recordId)) {
+      // Add to list of ids
+      favouriteRecordList.push(recordId);
+
+      if ($page.data.signedIn) {
+        // TODO: Add item to the mapCart when login system has been approved
+      }
+    } else {
+      // Remove from list of ids
+      let index = favouriteRecordList.indexOf(recordId);
+      if (index > -1) {
+        favouriteRecordList.splice(index, 1);
+      }
+
+      if ($page.data.signedIn) {
+        // TODO: Remove item from the mapCart when login system has been approved
+      }
+    }
+
+    localStorage.setItem("MyMapResources", favouriteRecordList);
+  }
+
+  // Local storage is only accessible from the client side, so we need to get
+  // the MyMapResources array inside onMount
+  onMount(() => {
+    if (!$page.data.signedIn) {
+      let stored = localStorage.getItem("MyMapResources");
+
+      if (stored) {
+        // local storage is always a string, so we need to convert to an array
+        stored = stored.split(",");
+        favouriteRecordList = [...stored];
+      }
+    }
+  });
+
   /****************** Map ******************/
   let mapType = 'resultList';
   let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
@@ -172,26 +215,43 @@
     <div class="bg-custom-1 px-5 py-4">
       <Accordion bind:this={accordionComponents[index]}>
         {#snippet accordionTitle()}
-          <div>
-            <a
-              href={hrefPrefix + result.id}
-              class="uppercase underline font-custom-style-header-2"
-            >
-              {lang == 'fr' ? result.title_fr : result.title_en}
-            </a>
-            <div class="line-clamp-2 pt-1">
-              <!-- Remove new line characters -->
-              {lang == 'fr' ?
-                result.description_fr.replaceAll('\\n', '') :
-                result.description_en.replaceAll('\\n', '')
-              }
+          <div class="sm:flex">
+            <!------------- Record info ------------->
+            <div class="grow">
+              <a
+                href={hrefPrefix + result.id}
+                class="uppercase underline font-custom-style-header-2"
+              >
+                {lang == 'fr' ? result.title_fr : result.title_en}
+              </a>
+              <div class="line-clamp-2 pt-1">
+                <!-- Remove new line characters -->
+                {lang == 'fr' ?
+                  result.description_fr.replaceAll('\\n', '') :
+                  result.description_en.replaceAll('\\n', '')
+                }
+              </div>
             </div>
+
+            <!------------- Favourites button ------------->
+            <button
+              class="dont-open text-custom-16 self-center p-2 w-fit border border-custom-16
+                rounded-full shadow-[0_0.1875rem_0.375rem_#00000029] mt-2 sm:mt-0 sm:ml-6 sm:mr-1"
+              onclick={() => handleFavouriteClick(result.id)}
+            >
+              {#if favouriteRecordList.includes(result.id)}
+                <HeartFilled classes="h-6" />
+              {:else}
+                <Heart classes="h-6" />
+              {/if}
+              <!---->
+            </button>
           </div>
         {/snippet}
         {#snippet accordionContent()}
           <div  class="mt-5">
 
-            <!-- Record Details -->
+            <!------------- Record Details ------------->
             <div class="mb-5">
               <p>
                 <span class="font-semibold">{organizationText}: </span>
@@ -207,7 +267,7 @@
               </p>
             </div>
 
-            <!-- Map -->
+            <!------------- Map ------------->
             <!-- Note: We will only show a map for screens larger than 640px -->
             {#if result.coordinates}
               <div class="hidden sm:flex">
@@ -235,7 +295,7 @@
       </Accordion>
     </div>
   {/each}
-  <!-- Pagination -->
+  <!------------- Pagination ------------->
   <div class="flex justify-end w-full">
     <Pagination
       totalItems={total}
