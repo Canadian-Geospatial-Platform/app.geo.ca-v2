@@ -64,6 +64,12 @@
     await tick();
 
     try {
+      // Destroy the old map if it exists. This ensures that when the map is toggled
+      // on and off multiple time, it always has visible layers.
+      if (cgpv.api.hasMapViewer(mapId)) {
+        await cgpv.api.deleteMapViewer(mapId, false)
+      }
+
       // Build the map from the config
       await cgpv.api.createMapFromConfig(
         mapId,
