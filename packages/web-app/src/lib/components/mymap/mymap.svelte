@@ -187,7 +187,7 @@
 
   {:else if mapToggle}
     <!-- Map loading mask -->
-    <div class="animate-pulse bg-custom-6 w-full h-[32rem]" />
+    <div class="animate-pulse bg-custom-6 w-full h-[32rem]"></div>
   {:else if !mapToggle}
     <!-- Table loading skeleton -->
     <MyMapListSkeleton numRecords={6} />
