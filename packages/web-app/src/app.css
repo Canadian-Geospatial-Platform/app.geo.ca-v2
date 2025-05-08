@@ -74,6 +74,8 @@
 
 .button-5 {
 	@apply bg-custom-16;
+	@apply border-custom-16;
+	@apply border-2;
 	@apply rounded;
 	@apply px-6;
 	@apply py-2;

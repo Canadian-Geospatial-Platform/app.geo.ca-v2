@@ -108,7 +108,7 @@
 
       /*********** Initialize Map and Polygon ***********/
 
-      const map = cgpv.api.maps[mapId];
+      const map = cgpv.api.getMapViewer(mapId);
       const layerGeometry = map?.layer.geometry;
       const bboxId = 'bbox-outline';
       const groupKey = 'bbox';

@@ -122,7 +122,15 @@
       </a>
     {/if}
   {:else if linkData?.href}
-    <a class="nav-link" href={linkData["href"]} onclick={dispatchDropDownClick}>
+    <a
+      class="nav-link"
+      href={linkData["href"]}
+      onclick={() => {
+        if (orientation === "vertical") {
+          dispatchDropDownClick();
+        }
+      }
+    }>
       {linkData.title}
     </a>
   {/if}

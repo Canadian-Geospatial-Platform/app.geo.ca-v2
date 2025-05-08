@@ -8,6 +8,8 @@
     checkboxName: string;
     checkboxLabel: string;
     checked?: boolean;
+    linkedLabel?: boolean;
+    link?: string;
     checkedStateChange: (arg: Event) => void;
   }
 
@@ -16,6 +18,8 @@
     checkboxName,
     checkboxLabel,
     checked = $bindable(false),
+    linkedLabel = false,
+    link = "",
     checkedStateChange
   }: Props = $props();
 
@@ -32,7 +36,13 @@
     onchange={handleCheckboxClick}
   />
   <label for={checkboxId}>
-    {checkboxLabel}
+    {#if linkedLabel}
+      <a class="inline" href={link}>
+        {checkboxLabel}
+      </a>
+    {:else}
+      {checkboxLabel}
+    {/if}
   </label>
   <Checkmark
     classes="absolute h-4 mt-1.5 ml-1.5 hidden peer-checked:block

@@ -1,0 +1,10 @@
+{
+  "description": "Here are the resources you've selected. To see them all on a single map, use the <span class='font-semibold'>Map view</span> toggle above. To remove a resource from this list, check the box next to its name and click <span class='font-semibold'>Remove selected</span> at the bottom.",
+  "findAResource": "Find a resource",
+  "mapView": "Map View",
+  "removeSelected": "Remove selected",
+  "resourceId": "Resource id",
+  "resourceListEmpty": "The resource list is empty.",
+  "resourceName": "Resource name",
+  "title": "MyMap"
+}

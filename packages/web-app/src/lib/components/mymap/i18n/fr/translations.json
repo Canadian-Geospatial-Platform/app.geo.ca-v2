@@ -1,0 +1,10 @@
+{
+  "description": "Voici les ressources que vous avez sélectionnées. Pour les afficher toutes sur une seule carte, utilisez le bouton <span class='font-semibold'>Vue cartographique</span> ci-dessus. Pour retirer une ressource de la liste, cochez la case à côté de son nom, puis cliquez sur <span class='font-semibold'>Retirer la sélection</span> en bas de la page.",
+  "findAResource": "Trouver une ressource",
+  "mapView": "Vue cartographique",
+  "removeSelected": "Retirer la sélection",
+  "resourceId": "Id ressource",
+  "resourceListEmpty": "La liste des ressources est vide.",
+  "resourceName": "Nom ressource",
+  "title": "MaCarte"
+}
