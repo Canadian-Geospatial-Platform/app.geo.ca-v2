@@ -31,7 +31,15 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	return {
 		lang: params.lang,
-		t_title: params.lang == 'en-ca' ? 'Favorites' : 'Favoris',
+		t_title_1: {
+			text:
+				params.lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+			href: url.origin + '/' + params.lang + '/map-browser'
+		},
+		t_title_2: {
+			text: params.lang == 'en-ca' ? 'MyMap' : 'MaCarte',
+			href: url.href
+		},
 		results: sanitizedResults,
 		userData: userData.Item
 	};

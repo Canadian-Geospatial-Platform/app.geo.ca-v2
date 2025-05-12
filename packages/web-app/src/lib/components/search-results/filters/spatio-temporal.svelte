@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import CheckboxCustomized from '$lib/components/search-results/checkbox-customized.svelte';
+  import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
   import DateRange from '$lib/components/search-results/filters/date-range.svelte';
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
 	import BoundingBox from './bounding-box.svelte';
