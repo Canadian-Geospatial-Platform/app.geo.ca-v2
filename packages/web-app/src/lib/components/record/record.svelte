@@ -6,10 +6,10 @@
 	import Metadata from './metadata.svelte';
   import MapContainer from './map-container.svelte';
   import Keywords from './keywords.svelte';
-  import SimilarProducts from './similar-products.svelte';
+  import SimilarRecords from './similar-records.svelte';
   import Tabbed from './tabbed/tabbed.svelte';
 
-  const similarProducts = $page.data.similar;
+  const similarRecords = $page.data.similar;
 </script>
 
 <MicroData item={$page.data.item_v2} />
@@ -24,7 +24,7 @@
   <Tabbed />
   <Keywords />
   <!-- Only add Similar products if they exist -->
-  {#if similarProducts.length > 0}
-    <SimilarProducts />
+  {#if similarRecords.length > 0}
+    <SimilarRecords />
   {/if}
 </div>
