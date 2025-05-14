@@ -287,8 +287,7 @@
 .font-custom-style-h1-carousel {
 	@apply font-open-sans;
 	@apply font-semibold;
-	@apply text-xl;
-	@apply md:text-2xl;
+	@apply text-lg;
 	@apply text-custom-16;
 }
 
