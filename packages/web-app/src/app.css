@@ -8,7 +8,6 @@
   @apply lg:w-[60rem];
   @apply xl:w-[77.5rem];
 	@apply mx-auto;
-	@apply max-w-6xl;
 }
 
 .button-1 {

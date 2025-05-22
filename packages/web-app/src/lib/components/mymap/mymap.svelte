@@ -177,7 +177,7 @@
         </p>
 
         <!-- Table for medium to large screens-->
-        <div class="hidden sm:table">
+        <div class="hidden sm:table w-full">
           <SortableTable
             tableContent={tableDataArray}
             tableLabels={tableLabels}
