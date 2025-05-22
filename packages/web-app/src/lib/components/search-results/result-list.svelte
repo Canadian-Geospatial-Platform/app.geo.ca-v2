@@ -9,8 +9,8 @@
   import Pagination from '$lib/components/pagination/pagination.svelte';
   import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
   import NotVisible from '$lib/components/icons/not-visible.svelte';
-  import Heart from '$lib/components/icons/heart.svelte';
-  import HeartFilled from '$lib/components/icons/heart-filled.svelte';
+  import CartAdd from '$lib/components/icons/cart-add.svelte';
+  import CartRemove from '$lib/components/icons/cart-remove.svelte';
 
   /************* User Data ***************/
   const userId = $page.data.userData?.uuid;
@@ -215,9 +215,9 @@
     <div class="bg-custom-1 px-5 py-4">
       <Accordion bind:this={accordionComponents[index]}>
         {#snippet accordionTitle()}
-          <div class="sm:flex">
+          <div class="sm:grid grid-cols-10">
             <!------------- Record info ------------->
-            <div class="grow">
+            <div class="col-span-9 sm:pr-2">
               <a
                 href={hrefPrefix + result.id}
                 class="uppercase underline font-custom-style-header-2"
@@ -234,18 +234,25 @@
             </div>
 
             <!------------- Favourites button ------------->
-            <button
-              class="dont-open text-custom-16 self-center p-2 w-fit border border-custom-16
-                rounded-full shadow-[0_0.1875rem_0.375rem_#00000029] mt-2 sm:mt-0 sm:ml-6 sm:mr-1"
-              onclick={() => handleFavouriteClick(result.id)}
-            >
-              {#if favouriteRecordList.includes(result.id)}
-                <HeartFilled classes="h-6" />
-              {:else}
-                <Heart classes="h-6" />
-              {/if}
-              <!---->
-            </button>
+            {#if favouriteRecordList.includes(result.id)}
+              <button
+                class="col-start-10 justify-self-end text-custom-1 bg-custom-16 self-center p-1 w-fit border-custom-16 border-2
+                  rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mt-2 sm:mt-0
+                  hover:border-custom-23 hover:bg-custom-23"
+                onclick={() => handleFavouriteClick(result.id)}
+              >
+                <CartRemove classes="h-9" />
+              </button>
+            {:else}
+              <button
+                class="col-start-10 justify-self-end text-custom-16 self-center p-1 w-fit border-custom-16 border-2
+                  rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mt-2 sm:mt-0
+                  hover:text-custom-1 hover:border-custom-23 hover:bg-custom-23"
+                onclick={() => handleFavouriteClick(result.id)}
+              >
+                <CartAdd classes="h-9" />
+              </button>
+            {/if}
           </div>
         {/snippet}
         {#snippet accordionContent()}

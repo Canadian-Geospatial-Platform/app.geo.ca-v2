@@ -4,6 +4,7 @@
 	import SortInactive from "$lib/components/icons/sort-inactive.svelte";
 	import SortUp from "$lib/components/icons/sort-up.svelte";
 	import Checkmark from '$lib/components/icons/checkmark.svelte';
+	import GarbageCan from '$lib/components/icons/garbage-can.svelte';
 
   // TODO: fix type definition to remove 'any'
   // Every item in the array should have the same set of keys,
@@ -22,6 +23,12 @@
     itemsPerPage: number;
     // Add a checkbox column
     checkboxCol: boolean;
+    // Check all boxes by default
+    allSelected: boolean;
+    // Add remove column
+    removeCol: boolean;
+    deleteResource: (id: string) => void;
+    selectedIds: Set;
   }
 
   let {
@@ -32,15 +39,16 @@
     currentPage = 0,
     itemsPerPage = 0,
     checkboxCol = false,
+    allSelected = false,
+    removeCol = false,
+    deleteResource = () => {},
+    selectedIds = $bindable(new Set()),
   }: Props = $props();
 
   /************** Translations **************/
   const lang = $page.data.lang;
   const selectAllLabel = lang == 'fr-ca' ? 'Tout sélectionner' : 'Select all';
-
-  // When the table has a checkbox column, we need to keep track of which ids are selected.
-  // This ensures that when the rows are sorted, the correct checkbox state matches the correct row.
-  let selectedIds = $state(new Set<number>());
+  const deleteLabel = lang == 'fr-ca' ? 'Supprimer la ressource' : 'Delete Resource';
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -64,9 +72,18 @@
 
   let visibleRows = $derived(paginated ? currentPageItems : sortedTableContent);
 
+  // Check the checkboxes for all items in the visible rows
+  if (allSelected) {
+    selectAll();
+  }
+
   // Allow parent component to get the list of checked rows
   export function getSelectedIds() {
     return selectedIds;
+  }
+
+  export function setSelectedIds(ids) {
+    selectedIds = new Set(ids);
   }
 
   // Allow the parent component to update the table content, for example,
@@ -87,6 +104,18 @@
 
     // For paginated table, go back to the first page
     currentPage = 1;
+  }
+
+  function selectAll() {
+    const newSet = new Set(selectedIds);
+    visibleRows.forEach(row => newSet.add(row.id));
+    selectedIds = newSet;
+  }
+
+  function deselectAll() {
+    const newSet = new Set(selectedIds);
+    visibleRows.forEach(row => newSet.delete(row.id));
+    selectedIds = newSet;
   }
 
   function handleSortButtonClick(sortLable: string) {
@@ -122,14 +151,16 @@
   // Update the list of checked rows so that all items are checked, or unchecked
   function handleSelectAllChange(event) {
     if (event.target.checked) {
-      const newSet = new Set(selectedIds);
-      visibleRows.forEach(row => newSet.add(row.id));
-      selectedIds = newSet;
+      selectAll();
     } else {
-      const newSet = new Set(selectedIds);
-      visibleRows.forEach(row => newSet.delete(row.id));
-      selectedIds = newSet;
+      deselectAll();
     }
+  }
+
+  // Deleting the actual resource should be handeled by the parent class where
+  // the row data is set, so, this method only dispatches a deleteResource event
+  function handleDeleteRowClick(event, rowId) {
+    deleteResource(rowId);
   }
 </script>
 
@@ -178,6 +209,15 @@
             </div>
           </th>
         {/each}
+
+        {#if removeCol}
+          <!-------------- Remove Row Column -------------->
+          <th class="w-fit border border-custom-9">
+            <div class="block font-custom-style-header-1 mb-2">
+              {deleteLabel}
+            </div>
+          </th>
+        {/if}
       </tr>
     </thead>
     <tbody>
@@ -224,6 +264,21 @@
                 {@html row[label]}
               </td>
             {/each}
+          {/if}
+
+          {#if removeCol}
+            <!-------------- Remove Row Column -------------->
+            <td class="pointer-events-none align-center p-2.5 h-full">
+              <div class="flex pointer-events-auto w-fit mx-auto hover:cursor-pointer ">
+                <button id={"garbage-" + row?.id}
+                  class="p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
+                    hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
+                  onclick={(event) => handleDeleteRowClick(event, row.id)}
+                >
+                  <GarbageCan classes={"h-6"} />
+                </button>
+              </div>
+            </td>
           {/if}
         </tr>
       {/each}

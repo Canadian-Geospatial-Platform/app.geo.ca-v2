@@ -1,10 +1,15 @@
 {
-  "description": "Here are the resources you've selected. To see them all on a single map, use the <span class='font-semibold'>Map view</span> toggle above. To remove a resource from this list, check the box next to its name and click <span class='font-semibold'>Remove selected</span> at the bottom.",
+  "description": "Welcome to your MyMap cart. From here, you can create a custom map using the resources listed below. Use the checkboxes to select the resources you want to include, then click the <span class='font-semibold'>View on map</span> button at the bottom of the table. To remove a resource, click the garbage can icon next to its name, or use the <span class='font-semibold'>Remove all</span> button to clear the list.",
   "findAResource": "Find a resource",
-  "mapView": "Map View",
-  "removeSelected": "Remove selected",
+  "remove": "Remove",
+  "removeAll": "Remove all",
   "resourceId": "Resource id",
   "resourceListEmpty": "The resource list is empty.",
   "resourceName": "Resource name",
-  "title": "MyMap"
+  "returnToList": "Return to list",
+  "search": "Search",
+  "searchFor": "Search for additional resources",
+  "searchProducts": "Search Products",
+  "title": "MyMap",
+  "viewOnMap": "View on map"
 }

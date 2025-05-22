@@ -6,6 +6,9 @@
   import MymapMap from '$lib/components/map/mymap-map.svelte';
   import SortableTable from "$lib/components/sortable-table/sortable-table.svelte";
   import MyMapListSkeleton from '$lib/components/loading-mask/mymap-list-skeleton.svelte';
+  import Checkmark from '$lib/components/icons/checkmark.svelte';
+  import GarbageCan from '$lib/components/icons/garbage-can.svelte';
+  import SearchBarSimplified from '$lib/components/search-results/search-bar-simplified.svelte';
 
   type MyMapRow = {
     id: string;
@@ -18,19 +21,25 @@
   const lang = $page.data.lang;
 
   const findAResource = translations?.findAResource ? translations.findAResource : 'Find a resource';
-  const mapViewLabel = translations?.mapView ? translations.mapView : 'Map View';
   const myMapTitle = translations?.title ? translations.title : 'MyMap';
   const pageDescription = translations?.description ? translations.description : '';
-  const removeSelected = translations?.removeSelected ? translations.removeSelected : 'Remove selected';
+  const remove = translations?.remove ? translations.remove : 'Remove';
+  const removeAll = translations?.removeAll ? translations.removeAll : 'Remove all';
   const resourceIdLabel = translations?.resourceId ? translations.resourceId : 'Resource id';
   const resourceListEmpty = translations?.resourceListEmpty ? translations.resourceListEmpty : 'The resource list is empty.';
   const resourceNameLabel = translations?.resourceName ? translations.resourceName : 'Resource name';
+  const returnToList = translations?.returnToList ? translations.returnToList : 'Return to list';
+  const searchFor = translations?.searchFor ? translations.searchFor : 'Search for additional resources';
+  const viewOnMapLabel = translations?.viewOnMap ? translations.viewOnMap : 'View on map';
 
   const langShort = lang == 'fr-ca' ? 'fr' : 'en';
   const titleKey = 'title_' + langShort;
 
   /************* Resource Table ***************/
   let sortableTable = $state();
+  let selectedIds = $state(new Set());
+  let numSelected = $derived(selectedIds.size);
+
   let loading = $state(true);
   let mapToggle = $state(false);
 
@@ -47,22 +56,63 @@
 
   /************* Handlers ***************/
 
-  // When a resource is removed, update the table rows and local storage to match
-  function handleRemoveSelectedClick(event) {
-    const selectedIds = new Set(sortableTable.getSelectedIds());
+  function handleDeleteResource(id) {
+    // Before deleting, ask the user's permission
+    const resource = tableDataArray.find((resource) => resource.id == id);
+    const resourceName = resource.name;
+    const permissionText = lang == 'fr-ca' ?
+      `Êtes-vous sûr de vouloir supprimer la ressource suivante? \n\n${resourceName} (${id})` :
+      `Are you sure you want to delete the following resource? \n\n${resourceName} (${id})`;
 
-    // Update resource lists
-    favouriteRecordList = favouriteRecordList.filter(id => !selectedIds.has(id));
-    tableDataArray = tableDataArray.filter(row => !selectedIds.has(row.id));
-    records = records.filter(record => !selectedIds.has(record.id));
+    if (confirm(permissionText) == true) {
+      let selectedSet = new Set(sortableTable.getSelectedIds());
+      selectedSet.delete(id);
 
-    // Update the table
-    sortableTable.updateTableContent(tableDataArray);
+      // Update resource lists
+      favouriteRecordList = favouriteRecordList.filter(listItem => listItem != id);
+      tableDataArray = tableDataArray.filter(row => row.id != id);
+      records = records.filter(record => record.id != id);
 
-    // Update localStorage
-    localStorage.setItem("MyMapResources", favouriteRecordList);
+      // Update the table and button label
+      sortableTable.updateTableContent(tableDataArray);
+      sortableTable.setSelectedIds(selectedSet);
 
-    // TODO: update user's favourites when the login system is implemented
+      // Update localStorage
+      localStorage.setItem("MyMapResources", favouriteRecordList);
+
+      // TODO: update user's favourites when the login system is implemented
+    }
+  }
+
+  function handleRemoveAllClick(event) {
+    const permissionText = lang == 'fr-ca' ?
+      `Êtes-vous certain de vouloir supprimer ${favouriteRecordList.length} ressources?` :
+      `Are you sure you want to delete ${favouriteRecordList.length} resources?`;
+
+    if (confirm(permissionText) == true) {
+      // Update resource lists
+      favouriteRecordList = [];
+      tableDataArray = [];
+      records = [];
+
+      // Update the table and button label
+      sortableTable.updateTableContent([]);
+      sortableTable.setSelectedIds(new Set());
+
+      // Update localStorage
+      localStorage.setItem("MyMapResources", []);
+
+      // TODO: update user's favourites when the login system is implemented
+    }
+  }
+
+  function handleOpenMapClick(event) {
+    // checkedIds = sortableTable.getSelectedIds();
+    mapToggle = true;
+  }
+
+  function handleReturnToListClick(event) {
+    mapToggle = false;
   }
 
   // Local storage is only accessible from the client side, so we need to get
@@ -103,68 +153,119 @@
   });
 </script>
 
-<div class="md:flex mb-4 mx-5 md:mx-0">
-  <h1 class="font-custom-style-h1 md:mr-auto">
-    {myMapTitle}
-  </h1>
-
-  <!-- Toggle between map and list -->
-  <!-- Note: HTML doesn't have a built-in toggle input, so we can build one from a checkbox instead. -->
-  <label class="inline-flex items-center cursor-pointer">
-    <div class="mr-4 font-semibold">
-      {mapViewLabel}
-    </div>
-    <input type="checkbox" value="show map" class="sr-only peer" bind:checked={mapToggle} >
-    <div
-      class="peer relative w-16 h-8 bg-custom-19 rounded-full shadow-[0_0.1875rem_0.375rem_#00000029]
-        transition duration-500
-
-        after:absolute after:h-9 after:w-9 after:start-0 after:-top-0.5 after:bg-custom-1 after:rounded-full
-        after:shadow-[0_0.1875rem_0.375rem_#00000029] after:border-2 after:border-custom-19
-        after:transition after:duration-500
-
-        peer-checked:bg-custom-16 peer-checked:after:translate-x-8 peer-checked:after:border-custom-16
-        peer-checked:transition peer-checked:duration-500"
-    ></div>
-  </label>
-</div>
+<h1 class="mb-4 mx-5 md:mx-0 font-custom-style-h1 md:mr-auto">
+  {myMapTitle}
+</h1>
 
 <div class="mx-5 md:mx-0 mb-5">
   {#if !loading}
     {#if records.length > 0}
       {#if mapToggle}
         <!-------------- Map -------------->
-        <MymapMap layerIds={favouriteRecordList} />
-      {:else}
+        <MymapMap layerIds={selectedIds} />
+        <button
+          class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
+          onclick={(event) => handleReturnToListClick(event)}
+        >
+          {returnToList}
+        </button>
+      {/if}
+      <div class:hidden={mapToggle}>
         <!-------------- List -------------->
         <p class="font-custom-style-body-1 mx-0 mb-6">
           {@html pageDescription}
         </p>
 
-        <SortableTable
-          tableContent={tableDataArray}
-          tableLabels={tableLabels}
-          clickableRows={true}
-          checkboxCol={true}
-          bind:this={sortableTable}
-        />
+        <!-- Table for medium to large screens-->
+        <div class="hidden sm:table">
+          <SortableTable
+            tableContent={tableDataArray}
+            tableLabels={tableLabels}
+            clickableRows={true}
+            checkboxCol={true}
+            allSelected={true}
+            removeCol={true}
+            deleteResource={handleDeleteResource}
+            bind:this={sortableTable}
+            bind:selectedIds={selectedIds}
+          />
+        </div>
+
+        <!-- Cards for moble screens -->
+        <div class="block sm:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
+          {#each tableDataArray as item (item.id)}
+            <div class="flex items-center py-5">
+
+              <!-- Checkboxes -->
+              <div class="flex pointer-events-auto hover:cursor-pointer w-16 ml-4">
+                <input
+                  type="checkbox"
+                  id={"check-" + item.id}
+                  name={"check-" + item.id}
+                  class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
+                    border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
+                  checked={selectedIds.has(item.id)}
+                  onchange={(e) => {
+                    const newSet = new Set(selectedIds);
+                    e.target.checked ? newSet.add(item.id) : newSet.delete(item.id);
+                    selectedIds = newSet;
+                  }}
+                />
+                <Checkmark
+                  classes="absolute h-4 mt-1.5 ml-1.5 hidden peer-checked:block
+                    pointer-events-none text-custom-1"
+                />
+              </div>
+
+              <!-- Resource -->
+              <div class=flex-1>
+                <!-- Resource data-->
+                <a href={item.url} class="font-custom-style-h2-2 block">
+                  {item.name}
+                </a>
+                <p class="font-custom-style-body-9">{item.id}</p>
+
+                <!-- Remove Button-->
+                <button
+                  class="button-3 mt-4 p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
+                    hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
+                  onclick={() => handleDeleteResource(item.id)}
+                >
+                  <GarbageCan classes={"h-4 inline mb-1"} />
+                  {remove}
+                </button>
+
+              </div>
+            </div>
+          {/each}
+        </div>
 
         <!-------------- buttons -------------->
-        <div class="sm:flex">
-          <button
-            class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-4 sm:mb-0 sm:mr-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
-            onclick={(event) => handleRemoveSelectedClick(event)}
-          >
-            {removeSelected}
-          </button>
+        <div class="sm:flex mb-8">
+          <div class="sm:grow">
+            <button
+              class="sm:inline-block button-5 w-full sm:w-fit mt-3 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
+              onclick={(event) => handleOpenMapClick(event)}
+            >
+              {viewOnMapLabel} ({numSelected})
+            </button>
+          </div>
 
-          <a class="sm:inline-block w-full sm:w-fit mt-5" href={$page.url.origin + '/' + lang + '/map-browser'}>
-            <div class="button-3 w-full sm:w-fit text-center shadow-[0_0.1875rem_0.375rem_#00000029]">
-              {findAResource}
-            </div>
-          </a>
+          <button
+            class="sm:inline-block button-3 w-full sm:w-fit sm:mt-3
+              shadow-[0_0.1875rem_0.375rem_#00000029]"
+            onclick={(event) => handleRemoveAllClick(event)}
+          >
+            <GarbageCan classes={"h-4 inline mb-1"} />
+            {removeAll}
+          </button>
         </div>
-      {/if}
+      </div>
+
+      <h2 class="mb-4 mx-0 font-custom-style-h2 md:mr-auto">
+        {searchFor}
+      </h2>
+      <SearchBarSimplified />
     {:else}
       <!-------------- No records selected -------------->
       <div class="my-8">

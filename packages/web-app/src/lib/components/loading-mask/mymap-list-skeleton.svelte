@@ -71,7 +71,9 @@
 
 <!-- buttons placeholder -->
 <div class="sm:flex">
-  <div class="sm:inline-block div-fill h-11 w-full sm:w-56 mt-5 sm:mr-5"></div>
+  <div class="sm:grow">
+    <div class="sm:inline-block div-fill h-11 w-full sm:w-56 mt-5 sm:mr-5"></div>
+  </div>
   <div class="sm:inline-block div-fill h-11 w-full sm:w-56 mt-5"></div>
 </div>
 

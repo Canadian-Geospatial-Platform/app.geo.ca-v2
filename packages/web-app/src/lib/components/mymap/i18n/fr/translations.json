@@ -1,10 +1,15 @@
 {
-  "description": "Voici les ressources que vous avez sélectionnées. Pour les afficher toutes sur une seule carte, utilisez le bouton <span class='font-semibold'>Vue cartographique</span> ci-dessus. Pour retirer une ressource de la liste, cochez la case à côté de son nom, puis cliquez sur <span class='font-semibold'>Retirer la sélection</span> en bas de la page.",
+  "description": "Bienvenue dans votre panier MaCarte. À partir de cette page, vous pouvez créer une carte personnalisée à l’aide des ressources indiquées ci-dessous. Utilisez les cases à cocher pour sélectionner les ressources à inclure, puis cliquez sur le bouton <span class='font-semibold'>Voir ma carte</span> au bas du tableau. Pour retirer une ressource, cliquez sur l’icône de la poubelle à côté de son nom, ou utilisez le bouton <span class='font-semibold'>Tout supprimer</span> pour vider la liste.",
   "findAResource": "Trouver une ressource",
-  "mapView": "Vue cartographique",
-  "removeSelected": "Retirer la sélection",
+  "remove": "Supprimer",
+  "removeAll": "Tout supprimer",
   "resourceId": "Id ressource",
   "resourceListEmpty": "La liste des ressources est vide.",
   "resourceName": "Nom ressource",
-  "title": "MaCarte"
+  "returnToList": "Retour à la liste",
+  "search": "Recherche",
+  "searchFor": "Rechercher des ressources supplémentaires",
+  "searchProducts": "Recherche de produits",
+  "title": "MaCarte",
+  "viewOnMap": "Voir ma carte"
 }
