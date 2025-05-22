@@ -8,6 +8,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let userData;
 	let sanitizedResults;
 
+	const canonicalUrl = url.origin + '/' + params.lang + '/my-map';
+	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateUrl = url.href.replace(params.lang, alternateLang);
+	const metaDescription = params.lang == 'fr-ca' ?
+	  'Consultez vos ressources sauvegardées et créez une carte personnalisée.' :
+	  'Browse your saved resources and create a custom map.';
+
 	try {
 		userData = await getUserData(cookies);
 	} catch (e) {
@@ -41,7 +48,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			href: url.href
 		},
 		results: sanitizedResults,
-		userData: userData.Item
+		userData: userData.Item,
+		canonicalUrl: canonicalUrl,
+		alternateUrl: alternateUrl,
+		alternateLang: alternateLang,
+		metaDescription: metaDescription,
 	};
 };
 

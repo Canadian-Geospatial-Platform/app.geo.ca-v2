@@ -12,6 +12,10 @@ export const load: PageLoad = ({ params, data, url }) => {
 		t_title_1: data.t_title_1,
 		t_title_2: data.t_title_2,
 		results: data.results,
-		userData: data.userData
+		userData: data.userData,
+		canonicalUrl: data.canonicalUrl,
+		alternateUrl: data.alternateUrl,
+		alternateLang: data.alternateLang,
+		metaDescription: data.metaDescription,
 	};
 };
