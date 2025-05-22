@@ -21,7 +21,7 @@
     id,
     dynamic = false,
     width = '100%',
-    height = '32rem',
+    height = '36rem',
     mapProjection = 3978,
     mapType = null,
     footer = false,

@@ -4,8 +4,9 @@
 
 .content-width {
 	@apply w-full;
-    @apply md:w-5/6;
-    @apply xl:w-2/3;
+  @apply md:w-[43.75rem];
+  @apply lg:w-[60rem];
+  @apply xl:w-[77.5rem];
 	@apply mx-auto;
 	@apply max-w-6xl;
 }
