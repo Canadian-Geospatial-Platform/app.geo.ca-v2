@@ -4,8 +4,8 @@
   import Upper from './upper.svelte';
 </script>
 
-<div>
+<footer>
   <Upper />
   <Links />
   <Legal />
-</div>
+</footer>

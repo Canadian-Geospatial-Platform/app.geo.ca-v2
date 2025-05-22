@@ -54,7 +54,7 @@
 </script>
 
 <Header />
-<div
+<main
   class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen pt-4"
   data-sveltekit-reload={$updated ? '' : 'off'}
 >
@@ -63,7 +63,7 @@
     {@render children?.()}
   </div>
   <Feedback />
-</div>
+</main>
 <Footer />
 
 {#if showLeavingSitePopup}
