@@ -130,7 +130,7 @@
 
       // Issue POST request for record details
       if (favouriteRecordList.length > 0) {
-        const response = await fetch('/[lang]/my-map', {
+        const response = await fetch('/' + lang + '/my-map', {
           method: 'POST',
           body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
           headers: {'Content-Type': 'application/json'}
