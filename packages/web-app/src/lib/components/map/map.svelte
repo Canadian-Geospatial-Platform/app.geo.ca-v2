@@ -226,6 +226,12 @@
     await tick();
 
     try {
+      // Destroy the old map if it exists. This ensures that when the map is toggled
+      // on and off multiple time, it always has visible layers.
+      if (cgpv.api.hasMapViewer(mapId)) {
+        await cgpv.api.deleteMapViewer(mapId, false)
+      }
+
       // Create the layer config to check if the geocore record has a map. It is undefined if no map exists.
       const geoviewLayerConfig = await cgpv.api.config.createLayerConfig(id, "geoCore", [], mapLang);
 
