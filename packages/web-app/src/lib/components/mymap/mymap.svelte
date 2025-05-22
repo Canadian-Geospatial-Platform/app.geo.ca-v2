@@ -164,7 +164,7 @@
         <!-------------- Map -------------->
         <MymapMap layerIds={selectedIds} />
         <button
-          class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
+          class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
           onclick={(event) => handleReturnToListClick(event)}
         >
           {returnToList}
@@ -241,10 +241,10 @@
         </div>
 
         <!-------------- buttons -------------->
-        <div class="sm:flex mb-8">
+        <div class="sm:flex mb-6">
           <div class="sm:grow">
             <button
-              class="sm:inline-block button-5 w-full sm:w-fit mt-3 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
+              class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
               onclick={(event) => handleOpenMapClick(event)}
             >
               {viewOnMapLabel} ({numSelected})
@@ -252,7 +252,7 @@
           </div>
 
           <button
-            class="sm:inline-block button-3 w-full sm:w-fit sm:mt-3
+            class="sm:inline-block button-3 w-full sm:w-fit sm:mt-5
               shadow-[0_0.1875rem_0.375rem_#00000029]"
             onclick={(event) => handleRemoveAllClick(event)}
           >
