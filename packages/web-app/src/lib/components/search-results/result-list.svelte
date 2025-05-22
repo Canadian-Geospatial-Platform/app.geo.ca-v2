@@ -192,7 +192,7 @@
   {:else}
   <!-- Header -->
   <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
-    <p class="font-custom-style-body-8">
+    <p class="font-custom-style-body-8 self-center">
       {pageMessage}
     </p>
     <div class="flex flex-row gap-3 md:gap-5">
