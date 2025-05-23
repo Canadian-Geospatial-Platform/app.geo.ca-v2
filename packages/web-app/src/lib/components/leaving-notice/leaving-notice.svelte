@@ -17,7 +17,7 @@
 </script>
 
 <div
-  class="fixed top-0 z-[100050] flex items-center justify-center
+  class="fixed top-0 z-[10050] flex items-center justify-center
     w-full h-screen bg-custom-5/80 text-3xl md:text-7xl"
   style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);"
 >

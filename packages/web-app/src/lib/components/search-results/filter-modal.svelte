@@ -235,13 +235,13 @@
   }
 </script>
 
-<!-- Note: we need the z-index to be 100020 so that it is above the header and the map loading mask (geoview has this set at 99999) -->
+<!-- Note: we need the z-index to be 10020 so that it is above the header and the map loading mask (geoview has this set at 9999) -->
 <div
   role="dialog"
   aria-modal="true"
   tabindex="0"
   class={[
-    "fixed flex justify-center z-[100020] inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
+    "fixed flex justify-center z-[10020] inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4",
     (!active) && "hidden"
   ]}
   onkeydown={(event) => {
