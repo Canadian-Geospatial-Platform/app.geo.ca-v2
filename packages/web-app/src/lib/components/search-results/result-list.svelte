@@ -128,7 +128,7 @@
     return filteredFormats;
   }
 
-  /****************** MyMap Resources ******************/
+  /****************** MapCart Resources ******************/
   let favouriteRecordList = $state($page.data?.userData?.mapCart ? [...$page.data?.userData?.mapCart] : []);
 
   async function handleFavouriteClick(recordId) {
@@ -152,14 +152,14 @@
       }
     }
 
-    localStorage.setItem("MyMapResources", favouriteRecordList);
+    localStorage.setItem("MapCartResources", favouriteRecordList);
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MyMapResources array inside onMount
+  // the MapCartResources array inside onMount
   onMount(() => {
     if (!$page.data.signedIn) {
-      let stored = localStorage.getItem("MyMapResources");
+      let stored = localStorage.getItem("MapCartResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array

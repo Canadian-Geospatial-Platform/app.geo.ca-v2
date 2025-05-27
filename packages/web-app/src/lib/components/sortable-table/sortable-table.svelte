@@ -48,7 +48,7 @@
   /************** Translations **************/
   const lang = $page.data.lang;
   const selectAllLabel = lang == 'fr-ca' ? 'Tout sélectionner' : 'Select all';
-  const deleteLabel = lang == 'fr-ca' ? 'Supprimer la ressource' : 'Delete Resource';
+  const deleteLabel = lang == 'fr-ca' ? 'Supprimer la ressource' : 'Delete resource';
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -252,7 +252,7 @@
             {#each tableLabelsArray as label}
               <!-------------- Clickable Row -------------->
               <td class="font-custom-style-body-4">
-                <a href={row.url} class="block w-full h-full p-2.5">
+                <a href={row.url} rel="external" class="block w-full h-full p-2.5">
                   {@html row[label]}
                 </a>
               </td>

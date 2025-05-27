@@ -3,14 +3,14 @@
   import { onMount } from 'svelte';
   import NoMap from '$lib/components/icons/no-map.svelte';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-  import MymapMap from '$lib/components/map/mymap-map.svelte';
+  import MapcartMap from '$lib/components/map/mapcart-map.svelte';
   import SortableTable from "$lib/components/sortable-table/sortable-table.svelte";
-  import MyMapListSkeleton from '$lib/components/loading-mask/mymap-list-skeleton.svelte';
+  import MapCartListSkeleton from '$lib/components/loading-mask/mapcart-list-skeleton.svelte';
   import Checkmark from '$lib/components/icons/checkmark.svelte';
   import GarbageCan from '$lib/components/icons/garbage-can.svelte';
   import SearchBarSimplified from '$lib/components/search-results/search-bar-simplified.svelte';
 
-  type MyMapRow = {
+  type MapCartRow = {
     id: string;
     name: string;
     url: string;
@@ -21,7 +21,8 @@
   const lang = $page.data.lang;
 
   const findAResource = translations?.findAResource ? translations.findAResource : 'Find a resource';
-  const myMapTitle = translations?.title ? translations.title : 'MyMap';
+  const mapCartTitle = translations?.title ? translations.title : 'Map Cart';
+  const mapTitle = translations?.mapTitle ? translations.mapTitle : 'Map';
   const pageDescription = translations?.description ? translations.description : '';
   const remove = translations?.remove ? translations.remove : 'Remove';
   const removeAll = translations?.removeAll ? translations.removeAll : 'Remove all';
@@ -49,7 +50,7 @@
   let tableDataArray = $state([]);
 
   // Table column labels
-  const tableLabels: MyMapRow = {
+  const tableLabels: MapCartRow = {
     "name": resourceNameLabel,
     "id": resourceIdLabel
   };
@@ -78,7 +79,7 @@
       sortableTable.setSelectedIds(selectedSet);
 
       // Update localStorage
-      localStorage.setItem("MyMapResources", favouriteRecordList);
+      localStorage.setItem("MapCartResources", favouriteRecordList);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -100,7 +101,7 @@
       sortableTable.setSelectedIds(new Set());
 
       // Update localStorage
-      localStorage.setItem("MyMapResources", []);
+      localStorage.setItem("MapCartResources", []);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -116,11 +117,11 @@
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MyMapResources array inside onMount
+  // the MapCartResources array inside onMount
   onMount(async () => {
     // If not signed in, check the local storage for saved resources instead
     if (!$page.data.signedIn) {
-      let stored = localStorage.getItem("MyMapResources");
+      let stored = localStorage.getItem("MapCartResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array
@@ -130,7 +131,7 @@
 
       // Issue POST request for record details
       if (favouriteRecordList.length > 0) {
-        const response = await fetch('/' + lang + '/my-map', {
+        const response = await fetch('/' + lang + '/map-cart', {
           method: 'POST',
           body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
           headers: {'Content-Type': 'application/json'}
@@ -154,7 +155,11 @@
 </script>
 
 <h1 class="mb-4 mx-5 md:mx-0 font-custom-style-h1 md:mr-auto">
-  {myMapTitle}
+  {#if mapToggle}
+    {mapTitle}
+  {:else}
+    {mapCartTitle}
+  {/if}
 </h1>
 
 <div class="mx-5 md:mx-0 mb-5">
@@ -162,7 +167,7 @@
     {#if records.length > 0}
       {#if mapToggle}
         <!-------------- Map -------------->
-        <MymapMap layerIds={selectedIds} />
+        <MapcartMap layerIds={selectedIds} />
         <button
           class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
           onclick={(event) => handleReturnToListClick(event)}
@@ -291,6 +296,6 @@
     <div class="animate-pulse bg-custom-6 w-full h-[32rem]"></div>
   {:else if !mapToggle}
     <!-- Table loading skeleton -->
-    <MyMapListSkeleton numRecords={6} />
+    <MapCartListSkeleton numRecords={6} />
   {/if}
 </div>

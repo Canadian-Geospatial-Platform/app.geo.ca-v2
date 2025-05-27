@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let userData;
 	let sanitizedResults;
 
-	const canonicalUrl = url.origin + '/' + params.lang + '/my-map';
+	const canonicalUrl = url.origin + '/' + params.lang + '/map-cart';
 	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
 	const metaDescription = params.lang == 'fr-ca' ?
@@ -44,7 +44,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			href: url.origin + '/' + params.lang + '/map-browser'
 		},
 		t_title_2: {
-			text: params.lang == 'en-ca' ? 'MyMap' : 'MaCarte',
+			text: params.lang == 'en-ca' ? 'Map Cart' : 'Panier de cartes',
 			href: url.href
 		},
 		results: sanitizedResults,

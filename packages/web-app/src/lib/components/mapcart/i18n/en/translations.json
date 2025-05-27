@@ -1,0 +1,16 @@
+{
+  "description": "Welcome to your map cart. From here, you can create a custom map using the resources listed below. Use the checkboxes to select the resources you want to include, then click the <span class='font-semibold'>View on map</span> button at the bottom of the table. To remove a resource, click the garbage can icon next to its name, or use the <span class='font-semibold'>Remove all</span> button to clear the list.",
+  "findAResource": "Find a resource",
+  "mapTitle": "Map",
+  "remove": "Remove",
+  "removeAll": "Remove all",
+  "resourceId": "Resource ID",
+  "resourceListEmpty": "Your cart is empty.",
+  "resourceName": "Resource name",
+  "returnToList": "Return to cart",
+  "search": "Search",
+  "searchFor": "Search for additional resources",
+  "searchProducts": "Search Products",
+  "title": "Map Cart",
+  "viewOnMap": "View on map"
+}

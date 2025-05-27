@@ -71,9 +71,9 @@
       }
     ]
   },
-  "myMap": {
-    "title": "MaCarte",
-    "href": "/fr-ca/my-map"
+  "mapCart": {
+    "title": "Panier de cartes",
+    "href": "/fr-ca/map-cart"
   },
   "lang": {
     "title": "English",
