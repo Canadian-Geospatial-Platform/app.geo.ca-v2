@@ -1,7 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
   import { clickOutside } from '$lib/components/component-utils/clickOutside';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
+  import { LOCALSTORAGE_UPDATED } from '$lib/utils/event-dispatchers/local-storage-changed.js';
   import Navdropdown from '$lib/components/header/navdropdown.svelte';
   import Chevronup from '$lib/components/icons/chevronup.svelte';
   import Chevrondown from '$lib/components/icons/chevrondown.svelte';
@@ -12,6 +14,17 @@
 
   const lang = $page.data.lang;
   const homeText = lang == 'fr-ca' ? 'Accueil' : 'Home';
+
+  let localStorageKey = linkData?.localStorageKey;
+  let localStorageValue = $state('');
+  let localStorageList = $derived(
+    localStorageValue ?
+    typeof localStorageValue == "string" ?
+    [...localStorageValue.split(",")] :
+    [...localStorageValue] :
+    []
+  );
+  let localStorageListLength = $derived(localStorageList.length);
 
   let chevronDown = $state(true);
   let active = $state(false);
@@ -44,6 +57,13 @@
     }
 	};
 
+  function handleLocalStorageUpdated(event) {
+    const { key, value } = event.detail;
+    if (key === localStorageKey) {
+      localStorageValue = value;
+    }
+  }
+
 	function dispatchDropDownClick() {
 	  dropDownClick({'menu': linkData});
 	}
@@ -61,6 +81,16 @@
     return url;
   }
 
+  // Local storage is only accessible from the client side, so we need to get
+  // the MapCartResources array inside onMount
+  onMount(async () => {
+    localStorageValue = localStorage.getItem("MapCartResources");
+
+    window.addEventListener(LOCALSTORAGE_UPDATED, handleLocalStorageUpdated);
+
+    // Remove listener when the component is destroyed
+    return () => window.removeEventListener(LOCALSTORAGE_UPDATED, handleLocalStorageUpdated);
+  });
 </script>
 
 <svelte:window onresize={resetNav} />
@@ -122,6 +152,7 @@
       </a>
     {/if}
   {:else if linkData?.href}
+    <div class="flex relative h-full">
     <a
       class="nav-link"
       href={linkData["href"]}
@@ -133,6 +164,16 @@
     }>
       {linkData.title}
     </a>
+    {#if linkData?.counter && localStorageKey}
+      <div
+        class:hidden={!localStorageListLength || localStorageListLength == 0}
+        class="align-middle absolute top-3.5 -right-5 bg-red-700 rounded-full min-w-[1.625rem] h-[1.625rem]
+          p-1 text-center text-custom-1 font-open-sans text-xs font-normal border-2 border-custom-1"
+      >
+        {localStorageListLength}
+      </div>
+    {/if}
+    </div>
   {/if}
 </div>
 

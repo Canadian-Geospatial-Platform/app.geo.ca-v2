@@ -73,7 +73,9 @@
   },
   "mapCart": {
     "title": "Map Cart",
-    "href": "/en-ca/map-cart"
+    "href": "/en-ca/map-cart",
+    "counter": true,
+    "localStorageKey": "MapCartResources"
   },
   "lang": {
     "title": "Français",

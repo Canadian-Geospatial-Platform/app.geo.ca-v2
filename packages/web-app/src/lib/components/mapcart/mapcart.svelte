@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
+  import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
   import NoMap from '$lib/components/icons/no-map.svelte';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
   import MapcartMap from '$lib/components/map/mapcart-map.svelte';
@@ -78,8 +79,8 @@
       sortableTable.updateTableContent(tableDataArray);
       sortableTable.setSelectedIds(selectedSet);
 
-      // Update localStorage
-      localStorage.setItem("MapCartResources", favouriteRecordList);
+      // Update localStorage and dispatch localstorage_updated event
+      updateLocalStorage("MapCartResources", favouriteRecordList);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -100,8 +101,8 @@
       sortableTable.updateTableContent([]);
       sortableTable.setSelectedIds(new Set());
 
-      // Update localStorage
-      localStorage.setItem("MapCartResources", []);
+      // Update localStorage and dispatch localstorage_updated event
+      updateLocalStorage("MapCartResources", []);
 
       // TODO: update user's favourites when the login system is implemented
     }

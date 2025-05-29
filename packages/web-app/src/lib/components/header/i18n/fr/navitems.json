@@ -73,7 +73,9 @@
   },
   "mapCart": {
     "title": "Panier de cartes",
-    "href": "/fr-ca/map-cart"
+    "href": "/fr-ca/map-cart",
+    "counter": true,
+    "localStorageKey": "MapCartResources"
   },
   "lang": {
     "title": "English",

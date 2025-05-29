@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
+  import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
   import CartAdd from '$lib/components/icons/cart-add.svelte';
   import CartRemove from '$lib/components/icons/cart-remove.svelte';
 
@@ -38,7 +39,8 @@
       }
     }
 
-    localStorage.setItem("MapCartResources", favouriteRecordList);
+    // Update localStorage and dispatch localstorage_updated event
+    updateLocalStorage("MapCartResources", favouriteRecordList);
   }
 
   // Local storage is only accessible from the client side, so we need to get

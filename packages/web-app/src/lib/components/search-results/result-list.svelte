@@ -2,6 +2,7 @@
   import { page, navigating } from '$app/stores';
   import { afterNavigate, goto } from '$app/navigation';
   import { tick, onMount } from 'svelte';
+  import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
   import ResultListSkeleton from '$lib/components/loading-mask/result-list-skeleton.svelte';
@@ -152,7 +153,8 @@
       }
     }
 
-    localStorage.setItem("MapCartResources", favouriteRecordList);
+    // Update localStorage and dispatch localstorage_updated event
+    updateLocalStorage("MapCartResources", favouriteRecordList);
   }
 
   // Local storage is only accessible from the client side, so we need to get
