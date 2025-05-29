@@ -43,12 +43,14 @@
 
 .button-3 {
 	@apply bg-custom-1;
+	@apply hover:bg-custom-16;
 	@apply border-custom-16;
 	@apply border-2;
 	@apply rounded;
 	@apply px-6;
 	@apply py-2;
 	@apply font-custom-style-body-7;
+	@apply hover:text-custom-1;
 }
 
 .button-3-disabled {

@@ -6,8 +6,8 @@
     "Nous apprécions vos commentaires" : "We value your feedback";
 </script>
 
-<div class="font-custom-style-body-1 px-5 md:px-0">
-  <h2 class="font-custom-style-h2 mb-1">
+<div class="font-custom-style-body-1 px-5 mt-9 md:px-0">
+  <h2 class="font-custom-style-h2 mb-4">
     {title}
   </h2>
   <!-- TODO: Update feedback text -->
@@ -20,7 +20,7 @@
         des données géospatiales. Vos commentaires sont inestimables pour nous ! Si vous rencontrez
         des problèmes, avez des suggestions ou souhaitez simplement partager vos réflexions,
         n'hésitez pas à nous contacter à l'adresse
-        <a class="underline text-custom-16" href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a>
+        <a class="underline hover:no-underline text-custom-16" href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a>
         . Construisons ensemble une plateforme encore meilleure !
       </p>
     {:else}
@@ -30,7 +30,7 @@
         We're thrilled to have you on board as we explore the exciting world of geospatial data.
         Your feedback is invaluable to us! If you encounter any issues, have suggestions, or simply
         want to share your thoughts, please reach out to us at
-        <a class="underline text-custom-16" href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a>.
+        <a class="underline hover:no-underline text-custom-16" href="mailto:geo@nrcan-rncan.gc.ca">geo@nrcan-rncan.gc.ca</a>.
         Let's make this platform even better together!
       </p>
     {/if}

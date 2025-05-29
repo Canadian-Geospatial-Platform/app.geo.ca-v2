@@ -111,8 +111,12 @@
     @apply top-20;
     @apply z-20;
     width: calc(100% - 2.5rem);
+    @apply md:w-[43.75rem];
     @apply m-5;
     @apply left-0;
+    @apply md:left-auto;
+    @apply md:left-1/2;
+    @apply md:-translate-x-[23.125rem];
     @apply max-h-[90vh];
     @apply overflow-y-scroll;
     -ms-overflow-style: none;  /* Edge */

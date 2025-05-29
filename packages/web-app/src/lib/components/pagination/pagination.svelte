@@ -95,8 +95,9 @@
   {#each pageButtons as page}
     <button
       class={[
-        "font-custom-style-button-1 h-7 min-w-7 px-1",
-        (page == currentPage) && "current-page"
+        "font-custom-style-button-1 h-7 min-w-7 px-1 mx-1",
+        (page == currentPage) && "current-page",
+        (page != currentPage) && "page-button",
       ]}
       onclick={() => handlePageClick(page)}
     >
@@ -118,25 +119,33 @@
     @apply items-center;
     @apply justify-center;
     @apply bg-custom-1;
-    @apply h-11;
-    @apply sm:h-7;
-    @apply sm:w-7;
+    @apply h-7;
+    @apply w-7;
     @apply rounded;
+    @apply hover:bg-custom-23;
+    @apply hover:text-custom-1;
+    @apply disabled:hover:text-custom-19;
+    @apply disabled:hover:bg-custom-1;
   }
 
   .current-page {
     @apply bg-custom-1;
     @apply text-custom-7;
     @apply rounded;
+    @apply hover:bg-custom-23;
+    @apply hover:text-custom-1;
+  }
+
+  .page-button {
+    @apply rounded;
+    @apply hover:bg-custom-23;
   }
   
   .pagination-width {
     @apply box-border;
     @apply sm:box-content;
-    width: calc(100% + 2.5rem);
+    @apply w-full;
     @apply sm:w-fit;
-    @apply mx-[-1.25rem];
-    @apply sm:mx-0;
     @apply py-2.5;
     @apply sm:py-1.5;
     @apply px-5;

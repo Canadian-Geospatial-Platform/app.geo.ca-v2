@@ -222,7 +222,7 @@
             <div class="col-span-9 sm:pr-2">
               <a
                 href={hrefPrefix + result.id}
-                class="underline font-custom-style-header-4"
+                class="underline hover:no-underline font-custom-style-header-4"
               >
                 {lang == 'fr' ? result.title_fr : result.title_en}
               </a>

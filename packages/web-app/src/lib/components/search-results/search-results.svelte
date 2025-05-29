@@ -12,14 +12,14 @@
   let resultMessage = $derived($page.data.resultMessage);
 </script>
 
-<h1 class="font-custom-style-h1 px-5 md:px-0">
+<h1 class="font-custom-style-h1 mt-8 px-5 md:px-0">
   {searchDatasets}
 </h1>
-<p class="mb-2 mt-[-0.75em] font-open-sans px-5 md:px-0">
+<p class="mb-2 mt-3 font-open-sans px-5 md:px-0">
   {resultMessage}
 </p>
 <SearchBar />
-<h2 class="font-custom-style-h2 px-5 md:px-0">
+<h2 class="font-custom-style-h2 mt-5 px-5 md:px-0">
   {searchResultsText}
 </h2>
 <ResultList />

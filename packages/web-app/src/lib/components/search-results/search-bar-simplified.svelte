@@ -68,6 +68,7 @@
   <button
     class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
       font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
+      hover:bg-custom-23
       ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
     onclick={handleSearchClick}
     disabled={$navigating}

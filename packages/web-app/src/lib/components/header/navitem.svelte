@@ -167,7 +167,7 @@
     {#if linkData?.counter && localStorageKey}
       <div
         class:hidden={!localStorageListLength || localStorageListLength == 0}
-        class="align-middle absolute top-3.5 -right-5 bg-red-700 rounded-full min-w-[1.625rem] h-[1.625rem]
+        class="align-middle absolute top-3.5 right-0 lg:-right-5 bg-red-700 rounded-full min-w-[1.625rem] h-[1.625rem]
           p-1 text-center text-custom-1 font-open-sans text-xs font-normal border-2 border-custom-1"
       >
         {localStorageListLength}
