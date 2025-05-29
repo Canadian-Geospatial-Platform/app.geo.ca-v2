@@ -82,6 +82,8 @@
 	@apply px-6;
 	@apply py-2;
 	@apply font-custom-style-button-3;
+	@apply hover:bg-custom-23;
+	@apply hover:border-custom-23;
 }
 
 .select-button {
