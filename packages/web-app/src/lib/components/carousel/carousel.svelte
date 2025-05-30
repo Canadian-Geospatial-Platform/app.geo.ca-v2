@@ -81,7 +81,7 @@
           Note: the rel="external" ensures that the page data is updated, so when the
           page loads, the correct record data is displayed.
         -->
-        <a class="carousel-card"
+        <a class="carousel-card group"
           href={cardData[activeIndex].url} rel="external"
           in:fly={{ x: slideDirection * flyLength, duration: 500, opacity: 100 }}
           out:fly={{ x: slideDirection * -flyLength, duration: 500, opacity: 0 }}
@@ -99,7 +99,7 @@
     <!-- Card 2 -->
     <div class="relative hidden sm:block w-full sm:w-1/2" id="carousel-card-2">
       {#key nextIndex}
-        <a class="carousel-card"
+        <a class="carousel-card group"
           href={cardData[nextIndex].url} rel="external"
           in:fly={{ x: slideDirection * flyLength, duration: 500, opacity: 100 }}
           out:fly={{ x: slideDirection * -flyLength, duration: 500, opacity: 0 }}
@@ -181,6 +181,7 @@
     @apply mb-2.5;
     @apply underline;
     @apply line-clamp-2;
+    @apply group-hover:no-underline;
   }
 
   .carousel-card-p {

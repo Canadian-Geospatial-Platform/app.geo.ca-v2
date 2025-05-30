@@ -16,7 +16,7 @@
 </script>
 
 <div class="font-custom-style-body-1">
-  <h2 class="font-custom-style-h2 mb-2 md:mb-2 mx-5 md:mx-0">
+  <h2 class="font-custom-style-h2 mb-5 mx-5 md:mx-0">
     {keywordsText}
   </h2>
   <p class="mx-5 md:mx-0 space-y-2">

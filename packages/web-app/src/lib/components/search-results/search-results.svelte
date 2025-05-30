@@ -12,7 +12,7 @@
   let resultMessage = $derived($page.data.resultMessage);
 </script>
 
-<h1 class="font-custom-style-h1 mt-8 px-5 md:px-0">
+<h1 class="font-custom-style-h1 mt-8 px-5 md:px-0 leading-tight">
   {searchDatasets}
 </h1>
 <p class="mb-2 mt-3 font-open-sans px-5 md:px-0">

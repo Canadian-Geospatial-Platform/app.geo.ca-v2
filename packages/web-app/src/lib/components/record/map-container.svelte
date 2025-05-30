@@ -52,7 +52,7 @@
 </script>
 
 <div class="font-custom-style-body-1">
-  <h2 class="font-custom-style-h2 mb-1 mx-5 md:mx-0">
+  <h2 class="font-custom-style-h2 mb-7 mx-5 md:mx-0">
     {mapText}
   </h2>
   {#if coordinates && showMap}

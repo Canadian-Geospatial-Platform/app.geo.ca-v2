@@ -59,7 +59,7 @@
 </script>
 
 <div>
-  <h1 class="font-custom-style-h1 mb-6 mx-5 md:mx-0">
+  <h1 class="font-custom-style-h1 mb-8 mt-12 mx-5 md:mx-0 leading-tight">
     {title}
   </h1>
   <p class="font-custom-style-body-1 mx-5 md:mx-0">
@@ -69,7 +69,7 @@
   {#if favouriteRecordList.includes(properties.id)}
     <button
       class="text-custom-1 font-custom-style-body-5 bg-custom-16 border-custom-16 border-2
-        rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mx-5 md:mx-0 mt-5 py-1 px-6 w-fit
+        rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mx-5 md:mx-0 mt-6 mb-1 py-1 px-6 w-fit
         hover:border-custom-23 hover:bg-custom-23"
       onclick={() => handleFavouriteClick(properties.id)}
     >

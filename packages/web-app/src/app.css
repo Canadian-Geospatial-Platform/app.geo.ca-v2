@@ -173,6 +173,7 @@
 	@apply text-[16px];
 	@apply text-custom-16;
 	@apply underline;
+	@apply hover:no-underline;
 }
 
 .font-custom-style-body-3 {
@@ -265,6 +266,7 @@
 	@apply font-bold;
 	@apply text-[28px];
 	@apply text-custom-15;
+	@apply leading-tight;
 }
 
 .font-custom-style-h2-2 {
@@ -272,6 +274,7 @@
 	@apply font-bold;
 	@apply text-[18px];
 	@apply text-custom-16;
+	@apply leading-tight;
 }
 
 .font-custom-style-h3 {
@@ -300,6 +303,7 @@
 	@apply font-semibold;
 	@apply text-lg;
 	@apply text-custom-16;
+	@apply leading-tight;
 }
 
 .font-custom-style-body-carousel {

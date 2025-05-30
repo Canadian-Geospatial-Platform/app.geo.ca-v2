@@ -50,7 +50,7 @@
   // Each topic category should be a link back to the search page
   const topicCategoryArray = properties.topicCategory.map((x) => {
     const label = x.label[langShort].toLowerCase();
-    return `<a href="${searchUrl}${encodeURIComponent(label)}" class="underline text-custom-16">${label}</a>`;
+    return `<a href="${searchUrl}${encodeURIComponent(label)}" class="underline hover:no-underline text-custom-16">${label}</a>`;
   });
   const topicCategory = topicCategoryArray.join(', ');
 

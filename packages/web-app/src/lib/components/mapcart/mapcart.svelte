@@ -2,6 +2,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
+  import Card from '$lib/components/card/card.svelte';
   import NoMap from '$lib/components/icons/no-map.svelte';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
   import MapcartMap from '$lib/components/map/mapcart-map.svelte';
@@ -155,7 +156,7 @@
   });
 </script>
 
-<h1 class="mb-4 mx-5 md:mx-0 font-custom-style-h1 md:mr-auto">
+<h1 class="mt-12 mb-7 mx-5 md:mx-0 font-custom-style-h1 md:mr-auto leading-tight">
   {#if mapToggle}
     {mapTitle}
   {:else}
@@ -182,93 +183,95 @@
           {@html pageDescription}
         </p>
 
-        <!-- Table for medium to large screens-->
-        <div class="hidden sm:table w-full">
-          <SortableTable
-            tableContent={tableDataArray}
-            tableLabels={tableLabels}
-            clickableRows={true}
-            checkboxCol={true}
-            allSelected={true}
-            removeCol={true}
-            deleteResource={handleDeleteResource}
-            bind:this={sortableTable}
-            bind:selectedIds={selectedIds}
-          />
-        </div>
-
-        <!-- Cards for moble screens -->
-        <div class="block sm:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
-          {#each tableDataArray as item (item.id)}
-            <div class="flex items-center py-5">
-
-              <!-- Checkboxes -->
-              <div class="flex pointer-events-auto hover:cursor-pointer w-16 ml-4">
-                <input
-                  type="checkbox"
-                  id={"check-" + item.id}
-                  name={"check-" + item.id}
-                  class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-                    border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
-                  checked={selectedIds.has(item.id)}
-                  onchange={(e) => {
-                    const newSet = new Set(selectedIds);
-                    e.target.checked ? newSet.add(item.id) : newSet.delete(item.id);
-                    selectedIds = newSet;
-                  }}
-                />
-                <Checkmark
-                  classes="absolute h-4 mt-1.5 ml-1.5 hidden peer-checked:block
-                    pointer-events-none text-custom-1"
-                />
-              </div>
-
-              <!-- Resource -->
-              <div class=flex-1>
-                <!-- Resource data-->
-                <a href={item.url} class="font-custom-style-h2-2 block">
-                  {item.name}
-                </a>
-                <p class="font-custom-style-body-9">{item.id}</p>
-
-                <!-- Remove Button-->
-                <button
-                  class="button-3 mt-4 p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
-                    hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
-                  onclick={() => handleDeleteResource(item.id)}
-                >
-                  <GarbageCan classes={"h-4 inline mb-1"} />
-                  {remove}
-                </button>
-
-              </div>
-            </div>
-          {/each}
-        </div>
-
-        <!-------------- buttons -------------->
-        <div class="sm:flex mb-6">
-          <div class="sm:grow">
-            <button
-              class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
-              onclick={(event) => handleOpenMapClick(event)}
-            >
-              {viewOnMapLabel} ({numSelected})
-            </button>
+        <Card>
+          <!-- Table for medium to large screens-->
+          <div class="hidden sm:table w-full">
+            <SortableTable
+              tableContent={tableDataArray}
+              tableLabels={tableLabels}
+              clickableRows={true}
+              checkboxCol={true}
+              allSelected={true}
+              removeCol={true}
+              deleteResource={handleDeleteResource}
+              bind:this={sortableTable}
+              bind:selectedIds={selectedIds}
+            />
           </div>
 
-          <button
-            class="sm:inline-block button-3 w-full sm:w-fit sm:mt-5
-              shadow-[0_0.1875rem_0.375rem_#00000029]"
-            onclick={(event) => handleRemoveAllClick(event)}
-          >
-            <GarbageCan classes={"h-4 inline mb-1"} />
-            {removeAll}
-          </button>
-        </div>
+          <!-- Cards for moble screens -->
+          <div class="block sm:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
+            {#each tableDataArray as item (item.id)}
+              <div class="flex items-center py-5">
+
+                <!-- Checkboxes -->
+                <div class="flex pointer-events-auto hover:cursor-pointer w-16 ml-4">
+                  <input
+                    type="checkbox"
+                    id={"check-" + item.id}
+                    name={"check-" + item.id}
+                    class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
+                      border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
+                    checked={selectedIds.has(item.id)}
+                    onchange={(e) => {
+                      const newSet = new Set(selectedIds);
+                      e.target.checked ? newSet.add(item.id) : newSet.delete(item.id);
+                      selectedIds = newSet;
+                    }}
+                  />
+                  <Checkmark
+                    classes="absolute h-4 mt-1.5 ml-1.5 hidden peer-checked:block
+                      pointer-events-none text-custom-1"
+                  />
+                </div>
+
+                <!-- Resource -->
+                <div class=flex-1>
+                  <!-- Resource data-->
+                  <a href={item.url} class="font-custom-style-h2-2 block">
+                    {item.name}
+                  </a>
+                  <p class="font-custom-style-body-9">{item.id}</p>
+
+                  <!-- Remove Button-->
+                  <button
+                    class="button-3 mt-4 p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
+                      hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
+                    onclick={() => handleDeleteResource(item.id)}
+                  >
+                    <GarbageCan classes={"h-4 inline mb-1"} />
+                    {remove}
+                  </button>
+
+                </div>
+              </div>
+            {/each}
+          </div>
+
+          <!-------------- buttons -------------->
+          <div class="sm:flex">
+            <div class="sm:grow">
+              <button
+                class="sm:inline-block button-5 w-full sm:w-fit mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
+                onclick={(event) => handleOpenMapClick(event)}
+              >
+                {viewOnMapLabel} ({numSelected})
+              </button>
+            </div>
+
+            <button
+              class="sm:inline-block button-3 w-full sm:w-fit
+                shadow-[0_0.1875rem_0.375rem_#00000029]"
+              onclick={(event) => handleRemoveAllClick(event)}
+            >
+              <GarbageCan classes={"h-4 inline mb-1"} />
+              {removeAll}
+            </button>
+          </div>
+        </Card>
       </div>
 
-      <h2 class="mb-4 mx-0 font-custom-style-h2 md:mr-auto">
+      <h2 class="mb-4 mt-9 mx-0 font-custom-style-h2 md:mr-auto">
         {searchFor}
       </h2>
       <SearchBarSimplified />

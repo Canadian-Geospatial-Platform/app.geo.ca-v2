@@ -32,7 +32,7 @@
 </script>
 
 <div class="font-custom-style-body-1 mx-5 md:mx-0">
-  <h2 class="font-custom-style-h2 mb-1">
+  <h2 class="font-custom-style-h2 mb-7">
     {similarRecordsText}
   </h2>
   <Carousel cardData={cardData} />

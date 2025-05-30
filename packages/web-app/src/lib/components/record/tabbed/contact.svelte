@@ -43,12 +43,12 @@
 
   const email = contact?.email ? contact["email"][langShort] : null;
   const emailLink = email ?
-    `<a href="mailto:${email}" class="underline text-custom-16">${email}</a>` : "N/A";
+    `<a href="mailto:${email}" class="underline hover:no-underline text-custom-16">${email}</a>` : "N/A";
 
   const website = contact?.onlineResource?.url &&
     contact["onlineResource"]["url"] != null ? contact["onlineResource"]["url"] : null;
   const websiteLink = website ?
-    `<a href="${website}" class="underline text-custom-16">${website}</a>` : "N/A";
+    `<a href="${website}" class="underline hover:no-underline text-custom-16">${website}</a>` : "N/A";
 
   // Table Array
   const tableDataArray: Array<ContactRow> = [
