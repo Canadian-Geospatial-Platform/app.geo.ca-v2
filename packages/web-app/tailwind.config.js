@@ -29,7 +29,7 @@ export default {
 					22: '#002E62',
 					23: '#130944',
 					24: '#BEBEBE',
-					25: '#F2F2F2',
+					25: '#E9E9E9',
 				}
 			},
 			spacing: {
