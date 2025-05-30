@@ -184,7 +184,7 @@
     @apply items-center;
   }
   .active {
-    @apply shadow-[0_0.125rem_0.188rem_white,_0_0.188rem_grey];
+    @apply shadow-[0_0.125rem_0.188rem_white,_0_0.188rem_white];
     @apply border-b;
   }
 
