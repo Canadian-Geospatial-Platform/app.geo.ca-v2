@@ -287,7 +287,7 @@
 </div>
 
 <style>
-  thead, td {
+  th, td {
     @apply border;
     @apply border-custom-9;
   }
