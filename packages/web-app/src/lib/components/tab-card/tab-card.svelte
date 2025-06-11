@@ -44,10 +44,10 @@
   <div class="flex flex-wrap justify-between">
     <!-- Using a max width here ensures the title wraps instead of the menu tab for small screens -->
     <!-- Usig a min width for large screens ensures the flex wrap doesn't toggle when the tabs are clicked -->
-    <h2 class="hidden lg:flex font-custom-style-h2 mx-5 md:mx-0 max-w-tabbed-title lg:max-w-none lg:min-w-80 mb-1">
+    <h2 class="hidden lg:flex font-custom-style-h2 mx-5 md:mx-0 max-w-tabbed-title lg:max-w-none lg:min-w-80 mb-7">
       {title}
     </h2>
-    <h2 class="lg:hidden font-custom-style-h2 mx-5 md:mx-0 mb-1">
+    <h2 class="lg:hidden font-custom-style-h2 mx-5 md:mx-0 mb-7">
       {resources}
     </h2>
     <div class="flex mr-6 space-x-3 self-end">
@@ -55,8 +55,9 @@
       {#each tabContentArray as tab}
         <button
           class={["hidden lg:flex items-center min-h-9 px-5 font-custom-style-body-3",
-            "bg-custom-5 border-b-[0.1875rem] border-custom-16",
-            (tab.value == activeTabId) && "active"
+            "bg-custom-5 border-b-[0.1875rem] border-custom-16 rounded-t",
+            (tab.value == activeTabId) && "active",
+            (tab.value != activeTabId) && "hover:bg-custom-25",
           ]}
           onclick={() => handleTabClick(tab)}
         >

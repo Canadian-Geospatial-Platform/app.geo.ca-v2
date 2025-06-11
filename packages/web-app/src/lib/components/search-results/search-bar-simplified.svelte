@@ -57,7 +57,7 @@
   <input
     type="text"
     placeholder={searchProductsText}
-    class={`w-full h-12 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
+    class={`w-full lg:w-1/2 h-12 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
       shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-2
       ${$navigating ? 'border-custom-17' : 'border-custom-16'}`}
     bind:this={searchTextInput}
@@ -68,6 +68,7 @@
   <button
     class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
       font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
+      hover:bg-custom-23
       ${$navigating ? 'bg-custom-17' : 'bg-custom-16'}`}
     onclick={handleSearchClick}
     disabled={$navigating}

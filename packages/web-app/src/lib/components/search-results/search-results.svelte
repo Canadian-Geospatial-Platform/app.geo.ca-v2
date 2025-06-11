@@ -6,25 +6,20 @@
   /************* Translations ***************/
   const translations = $page.data.t;
 
-  const listViewText = translations?.listView ? translations["listView"] : "List view";
-  const searchResultsText = translations?.searchResults ?
-    translations["searchResults"] : "Search results";
-  const youMayText = translations?.youMay ? translations["youMay"] : "You may also like";
+  const searchDatasets = translations?.searchDatasets ? translations["searchDatasets"] : "Search datasets";
+  const searchResultsText = translations?.searchResults ? translations["searchResults"] : "Search results";
 
   let resultMessage = $derived($page.data.resultMessage);
 </script>
 
-<h1 class="font-custom-style-h1 px-5 md:px-0">
-  {searchResultsText}
+<h1 class="font-custom-style-h1 mt-8 px-5 md:px-0 leading-tight">
+  {searchDatasets}
 </h1>
-<p class="mb-2 mt-[-0.75em] font-open-sans px-5 md:px-0">
+<p class="mb-2 mt-3 font-open-sans px-5 md:px-0">
   {resultMessage}
 </p>
 <SearchBar />
-<h2 class="font-custom-style-h2 px-5 md:px-0">
-  {listViewText}
+<h2 class="font-custom-style-h2 mt-5 px-5 md:px-0">
+  {searchResultsText}
 </h2>
 <ResultList />
-<!--<h2 class="font-custom-style-h2">-->
-<!--  {youMayText}-->
-<!--</h2>-->

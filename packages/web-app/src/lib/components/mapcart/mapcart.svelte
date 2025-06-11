@@ -1,16 +1,18 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
+  import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
+  import Card from '$lib/components/card/card.svelte';
   import NoMap from '$lib/components/icons/no-map.svelte';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-  import MymapMap from '$lib/components/map/mymap-map.svelte';
+  import MapcartMap from '$lib/components/map/mapcart-map.svelte';
   import SortableTable from "$lib/components/sortable-table/sortable-table.svelte";
-  import MyMapListSkeleton from '$lib/components/loading-mask/mymap-list-skeleton.svelte';
+  import MapCartListSkeleton from '$lib/components/loading-mask/mapcart-list-skeleton.svelte';
   import Checkmark from '$lib/components/icons/checkmark.svelte';
   import GarbageCan from '$lib/components/icons/garbage-can.svelte';
   import SearchBarSimplified from '$lib/components/search-results/search-bar-simplified.svelte';
 
-  type MyMapRow = {
+  type MapCartRow = {
     id: string;
     name: string;
     url: string;
@@ -21,7 +23,8 @@
   const lang = $page.data.lang;
 
   const findAResource = translations?.findAResource ? translations.findAResource : 'Find a resource';
-  const myMapTitle = translations?.title ? translations.title : 'MyMap';
+  const mapCartTitle = translations?.title ? translations.title : 'Map Cart';
+  const mapTitle = translations?.mapTitle ? translations.mapTitle : 'Map';
   const pageDescription = translations?.description ? translations.description : '';
   const remove = translations?.remove ? translations.remove : 'Remove';
   const removeAll = translations?.removeAll ? translations.removeAll : 'Remove all';
@@ -49,7 +52,7 @@
   let tableDataArray = $state([]);
 
   // Table column labels
-  const tableLabels: MyMapRow = {
+  const tableLabels: MapCartRow = {
     "name": resourceNameLabel,
     "id": resourceIdLabel
   };
@@ -77,8 +80,8 @@
       sortableTable.updateTableContent(tableDataArray);
       sortableTable.setSelectedIds(selectedSet);
 
-      // Update localStorage
-      localStorage.setItem("MyMapResources", favouriteRecordList);
+      // Update localStorage and dispatch localstorage_updated event
+      updateLocalStorage("MapCartResources", favouriteRecordList);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -99,8 +102,8 @@
       sortableTable.updateTableContent([]);
       sortableTable.setSelectedIds(new Set());
 
-      // Update localStorage
-      localStorage.setItem("MyMapResources", []);
+      // Update localStorage and dispatch localstorage_updated event
+      updateLocalStorage("MapCartResources", []);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -116,11 +119,11 @@
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MyMapResources array inside onMount
+  // the MapCartResources array inside onMount
   onMount(async () => {
     // If not signed in, check the local storage for saved resources instead
     if (!$page.data.signedIn) {
-      let stored = localStorage.getItem("MyMapResources");
+      let stored = localStorage.getItem("MapCartResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array
@@ -130,7 +133,7 @@
 
       // Issue POST request for record details
       if (favouriteRecordList.length > 0) {
-        const response = await fetch('/' + lang + '/my-map', {
+        const response = await fetch('/' + lang + '/map-cart', {
           method: 'POST',
           body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
           headers: {'Content-Type': 'application/json'}
@@ -153,8 +156,12 @@
   });
 </script>
 
-<h1 class="mb-4 mx-5 md:mx-0 font-custom-style-h1 md:mr-auto">
-  {myMapTitle}
+<h1 class="mt-12 mb-7 mx-5 md:mx-0 font-custom-style-h1 md:mr-auto leading-tight">
+  {#if mapToggle}
+    {mapTitle}
+  {:else}
+    {mapCartTitle}
+  {/if}
 </h1>
 
 <div class="mx-5 md:mx-0 mb-5">
@@ -162,9 +169,9 @@
     {#if records.length > 0}
       {#if mapToggle}
         <!-------------- Map -------------->
-        <MymapMap layerIds={selectedIds} />
+        <MapcartMap layerIds={selectedIds} />
         <button
-          class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
+          class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
           onclick={(event) => handleReturnToListClick(event)}
         >
           {returnToList}
@@ -176,93 +183,95 @@
           {@html pageDescription}
         </p>
 
-        <!-- Table for medium to large screens-->
-        <div class="hidden sm:table">
-          <SortableTable
-            tableContent={tableDataArray}
-            tableLabels={tableLabels}
-            clickableRows={true}
-            checkboxCol={true}
-            allSelected={true}
-            removeCol={true}
-            deleteResource={handleDeleteResource}
-            bind:this={sortableTable}
-            bind:selectedIds={selectedIds}
-          />
-        </div>
-
-        <!-- Cards for moble screens -->
-        <div class="block sm:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
-          {#each tableDataArray as item (item.id)}
-            <div class="flex items-center py-5">
-
-              <!-- Checkboxes -->
-              <div class="flex pointer-events-auto hover:cursor-pointer w-16 ml-4">
-                <input
-                  type="checkbox"
-                  id={"check-" + item.id}
-                  name={"check-" + item.id}
-                  class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-                    border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
-                  checked={selectedIds.has(item.id)}
-                  onchange={(e) => {
-                    const newSet = new Set(selectedIds);
-                    e.target.checked ? newSet.add(item.id) : newSet.delete(item.id);
-                    selectedIds = newSet;
-                  }}
-                />
-                <Checkmark
-                  classes="absolute h-4 mt-1.5 ml-1.5 hidden peer-checked:block
-                    pointer-events-none text-custom-1"
-                />
-              </div>
-
-              <!-- Resource -->
-              <div class=flex-1>
-                <!-- Resource data-->
-                <a href={item.url} class="font-custom-style-h2-2 block">
-                  {item.name}
-                </a>
-                <p class="font-custom-style-body-9">{item.id}</p>
-
-                <!-- Remove Button-->
-                <button
-                  class="button-3 mt-4 p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
-                    hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
-                  onclick={() => handleDeleteResource(item.id)}
-                >
-                  <GarbageCan classes={"h-4 inline mb-1"} />
-                  {remove}
-                </button>
-
-              </div>
-            </div>
-          {/each}
-        </div>
-
-        <!-------------- buttons -------------->
-        <div class="sm:flex mb-8">
-          <div class="sm:grow">
-            <button
-              class="sm:inline-block button-5 w-full sm:w-fit mt-3 mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
-              onclick={(event) => handleOpenMapClick(event)}
-            >
-              {viewOnMapLabel} ({numSelected})
-            </button>
+        <Card>
+          <!-- Table for medium to large screens-->
+          <div class="hidden sm:table w-full">
+            <SortableTable
+              tableContent={tableDataArray}
+              tableLabels={tableLabels}
+              clickableRows={true}
+              checkboxCol={true}
+              allSelected={true}
+              removeCol={true}
+              deleteResource={handleDeleteResource}
+              bind:this={sortableTable}
+              bind:selectedIds={selectedIds}
+            />
           </div>
 
-          <button
-            class="sm:inline-block button-3 w-full sm:w-fit sm:mt-3
-              shadow-[0_0.1875rem_0.375rem_#00000029]"
-            onclick={(event) => handleRemoveAllClick(event)}
-          >
-            <GarbageCan classes={"h-4 inline mb-1"} />
-            {removeAll}
-          </button>
-        </div>
+          <!-- Cards for moble screens -->
+          <div class="block sm:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
+            {#each tableDataArray as item (item.id)}
+              <div class="flex items-center py-5">
+
+                <!-- Checkboxes -->
+                <div class="flex pointer-events-auto hover:cursor-pointer w-16 ml-4">
+                  <input
+                    type="checkbox"
+                    id={"check-" + item.id}
+                    name={"check-" + item.id}
+                    class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
+                      border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
+                    checked={selectedIds.has(item.id)}
+                    onchange={(e) => {
+                      const newSet = new Set(selectedIds);
+                      e.target.checked ? newSet.add(item.id) : newSet.delete(item.id);
+                      selectedIds = newSet;
+                    }}
+                  />
+                  <Checkmark
+                    classes="absolute h-4 mt-1.5 ml-1.5 hidden peer-checked:block
+                      pointer-events-none text-custom-1"
+                  />
+                </div>
+
+                <!-- Resource -->
+                <div class=flex-1>
+                  <!-- Resource data-->
+                  <a href={item.url} class="font-custom-style-h2-2 block">
+                    {item.name}
+                  </a>
+                  <p class="font-custom-style-body-9">{item.id}</p>
+
+                  <!-- Remove Button-->
+                  <button
+                    class="button-3 mt-4 p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
+                      hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
+                    onclick={() => handleDeleteResource(item.id)}
+                  >
+                    <GarbageCan classes={"h-4 inline mb-1"} />
+                    {remove}
+                  </button>
+
+                </div>
+              </div>
+            {/each}
+          </div>
+
+          <!-------------- buttons -------------->
+          <div class="sm:flex">
+            <div class="sm:grow">
+              <button
+                class="sm:inline-block button-5 w-full sm:w-fit mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
+                onclick={(event) => handleOpenMapClick(event)}
+              >
+                {viewOnMapLabel} ({numSelected})
+              </button>
+            </div>
+
+            <button
+              class="sm:inline-block button-3 w-full sm:w-fit
+                shadow-[0_0.1875rem_0.375rem_#00000029]"
+              onclick={(event) => handleRemoveAllClick(event)}
+            >
+              <GarbageCan classes={"h-4 inline mb-1"} />
+              {removeAll}
+            </button>
+          </div>
+        </Card>
       </div>
 
-      <h2 class="mb-4 mx-0 font-custom-style-h2 md:mr-auto">
+      <h2 class="mb-4 mt-9 mx-0 font-custom-style-h2 md:mr-auto">
         {searchFor}
       </h2>
       <SearchBarSimplified />
@@ -291,6 +300,6 @@
     <div class="animate-pulse bg-custom-6 w-full h-[32rem]"></div>
   {:else if !mapToggle}
     <!-- Table loading skeleton -->
-    <MyMapListSkeleton numRecords={6} />
+    <MapCartListSkeleton numRecords={6} />
   {/if}
 </div>

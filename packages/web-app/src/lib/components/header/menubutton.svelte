@@ -21,7 +21,7 @@
 
 <button class={[
     "grid grid-cols-4 cursor-pointer pl-[0.8125rem] pr-[0.5625rem] py-[0.4375rem]",
-    "self-center bg-custom-16 text-custom-1 rounded-[0.3125rem] font-bold text-xl",
+    "self-center bg-custom-16 hover:bg-custom-23 text-custom-1 rounded-[0.3125rem] font-bold text-xl",
     active && "menu-active"
   ]}
   onclick={handleMenuButtonClick}

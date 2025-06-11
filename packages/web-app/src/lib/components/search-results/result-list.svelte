@@ -2,6 +2,7 @@
   import { page, navigating } from '$app/stores';
   import { afterNavigate, goto } from '$app/navigation';
   import { tick, onMount } from 'svelte';
+  import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
   import ResultListSkeleton from '$lib/components/loading-mask/result-list-skeleton.svelte';
@@ -128,7 +129,7 @@
     return filteredFormats;
   }
 
-  /****************** MyMap Resources ******************/
+  /****************** MapCart Resources ******************/
   let favouriteRecordList = $state($page.data?.userData?.mapCart ? [...$page.data?.userData?.mapCart] : []);
 
   async function handleFavouriteClick(recordId) {
@@ -152,14 +153,15 @@
       }
     }
 
-    localStorage.setItem("MyMapResources", favouriteRecordList);
+    // Update localStorage and dispatch localstorage_updated event
+    updateLocalStorage("MapCartResources", favouriteRecordList);
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MyMapResources array inside onMount
+  // the MapCartResources array inside onMount
   onMount(() => {
     if (!$page.data.signedIn) {
-      let stored = localStorage.getItem("MyMapResources");
+      let stored = localStorage.getItem("MapCartResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array
@@ -192,7 +194,7 @@
   {:else}
   <!-- Header -->
   <div class="flex flex-col md:flex-row justify-between flex-wrap gap-y-4">
-    <p class="font-custom-style-body-6">
+    <p class="font-custom-style-body-8 self-center">
       {pageMessage}
     </p>
     <div class="flex flex-row gap-3 md:gap-5">
@@ -220,7 +222,7 @@
             <div class="col-span-9 sm:pr-2">
               <a
                 href={hrefPrefix + result.id}
-                class="uppercase underline font-custom-style-header-2"
+                class="underline hover:no-underline font-custom-style-header-4"
               >
                 {lang == 'fr' ? result.title_fr : result.title_en}
               </a>

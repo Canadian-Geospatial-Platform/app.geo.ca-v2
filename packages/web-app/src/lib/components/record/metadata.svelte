@@ -76,14 +76,14 @@
     const useLimitationsUrl = useLimitationsRaw.match(urlRegEx)[0];
     const useLimitationsLabel = useLimitationsRaw.split(' (')[0];
     useLimitations = '<a href="' + useLimitationsUrl
-      + '" class="underline text-custom-16">'
+      + '" class="underline hover:no-underline text-custom-16">'
       + useLimitationsLabel + '</a>';
   }
 
 </script>
 
 <div class="font-custom-style-body-1">
-  <h2 class="font-custom-style-h2 mb-1 mx-5 md:mx-0">
+  <h2 class="font-custom-style-h2 mb-7 mx-5 md:mx-0">
     {metadatatext}
   </h2>
   <Card>
@@ -123,7 +123,7 @@
               {distributorOrgArray[i].replaceAll(';', '; ')}.
             {/if}
             {#if onlineResourceArray[i]}
-              <a href={onlineResourceArray[i]} class="underline text-custom-16">{onlineResourceArray[i]}</a>
+              <a href={onlineResourceArray[i]} class="underline hover:no-underline text-custom-16">{onlineResourceArray[i]}</a>
             {/if}
           </p>
         {/each}

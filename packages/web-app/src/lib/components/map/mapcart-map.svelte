@@ -9,7 +9,7 @@
 
   let {layerIds}: Props = $props();
 
-  let mapId = 'map-mymap-resources';
+  let mapId = 'map-mapcart-resources';
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
   /***************** Map config *****************/
@@ -88,8 +88,7 @@
 
 <div
   id={mapId}
-  class="bg-blue-500/5"
-  style={`height: 32rem; width: 100%;`}
+  class="bg-blue-500/5 w-full aspect-video"
   data-config={sConfig}
   data-lang={mapLang}
 ></div>

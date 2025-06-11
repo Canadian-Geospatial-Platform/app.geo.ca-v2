@@ -16,15 +16,15 @@
   "format": "Format",
   "initialDescription": "Bienvenue sur app.geo.ca, le catalogue de données géospatiales qui vous relie à un monde de données. Que vous recherchiez des cartes, des images satellites, des photos aériennes, des données de recensement, des indicateurs environnementaux ou tout autre type d’information géospatiale, vous pouvez la trouver ici. Parcourez notre catalogue de plus de 10 000 jeux de données provenant de centaines de sources, ou utilisez nos outils de recherche avancés pour trouver exactement ce dont vous avez besoin. Vous pouvez également accéder à nos API et services web pour intégrer les données de geo.ca dans vos propres applications. Geo.ca est votre guichet unique pour la découverte et l’accès aux données géospatiales. Commencez à explorer dès aujourd’hui !",
   "intersects": "Intersecte",
-  "listView": "Vue en liste",
   "mapNotAvailable": "Aperçu de la carte non disponible",
   "north": "Nord",
   "organization": "Organisation",
   "relationInstructions": "Choisissez le type de requête spatiale à exécuter. 'Intersecte' retourne toutes les ressources dont la boîte englobante est au moins partiellement à l’intérieur de la zone de recherche. 'À l’intérieur' retourne toutes les ressources dont la boîte englobante est entièrement à l’intérieur de la zone de recherche.",
   "saveSearchParams": "Sauvegarder les paramètres de recherche",
   "search": "Recherche",
+  "searchDatasets": "Rechercher des ensembles de données",
   "searchProducts": "Recherche de produits",
-  "searchResults": "Résultats de recherche",
+  "searchResults": "Résultats",
   "south": "Sud",
   "spatialInstructions": "Entrez la latitude et la longitude de la zone de recherche en degrés. Remarque : les coordonnées dans les hémisphères sud et ouest sont indiquées par des valeurs négatives.",
   "startDate": "Date de début",
@@ -35,6 +35,5 @@
   "validatorTooSmall": "La valeur doit être supérieure ou égale à ",
   "west": "Ouest",
   "windowTooSmall": "La carte de cette ressource n'est pas disponible avec votre résolution d'écran actuelle. Veuillez passer à un écran plus grand pour afficher la carte. On s'excuse pour tout inconvénient que ça pourrait causer.",
-  "within": "À l’intérieur",
-  "youMay": "Vous pouvez aussi aimer"
+  "within": "À l’intérieur"
 }

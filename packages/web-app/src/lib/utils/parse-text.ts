@@ -41,7 +41,7 @@ export const parseText = function(text: string) {
   
   let textWithPlaceholders = text.replaceAll(markdownLinkRegEx, (x, text, url) => {
     // Store the html version of the link in the links array
-    let link = `<a href="${url}" class="underline decoration-from-font text-custom-16">${text}</a>`;
+    let link = `<a href="${url}" class="underline hover:no-underline decoration-from-font text-custom-16">${text}</a>`;
     links.push(link);
   
     // Replace with the placeholder text for now
@@ -53,7 +53,7 @@ export const parseText = function(text: string) {
   
   let urlRegEx = /(https?:\/\/[^\s|)]+)/g;
   let textWithAnchors = textWithPlaceholders.replaceAll(urlRegEx, (url) => {
-    return `<a href="${url}" class="underline decoration-from-font text-custom-16">${url}</a>`;
+    return `<a href="${url}" class="underline hover:no-underline decoration-from-font text-custom-16">${url}</a>`;
   });
   
   /****** Step 3 ******/

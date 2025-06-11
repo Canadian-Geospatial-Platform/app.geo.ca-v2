@@ -32,7 +32,7 @@
   <input 
     type="checkbox" id={checkboxId} name={checkboxName} bind:checked={checked}
     class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-      border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16"
+      border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 cursor-pointer"
     onchange={handleCheckboxClick}
   />
   <label for={checkboxId}>

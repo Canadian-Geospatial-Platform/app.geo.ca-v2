@@ -33,5 +33,20 @@ export const handle: Handle = async ({ event, resolve }) => {
     return new Response(null, { status: 204 });
   }
 
+  // Language varification - check to make sure the url lang is supported
+
+  // List of supported languages
+  const supportedLanguages = ['en-ca', 'fr-ca'];
+  const defaultLang = 'en-ca';
+  const langParam = event.params.lang;
+
+  // If someone enters an invalid language (e.g. fr-BE, or hdsjkfhjkds),
+  // they should be rerouted to a valid one.
+  // Note: not all events have a language set in the params, so we will ignore those.
+  if (langParam && !supportedLanguages.includes(langParam)) {
+    const langRedirectUrl = event.request.url.replace(langParam, defaultLang);
+    return Response.redirect(new URL(langRedirectUrl), 307);
+  }
+
   return resolve(event);
 };

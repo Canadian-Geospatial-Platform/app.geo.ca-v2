@@ -114,13 +114,15 @@
 <!-- Geocore and HNAP buttons -->
 <div class="flex flex-col sm:flex-row gap-4 pt-2">
   <button
-    class="w-full sm:w-auto bg-custom-16 text-custom-1 font-custom-style-body-5"
+    class="w-full sm:w-auto bg-custom-16 hover:bg-custom-23 hover:border-custom-23
+      text-custom-1 font-custom-style-body-5"
     on:click={handleDownloadButtonClick}
   >
     {downloadMetadataText}
   </button>
   <button
-    class="w-full sm:w-auto bg-custom-1 text-custom-16 font-custom-style-body-3"
+    class="w-full sm:w-auto bg-custom-1 hover:bg-custom-16 text-custom-16 hover:text-custom-1
+      font-custom-style-body-3"
     on:click={handleViewISO1915ButtonClick}
   >
     {viewISO1915Text}

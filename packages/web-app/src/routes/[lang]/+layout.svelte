@@ -54,16 +54,16 @@
 </script>
 
 <Header />
-<div
-  class="flex flex-col content-width space-y-4 bg-custom-1 min-h-screen pt-4"
+<main
+  class="flex flex-col content-width bg-custom-1 min-h-screen pt-8"
   data-sveltekit-reload={$updated ? '' : 'off'}
 >
   <Breadcrumbs />
-  <div class="grow">
+  <div>
     {@render children?.()}
   </div>
   <Feedback />
-</div>
+</main>
 <Footer />
 
 {#if showLeavingSitePopup}

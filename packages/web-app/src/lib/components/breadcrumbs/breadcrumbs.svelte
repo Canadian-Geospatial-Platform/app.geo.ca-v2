@@ -22,22 +22,24 @@
   ]);
 </script>
 
-<ol class="flex flex-wrap px-5 md:px-0 gap-1">
+<p class="flex flex-wrap px-5 md:px-0 gap-3">
   {#each breadcrumbs as breadcrumb, i}
     <!--
       A link isn't needed for the current page, but the search
       page link should always available from +error.svelte.
     -->
     {#if i < breadcrumbs.length - 1 || $page.error}
-      <li><a href={breadcrumb.href}>{breadcrumb.text}</a> /</li>
+      <span><a href={breadcrumb.href}>{breadcrumb.text}</a></span>
+      /
     {:else}
-      <li>{breadcrumb.text}</li>
+      <span>{breadcrumb.text}</span>
     {/if}
   {/each}
-</ol>
+</p>
 
 <style>
   a {
+    @apply hover:no-underline;
     @apply underline;
     @apply text-custom-8;
   }

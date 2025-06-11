@@ -49,6 +49,10 @@ export const load: PageLoad = ({ params, data, url }) => {
 		numPageText: numPageText,
 		resultMessage: resultMessage,
 		searchMode: searchMode,
+		canonicalUrl: data.canonicalUrl,
+		alternateUrl: data.alternateUrl,
+		alternateLang: data.alternateLang,
+		metaDescription: data.metaDescription,
 	};
 };
 

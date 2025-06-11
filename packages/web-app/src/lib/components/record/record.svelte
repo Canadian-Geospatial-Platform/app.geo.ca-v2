@@ -17,7 +17,7 @@
 {#if $navigating}
   <LoadingMask classes="fixed left-0 top-0 items-center" />
 {/if}
-<div class="flex flex-col space-y-8">
+<div class="flex flex-col space-y-10">
   <Description />
   <Metadata />
   <MapContainer />

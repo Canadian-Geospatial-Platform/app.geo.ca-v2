@@ -19,10 +19,10 @@
   let cdgiAcronym = legalData?.cdgiAcronym ? legalData["cdgiAcronym"] : "";
 </script>
 
-<div class="bg-custom-5 font-open-sans">
+<div class="bg-custom-5 font-open-sans py-4">
   <div class="grid grid-cols-1 md:grid-cols-2 content-width">
     <div class="legal-col">
-      <h3>{contactUs}</h3>
+      <h3 class="mb-2.5">{contactUs}</h3>
       <p>{ccmeo}</p>
       <p>{nrcan}</p>
       <p>{goc}</p>
@@ -30,7 +30,7 @@
     </div>
     <div class="legal-col md:text-right">
       <img 
-        class="w-28 md:ml-auto mb-3"
+        class="w-28 md:ml-auto mb-5"
         src= {logoUrl}
         alt= {logoAlt}
       />
@@ -69,6 +69,7 @@
 
   a {
     @apply underline;
+    @apply hover:no-underline;
     @apply text-custom-8;
   }
 </style>
