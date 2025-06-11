@@ -55,7 +55,7 @@
 
   /************ Utility Methods ************/
 
-  // This placeholder function logs a warning if called before the map is initialized.  
+  // This placeholder function logs a warning if called before the map is initialized.
   // It gets replaced later with a function to update bbox coordinates.
   let setVerticesFromCoords: (coords: number[][][]) => void = () => {
     console.warn("map not initialized");
