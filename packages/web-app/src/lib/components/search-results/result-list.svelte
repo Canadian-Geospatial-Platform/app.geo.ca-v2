@@ -129,8 +129,8 @@
     return filteredFormats;
   }
 
-  /****************** MapCart Resources ******************/
-  let favouriteRecordList = $state($page.data?.userData?.mapCart ? [...$page.data?.userData?.mapCart] : []);
+  /****************** MyCart Resources ******************/
+  let favouriteRecordList = $state($page.data?.userData?.myCart ? [...$page.data?.userData?.myCart] : []);
 
   async function handleFavouriteClick(recordId) {
 
@@ -139,7 +139,7 @@
       favouriteRecordList.push(recordId);
 
       if ($page.data.signedIn) {
-        // TODO: Add item to the mapCart when login system has been approved
+        // TODO: Add item to the myCart when login system has been approved
       }
     } else {
       // Remove from list of ids
@@ -149,19 +149,19 @@
       }
 
       if ($page.data.signedIn) {
-        // TODO: Remove item from the mapCart when login system has been approved
+        // TODO: Remove item from the myCart when login system has been approved
       }
     }
 
     // Update localStorage and dispatch localstorage_updated event
-    updateLocalStorage("MapCartResources", favouriteRecordList);
+    updateLocalStorage("MyCartResources", favouriteRecordList);
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MapCartResources array inside onMount
+  // the MyCartResources array inside onMount
   onMount(() => {
     if (!$page.data.signedIn) {
-      let stored = localStorage.getItem("MapCartResources");
+      let stored = localStorage.getItem("MyCartResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array

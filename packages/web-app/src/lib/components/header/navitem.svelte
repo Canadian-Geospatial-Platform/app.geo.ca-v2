@@ -82,9 +82,9 @@
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MapCartResources array inside onMount
+  // the MyCartResources array inside onMount
   onMount(async () => {
-    localStorageValue = localStorage.getItem("MapCartResources");
+    localStorageValue = localStorage.getItem("MyCartResources");
 
     window.addEventListener(LOCALSTORAGE_UPDATED, handleLocalStorageUpdated);
 

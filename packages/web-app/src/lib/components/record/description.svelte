@@ -13,11 +13,11 @@
 
   const title = lang == 'fr-ca' ? properties.title.fr : properties.title.en;
   const description = lang == 'fr-ca' ? properties.description.fr : properties.description.en;
-  const addToMapCart = translations?.addToMapCart ? translations.addToMapCart : 'Add to Map Cart';
-  const removeFromMapCart = translations?.removeFromMapCart ? translations.removeFromMapCart : 'Remove from Map Cart';
+  const addToMyCart = translations?.addToMyCart ? translations.addToMyCart : 'Add to My Cart';
+  const removeFromMyCart = translations?.removeFromMyCart ? translations.removeFromMyCart : 'Remove from My Cart';
 
-  /****************** MapCart Resources ******************/
-  let favouriteRecordList = $state(data?.userData?.mapCart ? [...data?.userData?.mapCart] : []);
+  /****************** MyCart Resources ******************/
+  let favouriteRecordList = $state(data?.userData?.myCart ? [...data?.userData?.myCart] : []);
 
   async function handleFavouriteClick(recordId) {
     if (!favouriteRecordList.includes(recordId)) {
@@ -25,7 +25,7 @@
       favouriteRecordList.push(recordId);
 
       if (data.signedIn) {
-        // TODO: Add item to the mapCart when login system has been approved
+        // TODO: Add item to the myCart when login system has been approved
       }
     } else {
       // Remove from list of ids
@@ -35,19 +35,19 @@
       }
 
       if (data.signedIn) {
-        // TODO: Remove item from the mapCart when login system has been approved
+        // TODO: Remove item from the myCart when login system has been approved
       }
     }
 
     // Update localStorage and dispatch localstorage_updated event
-    updateLocalStorage("MapCartResources", favouriteRecordList);
+    updateLocalStorage("MyCartResources", favouriteRecordList);
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MapCartResources array inside onMount
+  // the MyCartResources array inside onMount
   onMount(() => {
     if (!data.signedIn) {
-      let stored = localStorage.getItem("MapCartResources");
+      let stored = localStorage.getItem("MyCartResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array
@@ -74,7 +74,7 @@
       onclick={() => handleFavouriteClick(properties.id)}
     >
       <CartRemove classes="h-9 inline" />
-      {removeFromMapCart}
+      {removeFromMyCart}
     </button>
   {:else}
     <button
@@ -84,7 +84,7 @@
       onclick={() => handleFavouriteClick(properties.id)}
     >
       <CartAdd classes="h-9 inline" />
-      {addToMapCart}
+      {addToMyCart}
     </button>
   {/if}
 </div>

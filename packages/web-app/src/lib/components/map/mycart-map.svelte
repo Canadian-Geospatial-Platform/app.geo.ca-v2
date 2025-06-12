@@ -9,7 +9,7 @@
 
   let {layerIds}: Props = $props();
 
-  let mapId = 'map-mapcart-resources';
+  let mapId = 'map-mycart-resources';
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
   /***************** Map config *****************/

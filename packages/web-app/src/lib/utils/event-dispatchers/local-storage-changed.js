@@ -1,5 +1,5 @@
 /**********************************************
- * For the map cart, there are several places where the local storage is updated.
+ * For the cart, there are several places where the local storage is updated.
  * Sometimes, unrelated components, like the the item counter in the header,
  * needs to be aware of the change. So, we can create a custom event dispatcher here
  * to ensure everything stays synced.
