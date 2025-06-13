@@ -18,6 +18,8 @@
     url: string;
   };
 
+  let mapComponent = $state();
+
   /************* Translations ***************/
   const translations = $page.data.t;
   const lang = $page.data.lang;
@@ -37,7 +39,6 @@
 
   const langShort = lang == 'fr-ca' ? 'fr' : 'en';
   const titleKey = 'title_' + langShort;
-  let mapComponent;
 
   /************* Resource Table ***************/
   let sortableTable = $state();
