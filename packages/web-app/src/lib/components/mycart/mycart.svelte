@@ -37,6 +37,7 @@
 
   const langShort = lang == 'fr-ca' ? 'fr' : 'en';
   const titleKey = 'title_' + langShort;
+  let mapComponent;
 
   /************* Resource Table ***************/
   let sortableTable = $state();
@@ -110,11 +111,14 @@
   }
 
   function handleOpenMapClick(event) {
-    // checkedIds = sortableTable.getSelectedIds();
     mapToggle = true;
   }
 
   function handleReturnToListClick(event) {
+    // Remove the map viewer to avoid conflicts
+    if (mapComponent) {
+      mapComponent.destroyMapViewer();
+    }
     mapToggle = false;
   }
 
@@ -169,7 +173,7 @@
     {#if records.length > 0}
       {#if mapToggle}
         <!-------------- Map -------------->
-        <MycartMap layerIds={selectedIds} />
+        <MycartMap layerIds={selectedIds} bind:this={mapComponent}/>
         <button
           class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
           onclick={(event) => handleReturnToListClick(event)}

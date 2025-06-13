@@ -325,10 +325,6 @@
   });
 </script>
 
-<svelte:head>
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
-</svelte:head>
-
 <div
   id={mapId}
   class="bg-blue-500/5 h-[25rem] max-w-[36rem]"

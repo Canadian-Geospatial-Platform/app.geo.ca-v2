@@ -279,10 +279,6 @@
   });
 </script>
 
-<svelte:head>
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
-</svelte:head>
-
 {#if mapType === 'resultList'}
   <div
     id={mapId}

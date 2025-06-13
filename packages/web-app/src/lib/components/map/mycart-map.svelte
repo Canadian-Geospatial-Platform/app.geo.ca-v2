@@ -59,6 +59,17 @@
 
   let sConfig = $derived(JSON.stringify(config));
 
+  // Allow for the map to be destroyed by the parent component
+  export function destroyMapViewer() {
+    try {
+      if (cgpv.api.hasMapViewer(mapId)) {
+        cgpv.api.deleteMapViewer(mapId, false);
+      }
+    } catch (error) {
+      console.error('Error while removing map:', error);
+    }
+  }
+
   /***************** Create map *****************/
   onMount(async () => {
     await tick();
