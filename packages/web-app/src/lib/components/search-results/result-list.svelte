@@ -175,14 +175,6 @@
   let mapType = 'resultList';
   let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
-  afterNavigate(async () => {
-    try {
-      await tick();
-      cgpv.init();
-    } catch (e) {
-      console.warn('Error initialising cgpv.', e);
-    }
-  });
 </script>
 
 <!-- When the window is resized, we can close each accordion to reset the map variables. -->

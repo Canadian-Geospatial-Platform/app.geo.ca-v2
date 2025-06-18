@@ -1,7 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
+  import { loadCGPVScript } from '$lib/components/map/loadCGPVScript.ts';
 
   interface Props {
     coordinates: any;
@@ -223,7 +224,9 @@
   };
 
   onMount(async () => {
-    await tick();
+    // The loadCGPVScript function ensures the external cgpv library is fully loaded before
+    // trying to use the geocore code, otherwise it sometimes fails
+    await loadCGPVScript();
 
     try {
       // Destroy the old map if it exists. This ensures that when the map is toggled
@@ -259,19 +262,24 @@
       // Add bounding box when no map is available
       if (!geoviewLayerConfig) {
         let bbox = getBbox(coordinates);
-        cgpv.api.getMapViewer(mapId)?.layer.geometry.addPolygon(
-          [bbox],
-          {
-            style: {
-              strokeColor: '#535aa4',
-              strokeWidth: 3,
-              fillColor: '#535aa4',
-              fillOpacity: 0.2,
-            },
-          },
-          undefined,
-          'static'
-        );
+
+        // Sometimes, the map's vector layer hasn't finished loading when we try
+        // to add the bbox polygon. We need to wait for the layer, so we can wrap
+        // the following code in a handler to catch the mapLayersLoaded event before
+        // triggering addPolygon.
+        cgpv.api.getMapViewer(mapId)?.onMapLayersLoaded(() => {
+          cgpv.api.getMapViewer(mapId).layer.geometry.addPolygon(
+            [bbox],
+            {
+              style: {
+                strokeColor: '#535aa4',
+                strokeWidth: 3,
+                fillColor: '#535aa4',
+                fillOpacity: 0.2,
+              },
+            }
+          );
+        });
       }
     } catch (e) {
       console.error(e);

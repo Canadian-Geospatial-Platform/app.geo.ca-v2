@@ -18,7 +18,6 @@
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang="{alternateLang}" href="{alternateUrl}" />
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
 
 <div class="flex flex-wrap lg:flex-nowrap items-start gap-4 py-4">

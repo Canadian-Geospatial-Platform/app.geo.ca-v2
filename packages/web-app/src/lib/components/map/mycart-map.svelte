@@ -1,7 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
+  import { loadCGPVScript } from '$lib/components/map/loadCGPVScript.ts';
 
   interface Props {
     layerIds: any;
@@ -72,7 +73,9 @@
 
   /***************** Create map *****************/
   onMount(async () => {
-    await tick();
+    // The loadCGPVScript function ensures the external cgpv library is fully loaded before
+    // trying to use the geocore code, otherwise it sometimes fails
+    await loadCGPVScript();
 
     try {
       // Destroy the old map if it exists. This ensures that when the map is toggled

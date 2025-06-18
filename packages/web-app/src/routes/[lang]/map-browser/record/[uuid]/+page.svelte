@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { tick } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import Record from '$lib/components/record/record.svelte';
 	import { page } from '$app/stores';
@@ -19,7 +18,6 @@
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang="{alternateLang}" href="{alternateUrl}" />
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
 
 <Record data={$page.data} />

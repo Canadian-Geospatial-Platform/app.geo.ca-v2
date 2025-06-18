@@ -1,6 +1,5 @@
 <script lang="ts">
   import { navigating, page } from '$app/stores';
-  import { onMount, tick } from 'svelte';
   import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
   import MyCart from '$lib/components/mycart/mycart.svelte';
 
@@ -11,15 +10,6 @@
 	const alternateUrl = $page.data.alternateUrl;
 	const alternateLang = $page.data.alternateLang;
   const metaDescription = $page.data.metaDescription;
-
-  onMount(async () => {
-    try {
-      await tick();
-      cgpv.init();
-    } catch (e) {
-      console.warn('Error initialising cgpv.', e);
-    }
-  });
 </script>
 
 <svelte:head>
@@ -27,7 +17,6 @@
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang="{alternateLang}" href="{alternateUrl}" />
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
 </svelte:head>
 
 {#if $navigating}
