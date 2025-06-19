@@ -8,6 +8,15 @@ export async function POST({ request }) {
   }
 
   const records = await getRecordsByIds(ids, lang);
+  const idsWithLayers = await checkForMapLayers(ids, lang);
+
+  for (let record of records) {
+    if (idsWithLayers.includes(record.id)) {
+      record.hasMapLayer = true;
+    } else {
+      record.hasMapLayer = false;
+    }
+  }
 
   return json(records);
 }
@@ -20,6 +29,51 @@ function getRecord(id, lang) {
 	};
 	url.search = new URLSearchParams(params).toString();
 	return fetch(url);
+}
+
+// Query vcs to check if resources have map layers
+async function checkForMapLayers(ids, lang) {
+	const langShort = lang.split('-')[0];
+	let filteredIds = [];
+
+  // Set url search params
+	const url = new URL('https://geocore.api.geo.ca/vcs');
+	const params = {
+		id: ids,
+		lang: langShort,
+		referrer: 'geo.ca',
+	}
+	url.search = new URLSearchParams(params).toString();
+
+	try {
+		// Get data
+	  const response = await fetch(url);
+	  const results = await response.json();
+
+    // Get a list of ids with map layers. For resources with no map layers
+	  const rcs = results.response.rcs;
+	  const layersArray = rcs[langShort];
+	  filteredIds = layersArray.map((result) => {
+      // Since we are only checking if at least one layer exists,
+      // we can stop at the first layer for each resource
+      const layer = result.layers[0];
+      const layerId = layer.id;
+
+      // The rcs ids don't have the same format as the geocore ids, but
+      // always contain the geocode id. For example an rcs layer id could look
+      // like this: "rcs.03ccfb5c-a06e-43e3-80fd-09d4f8f69703.en". To get just the
+      // geocore id, we can check with the includes method.
+      for (const id of ids) {
+        if (layerId.includes(id)) {
+          return id;
+        }
+      }
+	  });
+	} catch (error) {
+	  console.log(error);
+	}
+
+	return filteredIds;
 }
 
 async function getRecordsByIds(idIterator, lang) {

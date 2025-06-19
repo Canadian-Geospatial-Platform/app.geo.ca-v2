@@ -148,6 +148,7 @@
 
         tableDataArray = records.map((record) => {
           return {
+            disableCheckbox: !record.hasMapLayer ?? true,
             id: record.id,
             name: record[titleKey],
             url: $page.url.origin + "/" + lang + "/map-browser/record/" + record.id

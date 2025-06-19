@@ -108,7 +108,11 @@
 
   function selectAll() {
     const newSet = new Set(selectedIds);
-    visibleRows.forEach(row => newSet.add(row.id));
+    visibleRows.forEach((row) => {
+      if (!row.disableCheckbox) {
+        newSet.add(row.id);
+      }
+    });
     selectedIds = newSet;
   }
 
@@ -179,7 +183,7 @@
                 type="checkbox"
                 id="checkAll"
                 name="checkAll"
-                checked={visibleRows.every((row) => selectedIds.has(row.id))}
+                checked={visibleRows.every((row) => selectedIds.has(row.id) || row.disableCheckbox)}
                 class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
                   border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
                 onchange={(event) => handleSelectAllChange(event)}
@@ -236,9 +240,11 @@
                   type="checkbox"
                   id={"check-" + row?.id}
                   name={"check-" + row?.id}
-                  checked={selectedIds.has(row.id)}
+                  checked={selectedIds.has(row.id) && !row.disableCheckbox}
+                  disabled={row.disableCheckbox}
                   class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-                    border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
+                    border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer
+                    disabled:bg-gray-200 disabled:border-gray-400 disabled:hover:cursor-default"
                   onchange={(event) => handleCheckboxOnChange(event, row.id)}
                 />
                 <Checkmark
