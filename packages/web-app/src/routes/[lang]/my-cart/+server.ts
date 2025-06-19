@@ -10,7 +10,13 @@ export async function POST({ request }) {
   const records = await getRecordsByIds(ids, lang);
   const idsWithLayers = await checkForMapLayers(ids, lang);
 
+  // Update the record data with the following:
+  //   (1) a list of resource formats
+  //   (2) a boolean including if the resource has a map layer
   for (let record of records) {
+    const formats = getFormats(record, lang);
+    record.formats = formats;
+
     if (idsWithLayers.includes(record.id)) {
       record.hasMapLayer = true;
     } else {
@@ -29,6 +35,34 @@ function getRecord(id, lang) {
 	};
 	url.search = new URLSearchParams(params).toString();
 	return fetch(url);
+}
+
+function getFormats(record, lang) {
+  const options = record.options;
+
+  // Get an array of just the format of each record option
+  const formatArray = options.map((x) => {
+    const description = x.description;
+    const descriptionString = lang == 'fr' ? description.fr : description.en;
+    const descriptionArray = descriptionString.split(';');
+
+    // The description string is always in this format 'type;format;language',
+    // so when splitting the string to an array, we can get the format by returning
+    // the item in the second array index.
+    return descriptionArray[1];
+  });
+
+  // Note: In the geocore records, the protocol is sometimes listed as the string 'null',
+  // not just the value null, so we should check for the string to filer it out.
+  // We can also check for 'undefined' as a string too for good measure.
+  // Using indexOf allows us to check for duplicate values since it always returns the
+  // first instance of the value being searched. If it doesn't match the current index,
+  // then it must be a duplicate.
+  const filteredFormats = formatArray.filter((x, index, self) => {
+    return x && x !== 'null' && x != 'undefined' && self.indexOf(x) === index;
+  });
+
+  return filteredFormats;
 }
 
 // Query vcs to check if resources have map layers

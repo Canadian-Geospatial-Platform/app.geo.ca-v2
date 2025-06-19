@@ -30,7 +30,7 @@
   const pageDescription = translations?.description ? translations.description : '';
   const remove = translations?.remove ? translations.remove : 'Remove';
   const removeAll = translations?.removeAll ? translations.removeAll : 'Remove all';
-  const resourceIdLabel = translations?.resourceId ? translations.resourceId : 'Resource id';
+  const resourceFormatsLabel = translations?.resourceFormats ? translations.resourceFormats : 'Resource formats';
   const resourceListEmpty = translations?.resourceListEmpty ? translations.resourceListEmpty : 'The resource list is empty.';
   const resourceNameLabel = translations?.resourceName ? translations.resourceName : 'Resource name';
   const returnToList = translations?.returnToList ? translations.returnToList : 'Return to list';
@@ -56,7 +56,7 @@
   // Table column labels
   const tableLabels: MyCartRow = {
     "name": resourceNameLabel,
-    "id": resourceIdLabel
+    "formats": resourceFormatsLabel
   };
 
   /************* Handlers ***************/
@@ -150,6 +150,7 @@
           return {
             disableCheckbox: !record.hasMapLayer ?? true,
             id: record.id,
+            formats: record.formats.join(', '),
             name: record[titleKey],
             url: $page.url.origin + "/" + lang + "/map-browser/record/" + record.id
           };

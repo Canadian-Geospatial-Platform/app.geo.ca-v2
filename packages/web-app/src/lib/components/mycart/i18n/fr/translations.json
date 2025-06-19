@@ -4,7 +4,7 @@
   "mapTitle": "Carte",
   "remove": "Supprimer",
   "removeAll": "Tout supprimer",
-  "resourceId": "Identifiant de la ressource",
+  "resourceFormats": "Formats de ressources",
   "resourceListEmpty": "Votre panier est vide.",
   "resourceName": "Nom de la ressource",
   "returnToList": "Retourner au panier",
