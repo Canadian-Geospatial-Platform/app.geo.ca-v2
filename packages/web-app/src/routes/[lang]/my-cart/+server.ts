@@ -22,7 +22,7 @@ export async function POST({ request }) {
 }
 
 function getRecord(id, lang) {
-	const url = new URL('https://geocore.api.geo.ca/id');
+	const url = new URL('https://geocore.api.geo.ca/id/v2');
 	const params = {
 		id: id,
 		lang: lang.split('-')[0]
@@ -90,7 +90,7 @@ async function getRecordsByIds(idIterator, lang) {
 		values.map(async (v) => {
 			try {
 				const contents = await v.json();
-				if (contents.Items[0]) return contents.Items[0];
+				if (contents?.body?.Items[0]) return contents.body.Items[0];
 			} catch {
 				(error) => console.log(error);
 			}
