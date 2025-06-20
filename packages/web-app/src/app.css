@@ -321,3 +321,17 @@
   @apply w-10;
   @apply md:w-12;
 }
+
+/***********************************************
+* This ensures that any full screen feature is always above any
+* other feature on the page.
+*
+* Note: the number 11100 was chosen because
+*   geoview uses a z-index of 9999 for their map's loading mask. This caused us
+*   to use a z-index of 10010 for our header to prevent the loading mask from
+*   overlapping the menu bar. As a result, 11100 ensures that the menu bar
+*   does not overlap the full screen elements.
+************************************************/
+div[role=presentation] {
+  z-index: 11100;
+}

@@ -8,7 +8,7 @@ const docClient = DynamoDBDocumentClient.from(client);
 
 const getUserData = async (cookies) => {
 	let token = await getToken(cookies);
-	if (!token.ok) return { Item: { uuid: null, mapCart: [] } };
+	if (!token.ok) return { Item: { uuid: null, myCart: [] } };
 	const command = new GetCommand({
 		TableName: Table.users.tableName,
 		Key: {
@@ -23,7 +23,7 @@ const getUserData = async (cookies) => {
 		console.error('Error fetching user data.');
 		console.error(error);
 	}
-	if (response.Item == undefined) response = { Item: { uuid: token.value.username, mapCart: [] } };
+	if (response.Item == undefined) response = { Item: { uuid: token.value.username, myCart: [] } };
 	return response;
 };
 

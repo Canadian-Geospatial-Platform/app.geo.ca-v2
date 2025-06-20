@@ -7,12 +7,12 @@
   const orientation = 'horizontal';
 </script>
 
-<div class="flex justify-end space-x-8 items-end">
+<nav class="flex justify-end space-x-8 items-end">
   {#each Object.entries(navItems) as [colId, data]}
     {#if (colId != 'collections') || userId}
       <Navitem linkData={data} {orientation} />
     {/if}
   {/each}
-</div>
+</nav>
 
 <style></style>

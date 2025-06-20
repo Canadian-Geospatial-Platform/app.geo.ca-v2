@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { getUserData } from '$lib/db/user.ts';
-import { removeFromMapCart } from '$lib/actions.ts';
+import { removeFromMyCart } from '$lib/actions.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let userData;
 	let sanitizedResults;
 
-	const canonicalUrl = url.origin + '/' + params.lang + '/map-cart';
+	const canonicalUrl = url.origin + '/' + params.lang + '/my-cart';
 	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
 	const metaDescription = params.lang == 'fr-ca' ?
@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	}
 
 	try {
-		response = await getRecords(userData.Item.mapCart, params.lang, fetch);
+		response = await getRecords(userData.Item.myCart, params.lang, fetch);
 	} catch (e) {
 		console.error('error fetching records: \n', e);
 	}
@@ -44,7 +44,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			href: url.origin + '/' + params.lang + '/map-browser'
 		},
 		t_title_2: {
-			text: params.lang == 'en-ca' ? 'Map Cart' : 'Panier de cartes',
+			text: params.lang == 'en-ca' ? 'My Cart' : 'Mon Panier',
 			href: url.href
 		},
 		results: sanitizedResults,
@@ -90,5 +90,5 @@ async function getRecords(idIterator, lang, fetch) {
 }
 
 export const actions = {
-	removeFromMapCart: removeFromMapCart
+	removeFromMyCart: removeFromMyCart
 } satisfies Actions;

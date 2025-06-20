@@ -37,7 +37,7 @@
   const foundationalKey = 'foundational';
   const bboxKey = 'bbox';
   const dateRangeKey = 'dateRange';
-  const delineator = '|';
+  const delineator = ',';
 
   let categoriesComponent = $state();
   let othersCompontent = $state();

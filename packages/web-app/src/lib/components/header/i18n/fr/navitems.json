@@ -71,11 +71,11 @@
       }
     ]
   },
-  "mapCart": {
-    "title": "Panier de cartes",
-    "href": "/fr-ca/map-cart",
+  "myCart": {
+    "title": "Mon Panier",
+    "href": "/fr-ca/my-cart",
     "counter": true,
-    "localStorageKey": "MapCartResources"
+    "localStorageKey": "MyCartResources"
   },
   "lang": {
     "title": "English",

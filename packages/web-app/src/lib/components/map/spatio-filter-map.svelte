@@ -1,7 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
+  import { loadCGPVScript } from '$lib/components/map/loadCGPVScript.ts';
 
   let {
     coordinates = [
@@ -55,7 +56,7 @@
 
   /************ Utility Methods ************/
 
-  // This placeholder function logs a warning if called before the map is initialized.  
+  // This placeholder function logs a warning if called before the map is initialized.
   // It gets replaced later with a function to update bbox coordinates.
   let setVerticesFromCoords: (coords: number[][][]) => void = () => {
     console.warn("map not initialized");
@@ -101,9 +102,17 @@
   /************ After Map Initialization ************/
 
   onMount(async () => {
-    await tick();
+    // The loadCGPVScript function ensures the external cgpv library is fully loaded before
+    // trying to use the geocore code, otherwise it sometimes fails
+    await loadCGPVScript();
 
     try {
+      // Destroy the old map if it exists. This ensures that when the map is toggled
+      // on and off multiple time, it always has visible layers.
+      if (cgpv.api.hasMapViewer(mapId)) {
+        await cgpv.api.deleteMapViewer(mapId, false)
+      }
+
       await cgpv.api.createMapFromConfig(mapId, sConfig);
 
       /*********** Initialize Map and Polygon ***********/
@@ -324,10 +333,6 @@
     }
   });
 </script>
-
-<svelte:head>
-  <script src="https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js"></script>
-</svelte:head>
 
 <div
   id={mapId}

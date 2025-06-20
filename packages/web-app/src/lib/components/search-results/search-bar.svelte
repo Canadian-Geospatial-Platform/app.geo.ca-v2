@@ -107,7 +107,7 @@
         type="text"
         placeholder={searchProductsText}
         class={`w-full h-12 md:ml-5 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
-          shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-2 md:border-0
+          shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-y-2 border-l-2 md:border-0
           ${$navigating ? 'border-custom-17' : 'border-custom-16'}`}
         bind:this={searchTextInput}
         onkeydown={handleSearchEnterKeyDown}
