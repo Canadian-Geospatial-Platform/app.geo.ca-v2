@@ -33,14 +33,10 @@
   let mapId = 'map-' + mapType + '-' + id;
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
-  let center = calculateCenter(coordinates[0]);
-  let zoom = calculateZoom(coordinates[0]);
-
   let config = $state({
     map: {
       interaction: dynamic ? 'dynamic' : 'static',
       viewSettings: {
-        initialView: { zoomAndCenter: [zoom, center] },
         projection: mapProjection
       },
       basemapOptions: {
@@ -96,61 +92,32 @@
 
   let sConfig = $derived(JSON.stringify(config));
 
-  // todo: this currently errors due to receiving [..., [String, String]] as coordinates. This data quality issue needs to be fixed on import. Coordinates should be floats instead of Strings.
-  function calculateCenter(coordinates) {
-    const defaultValue = [0, 60];
-    if (!coordinates) {
-      console.warn('invalid coordinates, returing default value: \n', coordinates);
-      return defaultValue;
-    }
-    let i = 0;
-    let xAccumulator = 0;
-    let yAccumulator = 0;
-    try {
-      // we slice the array to prevent counting the initial value twice.
-      coordinates.slice(0, -1).forEach((e) => {
-        if (isNaN(e[0]) || isNaN(e[1])) {
-          throw new Error('Coordinate is not a number!');
-        }
-        xAccumulator += e[0];
-        yAccumulator += e[1];
-        i++;
-      });
-    } catch (e) {
-      console.warn('error iterating coordinates, returing default value2', coordinates, '\n', e);
-      return defaultValue;
-    }
-    return [xAccumulator / i, yAccumulator / i];
-  }
+  // Note: This method can only be called after the map and map layers
+  // have finished loading
+  function zoomToBBox(coordinates, cgpv) {
+    // Since the coordinates are in long-lat format, we need to project them
+    const projectedExtent = coordinates[0].map((coordinate) => {
+      return cgpv.api.utilities.projection.transformFromLonLat(
+        coordinate,
+        cgpv.api.utilities.projection.PROJECTIONS[mapProjection]
+      );
+    });
 
-  function calculatePolygonArea(vertices) {
-    var total = 0;
+    // The extent needs to be formatted like this
+    //   [furthestWestLong, furthestSouthLat, furthestEastLong, furthestNorthLat]
+    // for the zoomToExtent method to work, so we can pull the coordinates from
+    // the projected extent
+    const longitudes = projectedExtent.map(coord => coord[0]);
+    const latitudes = projectedExtent.map(coord => coord[1]);
 
-    for (var i = 0, l = vertices.length; i < l; i++) {
-      var addX = vertices[i][0];
-      var addY = vertices[i == vertices.length - 1 ? 0 : i + 1][1];
-      var subX = vertices[i == vertices.length - 1 ? 0 : i + 1][0];
-      var subY = vertices[i][1];
+    const furthestWest = Math.min(...longitudes);
+    const furthestSouth = Math.min(...latitudes);
+    const furthestEast = Math.max(...longitudes);
+    const furthestNorth = Math.max(...latitudes);
 
-      total += addX * addY * 0.5;
-      total -= subX * subY * 0.5;
-    }
+    const extent = [furthestWest, furthestSouth, furthestEast, furthestNorth];
 
-    return Math.abs(total);
-  }
-
-  function calculateZoom(coordinates) {
-    let area = calculatePolygonArea(coordinates);
-    if (area > 100) {
-      return 3.2;
-    }
-    if (area > 50) {
-      return 4;
-    }
-    if (area < 2.5) {
-      return 8;
-    }
-    return 5;
+    cgpv.api.getMapViewer(mapId).zoomToExtent(extent);
   }
 
   function getBbox(coordinates) {
@@ -279,6 +246,15 @@
               },
             }
           );
+
+          // Zoom to the bounding box of the layer
+          zoomToBBox(coordinates, cgpv);
+        });
+      } else {
+        // Check to make sure the layers have finished loading before zooming
+        cgpv.api.getMapViewer(mapId)?.onMapLayersLoaded(() => {
+          // Zoom to the bounding box of the layer
+          zoomToBBox(coordinates, cgpv);
         });
       }
     } catch (e) {
@@ -287,27 +263,9 @@
   });
 </script>
 
-{#if mapType === 'resultList'}
-  <div
-    id={mapId}
-    class="bg-blue-500/5 w-full aspect-video"
-    data-config={sConfig}
-    data-lang={mapLang}
-  ></div>
-{:else if mapType === 'record'}
-  <div
-    id={mapId}
-    class="bg-blue-500/5"
-    style={`height: ${height}; width: ${width};`}
-    data-config={sConfig}
-    data-lang={mapLang}
-  ></div>
-{:else}
-  <div
-    id={mapId}
-    class="bg-blue-500/5"
-    style={`height: ${height}; width: ${width};`}
-    data-config={sConfig}
-    data-lang={mapLang}
-  ></div>
-{/if}
+<div
+  id={mapId}
+  class="bg-blue-500/5 w-full aspect-video"
+  data-config={sConfig}
+  data-lang={mapLang}
+></div>
