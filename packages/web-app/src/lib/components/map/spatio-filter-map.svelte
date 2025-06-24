@@ -117,216 +117,218 @@
 
       /*********** Initialize Map and Polygon ***********/
 
-      const map = cgpv.api.getMapViewer(mapId);
-      const layerGeometry = map?.layer.geometry;
-      const bboxId = 'bbox-outline';
-      const groupKey = 'bbox';
+      cgpv.api.getMapViewer(mapId)?.onMapLayersLoaded(() => {
+        const map = cgpv.api.getMapViewer(mapId);
+        const layerGeometry = map?.layer.geometry;
+        const bboxId = 'bbox-outline';
+        const groupKey = 'bbox';
 
-      // The projection used to convert coordinates to longitude and latitude
-      // coordinates reguardless of the map projection.
-      const lonLatProjection = 4326;
-      const bboxOptions = {
-        style: {
-          strokeColor: '#535aa4',
-          strokeWidth: 3,
-          fillColor: '#535aa4',
-          fillOpacity: 0.2,
-        }
-      };
+        // The projection used to convert coordinates to longitude and latitude
+        // coordinates reguardless of the map projection.
+        const lonLatProjection = 4326;
+        const bboxOptions = {
+          style: {
+            strokeColor: '#535aa4',
+            strokeWidth: 3,
+            fillColor: '#535aa4',
+            fillOpacity: 0.2,
+          }
+        };
 
-      // Add bbox polygon to the map
-      const bboxPolygon = layerGeometry.addPolygon(coordinates, bboxOptions, bboxId, groupKey);
+        // Add bbox polygon to the map
+        const bboxPolygon = layerGeometry.addPolygon(coordinates, bboxOptions, bboxId, groupKey);
 
-      // Update the coordinates to apply the projection transformation
-      layerGeometry.setFeatureCoords(bboxId, coordinates, lonLatProjection);
+        // Update the coordinates to apply the projection transformation
+        layerGeometry.setFeatureCoords(bboxId, coordinates, lonLatProjection);
 
-      // Create a group to be used with the modify and translate interactions
-      layerGeometry.createGeometryGroup(groupKey);
+        // Create a group to be used with the modify and translate interactions
+        layerGeometry.createGeometryGroup(groupKey);
 
-      // Redefine setVerticesFromCoords after polygon has been added
-      setVerticesFromCoords = (coords: number[][][]) => {
-        layerGeometry.setFeatureCoords(bboxId, coords, lonLatProjection);
-      };
+        // Redefine setVerticesFromCoords after polygon has been added
+        setVerticesFromCoords = (coords: number[][][]) => {
+          layerGeometry.setFeatureCoords(bboxId, coords, lonLatProjection);
+        };
 
-      /*********** Get Extent From View Custom Button ***********/
+        /*********** Get Extent From View Custom Button ***********/
 
-      const buttonGroupName = 'buttonGroup';
-      const buttonTooltip = $page.data.lang == "fr-ca" ?
-        "Définir le cadre de délimitation sur l'étendue visible" :
-        "Set bounding box to visible extent";
+        const buttonGroupName = 'buttonGroup';
+        const buttonTooltip = $page.data.lang == "fr-ca" ?
+          "Définir le cadre de délimitation sur l'étendue visible" :
+          "Set bounding box to visible extent";
 
-      const button = {
-        tooltip: buttonTooltip,
-        children: cgpv.react.createElement(
-          "svg",
-          {
-            width: 24,
-            height: 24,
-            viewBox: "0 0 24 24",
-            fill: "none",
-            stroke: "currentColor",
-            strokeWidth: 2,
+        const button = {
+          tooltip: buttonTooltip,
+          children: cgpv.reactUtilities.react.createElement(
+            "svg",
+            {
+              width: 24,
+              height: 24,
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+            },
+            cgpv.reactUtilities.react.createElement("rect", { x: 3, y: 3, width: 18, height: 18 }),
+            cgpv.reactUtilities.react.createElement("circle", { cx: 3, cy: 3, r: 2 }),
+            cgpv.reactUtilities.react.createElement("circle", { cx: 3, cy: 21, r: 2 }),
+            cgpv.reactUtilities.react.createElement("circle", { cx: 21, cy: 3, r: 2 }),
+            cgpv.reactUtilities.react.createElement("circle", { cx: 21, cy: 21, r: 2 }),
+          ),
+          tooltipPlacement: 'left',
+          onClick: function () {
+            // Get view extent and resolution
+            const viewExtent = map.getView().calculateExtent();
+            const resolution = map.getView().getResolution();
+
+            // Add a small gap between the edge of the map and the view extent
+            const gapPercent = 0.025;
+            const longitudeDifference = viewExtent[2] - viewExtent[0];
+            const longGapSize = longitudeDifference * gapPercent;
+
+            const latitudeDifference = viewExtent[3] - viewExtent[1];
+            const latGapSize = latitudeDifference * gapPercent;
+
+            // For the southern coordinate, add the size of the footerbar to the gap
+            // so the southern edge is not blocked
+            const heightOfFooterBar = resolution * 48;
+            const southGapSize = heightOfFooterBar + latGapSize;
+
+            const viewBboxCoords = [[
+                [viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
+                [viewExtent[2] - longGapSize, viewExtent[1] + southGapSize],
+                [viewExtent[2] - longGapSize, viewExtent[3] - latGapSize],
+                [viewExtent[0] + longGapSize, viewExtent[3] - latGapSize],
+                [viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
+              ]];
+
+            // Set coordinates of bbox
+            bboxPolygon.getGeometry().setCoordinates(viewBboxCoords);
+
+            // Send the coordinates to the parent component. We can convert the coordinates
+            // to longitude and latitude in degrees first
+            const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
+            bboxModify(lonLatCoords);
           },
-          cgpv.react.createElement("rect", { x: 3, y: 3, width: 18, height: 18 }),
-          cgpv.react.createElement("circle", { cx: 3, cy: 3, r: 2 }),
-          cgpv.react.createElement("circle", { cx: 3, cy: 21, r: 2 }),
-          cgpv.react.createElement("circle", { cx: 21, cy: 3, r: 2 }),
-          cgpv.react.createElement("circle", { cx: 21, cy: 21, r: 2 }),
-        ),
-        tooltipPlacement: 'left',
-        onClick: function () {
-          // Get view extent and resolution
-          const viewExtent = map.getView().calculateExtent();
-          const resolution = map.getView().getResolution();
+        };
 
-          // Add a small gap between the edge of the map and the view extent
-          const gapPercent = 0.025;
-          const longitudeDifference = viewExtent[2] - viewExtent[0];
-          const longGapSize = longitudeDifference * gapPercent;
+        // Add the button to the map
+        map.navBarApi.createNavbarButton(button, buttonGroupName);
 
-          const latitudeDifference = viewExtent[3] - viewExtent[1];
-          const latGapSize = latitudeDifference * gapPercent;
+        /*********** Translate Interaction ***********/
 
-          // For the southern coordinate, add the size of the footerbar to the gap
-          // so the southern edge is not blocked
-          const heightOfFooterBar = resolution * 48;
-          const southGapSize = heightOfFooterBar + latGapSize;
+        const translateInteraction = map.initTranslateOneFeatureInteractions(groupKey);
 
-          const viewBboxCoords = [[
-              [viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
-              [viewExtent[2] - longGapSize, viewExtent[1] + southGapSize],
-              [viewExtent[2] - longGapSize, viewExtent[3] - latGapSize],
-              [viewExtent[0] + longGapSize, viewExtent[3] - latGapSize],
-              [viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
-            ]];
-
-          // Set coordinates of bbox
-          bboxPolygon.getGeometry().setCoordinates(viewBboxCoords);
-
-          // Send the coordinates to the parent component. We can convert the coordinates
-          // to longitude and latitude in degrees first
+        translateInteraction.onTranslateEnded((sender, payload) => {
           const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
           bboxModify(lonLatCoords);
-        },
-      };
+        });
 
-      // Add the button to the map
-      map.navBarApi.createNavbarButton(button, buttonGroupName);
+        /*********** Modify Interaction ***********/
 
-      /*********** Translate Interaction ***********/
+        const modifyStyle = { strokeWidth: 6 };
+        const insertVertexCondition = () => false;
+        const pixelTolerance = 15;
+        const modifyInteraction = map.initModifyInteractions(
+          groupKey, modifyStyle, insertVertexCondition, pixelTolerance);
 
-      const translateInteraction = map.initTranslateOneFeatureInteractions(groupKey);
+        let bboxCoordinates = [];
 
-      translateInteraction.onTranslateEnded((sender, payload) => {
-        const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
-        bboxModify(lonLatCoords);
-      });
+        // While the modify interaction is taking place, the modifyDragged event is triggered
+        // whenever the vertices of the bounding box are modified. So, when the enforceRectangle()
+        // is called, a redundant set of modifyDragged events are dispatched for each of the
+        // updated vertices. We can use this flag to indicate when the bounding box is being
+        // modified, ignoring these redundant events and avoiding an endless recursive loop.
+        let isUpdating = false;
 
-      /*********** Modify Interaction ***********/
+        // This tracks the modified vertex index (-1 means it is unset). It also ensures that
+        // enforceRectangle() is applied only to the dragged vertex, preventing redundant calls.
+        let modifiedIndex = -1;
 
-      const modifyStyle = { strokeWidth: 6 };
-      const insertVertexCondition = () => false;
-      const pixelTolerance = 15;
-      const modifyInteraction = map.initModifyInteractions(
-        groupKey, modifyStyle, insertVertexCondition, pixelTolerance);
-
-      let bboxCoordinates = [];
-
-      // While the modify interaction is taking place, the modifyDragged event is triggered
-      // whenever the vertices of the bounding box are modified. So, when the enforceRectangle()
-      // is called, a redundant set of modifyDragged events are dispatched for each of the
-      // updated vertices. We can use this flag to indicate when the bounding box is being
-      // modified, ignoring these redundant events and avoiding an endless recursive loop.
-      let isUpdating = false;
-
-      // This tracks the modified vertex index (-1 means it is unset). It also ensures that
-      // enforceRectangle() is applied only to the dragged vertex, preventing redundant calls.
-      let modifiedIndex = -1;
-
-      modifyInteraction.onModifyStarted((sender, payload) => {
-        // Get coordinates of the bounding box
-        const feature = payload.features.item(0);
-        if (feature) {
-          const geometry = feature.getGeometry();
-          if (geometry && geometry.getType() === 'Polygon') {
-            bboxCoordinates = geometry.getCoordinates()[0];
+        modifyInteraction.onModifyStarted((sender, payload) => {
+          // Get coordinates of the bounding box
+          const feature = payload.features.item(0);
+          if (feature) {
+            const geometry = feature.getGeometry();
+            if (geometry && geometry.getType() === 'Polygon') {
+              bboxCoordinates = geometry.getCoordinates()[0];
+            }
           }
-        }
-      });
+        });
 
-      modifyInteraction.onModifyEnded((sender, payload) => {
-        // Set the final coordinates of the bounding box.
-        // Skipping this step causes the modify vertices and bbox vertices to
-        // be mismatched.
-        const feature = payload.features.item(0);
-        if (feature) {
-          const geometry = feature.getGeometry();
-          if (geometry && geometry.getType() === 'Polygon') {
-            geometry.setCoordinates([bboxCoordinates]);
+        modifyInteraction.onModifyEnded((sender, payload) => {
+          // Set the final coordinates of the bounding box.
+          // Skipping this step causes the modify vertices and bbox vertices to
+          // be mismatched.
+          const feature = payload.features.item(0);
+          if (feature) {
+            const geometry = feature.getGeometry();
+            if (geometry && geometry.getType() === 'Polygon') {
+              geometry.setCoordinates([bboxCoordinates]);
+            }
           }
-        }
 
-        // Reset the current modified index
-        modifiedIndex = -1;
+          // Reset the current modified index
+          modifiedIndex = -1;
 
-        // Send the new bbox coordinates back to the parent component. Convert the coordinates to degrees first.
-        const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
-        bboxModify(lonLatCoords);
-      });
+          // Send the new bbox coordinates back to the parent component. Convert the coordinates to degrees first.
+          const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
+          bboxModify(lonLatCoords);
+        });
 
-      modifyInteraction.onModifyDragged((sender, payload) => {
-        // Prevents redundant and recursive calls from the enforceRectangle() function.
-        if (isUpdating) {
-          return;
-        }
+        modifyInteraction.onModifyDragged((sender, payload) => {
+          // Prevents redundant and recursive calls from the enforceRectangle() function.
+          if (isUpdating) {
+            return;
+          }
 
-        // Get the feature with the dragged vertex
-        let feature = payload.features.item(0);
+          // Get the feature with the dragged vertex
+          let feature = payload.features.item(0);
 
-        if (feature) {
-          let geometry = feature.getGeometry();
+          if (feature) {
+            let geometry = feature.getGeometry();
 
-          if (geometry && geometry.getType() === 'Polygon') {
-            const newCoordinates = geometry.getCoordinates()[0];
+            if (geometry && geometry.getType() === 'Polygon') {
+              const newCoordinates = geometry.getCoordinates()[0];
 
-            // Get the index of the vertex being dragged by cycling through
-            // newCoordinates array and finding the vertex that doesn't match
-            // the original coordinate set.
-            if (modifiedIndex === -1) {
-              for (let i = 0; i < newCoordinates.length - 1; i++) {
-                if (
-                  bboxCoordinates[i][0] !== newCoordinates[i][0] ||
-                  bboxCoordinates[i][1] !== newCoordinates[i][1]
-                ) {
-                  modifiedIndex = i;
-                  break;
+              // Get the index of the vertex being dragged by cycling through
+              // newCoordinates array and finding the vertex that doesn't match
+              // the original coordinate set.
+              if (modifiedIndex === -1) {
+                for (let i = 0; i < newCoordinates.length - 1; i++) {
+                  if (
+                    bboxCoordinates[i][0] !== newCoordinates[i][0] ||
+                    bboxCoordinates[i][1] !== newCoordinates[i][1]
+                  ) {
+                    modifiedIndex = i;
+                    break;
+                  }
                 }
               }
-            }
 
-            // If the bounding box has been modified from it's previous state,
-            // update it's vertices to ensure that it remains a rectangle.
-            // Update the isUpdating flag to prevent redundant modifications.
-            if (modifiedIndex !== -1 &&
-              (bboxCoordinates[modifiedIndex][0] !== newCoordinates[modifiedIndex][0] ||
-              bboxCoordinates[modifiedIndex][1] !== newCoordinates[modifiedIndex][1])
-            ) {
-              // Block additional updates
-              isUpdating = true;
+              // If the bounding box has been modified from it's previous state,
+              // update it's vertices to ensure that it remains a rectangle.
+              // Update the isUpdating flag to prevent redundant modifications.
+              if (modifiedIndex !== -1 &&
+                (bboxCoordinates[modifiedIndex][0] !== newCoordinates[modifiedIndex][0] ||
+                bboxCoordinates[modifiedIndex][1] !== newCoordinates[modifiedIndex][1])
+              ) {
+                // Block additional updates
+                isUpdating = true;
 
-              // Get the updated coordinates of the new bbox
-              const newCoords = enforceRectangle(bboxCoordinates, modifiedIndex, newCoordinates[modifiedIndex]);
+                // Get the updated coordinates of the new bbox
+                const newCoords = enforceRectangle(bboxCoordinates, modifiedIndex, newCoordinates[modifiedIndex]);
 
-              // Assign the new coordinates to the map feature and update the bboxCoordinates variable.
-              geometry.setCoordinates([newCoords]);
-              feature.setGeometry(geometry);
-              bboxCoordinates = newCoords;
+                // Assign the new coordinates to the map feature and update the bboxCoordinates variable.
+                geometry.setCoordinates([newCoords]);
+                feature.setGeometry(geometry);
+                bboxCoordinates = newCoords;
 
-              // Allow additional updates
-              isUpdating = false;
+                // Allow additional updates
+                isUpdating = false;
+              }
             }
           }
-        }
+        });
       });
     } catch (e) {
       console.error(e);
