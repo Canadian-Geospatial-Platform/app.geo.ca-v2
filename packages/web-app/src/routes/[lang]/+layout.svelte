@@ -23,6 +23,23 @@
   onMount(() => {
     document.documentElement.lang = lang;
 
+    /**********************************************************************/
+    //TODO: Find a better solution than this monkey-patch hack. We may need to create a ticket with geoview for a fix.
+    //
+    //   Some geoview components use the scrollIntoView method when buttons in the side-bar
+    //   or footer are clicked. In app v2, this causes the top of maps to scroll behind the
+    //   header bar, causing important elements, like the search bar, to be obstructed.
+    //   As a temp fix, we can redefine the default Element.prototype.scrollIntoView to block
+    //   the scroll and issue a warning whenever the scroll is blocked.
+    //   We can save a copy of the old Element.prototype.scrollIntoView first, just in case
+    //   we need it for something else later.
+    const originalScrollIntoView = Element.prototype.scrollIntoView;
+
+    Element.prototype.scrollIntoView = function (options?: ScrollIntoViewOptions | boolean) {
+      console.warn('Blocked scrollIntoView on', this);
+    };
+    /************************ Hack Ends Here ******************************/
+
     // When the user clicks on an external link, indicate to the user that they are leaving
     const handleClick = (event) => {
       const anchor = event.target.closest('a');
