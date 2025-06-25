@@ -5,30 +5,32 @@
   import Card from '$lib/components/card/card.svelte';
   import NoMap from '$lib/components/icons/no-map.svelte';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-  import MapcartMap from '$lib/components/map/mapcart-map.svelte';
+  import MycartMap from '$lib/components/map/mycart-map.svelte';
   import SortableTable from "$lib/components/sortable-table/sortable-table.svelte";
-  import MapCartListSkeleton from '$lib/components/loading-mask/mapcart-list-skeleton.svelte';
+  import MyCartListSkeleton from '$lib/components/loading-mask/mycart-list-skeleton.svelte';
   import Checkmark from '$lib/components/icons/checkmark.svelte';
   import GarbageCan from '$lib/components/icons/garbage-can.svelte';
   import SearchBarSimplified from '$lib/components/search-results/search-bar-simplified.svelte';
 
-  type MapCartRow = {
+  type MyCartRow = {
     id: string;
     name: string;
     url: string;
   };
+
+  let mapComponent = $state();
 
   /************* Translations ***************/
   const translations = $page.data.t;
   const lang = $page.data.lang;
 
   const findAResource = translations?.findAResource ? translations.findAResource : 'Find a resource';
-  const mapCartTitle = translations?.title ? translations.title : 'Map Cart';
+  const myCartTitle = translations?.title ? translations.title : 'My Cart';
   const mapTitle = translations?.mapTitle ? translations.mapTitle : 'Map';
   const pageDescription = translations?.description ? translations.description : '';
   const remove = translations?.remove ? translations.remove : 'Remove';
   const removeAll = translations?.removeAll ? translations.removeAll : 'Remove all';
-  const resourceIdLabel = translations?.resourceId ? translations.resourceId : 'Resource id';
+  const resourceFormatsLabel = translations?.resourceFormats ? translations.resourceFormats : 'Resource formats';
   const resourceListEmpty = translations?.resourceListEmpty ? translations.resourceListEmpty : 'The resource list is empty.';
   const resourceNameLabel = translations?.resourceName ? translations.resourceName : 'Resource name';
   const returnToList = translations?.returnToList ? translations.returnToList : 'Return to list';
@@ -46,15 +48,15 @@
   let loading = $state(true);
   let mapToggle = $state(false);
 
-  let favouriteRecordList = $state($page.data?.userData?.mapCart ?
-    [...$page.data?.userData?.mapCart] : []);
+  let favouriteRecordList = $state($page.data?.userData?.myCart ?
+    [...$page.data?.userData?.myCart] : []);
   let records = $state([]);
   let tableDataArray = $state([]);
 
   // Table column labels
-  const tableLabels: MapCartRow = {
+  const tableLabels: MyCartRow = {
     "name": resourceNameLabel,
-    "id": resourceIdLabel
+    "formats": resourceFormatsLabel
   };
 
   /************* Handlers ***************/
@@ -81,7 +83,7 @@
       sortableTable.setSelectedIds(selectedSet);
 
       // Update localStorage and dispatch localstorage_updated event
-      updateLocalStorage("MapCartResources", favouriteRecordList);
+      updateLocalStorage("MyCartResources", favouriteRecordList);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -103,27 +105,30 @@
       sortableTable.setSelectedIds(new Set());
 
       // Update localStorage and dispatch localstorage_updated event
-      updateLocalStorage("MapCartResources", []);
+      updateLocalStorage("MyCartResources", []);
 
       // TODO: update user's favourites when the login system is implemented
     }
   }
 
   function handleOpenMapClick(event) {
-    // checkedIds = sortableTable.getSelectedIds();
     mapToggle = true;
   }
 
   function handleReturnToListClick(event) {
+    // Remove the map viewer to avoid conflicts
+    if (mapComponent) {
+      mapComponent.destroyMapViewer();
+    }
     mapToggle = false;
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MapCartResources array inside onMount
+  // the MyCartResources array inside onMount
   onMount(async () => {
     // If not signed in, check the local storage for saved resources instead
     if (!$page.data.signedIn) {
-      let stored = localStorage.getItem("MapCartResources");
+      let stored = localStorage.getItem("MyCartResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array
@@ -133,7 +138,7 @@
 
       // Issue POST request for record details
       if (favouriteRecordList.length > 0) {
-        const response = await fetch('/' + lang + '/map-cart', {
+        const response = await fetch('/' + lang + '/my-cart', {
           method: 'POST',
           body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
           headers: {'Content-Type': 'application/json'}
@@ -143,7 +148,9 @@
 
         tableDataArray = records.map((record) => {
           return {
+            disableCheckbox: !record.hasMapLayer ?? true,
             id: record.id,
+            formats: record.formats.join(', '),
             name: record[titleKey],
             url: $page.url.origin + "/" + lang + "/map-browser/record/" + record.id
           };
@@ -160,7 +167,7 @@
   {#if mapToggle}
     {mapTitle}
   {:else}
-    {mapCartTitle}
+    {myCartTitle}
   {/if}
 </h1>
 
@@ -169,7 +176,7 @@
     {#if records.length > 0}
       {#if mapToggle}
         <!-------------- Map -------------->
-        <MapcartMap layerIds={selectedIds} />
+        <MycartMap layerIds={selectedIds} bind:this={mapComponent}/>
         <button
           class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
           onclick={(event) => handleReturnToListClick(event)}
@@ -300,6 +307,6 @@
     <div class="animate-pulse bg-custom-6 w-full h-[32rem]"></div>
   {:else if !mapToggle}
     <!-- Table loading skeleton -->
-    <MapCartListSkeleton numRecords={6} />
+    <MyCartListSkeleton numRecords={6} />
   {/if}
 </div>

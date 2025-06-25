@@ -86,9 +86,9 @@
           in:fly={{ x: slideDirection * flyLength, duration: 500, opacity: 100 }}
           out:fly={{ x: slideDirection * -flyLength, duration: 500, opacity: 0 }}
         >
-          <h1 class="carousel-card-title font-custom-style-h1-carousel">
+          <h3 class="carousel-card-title font-custom-style-h1-carousel">
             {cardData[activeIndex].title}
-          </h1>
+          </h3>
           <p class="carousel-card-p">
             {cardData[activeIndex].description}
           </p>
@@ -104,9 +104,9 @@
           in:fly={{ x: slideDirection * flyLength, duration: 500, opacity: 100 }}
           out:fly={{ x: slideDirection * -flyLength, duration: 500, opacity: 0 }}
         >
-          <h1 class="carousel-card-title font-custom-style-h1-carousel">
+          <h3 class="carousel-card-title font-custom-style-h1-carousel">
             {cardData[nextIndex].title}
-          </h1>
+          </h3>
           <p class="carousel-card-p">
             {cardData[nextIndex].description}
           </p>

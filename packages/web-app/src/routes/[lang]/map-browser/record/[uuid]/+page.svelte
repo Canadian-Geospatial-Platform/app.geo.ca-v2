@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { tick } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import Record from '$lib/components/record/record.svelte';
 	import { page } from '$app/stores';

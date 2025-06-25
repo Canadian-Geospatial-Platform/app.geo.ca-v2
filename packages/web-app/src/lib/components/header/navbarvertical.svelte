@@ -34,9 +34,9 @@
 
 <svelte:window onresize={resetNav} />
 
-<div class="grid">
+<nav class="grid">
   <Menubutton bind:active={active} bind:mainMenuVisible={mainMenuVisible} />
-</div>
+</nav>
 <div
   class={[
     "nav-items-container bg-custom-23",

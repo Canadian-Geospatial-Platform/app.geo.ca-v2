@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
   import Carousel from '$lib/components/carousel/carousel.svelte'
 
   const translations = $page.data.t;
@@ -7,19 +8,24 @@
 
   const data = $page.data;
   const lang = data.lang;
+  const recordId = data.item_v2.properties.id;
   const urlPrefix = $page.url.origin + '/' + lang + '/map-browser/record/';
   const similarRecords = data.similar;
+  const similarDescriptions = $state({});
 
-  const cardData = similarRecords.map((record) => {
+  const similarRecordIs = similarRecords.map((record) => {
+    return record.features_properties_id;
+  });
+
+  const cardData = $derived(similarRecords.map((record) => {
     const title = lang == "fr-ca" ? record.features_properties_title_fr : record.features_properties_title_en;
+    const id = record.features_properties_id;
 
-    // Todo: Change description when it becomes available from query
+    // Todo: Change description when it becomes available from the similarity query.
+    // For now, we can use a POST query to get the description for each record. This is slow,
+    // so it will be temporary and removed once the similarity descriptions are available
+    const description = similarDescriptions?.[id] ?? "";
     // const description = lang == "fr-ca" ? record.features_properties_description_fr : record.features_properties_description_en;
-    const description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor \
-      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \
-      ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit \
-      in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat \
-      non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
     const url = urlPrefix + record.features_properties_id;
 
@@ -27,6 +33,27 @@
       title: title,
       description: description,
       url: url
+    }
+  }));
+
+  // TODO: This is a temporary way to get the similar record descriptions.
+  // It should be removed once the similarity descriptions have been added to
+  // the 'similarity' list in the record data
+  onMount(async () => {
+    // Get record data for each of the similar records
+    const response = await fetch('/' + lang + '/map-browser/record/' + recordId, {
+      method: 'POST',
+      body: JSON.stringify({ ids: similarRecordIs, lang: lang }),
+      headers: {'Content-Type': 'application/json'}
+    });
+
+    const records = await response.json();
+
+    // Update the similarDescriptions
+    for (let record of records) {
+      const rid = record.id;
+      const recordDescription = record.description.replaceAll('\\n', '');
+      similarDescriptions[rid] = recordDescription;
     }
   });
 </script>

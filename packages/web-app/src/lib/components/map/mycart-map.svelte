@@ -1,7 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
+  import { loadCGPVScript } from '$lib/components/map/loadCGPVScript.ts';
 
   interface Props {
     layerIds: any;
@@ -9,7 +10,7 @@
 
   let {layerIds}: Props = $props();
 
-  let mapId = 'map-mapcart-resources';
+  let mapId = 'map-mycart-resources';
   let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
   /***************** Map config *****************/
@@ -59,9 +60,22 @@
 
   let sConfig = $derived(JSON.stringify(config));
 
+  // Allow for the map to be destroyed by the parent component
+  export function destroyMapViewer() {
+    try {
+      if (cgpv.api.hasMapViewer(mapId)) {
+        cgpv.api.deleteMapViewer(mapId, false);
+      }
+    } catch (error) {
+      console.error('Error while removing map:', error);
+    }
+  }
+
   /***************** Create map *****************/
   onMount(async () => {
-    await tick();
+    // The loadCGPVScript function ensures the external cgpv library is fully loaded before
+    // trying to use the geocore code, otherwise it sometimes fails
+    await loadCGPVScript();
 
     try {
       // Destroy the old map if it exists. This ensures that when the map is toggled
