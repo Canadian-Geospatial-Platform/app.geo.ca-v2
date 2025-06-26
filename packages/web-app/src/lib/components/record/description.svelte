@@ -2,8 +2,8 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
-  import CartAdd from '$lib/components/icons/cart-add.svelte';
-  import CartRemove from '$lib/components/icons/cart-remove.svelte';
+  import Heart from '$lib/components/icons/heart.svelte';
+  import HeartFilled from '$lib/components/icons/heart-filled.svelte';
 
   const data = $page.data;
   const translations = data.t;
@@ -13,11 +13,11 @@
 
   const title = lang == 'fr-ca' ? properties.title.fr : properties.title.en;
   const description = lang == 'fr-ca' ? properties.description.fr : properties.description.en;
-  const addToMyCart = translations?.addToMyCart ? translations.addToMyCart : 'Add to My Cart';
-  const removeFromMyCart = translations?.removeFromMyCart ? translations.removeFromMyCart : 'Remove from My Cart';
+  const addToFavourites = translations?.addToFavourites ? translations.addToFavourites : 'Add to Favourites';
+  const removeFromFavourites = translations?.removeFromFavourites ? translations.removeFromFavourites : 'Remove from Favourites';
 
-  /****************** MyCart Resources ******************/
-  let favouriteRecordList = $state(data?.userData?.myCart ? [...data?.userData?.myCart] : []);
+  /****************** Favourites Resources ******************/
+  let favouriteRecordList = $state(data?.userData?.favourites ? [...data?.userData?.favourites] : []);
 
   async function handleFavouriteClick(recordId) {
     if (!favouriteRecordList.includes(recordId)) {
@@ -25,7 +25,7 @@
       favouriteRecordList.push(recordId);
 
       if (data.signedIn) {
-        // TODO: Add item to the myCart when login system has been approved
+        // TODO: Add item to the favourites when login system has been approved
       }
     } else {
       // Remove from list of ids
@@ -35,19 +35,19 @@
       }
 
       if (data.signedIn) {
-        // TODO: Remove item from the myCart when login system has been approved
+        // TODO: Remove item from the favourites when login system has been approved
       }
     }
 
     // Update localStorage and dispatch localstorage_updated event
-    updateLocalStorage("MyCartResources", favouriteRecordList);
+    updateLocalStorage("FavouritesResources", favouriteRecordList);
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MyCartResources array inside onMount
+  // the FavouritesResources array inside onMount
   onMount(() => {
     if (!data.signedIn) {
-      let stored = localStorage.getItem("MyCartResources");
+      let stored = localStorage.getItem("FavouritesResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array
@@ -73,8 +73,8 @@
         hover:border-custom-23 hover:bg-custom-23"
       onclick={() => handleFavouriteClick(properties.id)}
     >
-      <CartRemove classes="h-9 inline" />
-      {removeFromMyCart}
+      <HeartFilled classes="h-6 inline my-2 mr-1" />
+      {removeFromFavourites}
     </button>
   {:else}
     <button
@@ -83,8 +83,8 @@
         hover:text-custom-1 hover:border-custom-23 hover:bg-custom-23"
       onclick={() => handleFavouriteClick(properties.id)}
     >
-      <CartAdd classes="h-9 inline" />
-      {addToMyCart}
+      <Heart classes="h-6 inline my-2 mr-1" />
+      {addToFavourites}
     </button>
   {/if}
 </div>
