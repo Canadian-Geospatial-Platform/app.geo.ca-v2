@@ -4,7 +4,7 @@
   import Favourites from '$lib/components/favourites/favourites.svelte';
 
   const lang = $page.data.lang;
-	const title = lang == 'fr-ca' ? 'app.geo.ca - Mon Panier' : 'app.geo.ca - Favourites';
+	const title = lang == 'fr-ca' ? 'app.geo.ca - Favoris' : 'app.geo.ca - Favourites';
 
 	const canonicalUrl = $page.data.canonicalUrl;
 	const alternateUrl = $page.data.alternateUrl;

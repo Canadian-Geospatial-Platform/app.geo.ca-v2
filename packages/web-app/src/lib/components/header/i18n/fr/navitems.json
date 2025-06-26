@@ -72,7 +72,7 @@
     ]
   },
   "favourites": {
-    "title": "Mon Panier",
+    "title": "Favoris",
     "href": "/fr-ca/favourites",
     "counter": true,
     "localStorageKey": "FavouritesResources"

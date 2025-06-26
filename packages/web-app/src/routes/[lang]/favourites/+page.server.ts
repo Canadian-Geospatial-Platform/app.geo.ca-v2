@@ -44,7 +44,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			href: url.origin + '/' + params.lang + '/map-browser'
 		},
 		t_title_2: {
-			text: params.lang == 'en-ca' ? 'Favourites' : 'Mon Panier',
+			text: params.lang == 'en-ca' ? 'Favourites' : 'Favoris',
 			href: url.href
 		},
 		results: sanitizedResults,
