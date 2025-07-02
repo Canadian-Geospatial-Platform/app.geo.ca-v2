@@ -33,17 +33,17 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string) {
 
 		type = description[0];
 		format = description[1];
-		languageRaw = description[2].replaceAll(',', ', ');
-		language = languageRaw.replaceAll(
-			/eng|fra|zxx/gi,
-			(x: keyof LanguageReplacements) => languageReplacements[x][translationLang]
-		);
+		// languageRaw = description[2].replaceAll(',', ', ');
+		// language = languageRaw.replaceAll(
+		//   /eng|fra|zxx/gi,
+		//   ((x: keyof LanguageReplacements) => languageReplacements[x][translationLang])
+		// );
 
 		dataResources.push({
 			name: name,
 			type: type,
 			format: format,
-			languages: language,
+			// 'languages': language,
 			url: url
 		});
 	}

@@ -16,7 +16,7 @@
 	);
 	// polygon suit wkt
 	function boundaryMultiPolygon() {
-		let jsonPolygon = item.geometry.coordinates[0];
+		let jsonPolygon = item.coordinates[0];
 		let wktPolygonString = '';
 		for (const xy of jsonPolygon) {
 			wktPolygonString += xy[0] + ' ' + xy[1] + ',';

@@ -10,7 +10,7 @@
 
 	const data = $page.data;
 	const lang = data.lang;
-	const recordId = data.item_v2.properties.id;
+	const recordId = data.item_v2.id;
 	const urlPrefix = $page.url.origin + '/' + lang + '/map-browser/record/';
 	const similarRecords = data.similar;
 	const similarDescriptions = $state({});

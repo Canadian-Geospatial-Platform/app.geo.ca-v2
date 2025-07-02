@@ -35,11 +35,11 @@
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
 	const items = data.item_v2;
-	const properties = items.properties;
+	const dataResourcesRaw = items.options;
+	//  console.log(dataResourcesRaw )
 
-	const dataResourcesRaw = properties['options'];
 	const dataResourcesList = parseDataResources(dataResourcesRaw, langShort);
-	const uuid = properties.id;
+	const uuid = items.id;
 
 	// Translation of table column labels
 	const tableLabels: DataResourcesRow = {

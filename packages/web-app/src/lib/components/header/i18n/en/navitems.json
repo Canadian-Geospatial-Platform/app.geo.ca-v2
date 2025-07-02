@@ -9,16 +9,46 @@
 			{
 				"colTitle": "By Theme",
 				"links": [
-					{ "title": "Administration", "href": "https://geo.ca/administration/" },
-					{ "title": "Economy", "href": "https://geo.ca/economy/" },
-					{ "title": "Emergency", "href": "https://geo.ca/emergency/" },
-					{ "title": "Environment", "href": "https://geo.ca/environment/" },
-					{ "title": "Imagery", "href": "https://geo.ca/imagery/" },
-					{ "title": "Infrastructure", "href": "https://geo.ca/infrastructure/" },
-					{ "title": "Legal", "href": "https://geo.ca/legal/" },
-					{ "title": "Science", "href": "https://geo.ca/science/" },
-					{ "title": "Society", "href": "https://geo.ca/society/" },
-					{ "title": "Foundation Data", "href": "https://geo.ca/foundation-data/" }
+					{
+						"title": "Administration",
+						"href": "https://geo.ca/administration/"
+					},
+					{
+						"title": "Economy",
+						"href": "https://geo.ca/economy/"
+					},
+					{
+						"title": "Emergency",
+						"href": "https://geo.ca/emergency/"
+					},
+					{
+						"title": "Environment",
+						"href": "https://geo.ca/environment/"
+					},
+					{
+						"title": "Imagery",
+						"href": "https://geo.ca/imagery/"
+					},
+					{
+						"title": "Infrastructure",
+						"href": "https://geo.ca/infrastructure/"
+					},
+					{
+						"title": "Legal",
+						"href": "https://geo.ca/legal/"
+					},
+					{
+						"title": "Science",
+						"href": "https://geo.ca/science/"
+					},
+					{
+						"title": "Society",
+						"href": "https://geo.ca/society/"
+					},
+					{
+						"title": "Foundation Data",
+						"href": "https://geo.ca/foundation-data/"
+					}
 				]
 			},
 			{
@@ -42,13 +72,19 @@
 						"info": "Discover easily accessible groups of related data and information.",
 						"tipId": "collection"
 					},
-					{ "title": "Initiatives", "href": "https://geo.ca/initiatives/" }
+					{
+						"title": "Initiatives",
+						"href": "https://geo.ca/initiatives/"
+					}
 				]
 			},
 			{
 				"colTitle": "By Organization",
 				"links": [
-					{ "title": "Government of Canada", "href": "https://geo.ca/government-of-canada/" },
+					{
+						"title": "Government of Canada",
+						"href": "https://geo.ca/government-of-canada/"
+					},
 					{
 						"title": "Provinces and Territories",
 						"href": "https://geo.ca/provinces-and-territories/"
@@ -62,8 +98,14 @@
 		"options": [
 			{
 				"links": [
-					{ "title": "Contributors", "href": "https://geo.ca/contributors/" },
-					{ "title": "Communities", "href": "https://geo.ca/communities/" }
+					{
+						"title": "Contributors",
+						"href": "https://geo.ca/contributors/"
+					},
+					{
+						"title": "Communities",
+						"href": "https://geo.ca/communities/"
+					}
 				]
 			}
 		]
@@ -73,9 +115,18 @@
 		"options": [
 			{
 				"links": [
-					{ "title": "Getting Started", "href": "https://geo.ca/getting-started/" },
-					{ "title": "About Us", "href": "https://geo.ca/about-us/" },
-					{ "title": "Behind the Scenes", "href": "https://geo.ca/behind-the-scenes/" }
+					{
+						"title": "Getting Started",
+						"href": "https://geo.ca/getting-started/"
+					},
+					{
+						"title": "About Us",
+						"href": "https://geo.ca/about-us/"
+					},
+					{
+						"title": "Behind the Scenes",
+						"href": "https://geo.ca/behind-the-scenes/"
+					}
 				]
 			}
 		]
@@ -85,8 +136,14 @@
 		"options": [
 			{
 				"links": [
-					{ "title": "My Maps", "href": "/en-ca/map-browser" },
-					{ "title": "My Searches", "href": "/en-ca/map-browser" }
+					{
+						"title": "My Maps",
+						"href": "/en-ca/map-browser"
+					},
+					{
+						"title": "My Searches",
+						"href": "/en-ca/map-browser"
+					}
 				]
 			}
 		]

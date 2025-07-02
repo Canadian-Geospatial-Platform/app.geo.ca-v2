@@ -1,5 +1,4 @@
 import type { PageServerLoad } from './$types';
-import { getRecord } from '$lib/db/record.ts';
 import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
@@ -17,12 +16,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	let record;
+	let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token'));
 	try {
-		record = await getRecord(params.uuid);
+		record = await response.json();
+		// console.log("parsedRespone:\n", record.body.Items[0])
 	} catch (e) {
-		console.warn('error fetching record ' + params.uuid + ' for microdata:\n', e);
-		// If the record doesn't exist, throw an error so that the page is routed to +error.svelte
-		throw error(404, 'Record ' + params.uuid + ' not found');
+		console.error(e);
 	}
 
 	// @ts-ignore
@@ -97,17 +96,16 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const similar = await fetchSimilar(params.uuid);
 	const related = await fetchRelated(params.uuid);
 
-	let item_v2 = record?.features[0];
+	let item_v2 = record.body.Items[0];
 
-	if (item_v2?.properties.description) {
-		item_v2.properties.description.en = parseText(item_v2.properties.description.en);
-		item_v2.properties.description.fr = parseText(item_v2.properties.description.fr);
+	if (item_v2?.description) {
+		item_v2.description = parseText(item_v2.description);
 	}
 
 	// For the english version of the role, the value 'pointOfContact' is really common.
 	// We can replace it with the more readable 'point of contact'.
-	if (item_v2?.properties?.contact?.[0]?.role?.en) {
-		item_v2.properties.contact[0].role.en = item_v2.properties.contact[0].role.en.replace(
+	if (item_v2?.contact?.[0]?.role?.en) {
+		item_v2.contact[0].role.en = item_v2.contact[0].role.replace(
 			'pointOfContact',
 			'point of contact'
 		);
@@ -121,6 +119,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
 			: 'The metadata page and map for the GeoCore record ' + params.uuid;
 
+	item_v2.title = item_v2['title_' + lang];
 	return {
 		t_title_1: {
 			text:
@@ -133,7 +132,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		},
 		lang: params.lang,
 		uuid: params.uuid,
-		test: 'test',
 		similar: similar,
 		related: related,
 		analyticRes: analyticRes,
@@ -144,4 +142,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		alternateLang: alternateLang,
 		metaDescription: metaDescription
 	};
+
+	function generateUrl(fetch, uuid, lang, token) {
+		let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
+		console.log(url.href);
+		return fetch(url, {
+			headers: { Authentication: 'Bearer ' + token }
+		});
+	}
 };

@@ -9,10 +9,10 @@
 	const translations = data.t;
 	const lang = data.lang;
 	const items = data.item_v2;
-	const properties = items.properties;
+	const properties = items;
 
-	const title = lang == 'fr-ca' ? properties.title.fr : properties.title.en;
-	const description = lang == 'fr-ca' ? properties.description.fr : properties.description.en;
+	const title = properties.title;
+	const description = properties.description;
 	const addToFavourites = translations?.addToFavourites
 		? translations.addToFavourites
 		: 'Add to Favourites';

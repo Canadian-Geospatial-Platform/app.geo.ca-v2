@@ -65,7 +65,6 @@
 				}, 2000);
 			}
 		};
-
 		window.addEventListener('click', handleClick);
 		return () => window.removeEventListener('click', handleClick);
 	});

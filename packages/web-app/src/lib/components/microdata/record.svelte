@@ -6,15 +6,13 @@
 	let { item, lang } = $props();
 </script>
 
-<span property="name">{item.properties.title[lang]}</span>
-<span property="description">{item.properties.description[lang]}</span>
+<span property="name">{item.title}</span>
+<span property="description">{item.description}</span>
 <Organisations {item} {lang} />
 <span
 	property="temporalCoverage"
-	value={item.properties.extent.temporalExtent.start +
-		'/' +
-		(item.properties.extent.temporalExtent.end ?? '..')}
+	value={item.temporalExtent.start + '/' + (item.temporalExtent.end ?? '..')}
 ></span>
-<span property="genre">{item.properties.type[lang]}</span>
+<span property="genre">{item.type}</span>
 <Keywords {item} {lang} />
 <Download {item} />

@@ -9,18 +9,42 @@
 			{
 				"colTitle": "Thème",
 				"links": [
-					{ "title": "Administration", "href": "https://geo.ca/fr/administration-fr/" },
-					{ "title": "Économie", "href": "https://geo.ca/fr/economie/" },
-					{ "title": "Urgences", "href": "https://geo.ca/fr/urgences/" },
-					{ "title": "Environnement", "href": "https://geo.ca/fr/environnement/" },
-					{ "title": "Imagerie", "href": "https://geo.ca/fr/imagerie/" },
-					{ "title": "Infrastructure", "href": "https://geo.ca/fr/infrastructure-fr/" },
+					{
+						"title": "Administration",
+						"href": "https://geo.ca/fr/administration-fr/"
+					},
+					{
+						"title": "Économie",
+						"href": "https://geo.ca/fr/economie/"
+					},
+					{
+						"title": "Urgences",
+						"href": "https://geo.ca/fr/urgences/"
+					},
+					{
+						"title": "Environnement",
+						"href": "https://geo.ca/fr/environnement/"
+					},
+					{
+						"title": "Imagerie",
+						"href": "https://geo.ca/fr/imagerie/"
+					},
+					{
+						"title": "Infrastructure",
+						"href": "https://geo.ca/fr/infrastructure-fr/"
+					},
 					{
 						"title": "Renseignements juridiques",
 						"href": "https://geo.ca/fr/renseignements-juridiques/"
 					},
-					{ "title": "Science", "href": "https://geo.ca/fr/science-fr/" },
-					{ "title": "Société", "href": "https://geo.ca/fr/societe/" },
+					{
+						"title": "Science",
+						"href": "https://geo.ca/fr/science-fr/"
+					},
+					{
+						"title": "Société",
+						"href": "https://geo.ca/fr/societe/"
+					},
 					{
 						"title": "Données de base du Canada",
 						"href": "https://geo.ca/fr/donnees-de-base-du-canada/"
@@ -48,7 +72,10 @@
 						"info": "Découvrez des groupes de données et d’informations connexes facilement accessibles.",
 						"tipId": "collection"
 					},
-					{ "title": "Initiatives", "href": "https://geo.ca/fr/initiatives-fr/" }
+					{
+						"title": "Initiatives",
+						"href": "https://geo.ca/fr/initiatives-fr/"
+					}
 				]
 			},
 			{
@@ -71,8 +98,14 @@
 		"options": [
 			{
 				"links": [
-					{ "title": "Contributeurs", "href": "https://geo.ca/fr/contributeurs/" },
-					{ "title": "Communautés", "href": "https://geo.ca/fr/communautes/" }
+					{
+						"title": "Contributeurs",
+						"href": "https://geo.ca/fr/contributeurs/"
+					},
+					{
+						"title": "Communautés",
+						"href": "https://geo.ca/fr/communautes/"
+					}
 				]
 			}
 		]
@@ -82,9 +115,18 @@
 		"options": [
 			{
 				"links": [
-					{ "title": "Pour commencer", "href": "https://geo.ca/fr/pour-commencer/" },
-					{ "title": "À propos de nous", "href": "https://geo.ca/fr/a-propos-de-nous/" },
-					{ "title": "Dans les coulisses", "href": "https://geo.ca/fr/dans-les-coulisses/" }
+					{
+						"title": "Pour commencer",
+						"href": "https://geo.ca/fr/pour-commencer/"
+					},
+					{
+						"title": "À propos de nous",
+						"href": "https://geo.ca/fr/a-propos-de-nous/"
+					},
+					{
+						"title": "Dans les coulisses",
+						"href": "https://geo.ca/fr/dans-les-coulisses/"
+					}
 				]
 			}
 		]
@@ -94,8 +136,14 @@
 		"options": [
 			{
 				"links": [
-					{ "title": "Mes cartes", "href": "/fr-ca/map-browser" },
-					{ "title": "Mes recherches", "href": "/fr-ca/map-browser" }
+					{
+						"title": "Mes cartes",
+						"href": "/fr-ca/map-browser"
+					},
+					{
+						"title": "Mes recherches",
+						"href": "/fr-ca/map-browser"
+					}
 				]
 			}
 		]

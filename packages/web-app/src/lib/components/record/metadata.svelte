@@ -26,19 +26,16 @@
 	/******************* Data *******************/
 	const data = $page.data;
 	const lang = data.lang;
-	const items = data.item_v2;
-	const properties = items.properties;
+	const properties = data.item_v2;
 
 	// Top Section
-	const dates = properties.date;
-	const dateCreatedObj = dates.find((x) => x.dateType.en == 'creation');
-	const dateCreated = dateCreatedObj.date;
-	const datePublishedObj = dates.find((x) => x.dateType.en == 'publication');
-	const datePublished = datePublishedObj.date;
+	const dateCreated = properties.created;
+	const datePublished = properties.published;
 	const accessLast30 = data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : 'N/A';
 	const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
-	let temporalCoverage =
-		properties.extent.temporalExtent.start + ' - ' + properties.extent.temporalExtent.end;
+	console.log('dfajsflkads');
+	console.log(properties.temporalExtent);
+	let temporalCoverage = properties.temporalExtent?.begin + ' - ' + properties.temporalExtent?.end;
 
 	if (lang == 'fr-ca') {
 		temporalCoverage = temporalCoverage.replaceAll('null', 'Présent');
@@ -55,21 +52,23 @@
 	];
 
 	// Sources
-	const title = properties.title[lang.slice(0, 2)];
+	const title = properties.title;
 	const distributor = properties.distributor;
-	const distributorOrgArray = distributor.map((x) => x['organisation'][lang.slice(0, 2)]);
+	const distributorOrgArray = distributor.map((x) => x['organisation']);
 
 	const publisher = properties.cited;
-	const publisherOrgArray = publisher.map((x) => x['organisation'][lang.slice(0, 2)]);
-	const onlineResourceArray = publisher.map((x) => {
-		// Only return the resource if it is a link
-		if (
-			x?.onlineResource?.onlineResource &&
-			x?.onlineResource?.onlineResource_Protocol === 'http'
-		) {
-			return x.onlineResource.onlineResource;
-		}
-	});
+	const publisherOrgArray = publisher ? publisher.map((x) => x['organisation']) : null;
+	const onlineResourceArray = publisherOrgArray
+		? publisher.map((x) => {
+				// Only return the resource if it is a link
+				if (
+					x?.onlineResource?.onlineResource &&
+					x?.onlineResource?.onlineResource_Protocol === 'http'
+				) {
+					return x.onlineResource.onlineResource;
+				}
+			})
+		: null;
 
 	// Use limitations
 	const legalConstraints = properties.constraints?.legal;
