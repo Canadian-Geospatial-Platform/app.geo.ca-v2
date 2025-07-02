@@ -1,18 +1,22 @@
 [
-  {
-    "value": "date-desc",
-    "label": "Date : le plus récent"
-  }, {
-    "value": "date-asc",
-    "label": "Date : la plus vieille"
-  }, {
-    "value": "popularity-desc",
-    "label": "Popularité : élevée à faible"
-  }, {
-    "value": "popularity-asc",
-    "label": "Popularité : faible à élevée"
-  }, {
-    "value": "title",
-    "label": "Titre"
-  }
+	{
+		"value": "date-desc",
+		"label": "Date : le plus récent"
+	},
+	{
+		"value": "date-asc",
+		"label": "Date : la plus vieille"
+	},
+	{
+		"value": "popularity-desc",
+		"label": "Popularité : élevée à faible"
+	},
+	{
+		"value": "popularity-asc",
+		"label": "Popularité : faible à élevée"
+	},
+	{
+		"value": "title",
+		"label": "Titre"
+	}
 ]

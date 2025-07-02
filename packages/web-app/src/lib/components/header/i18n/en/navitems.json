@@ -1,84 +1,104 @@
 {
-  "home": {
-    "title": "Home",
-    "href": "https://geo.ca/home"
-  },
-  "discover": {
-    "title": "Discover",
-    "options": [
-      {
-        "colTitle": "By Theme",
-        "links": [
-          {"title": "Administration", "href": "https://geo.ca/administration/"},
-          {"title": "Economy", "href": "https://geo.ca/economy/"},
-          {"title": "Emergency", "href": "https://geo.ca/emergency/"},
-          {"title": "Environment", "href": "https://geo.ca/environment/"},
-          {"title": "Imagery", "href": "https://geo.ca/imagery/"},
-          {"title": "Infrastructure", "href": "https://geo.ca/infrastructure/"},
-          {"title": "Legal", "href": "https://geo.ca/legal/"},
-          {"title": "Science", "href": "https://geo.ca/science/"},
-          {"title": "Society", "href": "https://geo.ca/society/"},
-          {"title": "Foundation Data", "href": "https://geo.ca/foundation-data/"}
-        ]
-      }, {
-        "colTitle": "By Content Type",
-        "links": [
-          {"title": "API", "href": "/en-ca/map-browser?type=api", "info": "Discover and leverage useful APIs for requesting specific data and information.", "tipId": "api"},
-          {"title": "Application", "href": "/en-ca/map-browser?type=application", "info": "Discover our collection of pre-built applications that leverage existing APIs, datasets, collections, and web services.", "tipId": "application"},
-          {"title": "Collection", "href": "/en-ca/map-browser?type=collection", "info": "Discover easily accessible groups of related data and information.", "tipId": "collection"},
-          {"title": "Initiatives", "href": "https://geo.ca/initiatives/"}
-        ]
-      }, {
-        "colTitle": "By Organization",
-        "links": [
-          {"title": "Government of Canada", "href": "https://geo.ca/government-of-canada/"},
-          {"title": "Provinces and Territories", "href": "https://geo.ca/provinces-and-territories/"}
-        ]
-      }
-    ]
-  },
-  "collaborate": {
-    "title": "Collaborate",
-    "options": [
-      {
-        "links": [
-          {"title": "Contributors", "href": "https://geo.ca/contributors/"},
-          {"title": "Communities", "href": "https://geo.ca/communities/"}
-        ]
-      }
-    ]
-  },
-  "learn": {
-    "title": "Learn",
-    "options": [
-      {
-        "links": [
-          {"title": "Getting Started", "href": "https://geo.ca/getting-started/"},
-          {"title": "About Us", "href": "https://geo.ca/about-us/"},
-          {"title": "Behind the Scenes", "href": "https://geo.ca/behind-the-scenes/"}
-        ]
-      }
-    ]
-  },
-  "collections": {
-    "title": "My Collections",
-    "options": [
-      {
-        "links": [
-          {"title": "My Maps", "href": "/en-ca/map-browser"},
-          {"title": "My Searches", "href": "/en-ca/map-browser"}
-        ]
-      }
-    ]
-  },
-  "favourites": {
-    "title": "Favourites",
-    "href": "/en-ca/favourites",
-    "counter": true,
-    "localStorageKey": "FavouritesResources"
-  },
-  "lang": {
-    "title": "Français",
-    "href": "/fr-ca/map-browser"
-  }
+	"home": {
+		"title": "Home",
+		"href": "https://geo.ca/home"
+	},
+	"discover": {
+		"title": "Discover",
+		"options": [
+			{
+				"colTitle": "By Theme",
+				"links": [
+					{ "title": "Administration", "href": "https://geo.ca/administration/" },
+					{ "title": "Economy", "href": "https://geo.ca/economy/" },
+					{ "title": "Emergency", "href": "https://geo.ca/emergency/" },
+					{ "title": "Environment", "href": "https://geo.ca/environment/" },
+					{ "title": "Imagery", "href": "https://geo.ca/imagery/" },
+					{ "title": "Infrastructure", "href": "https://geo.ca/infrastructure/" },
+					{ "title": "Legal", "href": "https://geo.ca/legal/" },
+					{ "title": "Science", "href": "https://geo.ca/science/" },
+					{ "title": "Society", "href": "https://geo.ca/society/" },
+					{ "title": "Foundation Data", "href": "https://geo.ca/foundation-data/" }
+				]
+			},
+			{
+				"colTitle": "By Content Type",
+				"links": [
+					{
+						"title": "API",
+						"href": "/en-ca/map-browser?type=api",
+						"info": "Discover and leverage useful APIs for requesting specific data and information.",
+						"tipId": "api"
+					},
+					{
+						"title": "Application",
+						"href": "/en-ca/map-browser?type=application",
+						"info": "Discover our collection of pre-built applications that leverage existing APIs, datasets, collections, and web services.",
+						"tipId": "application"
+					},
+					{
+						"title": "Collection",
+						"href": "/en-ca/map-browser?type=collection",
+						"info": "Discover easily accessible groups of related data and information.",
+						"tipId": "collection"
+					},
+					{ "title": "Initiatives", "href": "https://geo.ca/initiatives/" }
+				]
+			},
+			{
+				"colTitle": "By Organization",
+				"links": [
+					{ "title": "Government of Canada", "href": "https://geo.ca/government-of-canada/" },
+					{
+						"title": "Provinces and Territories",
+						"href": "https://geo.ca/provinces-and-territories/"
+					}
+				]
+			}
+		]
+	},
+	"collaborate": {
+		"title": "Collaborate",
+		"options": [
+			{
+				"links": [
+					{ "title": "Contributors", "href": "https://geo.ca/contributors/" },
+					{ "title": "Communities", "href": "https://geo.ca/communities/" }
+				]
+			}
+		]
+	},
+	"learn": {
+		"title": "Learn",
+		"options": [
+			{
+				"links": [
+					{ "title": "Getting Started", "href": "https://geo.ca/getting-started/" },
+					{ "title": "About Us", "href": "https://geo.ca/about-us/" },
+					{ "title": "Behind the Scenes", "href": "https://geo.ca/behind-the-scenes/" }
+				]
+			}
+		]
+	},
+	"collections": {
+		"title": "My Collections",
+		"options": [
+			{
+				"links": [
+					{ "title": "My Maps", "href": "/en-ca/map-browser" },
+					{ "title": "My Searches", "href": "/en-ca/map-browser" }
+				]
+			}
+		]
+	},
+	"favourites": {
+		"title": "Favourites",
+		"href": "/en-ca/favourites",
+		"counter": true,
+		"localStorageKey": "FavouritesResources"
+	},
+	"lang": {
+		"title": "Français",
+		"href": "/fr-ca/map-browser"
+	}
 }

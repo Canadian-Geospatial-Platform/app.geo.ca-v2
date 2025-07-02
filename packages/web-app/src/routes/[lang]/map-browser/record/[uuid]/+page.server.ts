@@ -7,11 +7,11 @@ import { parseText } from '$lib/utils/parse-text.ts';
 import { formatNumber } from '$lib/utils/format-number.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-    // The "sst/node/config" package dynamically binds resources at runtime.
-    // Importing it at the top level would cause build-time errors because SST resources
-    // are not available during the build process. To avoid this, we import it inside
-    // the `load()` function so it's only accessed when the server is running.
-    const config = await import("sst/node/config");
+	// The "sst/node/config" package dynamically binds resources at runtime.
+	// Importing it at the top level would cause build-time errors because SST resources
+	// are not available during the build process. To avoid this, we import it inside
+	// the `load()` function so it's only accessed when the server is running.
+	const config = await import('sst/node/config');
 	const GEOCORE_API_DOMAIN = config.Config.GEOCORE_API_DOMAIN;
 
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
@@ -37,7 +37,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			return []; // Return empty array if fetch fails
 		}
 	};
-	
+
 	const fetchRelated = async (id) => {
 		try {
 			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
@@ -84,39 +84,42 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 
-    const analyticRes = await fetchAnalytics(params.uuid, lang);
+	const analyticRes = await fetchAnalytics(params.uuid, lang);
 
-    if (analyticRes['30']) {
+	if (analyticRes['30']) {
 		analyticRes['30'] = formatNumber(analyticRes['30']);
-    }
+	}
 
-    if (analyticRes.all) {
+	if (analyticRes.all) {
 		analyticRes.all = formatNumber(analyticRes.all);
-    }
+	}
 
-    const similar = await fetchSimilar(params.uuid);
-    const related = await fetchRelated(params.uuid);
+	const similar = await fetchSimilar(params.uuid);
+	const related = await fetchRelated(params.uuid);
 
-    let item_v2 = record?.features[0];
+	let item_v2 = record?.features[0];
 
-    if (item_v2?.properties.description) {
-        item_v2.properties.description.en = parseText(item_v2.properties.description.en);
-        item_v2.properties.description.fr = parseText(item_v2.properties.description.fr);
-    }
+	if (item_v2?.properties.description) {
+		item_v2.properties.description.en = parseText(item_v2.properties.description.en);
+		item_v2.properties.description.fr = parseText(item_v2.properties.description.fr);
+	}
 
-    // For the english version of the role, the value 'pointOfContact' is really common.
-    // We can replace it with the more readable 'point of contact'.
-    if (item_v2?.properties?.contact?.[0]?.role?.en) {
-        item_v2.properties.contact[0].role.en =
-            item_v2.properties.contact[0].role.en.replace('pointOfContact', 'point of contact');
-    }
+	// For the english version of the role, the value 'pointOfContact' is really common.
+	// We can replace it with the more readable 'point of contact'.
+	if (item_v2?.properties?.contact?.[0]?.role?.en) {
+		item_v2.properties.contact[0].role.en = item_v2.properties.contact[0].role.en.replace(
+			'pointOfContact',
+			'point of contact'
+		);
+	}
 
-    const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
+	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
 	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
-	const metaDescription = params.lang == 'fr-ca' ?
-	  "La page de métadonnées et la carte de l'enregistrement GeoCore " +  params.uuid :
-	  "The metadata page and map for the GeoCore record " +  params.uuid;
+	const metaDescription =
+		params.lang == 'fr-ca'
+			? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
+			: 'The metadata page and map for the GeoCore record ' + params.uuid;
 
 	return {
 		t_title_1: {
@@ -139,6 +142,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		canonicalUrl: canonicalUrl,
 		alternateUrl: alternateUrl,
 		alternateLang: alternateLang,
-		metaDescription: metaDescription,
+		metaDescription: metaDescription
 	};
 };

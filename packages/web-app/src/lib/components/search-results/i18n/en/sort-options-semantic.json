@@ -1,15 +1,18 @@
 [
-  {
-    "value": "date",
-    "label": "Date"
-  }, {
-    "value": "popularity",
-    "label": "Popularity"
-  }, {
-    "value": "title",
-    "label": "Title A-Z"
-  }, {
-    "value": "relevancy",
-    "label": "Relevancy"
-  }
+	{
+		"value": "date",
+		"label": "Date"
+	},
+	{
+		"value": "popularity",
+		"label": "Popularity"
+	},
+	{
+		"value": "title",
+		"label": "Title A-Z"
+	},
+	{
+		"value": "relevancy",
+		"label": "Relevancy"
+	}
 ]

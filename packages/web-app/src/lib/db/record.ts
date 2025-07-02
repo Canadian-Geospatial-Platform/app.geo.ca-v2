@@ -3,7 +3,7 @@ import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 
 // This should point to the bucket containing geojson from the newest geocore transformation lambda with the improved schema.
 const PREFIX = 'geocore/';
-const s3Client = new S3Client({ region: "ca-central-1" });
+const s3Client = new S3Client({ region: 'ca-central-1' });
 
 const getRecord = async (uuid) => {
 	let key = PREFIX + uuid + '.geojson';

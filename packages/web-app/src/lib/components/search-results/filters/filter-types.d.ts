@@ -1,15 +1,15 @@
 import type * as Kit from '@sveltejs/kit';
 
 export type FilterItem = {
-  label: string,
-  value: string,
-  subCategory?: string,
-}
+	label: string;
+	value: string;
+	subCategory?: string;
+};
 
 export type Filter = {
-  section: string,
-  label: string,
-  filterList: Array<FilterItem>,
+	section: string;
+	label: string;
+	filterList: Array<FilterItem>;
 };
 
 /********* Types for the filter store **********/

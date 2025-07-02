@@ -2,21 +2,21 @@
 /* tslint:disable */
 /* eslint-disable */
 /* deno-fmt-ignore-file */
-import "sst"
-export {}
-declare module "sst" {
-  export interface Resource {
-    "DataLake": {
-      "name": string
-      "type": "sst.aws.Bucket"
-    }
-    "Users": {
-      "name": string
-      "type": "sst.aws.Dynamo"
-    }
-    "WebApp": {
-      "type": "sst.aws.SvelteKit"
-      "url": string
-    }
-  }
+import 'sst';
+export {};
+declare module 'sst' {
+	export interface Resource {
+		DataLake: {
+			name: string;
+			type: 'sst.aws.Bucket';
+		};
+		Users: {
+			name: string;
+			type: 'sst.aws.Dynamo';
+		};
+		WebApp: {
+			type: 'sst.aws.SvelteKit';
+			url: string;
+		};
+	}
 }
