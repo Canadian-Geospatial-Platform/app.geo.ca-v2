@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { page } from '$app/stores';
-import { addToMyCart, removeFromMyCart } from '$lib/actions.ts';
+import { addToFavourites, removeFromFavourites } from '$lib/actions.ts';
 import { getUserData } from '$lib/db/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results.ts';
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	}
 	let analytics = await getAnalytics(fetch);
 	let parsedResponse = [];
-	let userData = { Item: { myCart: [] } };
+	let userData = { Item: { favourites: [] } };
 	let sanitizedResults;
 	try {
 		parsedResponse = await response.json();
@@ -246,6 +246,6 @@ function conditionalConcat(prefix, key, value, ret) {
 }
 
 export const actions = {
-	addToMyCart: addToMyCart,
-	removeFromMyCart: removeFromMyCart
+	addToFavourites: addToFavourites,
+	removeFromFavourites: removeFromFavourites
 } satisfies Actions;

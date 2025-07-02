@@ -5,14 +5,14 @@
   import Card from '$lib/components/card/card.svelte';
   import NoMap from '$lib/components/icons/no-map.svelte';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-  import MycartMap from '$lib/components/map/mycart-map.svelte';
+  import MycartMap from '$lib/components/map/favourites-map.svelte';
   import SortableTable from "$lib/components/sortable-table/sortable-table.svelte";
-  import MyCartListSkeleton from '$lib/components/loading-mask/mycart-list-skeleton.svelte';
+  import FavouritesListSkeleton from '$lib/components/loading-mask/favourites-list-skeleton.svelte';
   import Checkmark from '$lib/components/icons/checkmark.svelte';
   import GarbageCan from '$lib/components/icons/garbage-can.svelte';
   import SearchBarSimplified from '$lib/components/search-results/search-bar-simplified.svelte';
 
-  type MyCartRow = {
+  type FavouritesRow = {
     id: string;
     name: string;
     url: string;
@@ -25,7 +25,7 @@
   const lang = $page.data.lang;
 
   const findAResource = translations?.findAResource ? translations.findAResource : 'Find a resource';
-  const myCartTitle = translations?.title ? translations.title : 'My Cart';
+  const favouritesTitle = translations?.title ? translations.title : 'Favourites';
   const mapTitle = translations?.mapTitle ? translations.mapTitle : 'Map';
   const pageDescription = translations?.description ? translations.description : '';
   const remove = translations?.remove ? translations.remove : 'Remove';
@@ -48,13 +48,13 @@
   let loading = $state(true);
   let mapToggle = $state(false);
 
-  let favouriteRecordList = $state($page.data?.userData?.myCart ?
-    [...$page.data?.userData?.myCart] : []);
+  let favouriteRecordList = $state($page.data?.userData?.favourites ?
+    [...$page.data?.userData?.favourites] : []);
   let records = $state([]);
   let tableDataArray = $state([]);
 
   // Table column labels
-  const tableLabels: MyCartRow = {
+  const tableLabels: FavouritesRow = {
     "name": resourceNameLabel,
     "formats": resourceFormatsLabel
   };
@@ -83,7 +83,7 @@
       sortableTable.setSelectedIds(selectedSet);
 
       // Update localStorage and dispatch localstorage_updated event
-      updateLocalStorage("MyCartResources", favouriteRecordList);
+      updateLocalStorage("FavouritesResources", favouriteRecordList);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -105,7 +105,7 @@
       sortableTable.setSelectedIds(new Set());
 
       // Update localStorage and dispatch localstorage_updated event
-      updateLocalStorage("MyCartResources", []);
+      updateLocalStorage("FavouritesResources", []);
 
       // TODO: update user's favourites when the login system is implemented
     }
@@ -124,11 +124,11 @@
   }
 
   // Local storage is only accessible from the client side, so we need to get
-  // the MyCartResources array inside onMount
+  // the FavouritesResources array inside onMount
   onMount(async () => {
     // If not signed in, check the local storage for saved resources instead
     if (!$page.data.signedIn) {
-      let stored = localStorage.getItem("MyCartResources");
+      let stored = localStorage.getItem("FavouritesResources");
 
       if (stored) {
         // local storage is always a string, so we need to convert to an array
@@ -138,7 +138,7 @@
 
       // Issue POST request for record details
       if (favouriteRecordList.length > 0) {
-        const response = await fetch('/' + lang + '/my-cart', {
+        const response = await fetch('/' + lang + '/favourites', {
           method: 'POST',
           body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
           headers: {'Content-Type': 'application/json'}
@@ -167,7 +167,7 @@
   {#if mapToggle}
     {mapTitle}
   {:else}
-    {myCartTitle}
+    {favouritesTitle}
   {/if}
 </h1>
 
@@ -307,6 +307,6 @@
     <div class="animate-pulse bg-custom-6 w-full h-[32rem]"></div>
   {:else if !mapToggle}
     <!-- Table loading skeleton -->
-    <MyCartListSkeleton numRecords={6} />
+    <FavouritesListSkeleton numRecords={6} />
   {/if}
 </div>

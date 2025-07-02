@@ -1,0 +1,16 @@
+{
+  "description": "Bienvenue dans votre liste de favoris. À partir de cette page, vous pouvez créer une carte personnalisée à l’aide des ressources indiquées ci-dessous. Utilisez les cases à cocher pour sélectionner les ressources à inclure, puis cliquez sur le bouton <span class='font-semibold'>Voir sur la carte</span> au bas du tableau. Si une ressource n’a pas de couche cartographique disponible, elle ne peut pas être sélectionnée — toutefois, vous pouvez toujours consulter ses détails en cliquant sur la ligne dans le tableau pour accéder à la page d’enregistrement correspondante. Pour retirer une ressource, cliquez sur l’icône de la poubelle à côté de son nom, ou utilisez le bouton <span class='font-semibold'>Tout supprimer</span> pour vider la liste.",
+  "findAResource": "Trouver une ressource",
+  "mapTitle": "Carte",
+  "remove": "Supprimer",
+  "removeAll": "Tout supprimer",
+  "resourceFormats": "Formats de ressources",
+  "resourceListEmpty": "Votre liste de favoris est vide.",
+  "resourceName": "Nom de la ressource",
+  "returnToList": "Retour aux favoris",
+  "search": "Recherche",
+  "searchFor": "Rechercher des ressources supplémentaires",
+  "searchProducts": "Recherche de produits",
+  "title": "Favoris",
+  "viewOnMap": "Voir sur la carte"
+}

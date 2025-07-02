@@ -71,11 +71,11 @@
       }
     ]
   },
-  "myCart": {
-    "title": "Mon Panier",
-    "href": "/fr-ca/my-cart",
+  "favourites": {
+    "title": "Favoris",
+    "href": "/fr-ca/favourites",
     "counter": true,
-    "localStorageKey": "MyCartResources"
+    "localStorageKey": "FavouritesResources"
   },
   "lang": {
     "title": "English",

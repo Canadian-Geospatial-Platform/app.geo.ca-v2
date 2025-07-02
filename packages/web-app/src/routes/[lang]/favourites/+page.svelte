@@ -1,10 +1,10 @@
 <script lang="ts">
   import { navigating, page } from '$app/stores';
   import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
-  import MyCart from '$lib/components/mycart/mycart.svelte';
+  import Favourites from '$lib/components/favourites/favourites.svelte';
 
   const lang = $page.data.lang;
-	const title = lang == 'fr-ca' ? 'app.geo.ca - Mon Panier' : 'app.geo.ca - My Cart';
+	const title = lang == 'fr-ca' ? 'app.geo.ca - Favoris' : 'app.geo.ca - Favourites';
 
 	const canonicalUrl = $page.data.canonicalUrl;
 	const alternateUrl = $page.data.alternateUrl;
@@ -23,4 +23,4 @@
   <LoadingMask classes="fixed left-0 top-0 items-center" />
 {/if}
 
-<MyCart />
+<Favourites />
