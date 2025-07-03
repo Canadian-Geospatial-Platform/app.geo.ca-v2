@@ -55,7 +55,7 @@
 	// Sources
 	const title = properties.title;
 	const distributor = properties.distributor;
-	const distributorOrgArray = distributor.map((x) => x['organisation']);
+	const distributorOrgArray = distributor.map((x) => x?.['organisation']);
 
 	const onlineResourceArray = distributor
 		? distributor.map((x) => {

@@ -111,10 +111,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// Sometimes, the organisation list in the distributor array has duplicate entries,
 	// those will be filtered out here.
 	for (let dist of item_v2.distributor) {
-		// Filter for unique values with a new Set object
-		const orgs = [...new Set(dist.organisation[lang].split('; '))];
-		// convert back to string
-		dist.organisation = orgs.join('; ');
+		if (dist) {
+			// Filter for unique values with a new Set object
+			const orgs = [...new Set(dist.organisation[lang].split('; '))];
+			// convert back to string
+			dist.organisation = orgs.join('; ');
+		}
 	}
 
 	// If coordinates are a string, convert them to an array (or nested arrays) instead

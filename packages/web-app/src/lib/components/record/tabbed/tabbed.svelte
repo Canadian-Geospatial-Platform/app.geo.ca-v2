@@ -14,9 +14,7 @@
 	const advancedMetadata: string = translations?.advancedMetadata
 		? translations['advancedMetadata']
 		: 'Advanced metadata';
-	const contactData: string = translations?.contactData
-		? translations['contactData']
-		: 'Contact';
+	const contactData: string = translations?.contactData ? translations['contactData'] : 'Contact';
 	const relatedProducts: string = translations?.relatedProducts
 		? translations['relatedProducts']
 		: 'Related products';

@@ -36,9 +36,9 @@ export default {
       const USER_TABLE = existingUserTableArn
         ? dynamodb.Table.fromTableArn(stack, "users", existingUserTableArn)
         : new Table(stack, "users", {
-            fields: { uuid: "string" },
-            primaryIndex: { partitionKey: "uuid" },
-          });
+          fields: { uuid: "string" },
+          primaryIndex: { partitionKey: "uuid" },
+        });
 
       /*** Other Resources ***/
       const OIDC_CLIENT_ID = new Config.Parameter(stack, "OIDC_CLIENT_ID", {
@@ -58,30 +58,6 @@ export default {
         value: "false",
       });
 
-      let HNAP_BUCKET = new Bucket(stack, "hnap", {
-        cdk: {
-          bucket: {
-            autoDeleteObjects: true,
-            removalPolicy: cdk.RemovalPolicy.DESTROY,
-          },
-        },
-      });
-
-      const HNAP_BRIDGE = new Function(stack, "hnap-bridge", {
-        handler: "packages/hnap-bridge/index.handler",
-        timeout: 30,
-        permissions: ["s3"],
-        bind: [HNAP_BUCKET],
-      });
-
-      HNAP_BUCKET.addNotifications(stack, {
-        myNotification1: {
-          function: HNAP_BRIDGE,
-          events: ["object_created"],
-          filters: [{ prefix: "hnap/" }],
-        },
-      });
-
       // Wrap the user table in SST’s Config.Parameter so that it can be referenced in SST functions
       // This is necessary when an existing table is imported using the Table.fromTableArn method
       const userTableConfig = new Config.Parameter(stack, "USER_TABLE_NAME", {
@@ -98,7 +74,6 @@ export default {
           GEOCORE_API_DOMAIN,
           userTableConfig,
           FEATURE_SIGN_IN,
-          HNAP_BUCKET,
         ],
       });
 
