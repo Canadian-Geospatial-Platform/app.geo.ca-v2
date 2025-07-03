@@ -72,8 +72,7 @@
 
 	const dateCreated = items.created;
 	const datePublished = items.published;
-	const temporalCoverage =
-		items.temporalExtent.begin + ' - ' + items.temporalExtent.end;
+	const temporalCoverage = items.temporalExtent.begin + ' - ' + items.temporalExtent.end;
 
 	// Table Array
 	const tableDataArray: Array<AdvMetadataRow> = [

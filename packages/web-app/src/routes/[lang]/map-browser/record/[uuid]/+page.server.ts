@@ -105,10 +105,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// For the english version of the role, the value 'pointOfContact' is really common.
 	// We can replace it with the more readable 'point of contact'.
 	if (item_v2?.contact?.[0]?.role) {
-		item_v2.contact[0].role = item_v2.contact[0].role.replace(
-			'pointOfContact',
-			'point of contact'
-		);
+		item_v2.contact[0].role = item_v2.contact[0].role.replace('pointOfContact', 'point of contact');
 	}
 
 	// Sometimes, the organisation list in the distributor array has duplicate entries,
@@ -127,28 +124,28 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		coords = JSON.parse(coords);
 		item_v2.coordinates = coords;
 	}
-	
+
 	// We can also add a bounding box key to get the north, east, west, and south
 	// values for the advanced metadata. But first, we need to get the values from
 	// the coordinates
-	let west = Infinity
+	let west = Infinity;
 	let east = -Infinity;
-	let south = Infinity
+	let south = Infinity;
 	let north = -Infinity;
-	
+
 	coords.flat().forEach(([x, y]) => {
-	  if (x < west) west = x; // West
-	  if (x > east) east = x; // East
-	  if (y < south) south = y; // South
-	  if (y > north) north = y; // North
+		if (x < west) west = x; // West
+		if (x > east) east = x; // East
+		if (y < south) south = y; // South
+		if (y > north) north = y; // North
 	});
-	
+
 	item_v2.bbox = {
 		north: north,
 		east: east,
 		south: south,
 		west: west
-	}
+	};
 
 	// Parse the topicCategory items into an array.
 	// Sometimes the categories are in one single camel case string like this:

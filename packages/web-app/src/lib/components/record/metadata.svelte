@@ -61,8 +61,8 @@
 		? distributor.map((x) => {
 				// Only return the resource if it is a link
 				if (
-					x?.onlineResource?.onlineResource &&
-					x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'http' ||
+					(x?.onlineResource?.onlineResource &&
+						x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'http') ||
 					x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'https'
 				) {
 					return x.onlineResource.onlineResource;

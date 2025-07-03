@@ -41,8 +41,8 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string) {
 		format = description[1];
 		languageRaw = description[2].replaceAll(',', ', ');
 		language = languageRaw.replaceAll(
-		  /eng|fra|zxx/gi,
-		  ((x: keyof LanguageReplacements) => languageReplacements[x][translationLang])
+			/eng|fra|zxx/gi,
+			(x: keyof LanguageReplacements) => languageReplacements[x][translationLang]
 		);
 
 		dataResources.push({
