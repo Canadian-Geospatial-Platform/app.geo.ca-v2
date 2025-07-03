@@ -16,7 +16,7 @@
 		: 'Advanced metadata';
 	const contactData: string = translations?.contactData
 		? translations['contactData']
-		: 'Contact data';
+		: 'Contact';
 	const relatedProducts: string = translations?.relatedProducts
 		? translations['relatedProducts']
 		: 'Related products';
