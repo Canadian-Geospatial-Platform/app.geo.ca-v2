@@ -43,43 +43,37 @@
 	const data = $page.data;
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
+	const langIndex = langShort == 'fr' ? 1 : 0;
 	const items = data.item_v2;
-	const properties = items.properties;
-	const geographicExtent = properties.extent.geographicExtent;
+	const geographicExtent = items.coordinates;
 
 	const url = $page.url;
 	const mapBrowserUrl = url.origin + '/' + lang + '/map-browser';
 	const searchUrl = mapBrowserUrl + '?search-terms=';
 
-	const status = properties.status[langShort];
-	const maintenance = properties.maintenance[langShort];
+	const status = items.status.split('; ')[langIndex];
+	const maintenance = items.maintenance.split('; ')[langIndex];
 	const id = data.uuid;
 
 	// Each topic category should be a link back to the search page
-	const topicCategoryArray = properties.topicCategory.map((x) => {
-		const label = x.label[langShort].toLowerCase();
+	const topicCategoryArray = items.topicCategory.map((x) => {
+		const label = x.toLowerCase();
 		return `<a href="${searchUrl}${encodeURIComponent(label)}" class="underline hover:no-underline text-custom-16">${label}</a>`;
 	});
 	const topicCategory = topicCategoryArray.join(', ');
 
-	const type = properties.type[langShort];
-	const north = geographicExtent.north;
-	const east = geographicExtent.east;
-	const west = geographicExtent.west;
-	const south = geographicExtent.south;
-	const spatialRepresentation = properties.spatialRepresentation[langShort];
-	const projectionArray = properties.refSys.map((x) => {
-		return x.code;
-	});
-	const projection = projectionArray.join(', ');
+	const type = items.type.split('; ')[langIndex];
+	const north = items.bbox.north;
+	const east = items.bbox.east;
+	const south = items.bbox.south;
+	const west = items.bbox.west;
+	const spatialRepresentation = items.spatialRepresentation.split('; ')[langIndex];
+	const projection = items.refSys;
 
-	const dates = properties.date;
-	const dateCreatedObj = dates.find((x) => x.dateType.en == 'creation');
-	const dateCreated = dateCreatedObj.date;
-	const datePublishedObj = dates.find((x) => x.dateType.en == 'publication');
-	const datePublished = datePublishedObj.date;
+	const dateCreated = items.created;
+	const datePublished = items.published;
 	const temporalCoverage =
-		properties.extent.temporalExtent.start + ' - ' + properties.extent.temporalExtent.end;
+		items.temporalExtent.begin + ' - ' + items.temporalExtent.end;
 
 	// Table Array
 	const tableDataArray: Array<AdvMetadataRow> = [
@@ -90,8 +84,8 @@
 		{ label: typeText.toUpperCase(), description: type },
 		{ label: northText.toUpperCase(), description: north },
 		{ label: eastText.toUpperCase(), description: east },
-		{ label: westText.toUpperCase(), description: west },
 		{ label: southText.toUpperCase(), description: south },
+		{ label: westText.toUpperCase(), description: west },
 		{ label: spatialRepresentationText.toUpperCase(), description: spatialRepresentation },
 		{ label: projectionText.toUpperCase(), description: projection },
 		{ label: dateCreatedText.toUpperCase(), description: dateCreated },

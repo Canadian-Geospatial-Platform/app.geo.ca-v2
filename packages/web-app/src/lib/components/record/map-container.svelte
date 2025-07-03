@@ -12,8 +12,7 @@
 	const data = $page.data;
 	const uuid = data.uuid;
 	const items = data.item_v2;
-	const geometry = items?.geometry ? items.geometry : null;
-	const coordinates = geometry && geometry?.coordinates ? geometry.coordinates : null;
+	const coordinates = items.coordinates;
 
 	/***************** Time Slider *************************/
 	// Note: Geoview checks for a valid time dimension for each map layer before adding the

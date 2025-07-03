@@ -26,15 +26,16 @@
 	/******************* Data *******************/
 	const data = $page.data;
 	const lang = data.lang;
+	const langShort = lang === 'fr-ca' ? 'fr' : 'en';
 	const properties = data.item_v2;
+	// console.log(properties);
 
 	// Top Section
 	const dateCreated = properties.created;
 	const datePublished = properties.published;
 	const accessLast30 = data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : 'N/A';
 	const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
-	console.log('dfajsflkads');
-	console.log(properties.temporalExtent);
+
 	let temporalCoverage = properties.temporalExtent?.begin + ' - ' + properties.temporalExtent?.end;
 
 	if (lang == 'fr-ca') {
@@ -56,14 +57,13 @@
 	const distributor = properties.distributor;
 	const distributorOrgArray = distributor.map((x) => x['organisation']);
 
-	const publisher = properties.cited;
-	const publisherOrgArray = publisher ? publisher.map((x) => x['organisation']) : null;
-	const onlineResourceArray = publisherOrgArray
-		? publisher.map((x) => {
+	const onlineResourceArray = distributor
+		? distributor.map((x) => {
 				// Only return the resource if it is a link
 				if (
 					x?.onlineResource?.onlineResource &&
-					x?.onlineResource?.onlineResource_Protocol === 'http'
+					x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'http' ||
+					x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'https'
 				) {
 					return x.onlineResource.onlineResource;
 				}
@@ -71,14 +71,13 @@
 		: null;
 
 	// Use limitations
-	const legalConstraints = properties.constraints?.legal;
+	const legalConstraints = properties.useLimits;
 	let useLimitations = 'N/A';
 
 	if (legalConstraints) {
-		const useLimitationsRaw = properties.constraints.legal[lang.slice(0, 2)];
 		const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
-		const useLimitationsUrl = useLimitationsRaw.match(urlRegEx)[0];
-		const useLimitationsLabel = useLimitationsRaw.split(' (')[0];
+		const useLimitationsUrl = legalConstraints.match(urlRegEx)[0];
+		const useLimitationsLabel = legalConstraints.split(' (')[0];
 		useLimitations =
 			'<a href="' +
 			useLimitationsUrl +
@@ -104,20 +103,15 @@
 		<div class="card-div">
 			<h3 class="font-semibold">{sourcesText}</h3>
 			<!--
-        Citation entries should be in this format:
-          Publisher organization. (published date). <i>Name of resource</i>.
-          Distributor organization. url link to resource (if it exists).
-
-        Note: This assumes that there is one distributor entry per publisher listed
-        in the metadata and that the entries in each array index match. In most cases
-        there is only one publisher and distributor per resource, but we should check
-        for others just in case.
-      -->
+		        Citation entries should be in this format:
+		            Publisher organization. (published date). <i>Name of resource</i>.
+		            Distributor organization. url link to resource (if it exists).
+		    -->
 			<div class="space-y-4">
-				{#each publisherOrgArray as publisher, i}
+				{#each distributorOrgArray as distributor, i}
 					<p>
-						{#if publisher}
-							{publisher.replaceAll(';', '; ')}.
+						{#if distributor}
+							{distributor}.
 						{/if}
 						{#if datePublished}
 							({datePublished}).
@@ -125,8 +119,8 @@
 						{#if title}
 							<span class="italic">{title}.</span>
 						{/if}
-						{#if distributorOrgArray[i]}
-							{distributorOrgArray[i].replaceAll(';', '; ')}.
+						{#if distributor}
+							{distributor}.
 						{/if}
 						{#if onlineResourceArray[i]}
 							<a href={onlineResourceArray[i]} class="underline hover:no-underline text-custom-16"

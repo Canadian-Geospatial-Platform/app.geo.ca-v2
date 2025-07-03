@@ -2,7 +2,7 @@
 // Note: requires @html on the client side to properly display any html.
 export const parseText = function (text: string) {
 	// Replace new line characters with html equivalent
-	text = text.replaceAll(/\n/g, '<br>');
+	text = text.replaceAll(/\\n/g, '<br>');
 
 	/*****************************************************************************
 	 * Sometimes markdown formatting is used to style text. This needs to be

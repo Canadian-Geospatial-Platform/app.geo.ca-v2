@@ -104,11 +104,58 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	// For the english version of the role, the value 'pointOfContact' is really common.
 	// We can replace it with the more readable 'point of contact'.
-	if (item_v2?.contact?.[0]?.role?.en) {
-		item_v2.contact[0].role.en = item_v2.contact[0].role.replace(
+	if (item_v2?.contact?.[0]?.role) {
+		item_v2.contact[0].role = item_v2.contact[0].role.replace(
 			'pointOfContact',
 			'point of contact'
 		);
+	}
+
+	// Sometimes, the organisation list in the distributor array has duplicate entries,
+	// those will be filtered out here.
+	for (let dist of item_v2.distributor) {
+		// Filter for unique values with a new Set object
+		const orgs = [...new Set(dist.organisation[lang].split('; '))];
+		// convert back to string
+		dist.organisation = orgs.join('; ');
+	}
+
+	// If coordinates are a string, convert them to an array (or nested arrays) instead
+	let coords = item_v2.coordinates ?? [];
+
+	if (typeof item_v2.coordinates == 'string') {
+		coords = JSON.parse(coords);
+		item_v2.coordinates = coords;
+	}
+	
+	// We can also add a bounding box key to get the north, east, west, and south
+	// values for the advanced metadata. But first, we need to get the values from
+	// the coordinates
+	let west = Infinity
+	let east = -Infinity;
+	let south = Infinity
+	let north = -Infinity;
+	
+	coords.flat().forEach(([x, y]) => {
+	  if (x < west) west = x; // West
+	  if (x > east) east = x; // East
+	  if (y < south) south = y; // South
+	  if (y > north) north = y; // North
+	});
+	
+	item_v2.bbox = {
+		north: north,
+		east: east,
+		south: south,
+		west: west
+	}
+
+	// Parse the topicCategory items into an array.
+	// Sometimes the categories are in one single camel case string like this:
+	// "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
+	// a comma-separated or semi-colon-separated list We can do this with a regular expression
+	if (item_v2.topicCategory && typeof item_v2.topicCategory == 'string') {
+		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]\s*|(?=[A-Z])/);
 	}
 
 	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
