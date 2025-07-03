@@ -29,7 +29,7 @@ export default {
 					22: '#002E62',
 					23: '#130944',
 					24: '#BEBEBE',
-					25: '#E9E9E9',
+					25: '#E9E9E9'
 				}
 			},
 			spacing: {
@@ -37,15 +37,15 @@ export default {
 			},
 			boxShadow: {
 				'banner-img': '0 0 200px 50px #140a46 inset'
-            },
+			},
 			maxWidth: {
-				'tabbed-title': 'calc(100% - 135px)',
+				'tabbed-title': 'calc(100% - 135px)'
 			},
 			fontFamily: {
 				'open-sans': ['"Open Sans"', 'Helvetica', 'Arial', 'sans-serif'],
 				'noto-sans': ['"Noto Sans"', 'Helvetica', 'Arial', 'sans-serif'],
-				'lato': ['"Lato"', 'Helvetica', 'Arial', 'sans-serif']
-			},
+				lato: ['"Lato"', 'Helvetica', 'Arial', 'sans-serif']
+			}
 		}
 	},
 	plugins: []

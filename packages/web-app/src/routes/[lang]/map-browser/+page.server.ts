@@ -12,7 +12,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	if (searchMode == 'classic') {
 		response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
 	} else {
-		response = await generateSemanticUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
+		response = await generateSemanticUrl(
+			fetch,
+			url.searchParams,
+			params.lang,
+			cookies.get('id_token')
+		);
 	}
 	let analytics = await getAnalytics(fetch);
 	let parsedResponse = [];
@@ -21,9 +26,9 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	try {
 		parsedResponse = await response.json();
 		if (searchMode == 'classic') {
-		    sanitizedResults = sanitize(parsedResponse.Items, params.lang);
+			sanitizedResults = sanitize(parsedResponse.Items, params.lang);
 		} else {
-		    sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items, params.lang);
+			sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items, params.lang);
 		}
 	} catch (e) {
 		console.error(e);
@@ -31,8 +36,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	let totalHits;
 	if (searchMode == 'classic') {
-		totalHits = parseInt(
-			sanitizedResults?.[0]?.total ? sanitizedResults[0].total : 0);
+		totalHits = parseInt(sanitizedResults?.[0]?.total ? sanitizedResults[0].total : 0);
 	} else {
 		totalHits = parsedResponse?.response?.total_hits ?? 0;
 	}
@@ -46,9 +50,10 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser';
 	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
-	const metaDescription = params.lang == 'fr-ca' ?
-	  'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.' :
-	  'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.';
+	const metaDescription =
+		params.lang == 'fr-ca'
+			? 'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.'
+			: 'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.';
 
 	return {
 		lang: params.lang,
@@ -62,7 +67,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		canonicalUrl: canonicalUrl,
 		alternateUrl: alternateUrl,
 		alternateLang: alternateLang,
-		metaDescription: metaDescription,
+		metaDescription: metaDescription
 	};
 };
 
@@ -73,8 +78,10 @@ function generateUrl(fetch, searchParams, lang, token) {
 	// However, the geocore get requests require the '+' to be unencoded, so
 	// we can fix it with replaceAll(). Additionally, the ' character needs to be
 	// replaced with '', so we can use replaceAll() a second time.
-	url.search = new URLSearchParams(params).toString()
-	  .replaceAll('%2B', '+').replaceAll('%27', '%27%27');
+	url.search = new URLSearchParams(params)
+		.toString()
+		.replaceAll('%2B', '+')
+		.replaceAll('%27', '%27%27');
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
@@ -134,12 +141,8 @@ function mapSearchParams(searchParams, lang) {
 		theme: searchParams.get('theme') ?? '',
 		bbox: searchParams.get('bbox') ?? '',
 		foundational: searchParams.get('foundational') ? 'true' : '',
-		begin: searchParams.get('begin')
-			? new Date(searchParams.get('begin')).toISOString()
-			: '',
-		end: searchParams.get('end')
-			? new Date(searchParams.get('end')).toISOString()
-			: '',
+		begin: searchParams.get('begin') ? new Date(searchParams.get('begin')).toISOString() : '',
+		end: searchParams.get('end') ? new Date(searchParams.get('end')).toISOString() : '',
 		lang: lang.split('-')[0],
 		min: getMin(searchParams),
 		max: getMax(searchParams),
@@ -153,31 +156,28 @@ function mapSemanticSearchResults(searchParams, lang) {
 	let north = searchParams.get('north') ?? 90;
 	let east = searchParams.get('east') ?? 180;
 	let south = searchParams.get('south') ?? -90;
-	let bbox = searchParams.get('bbox') ?
-	  west + "," + south + "," + east + "," + north : "";
+	let bbox = searchParams.get('bbox') ? west + ',' + south + ',' + east + ',' + north : '';
 	let ret = {
 		// Revisit which search method is better after user testing
-	    method: 'SemanticSearch', // 'HybridSearch',
-	    q: getKeyword(searchParams),
-	    bbox: bbox,
-	    relation: searchParams.get('relation') ?? 'intersects',
-	    begin: searchParams.get('begin')
-			? new Date(searchParams.get('begin')).toISOString() : '',
-	    end: searchParams.get('end')
-			? new Date(searchParams.get('end')).toISOString() : '',
-	    org: searchParams.get('org') ?? '',
-	    type: searchParams.get('type') ?? '',
-	    theme: searchParams.get('theme') ?? '',
-	    foundational: searchParams.get('foundational') ? 'true' : '',
-	    source_system: '',
-	    eo_collection: '',
-	    polarization: '',
-	    orbit_direction: '',
-	    lang: lang.split('-')[0],
-	    sort: searchParams.get('sort') ?? 'relevancy',
-	    order: searchParams.get('sort') == 'title' ? 'asc' : 'desc',
-	    size: searchParams.get('results-per-page') ?? '10',
-	    from: getMin(searchParams)
+		method: 'SemanticSearch', // 'HybridSearch',
+		q: getKeyword(searchParams),
+		bbox: bbox,
+		relation: searchParams.get('relation') ?? 'intersects',
+		begin: searchParams.get('begin') ? new Date(searchParams.get('begin')).toISOString() : '',
+		end: searchParams.get('end') ? new Date(searchParams.get('end')).toISOString() : '',
+		org: searchParams.get('org') ?? '',
+		type: searchParams.get('type') ?? '',
+		theme: searchParams.get('theme') ?? '',
+		foundational: searchParams.get('foundational') ? 'true' : '',
+		source_system: '',
+		eo_collection: '',
+		polarization: '',
+		orbit_direction: '',
+		lang: lang.split('-')[0],
+		sort: searchParams.get('sort') ?? 'relevancy',
+		order: searchParams.get('sort') == 'title' ? 'asc' : 'desc',
+		size: searchParams.get('results-per-page') ?? '10',
+		from: getMin(searchParams)
 	};
 	return ret;
 }
@@ -186,7 +186,7 @@ function getKeyword(searchParams) {
 	const searchTerms = searchParams.get('search-terms');
 	const category = searchParams.get('category-of-interest');
 	let keywords = '';
-	
+
 	if (searchTerms && category) {
 		keywords = searchTerms + '+' + category;
 	} else if (searchTerms) {

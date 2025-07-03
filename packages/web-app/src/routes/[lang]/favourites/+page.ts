@@ -16,6 +16,6 @@ export const load: PageLoad = ({ params, data, url }) => {
 		canonicalUrl: data.canonicalUrl,
 		alternateUrl: data.alternateUrl,
 		alternateLang: data.alternateLang,
-		metaDescription: data.metaDescription,
+		metaDescription: data.metaDescription
 	};
 };

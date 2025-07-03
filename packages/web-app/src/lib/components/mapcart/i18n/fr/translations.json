@@ -1,0 +1,16 @@
+{
+	"description": "Bienvenue dans votre panier de cartes. À partir de cette page, vous pouvez créer une carte personnalisée à l’aide des ressources indiquées ci-dessous. Utilisez les cases à cocher pour sélectionner les ressources à inclure, puis cliquez sur le bouton <span class='font-semibold'>Voir sur la carte</span> au bas du tableau. Pour retirer une ressource, cliquez sur l’icône de la poubelle à côté de son nom, ou utilisez le bouton <span class='font-semibold'>Tout supprimer</span> pour vider la liste.",
+	"findAResource": "Trouver une ressource",
+	"mapTitle": "Carte",
+	"remove": "Supprimer",
+	"removeAll": "Tout supprimer",
+	"resourceId": "Identifiant de la ressource",
+	"resourceListEmpty": "Votre panier est vide.",
+	"resourceName": "Nom de la ressource",
+	"returnToList": "Retourner au panier",
+	"search": "Recherche",
+	"searchFor": "Rechercher des ressources supplémentaires",
+	"searchProducts": "Recherche de produits",
+	"title": "Panier de cartes",
+	"viewOnMap": "Voir sur la carte"
+}

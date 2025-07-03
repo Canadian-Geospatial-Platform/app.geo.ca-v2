@@ -23,7 +23,8 @@ const getUserData = async (cookies) => {
 		console.error('Error fetching user data.');
 		console.error(error);
 	}
-	if (response.Item == undefined) response = { Item: { uuid: token.value.username, favourites: [] } };
+	if (response.Item == undefined)
+		response = { Item: { uuid: token.value.username, favourites: [] } };
 	return response;
 };
 

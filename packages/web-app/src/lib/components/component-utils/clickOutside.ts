@@ -2,23 +2,23 @@
 import { onMount } from 'svelte';
 
 export function clickOutside(node) {
-  let handleClick;
+	let handleClick;
 
-  // Since Svelte does not execute onMount during servere side rendering,
-  // it safe to include DOM operations here (i.e. referencing the window)
-  onMount(() => {
-    handleClick = (event) => {
-      if (node && !node.contains(event.target) && !event.defaultPrevented) {
-        node.dispatchEvent(new CustomEvent('click_outside'));
-      }
-    };
+	// Since Svelte does not execute onMount during servere side rendering,
+	// it safe to include DOM operations here (i.e. referencing the window)
+	onMount(() => {
+		handleClick = (event) => {
+			if (node && !node.contains(event.target) && !event.defaultPrevented) {
+				node.dispatchEvent(new CustomEvent('click_outside'));
+			}
+		};
 
-    window.addEventListener('click', handleClick, true);
-  });
+		window.addEventListener('click', handleClick, true);
+	});
 
-  return {
-    destroy() {
-      window.removeEventListener('click', handleClick, true);
-    },
-  };
+	return {
+		destroy() {
+			window.removeEventListener('click', handleClick, true);
+		}
+	};
 }

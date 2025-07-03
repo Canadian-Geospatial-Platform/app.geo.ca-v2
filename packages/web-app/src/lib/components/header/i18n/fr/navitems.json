@@ -1,84 +1,161 @@
 {
-  "home": {
-    "title": "Accueil",
-    "href": "https://geo.ca/fr/accueil/"
-  },
-  "discover": {
-    "title": "Découvrir",
-    "options": [
-      {
-        "colTitle": "Thème",
-        "links": [
-          {"title": "Administration", "href": "https://geo.ca/fr/administration-fr/"},
-          {"title": "Économie", "href": "https://geo.ca/fr/economie/"},
-          {"title": "Urgences", "href": "https://geo.ca/fr/urgences/"},
-          {"title": "Environnement", "href": "https://geo.ca/fr/environnement/"},
-          {"title": "Imagerie", "href": "https://geo.ca/fr/imagerie/"},
-          {"title": "Infrastructure", "href": "https://geo.ca/fr/infrastructure-fr/"},
-          {"title": "Renseignements juridiques", "href": "https://geo.ca/fr/renseignements-juridiques/"},
-          {"title": "Science", "href": "https://geo.ca/fr/science-fr/"},
-          {"title": "Société", "href": "https://geo.ca/fr/societe/"},
-          {"title": "Données de base du Canada", "href": "https://geo.ca/fr/donnees-de-base-du-canada/"}
-        ]
-      }, {
-        "colTitle": "Par type de contenu",
-        "links": [
-          {"title": "API", "href": "/fr-ca/map-browser?type=api", "info": "Découvrez et tirez profit des API utiles pour obtenir des données et des informations précises.", "tipId": "api"},
-          {"title": "Application", "href": "/fr-ca/map-browser?type=application", "info": "Découvrez notre collection d’applications préintégrées qui tirent profit des API, des ensembles de données, des collections et des services Web existants.", "tipId": "application"},
-          {"title": "Collection", "href": "/fr-ca/map-browser?type=collection", "info": "Découvrez des groupes de données et d’informations connexes facilement accessibles.", "tipId": "collection"},
-          {"title": "Initiatives", "href": "https://geo.ca/fr/initiatives-fr/"}
-        ]
-      }, {
-        "colTitle": "Par organisation",
-        "links": [
-          {"title": "Gouvernement du Canada", "href": "https://geo.ca/fr/gouvernement-du-canada/"},
-          {"title": "Provinces et territoires", "href": "https://geo.ca/fr/provinces-et-territoires/"}
-        ]
-      }
-    ]
-  },
-  "collaborate": {
-    "title": "Collaborer",
-    "options": [
-      {
-        "links": [
-          {"title": "Contributeurs", "href": "https://geo.ca/fr/contributeurs/"},
-          {"title": "Communautés", "href": "https://geo.ca/fr/communautes/"}
-        ]
-      }
-    ]
-  },
-  "learn": {
-    "title": "Apprendre",
-    "options": [
-      {
-        "links": [
-          {"title": "Pour commencer", "href": "https://geo.ca/fr/pour-commencer/"},
-          {"title": "À propos de nous", "href": "https://geo.ca/fr/a-propos-de-nous/"},
-          {"title": "Dans les coulisses", "href": "https://geo.ca/fr/dans-les-coulisses/"}
-        ]
-      }
-    ]
-  },
-  "collections": {
-    "title": "Mes collections",
-    "options": [
-      {
-        "links": [
-          {"title": "Mes cartes", "href": "/fr-ca/map-browser"},
-          {"title": "Mes recherches", "href": "/fr-ca/map-browser"}
-        ]
-      }
-    ]
-  },
-  "favourites": {
-    "title": "Favoris",
-    "href": "/fr-ca/favourites",
-    "counter": true,
-    "localStorageKey": "FavouritesResources"
-  },
-  "lang": {
-    "title": "English",
-    "href": "/en-ca/map-browser"
-  }
+	"home": {
+		"title": "Accueil",
+		"href": "https://geo.ca/fr/accueil/"
+	},
+	"discover": {
+		"title": "Découvrir",
+		"options": [
+			{
+				"colTitle": "Thème",
+				"links": [
+					{
+						"title": "Administration",
+						"href": "https://geo.ca/fr/administration-fr/"
+					},
+					{
+						"title": "Économie",
+						"href": "https://geo.ca/fr/economie/"
+					},
+					{
+						"title": "Urgences",
+						"href": "https://geo.ca/fr/urgences/"
+					},
+					{
+						"title": "Environnement",
+						"href": "https://geo.ca/fr/environnement/"
+					},
+					{
+						"title": "Imagerie",
+						"href": "https://geo.ca/fr/imagerie/"
+					},
+					{
+						"title": "Infrastructure",
+						"href": "https://geo.ca/fr/infrastructure-fr/"
+					},
+					{
+						"title": "Renseignements juridiques",
+						"href": "https://geo.ca/fr/renseignements-juridiques/"
+					},
+					{
+						"title": "Science",
+						"href": "https://geo.ca/fr/science-fr/"
+					},
+					{
+						"title": "Société",
+						"href": "https://geo.ca/fr/societe/"
+					},
+					{
+						"title": "Données de base du Canada",
+						"href": "https://geo.ca/fr/donnees-de-base-du-canada/"
+					}
+				]
+			},
+			{
+				"colTitle": "Par type de contenu",
+				"links": [
+					{
+						"title": "API",
+						"href": "/fr-ca/map-browser?type=api",
+						"info": "Découvrez et tirez profit des API utiles pour obtenir des données et des informations précises.",
+						"tipId": "api"
+					},
+					{
+						"title": "Application",
+						"href": "/fr-ca/map-browser?type=application",
+						"info": "Découvrez notre collection d’applications préintégrées qui tirent profit des API, des ensembles de données, des collections et des services Web existants.",
+						"tipId": "application"
+					},
+					{
+						"title": "Collection",
+						"href": "/fr-ca/map-browser?type=collection",
+						"info": "Découvrez des groupes de données et d’informations connexes facilement accessibles.",
+						"tipId": "collection"
+					},
+					{
+						"title": "Initiatives",
+						"href": "https://geo.ca/fr/initiatives-fr/"
+					}
+				]
+			},
+			{
+				"colTitle": "Par organisation",
+				"links": [
+					{
+						"title": "Gouvernement du Canada",
+						"href": "https://geo.ca/fr/gouvernement-du-canada/"
+					},
+					{
+						"title": "Provinces et territoires",
+						"href": "https://geo.ca/fr/provinces-et-territoires/"
+					}
+				]
+			}
+		]
+	},
+	"collaborate": {
+		"title": "Collaborer",
+		"options": [
+			{
+				"links": [
+					{
+						"title": "Contributeurs",
+						"href": "https://geo.ca/fr/contributeurs/"
+					},
+					{
+						"title": "Communautés",
+						"href": "https://geo.ca/fr/communautes/"
+					}
+				]
+			}
+		]
+	},
+	"learn": {
+		"title": "Apprendre",
+		"options": [
+			{
+				"links": [
+					{
+						"title": "Pour commencer",
+						"href": "https://geo.ca/fr/pour-commencer/"
+					},
+					{
+						"title": "À propos de nous",
+						"href": "https://geo.ca/fr/a-propos-de-nous/"
+					},
+					{
+						"title": "Dans les coulisses",
+						"href": "https://geo.ca/fr/dans-les-coulisses/"
+					}
+				]
+			}
+		]
+	},
+	"collections": {
+		"title": "Mes collections",
+		"options": [
+			{
+				"links": [
+					{
+						"title": "Mes cartes",
+						"href": "/fr-ca/map-browser"
+					},
+					{
+						"title": "Mes recherches",
+						"href": "/fr-ca/map-browser"
+					}
+				]
+			}
+		]
+	},
+	"favourites": {
+		"title": "Favoris",
+		"href": "/fr-ca/favourites",
+		"counter": true,
+		"localStorageKey": "FavouritesResources"
+	},
+	"lang": {
+		"title": "English",
+		"href": "/en-ca/map-browser"
+	}
 }

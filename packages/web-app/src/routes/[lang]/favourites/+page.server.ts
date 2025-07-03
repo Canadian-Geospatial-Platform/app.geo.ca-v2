@@ -11,9 +11,10 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const canonicalUrl = url.origin + '/' + params.lang + '/favourites';
 	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
-	const metaDescription = params.lang == 'fr-ca' ?
-	  'Consultez vos ressources sauvegardées et créez une carte personnalisée.' :
-	  'Browse your saved resources and create a custom map.';
+	const metaDescription =
+		params.lang == 'fr-ca'
+			? 'Consultez vos ressources sauvegardées et créez une carte personnalisée.'
+			: 'Browse your saved resources and create a custom map.';
 
 	try {
 		userData = await getUserData(cookies);
@@ -52,7 +53,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		canonicalUrl: canonicalUrl,
 		alternateUrl: alternateUrl,
 		alternateLang: alternateLang,
-		metaDescription: metaDescription,
+		metaDescription: metaDescription
 	};
 };
 

@@ -4,9 +4,9 @@
 
 .content-width {
 	@apply w-full;
-  @apply md:w-[43.75rem];
-  @apply lg:w-[60rem];
-  @apply xl:w-[77.5rem];
+	@apply md:w-[43.75rem];
+	@apply lg:w-[60rem];
+	@apply xl:w-[77.5rem];
 	@apply mx-auto;
 }
 
@@ -206,7 +206,9 @@
 
 .font-custom-style-body-7 {
 	/* Set the font explicitly for firefox with a fall back to system-ui */
-	font-family: Noto Sans, system-ui;
+	font-family:
+		Noto Sans,
+		system-ui;
 	@apply font-medium;
 	@apply text-[16px];
 	@apply text-custom-16;
@@ -314,12 +316,12 @@
 }
 
 .share-icons {
-  @apply m-1;
-  @apply md:m-2;
-  @apply h-10;
-  @apply md:h-12;
-  @apply w-10;
-  @apply md:w-12;
+	@apply m-1;
+	@apply md:m-2;
+	@apply h-10;
+	@apply md:h-12;
+	@apply w-10;
+	@apply md:w-12;
 }
 
 /***********************************************
@@ -332,6 +334,6 @@
 *   overlapping the menu bar. As a result, 11100 ensures that the menu bar
 *   does not overlap the full screen elements.
 ************************************************/
-div[role=presentation] {
-  z-index: 11100;
+div[role='presentation'] {
+	z-index: 11100;
 }

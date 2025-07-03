@@ -1,63 +1,82 @@
 [
-  {
-    "value": "biota",
-    "label": "Biota"
-  }, {
-    "value": "boundaries",
-    "label": "Boundaries"
-  }, {
-    "value": "climatologyMeteorologyAtmosphere",
-    "label": "Climatology, meteorology, and atmosphere"
-  }, {
-    "value": "disaster",
-    "label": "Natural disasters"
-  }, {
-    "value": "economy",
-    "label": "Economy"
-  }, {
-    "value": "elevation",
-    "label": "Elevation"
-  }, {
-    "value": "environment",
-    "label": "Environment"
-  }, {
-    "value": "extraTerrestrial",
-    "label": "Extra-terrestrial"
-  }, {
-    "value": "farming",
-    "label": "Farming"
-  }, {
-    "value": "geoscientificInformation",
-    "label": "Geoscientific information"
-  }, {
-    "value": "imageryBaseMapsEarthCover",
-    "label": "Imagery, base maps, and earth cover"
-  }, {
-    "value": "inlandWaters",
-    "label": "Inland waters"
-  }, {
-    "value": "intelligenceMilitary",
-    "label": "Intelligence and military"
-  }, {
-    "value": "location",
-    "label": "Location"
-  }, {
-    "value": "oceans",
-    "label": "Oceans"
-  }, {
-    "value": "planningCadastre",
-    "label": "Planning cadastre"
-  }, {
-    "value": "society",
-    "label": "Society"
-  }, {
-    "value": "structure",
-    "label": "Structure"
-  }, {
-    "value": "transportation",
-    "label": "Transportation"
-  }, {
-    "value": "utilitiesCommunication",
-    "label": "Utilities and communication"
-  }
+	{
+		"value": "biota",
+		"label": "Biota"
+	},
+	{
+		"value": "boundaries",
+		"label": "Boundaries"
+	},
+	{
+		"value": "climatologyMeteorologyAtmosphere",
+		"label": "Climatology, meteorology, and atmosphere"
+	},
+	{
+		"value": "disaster",
+		"label": "Natural disasters"
+	},
+	{
+		"value": "economy",
+		"label": "Economy"
+	},
+	{
+		"value": "elevation",
+		"label": "Elevation"
+	},
+	{
+		"value": "environment",
+		"label": "Environment"
+	},
+	{
+		"value": "extraTerrestrial",
+		"label": "Extra-terrestrial"
+	},
+	{
+		"value": "farming",
+		"label": "Farming"
+	},
+	{
+		"value": "geoscientificInformation",
+		"label": "Geoscientific information"
+	},
+	{
+		"value": "imageryBaseMapsEarthCover",
+		"label": "Imagery, base maps, and earth cover"
+	},
+	{
+		"value": "inlandWaters",
+		"label": "Inland waters"
+	},
+	{
+		"value": "intelligenceMilitary",
+		"label": "Intelligence and military"
+	},
+	{
+		"value": "location",
+		"label": "Location"
+	},
+	{
+		"value": "oceans",
+		"label": "Oceans"
+	},
+	{
+		"value": "planningCadastre",
+		"label": "Planning cadastre"
+	},
+	{
+		"value": "society",
+		"label": "Society"
+	},
+	{
+		"value": "structure",
+		"label": "Structure"
+	},
+	{
+		"value": "transportation",
+		"label": "Transportation"
+	},
+	{
+		"value": "utilitiesCommunication",
+		"label": "Utilities and communication"
+	}
 ]

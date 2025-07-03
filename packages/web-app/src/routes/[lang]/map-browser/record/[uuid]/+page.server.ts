@@ -1,5 +1,4 @@
 import type { PageServerLoad } from './$types';
-import { getRecord } from '$lib/db/record.ts';
 import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
@@ -7,22 +6,22 @@ import { parseText } from '$lib/utils/parse-text.ts';
 import { formatNumber } from '$lib/utils/format-number.ts';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-    // The "sst/node/config" package dynamically binds resources at runtime.
-    // Importing it at the top level would cause build-time errors because SST resources
-    // are not available during the build process. To avoid this, we import it inside
-    // the `load()` function so it's only accessed when the server is running.
-    const config = await import("sst/node/config");
+	// The "sst/node/config" package dynamically binds resources at runtime.
+	// Importing it at the top level would cause build-time errors because SST resources
+	// are not available during the build process. To avoid this, we import it inside
+	// the `load()` function so it's only accessed when the server is running.
+	const config = await import('sst/node/config');
 	const GEOCORE_API_DOMAIN = config.Config.GEOCORE_API_DOMAIN;
 
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	let record;
+	let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token'));
 	try {
-		record = await getRecord(params.uuid);
+		record = await response.json();
+		// console.log("parsedRespone:\n", record.body.Items[0])
 	} catch (e) {
-		console.warn('error fetching record ' + params.uuid + ' for microdata:\n', e);
-		// If the record doesn't exist, throw an error so that the page is routed to +error.svelte
-		throw error(404, 'Record ' + params.uuid + ' not found');
+		console.error(e);
 	}
 
 	// @ts-ignore
@@ -37,7 +36,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			return []; // Return empty array if fetch fails
 		}
 	};
-	
+
 	const fetchRelated = async (id) => {
 		try {
 			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
@@ -84,40 +83,87 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 
-    const analyticRes = await fetchAnalytics(params.uuid, lang);
+	const analyticRes = await fetchAnalytics(params.uuid, lang);
 
-    if (analyticRes['30']) {
+	if (analyticRes['30']) {
 		analyticRes['30'] = formatNumber(analyticRes['30']);
-    }
+	}
 
-    if (analyticRes.all) {
+	if (analyticRes.all) {
 		analyticRes.all = formatNumber(analyticRes.all);
-    }
+	}
 
-    const similar = await fetchSimilar(params.uuid);
-    const related = await fetchRelated(params.uuid);
+	const similar = await fetchSimilar(params.uuid);
+	const related = await fetchRelated(params.uuid);
 
-    let item_v2 = record?.features[0];
+	let item_v2 = record.body.Items[0];
 
-    if (item_v2?.properties.description) {
-        item_v2.properties.description.en = parseText(item_v2.properties.description.en);
-        item_v2.properties.description.fr = parseText(item_v2.properties.description.fr);
-    }
+	if (item_v2?.description) {
+		item_v2.description = parseText(item_v2.description);
+	}
 
-    // For the english version of the role, the value 'pointOfContact' is really common.
-    // We can replace it with the more readable 'point of contact'.
-    if (item_v2?.properties?.contact?.[0]?.role?.en) {
-        item_v2.properties.contact[0].role.en =
-            item_v2.properties.contact[0].role.en.replace('pointOfContact', 'point of contact');
-    }
+	// For the english version of the role, the value 'pointOfContact' is really common.
+	// We can replace it with the more readable 'point of contact'.
+	if (item_v2?.contact?.[0]?.role) {
+		item_v2.contact[0].role = item_v2.contact[0].role.replace('pointOfContact', 'point of contact');
+	}
 
-    const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
+	// Sometimes, the organisation list in the distributor array has duplicate entries,
+	// those will be filtered out here.
+	for (let dist of item_v2.distributor) {
+		// Filter for unique values with a new Set object
+		const orgs = [...new Set(dist.organisation[lang].split('; '))];
+		// convert back to string
+		dist.organisation = orgs.join('; ');
+	}
+
+	// If coordinates are a string, convert them to an array (or nested arrays) instead
+	let coords = item_v2.coordinates ?? [];
+
+	if (typeof item_v2.coordinates == 'string') {
+		coords = JSON.parse(coords);
+		item_v2.coordinates = coords;
+	}
+
+	// We can also add a bounding box key to get the north, east, west, and south
+	// values for the advanced metadata. But first, we need to get the values from
+	// the coordinates
+	let west = Infinity;
+	let east = -Infinity;
+	let south = Infinity;
+	let north = -Infinity;
+
+	coords.flat().forEach(([x, y]) => {
+		if (x < west) west = x; // West
+		if (x > east) east = x; // East
+		if (y < south) south = y; // South
+		if (y > north) north = y; // North
+	});
+
+	item_v2.bbox = {
+		north: north,
+		east: east,
+		south: south,
+		west: west
+	};
+
+	// Parse the topicCategory items into an array.
+	// Sometimes the categories are in one single camel case string like this:
+	// "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
+	// a comma-separated or semi-colon-separated list We can do this with a regular expression
+	if (item_v2.topicCategory && typeof item_v2.topicCategory == 'string') {
+		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]\s*|(?=[A-Z])/);
+	}
+
+	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
 	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
-	const metaDescription = params.lang == 'fr-ca' ?
-	  "La page de métadonnées et la carte de l'enregistrement GeoCore " +  params.uuid :
-	  "The metadata page and map for the GeoCore record " +  params.uuid;
+	const metaDescription =
+		params.lang == 'fr-ca'
+			? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
+			: 'The metadata page and map for the GeoCore record ' + params.uuid;
 
+	item_v2.title = item_v2['title_' + lang];
 	return {
 		t_title_1: {
 			text:
@@ -130,7 +176,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		},
 		lang: params.lang,
 		uuid: params.uuid,
-		test: 'test',
 		similar: similar,
 		related: related,
 		analyticRes: analyticRes,
@@ -139,6 +184,14 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		canonicalUrl: canonicalUrl,
 		alternateUrl: alternateUrl,
 		alternateLang: alternateLang,
-		metaDescription: metaDescription,
+		metaDescription: metaDescription
 	};
+
+	function generateUrl(fetch, uuid, lang, token) {
+		let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
+		console.log(url.href);
+		return fetch(url, {
+			headers: { Authentication: 'Bearer ' + token }
+		});
+	}
 };

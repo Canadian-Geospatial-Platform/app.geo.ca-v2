@@ -1,15 +1,15 @@
 import { json } from '@sveltejs/kit';
 
 export async function POST({ request }) {
-  const { ids, lang } = await request.json();
+	const { ids, lang } = await request.json();
 
-  if (!Array.isArray(ids)) {
-    return json({ error: 'Invalid IDs' }, { status: 400 });
-  }
+	if (!Array.isArray(ids)) {
+		return json({ error: 'Invalid IDs' }, { status: 400 });
+	}
 
-  const records = await getRecordsByIds(ids, lang);
+	const records = await getRecordsByIds(ids, lang);
 
-  return json(records);
+	return json(records);
 }
 
 function getRecord(id, lang) {

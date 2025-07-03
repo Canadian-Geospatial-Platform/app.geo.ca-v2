@@ -1,63 +1,82 @@
 [
-  {
-    "value": "farming",
-    "label": "Agriculture"
-  }, {
-    "value": "planningCadastre",
-    "label": "Aménagement du territoire et cadastre"
-  }, {
-    "value": "biota",
-    "label": "Biote"
-  }, {
-    "value": "disaster",
-    "label": "Catastrophes naturelles"
-  }, {
-    "value": "climatologyMeteorologyAtmosphere",
-    "label": "Climatologie, météorologie et atmosphère"
-  }, {
-    "value": "inlandWaters",
-    "label": "Eaux intérieures"
-  }, {
-    "value": "environment",
-    "label": "Environnement"
-  }, {
-    "value": "extraTerrestrial",
-    "label": "Extra-terrestre"
-  }, {
-    "value": "boundaries",
-    "label": "Frontières"
-  }, {
-    "value": "imageryBaseMapsEarthCover",
-    "label": "Imagerie, cartes de base et couverture terrestre"
-  }, {
-    "value": "geoscientificInformation",
-    "label": "Informations géoscientifiques"
-  }, {
-    "value": "location",
-    "label": "Localisation"
-  }, {
-    "value": "oceans",
-    "label": "Océans"
-  }, {
-    "value": "intelligenceMilitary",
-    "label": "Renseignement et militaire"
-  }, {
-    "value": "utilitiesCommunication",
-    "label": "Services publics et communication"
-  }, {
-    "value": "society",
-    "label": "Société"
-  }, {
-    "value": "structure",
-    "label": "Structure"
-  }, {
-    "value": "transportation",
-    "label": "Transport"
-  }, {
-    "value": "economy",
-    "label": "Économie"
-  }, {
-    "value": "elevation",
-    "label": "Élévation"
-  }
+	{
+		"value": "farming",
+		"label": "Agriculture"
+	},
+	{
+		"value": "planningCadastre",
+		"label": "Aménagement du territoire et cadastre"
+	},
+	{
+		"value": "biota",
+		"label": "Biote"
+	},
+	{
+		"value": "disaster",
+		"label": "Catastrophes naturelles"
+	},
+	{
+		"value": "climatologyMeteorologyAtmosphere",
+		"label": "Climatologie, météorologie et atmosphère"
+	},
+	{
+		"value": "inlandWaters",
+		"label": "Eaux intérieures"
+	},
+	{
+		"value": "environment",
+		"label": "Environnement"
+	},
+	{
+		"value": "extraTerrestrial",
+		"label": "Extra-terrestre"
+	},
+	{
+		"value": "boundaries",
+		"label": "Frontières"
+	},
+	{
+		"value": "imageryBaseMapsEarthCover",
+		"label": "Imagerie, cartes de base et couverture terrestre"
+	},
+	{
+		"value": "geoscientificInformation",
+		"label": "Informations géoscientifiques"
+	},
+	{
+		"value": "location",
+		"label": "Localisation"
+	},
+	{
+		"value": "oceans",
+		"label": "Océans"
+	},
+	{
+		"value": "intelligenceMilitary",
+		"label": "Renseignement et militaire"
+	},
+	{
+		"value": "utilitiesCommunication",
+		"label": "Services publics et communication"
+	},
+	{
+		"value": "society",
+		"label": "Société"
+	},
+	{
+		"value": "structure",
+		"label": "Structure"
+	},
+	{
+		"value": "transportation",
+		"label": "Transport"
+	},
+	{
+		"value": "economy",
+		"label": "Économie"
+	},
+	{
+		"value": "elevation",
+		"label": "Élévation"
+	}
 ]
