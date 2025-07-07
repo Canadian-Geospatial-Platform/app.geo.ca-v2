@@ -30,6 +30,7 @@
 		? translations['organization']
 		: 'Organization';
 	const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
+	console.log(translations);
 
 	/************* Accordion Components ***************/
 	let data = $derived($page.data);
@@ -235,6 +236,7 @@
 								<button
 									class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23"
+									title={translations.removeFromFavourites}
 									onclick={() => handleFavouriteClick(result.id)}
 								>
 									<HeartFilled classes="h-9" />
@@ -243,6 +245,7 @@
 								<button
 									class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23"
+									title={translations.addToFavourites}
 									onclick={() => handleFavouriteClick(result.id)}
 								>
 									<Heart classes="h-9 hover:fill-custom-23" />
