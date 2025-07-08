@@ -30,7 +30,6 @@
 		? translations['organization']
 		: 'Organization';
 	const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
-	console.log(translations);
 
 	/************* Accordion Components ***************/
 	let data = $derived($page.data);

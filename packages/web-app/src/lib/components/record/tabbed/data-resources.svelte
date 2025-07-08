@@ -36,7 +36,6 @@
 	const langShort = lang.slice(0, 2);
 	const items = data.item_v2;
 	const dataResourcesRaw = items.options;
-	//  console.log(dataResourcesRaw )
 
 	const dataResourcesList = parseDataResources(dataResourcesRaw, langShort);
 	const uuid = items.id;
