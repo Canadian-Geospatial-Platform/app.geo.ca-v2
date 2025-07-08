@@ -157,9 +157,14 @@ function mapSemanticSearchResults(searchParams, lang) {
 	let east = searchParams.get('east') ?? 180;
 	let south = searchParams.get('south') ?? -90;
 	let bbox = searchParams.get('bbox') ? west + ',' + south + ',' + east + ',' + north : '';
+	let searchTerms = searchParams.get('search-terms');
 	let ret = {
 		// Revisit which search method is better after user testing
 		method: 'SemanticSearch', // 'HybridSearch',
+		// TODO: topicCategory is only available on staging, so when it is on prod
+		// uncomment the following two lines to replace to old q value three lines down
+		// q: searchTerms ? searchTerms.replaceAll('"', '') : '',
+		// topicCategory: searchParams.get('category-of-interest') ?? '',
 		q: getKeyword(searchParams),
 		bbox: bbox,
 		relation: searchParams.get('relation') ?? 'intersects',
@@ -169,8 +174,9 @@ function mapSemanticSearchResults(searchParams, lang) {
 		type: searchParams.get('type') ?? '',
 		theme: searchParams.get('theme') ?? '',
 		foundational: searchParams.get('foundational') ? 'true' : '',
-		source_system: '',
-		eo_collection: '',
+		mappable: searchParams.get('mappable') ? 'true' : '',
+		source_system: searchParams.get('source_system') ?? '',
+		eo_collection: searchParams.get('eo_collection') ?? '',
 		polarization: '',
 		orbit_direction: '',
 		lang: lang.split('-')[0],

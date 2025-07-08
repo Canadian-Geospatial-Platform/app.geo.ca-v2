@@ -198,11 +198,11 @@
 				},
 				{
 					"label": "Communauté",
-					"value": "communauté"
+					"value": "community"
 				},
 				{
 					"label": "Jeu de données",
-					"value": "jeu+de+données"
+					"value": "dataset"
 				},
 				{
 					"label": "Service",
@@ -220,15 +220,15 @@
 				},
 				{
 					"label": "Économie",
-					"value": "économie"
+					"value": "economy"
 				},
 				{
 					"label": "Environnement",
-					"value": "environnement"
+					"value": "environment"
 				},
 				{
 					"label": "Imagerie",
-					"value": "imagerie"
+					"value": "imagery"
 				},
 				{
 					"label": "Infrastructure",
@@ -240,15 +240,47 @@
 				},
 				{
 					"label": "Société",
-					"value": "société"
+					"value": "society"
 				},
 				{
 					"label": "Urgences",
-					"value": "urgences"
+					"value": "emergency"
 				},
 				{
 					"label": "Renseignements juridiques",
-					"value": "renseignements+juridiques"
+					"value": "legal"
+				}
+			]
+		},
+		{
+			"section": "eo_collection",
+			"label": "Collections d'observation de la Terre",
+			"filterList": [
+				{
+					"label": "Sentinel-1",
+					"value": "sentinel-1"
+				},
+				{
+					"label": "MCR-ARD",
+					"value": "rcm-ard"
+				}
+			]
+		},
+		{
+			"section": "source_system",
+			"label": "Système source",
+			"filterList": [
+				{
+					"label": "Système de données d’observation de la Terre (SGDOT)",
+					"value": "ccmeo-eodms"
+				},
+				{
+					"label": "Le cube de données",
+					"value": "ccmeo-datacube"
+				},
+				{
+					"label": "geo.ca",
+					"value": "geo-ca"
 				}
 			]
 		},
@@ -256,6 +288,10 @@
 			"section": "others",
 			"label": "Autres Filtres",
 			"filterList": [
+				{
+					"label": "Ressources cartographiables",
+					"value": "mappable"
+				},
 				{
 					"label": "Données de base du Canada",
 					"value": "foundational"

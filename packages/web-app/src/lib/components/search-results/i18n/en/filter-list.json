@@ -253,9 +253,45 @@
 			]
 		},
 		{
+			"section": "eo_collection",
+			"label": "Earth Observation (EO) Collections",
+			"filterList": [
+				{
+					"label": "Sentinel-1",
+					"value": "sentinel-1"
+				},
+				{
+					"label": "RCM-ARD",
+					"value": "rcm-ard"
+				}
+			]
+		},
+		{
+			"section": "source_system",
+			"label": "Source System",
+			"filterList": [
+				{
+					"label": "Earth Observation Data Management System (EODMS)",
+					"value": "ccmeo-eodms"
+				},
+				{
+					"label": "Datacube",
+					"value": "ccmeo-datacube"
+				},
+				{
+					"label": "geo.ca",
+					"value": "geo-ca"
+				}
+			]
+		},
+		{
 			"section": "others",
 			"label": "Other Filters",
 			"filterList": [
+				{
+					"label": "Mappable Resources",
+					"value": "mappable"
+				},
 				{
 					"label": "Foundational Data",
 					"value": "foundational"

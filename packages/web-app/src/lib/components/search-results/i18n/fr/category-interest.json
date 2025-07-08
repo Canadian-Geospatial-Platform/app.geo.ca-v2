@@ -12,10 +12,6 @@
 		"label": "Biote"
 	},
 	{
-		"value": "disaster",
-		"label": "Catastrophes naturelles"
-	},
-	{
 		"value": "climatologyMeteorologyAtmosphere",
 		"label": "Climatologie, météorologie et atmosphère"
 	},
@@ -26,10 +22,6 @@
 	{
 		"value": "environment",
 		"label": "Environnement"
-	},
-	{
-		"value": "extraTerrestrial",
-		"label": "Extra-terrestre"
 	},
 	{
 		"value": "boundaries",
@@ -48,12 +40,20 @@
 		"label": "Localisation"
 	},
 	{
+		"value": "EarthObservation;SyntheticAperatureRadar",
+		"label": "Observation de la Terre, radar à synthèse d’ouverture"
+	},
+	{
 		"value": "oceans",
 		"label": "Océans"
 	},
 	{
 		"value": "intelligenceMilitary",
 		"label": "Renseignement et militaire"
+	},
+	{
+		"value": "health",
+		"label": "Santé"
 	},
 	{
 		"value": "utilitiesCommunication",

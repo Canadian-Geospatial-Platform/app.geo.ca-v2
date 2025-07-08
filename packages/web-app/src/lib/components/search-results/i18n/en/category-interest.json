@@ -12,8 +12,8 @@
 		"label": "Climatology, meteorology, and atmosphere"
 	},
 	{
-		"value": "disaster",
-		"label": "Natural disasters"
+		"value": "EarthObservation;SyntheticAperatureRadar",
+		"label": "Earth Observation, Synthetic Aperature Radar"
 	},
 	{
 		"value": "economy",
@@ -28,16 +28,16 @@
 		"label": "Environment"
 	},
 	{
-		"value": "extraTerrestrial",
-		"label": "Extra-terrestrial"
-	},
-	{
 		"value": "farming",
 		"label": "Farming"
 	},
 	{
 		"value": "geoscientificInformation",
 		"label": "Geoscientific information"
+	},
+	{
+		"value": "health",
+		"label": "Health"
 	},
 	{
 		"value": "imageryBaseMapsEarthCover",
