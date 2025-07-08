@@ -19,7 +19,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token'));
 	try {
 		record = await response.json();
-		// console.log("parsedRespone:\n", record.body.Items[0])
 	} catch (e) {
 		console.error(e);
 	}
@@ -114,16 +113,15 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		item_v2.distributor.forEach((dist, i) => {
 			if (dist) {
 				// Filter for unique values with a new Set object
-			    const orgs = [...new Set(dist.organisation[lang].split('; '))];
-			    // convert back to string
-			    dist.organisation = orgs.length > 0 ? orgs.join('; ') : '';
-			    console.log
+				const orgs = [...new Set(dist.organisation[lang].split('; '))];
+				// convert back to string
+				dist.organisation = orgs.length > 0 ? orgs.join('; ') : '';
 			} else {
-				item_v2.distributor[i] = {'organisation': ''};
+				item_v2.distributor[i] = { 'organisation': '' };
 			}
 		});
 	} else {
-		item_v2.distributor = [{'organisation': ''}]
+		item_v2.distributor = [{ 'organisation': '' }]
 	}
 
 	// If coordinates are a string, convert them to an array (or nested arrays) instead
