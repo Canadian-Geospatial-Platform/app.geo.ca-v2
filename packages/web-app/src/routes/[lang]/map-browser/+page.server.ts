@@ -92,8 +92,9 @@ function generateUrl(fetch, searchParams, lang, token) {
 function generateSemanticUrl(fetch, searchParams, lang, token) {
 	// Testing staging version of semantic search instead of the prod version.
 	// Commenting out prod url out for now in case we decide to switch back.
-	let url = new URL(SEMANTIC_SEARCH_URL);
-	// let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
+	// todo: switch this to an environment variable.
+	// let url = new URL(SEMANTIC_SEARCH_URL);
+	let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
 	// let url = new URL('https://search-recherche.geocore-stage.api.geo.ca/search-opensearch');
 
 	const params = mapSemanticSearchResults(searchParams, lang);

@@ -75,7 +75,6 @@ export default {
           OIDC_CLIENT_SECRET,
           OIDC_CUSTOM_DOMAIN,
           GEOCORE_API_DOMAIN,
-          SEMANTIC_SEARCH_URL,
           userTableConfig,
           FEATURE_SIGN_IN,
         ],
