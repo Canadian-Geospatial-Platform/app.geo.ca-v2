@@ -6,6 +6,8 @@ import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results.ts';
 import { formatNumber } from '$lib/utils/format-number.ts';
 
+const SEMANTIC_SEARCH_URL = process.env.SEMANTIC_SEARCH_URL;
+
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let searchMode = params?.searchMethod == 'classic' ? 'classic' : 'semantic';
 	let response;
@@ -90,7 +92,8 @@ function generateUrl(fetch, searchParams, lang, token) {
 function generateSemanticUrl(fetch, searchParams, lang, token) {
 	// Testing staging version of semantic search instead of the prod version.
 	// Commenting out prod url out for now in case we decide to switch back.
-	let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
+	let url = new URL(SEMANTIC_SEARCH_URL);
+	// let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
 	// let url = new URL('https://search-recherche.geocore-stage.api.geo.ca/search-opensearch');
 
 	const params = mapSemanticSearchResults(searchParams, lang);
@@ -161,11 +164,8 @@ function mapSemanticSearchResults(searchParams, lang) {
 	let ret = {
 		// Revisit which search method is better after user testing
 		method: 'SemanticSearch', // 'HybridSearch',
-		// TODO: topicCategory is only available on staging, so when it is on prod
-		// uncomment the following two lines to replace to old q value three lines down
-		// q: searchTerms ? searchTerms.replaceAll('"', '') : '',
-		// topicCategory: searchParams.get('category-of-interest') ?? '',
-		q: getKeyword(searchParams),
+		q: searchTerms ? searchTerms.replaceAll('"', '') : '',
+		topicCategory: searchParams.get('category-of-interest') ?? '',
 		bbox: bbox,
 		relation: searchParams.get('relation') ?? 'intersects',
 		begin: searchParams.get('begin') ? new Date(searchParams.get('begin')).toISOString() : '',

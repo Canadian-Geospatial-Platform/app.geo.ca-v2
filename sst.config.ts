@@ -54,6 +54,9 @@ export default {
       const GEOCORE_API_DOMAIN = new Config.Parameter(stack, "GEOCORE_API_DOMAIN", {
         value: process.env.GEOCORE_API_DOMAIN,
       });
+      const SEMANTIC_SEARCH_URL = new Config.Parameter(stack, "SEMANTIC_SEARCH_URL", {
+        value: process.env.SEMANTIC_SEARCH_URL,
+      });
       const FEATURE_SIGN_IN = new Config.Parameter(stack, "FEATURE_SIGN_IN", {
         value: "false",
       });
@@ -72,6 +75,7 @@ export default {
           OIDC_CLIENT_SECRET,
           OIDC_CUSTOM_DOMAIN,
           GEOCORE_API_DOMAIN,
+          SEMANTIC_SEARCH_URL,
           userTableConfig,
           FEATURE_SIGN_IN,
         ],
