@@ -28,11 +28,10 @@
 	const lang = data.lang;
 	const langShort = lang === 'fr-ca' ? 'fr' : 'en';
 	const properties = data.item_v2;
-	// console.log(properties);
 
 	// Top Section
-	const dateCreated = properties.created;
-	const datePublished = properties.published;
+	const dateCreated = properties.created || 'N/A';
+	const datePublished = properties.published  || 'N/A';
 	const accessLast30 = data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : 'N/A';
 	const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
 
@@ -60,10 +59,12 @@
 	const onlineResourceArray = distributor
 		? distributor.map((x) => {
 				// Only return the resource if it is a link
+				// Also ignore cases where the value is the string 'null'
 				if (
-					(x?.onlineResource?.onlineResource &&
-						x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'http') ||
-					x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'https'
+					x?.onlineResource?.onlineResource &&
+					x.onlineResource.onlineResource != 'null' &&
+					(x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'http' ||
+					x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'https')
 				) {
 					return x.onlineResource.onlineResource;
 				}

@@ -110,13 +110,20 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	// Sometimes, the organisation list in the distributor array has duplicate entries,
 	// those will be filtered out here.
-	for (let dist of item_v2.distributor) {
-		if (dist) {
-			// Filter for unique values with a new Set object
-			const orgs = [...new Set(dist.organisation[lang].split('; '))];
-			// convert back to string
-			dist.organisation = orgs.join('; ');
-		}
+	if (item_v2.distributor) {
+		item_v2.distributor.forEach((dist, i) => {
+			if (dist) {
+				// Filter for unique values with a new Set object
+			    const orgs = [...new Set(dist.organisation[lang].split('; '))];
+			    // convert back to string
+			    dist.organisation = orgs.length > 0 ? orgs.join('; ') : '';
+			    console.log
+			} else {
+				item_v2.distributor[i] = {'organisation': ''};
+			}
+		});
+	} else {
+		item_v2.distributor = [{'organisation': ''}]
 	}
 
 	// If coordinates are a string, convert them to an array (or nested arrays) instead
@@ -152,9 +159,16 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// Parse the topicCategory items into an array.
 	// Sometimes the categories are in one single camel case string like this:
 	// "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
-	// a comma-separated or semi-colon-separated list We can do this with a regular expression
+	// a comma-separated or semi-colon-separated list. We can do this with regular expressions.
 	if (item_v2.topicCategory && typeof item_v2.topicCategory == 'string') {
-		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]\s*|(?=[A-Z])/);
+		item_v2.topicCategory = item_v2.topicCategory
+			.split(/[;,]/)
+			.map((item) => {
+				// Insert space before a capital letter, but only if it's preceded
+				// by a lowercase letter i.e. this ensures there is no space added
+				// for acronyms so, for example, NRCan does not become N R Can.
+				return item.replace(/([a-z])([A-Z])/g, '$1 $2');
+			});
 	}
 
 	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;

@@ -63,15 +63,16 @@
 	const topicCategory = topicCategoryArray.join(', ');
 
 	const type = items.type.split('; ')[langIndex];
-	const north = items.bbox.north;
-	const east = items.bbox.east;
-	const south = items.bbox.south;
-	const west = items.bbox.west;
-	const spatialRepresentation = items.spatialRepresentation.split('; ')[langIndex];
-	const projection = items.refSys;
+	const north = items.bbox.north || 'N/A';
+	const east = items.bbox.east || 'N/A';
+	const south = items.bbox.south || 'N/A';
+	const west = items.bbox.west || 'N/A';
+	const spatialRepresentation = items?.spatialRepresentation ?
+	    items?.spatialRepresentation.split('; ')[langIndex] : 'N/A';
+	const projection = items.refSys || 'N/A';
 
-	const dateCreated = items.created;
-	const datePublished = items.published;
+	const dateCreated = items.created || 'N/A';
+	const datePublished = items.published || 'N/A';
 	const temporalCoverage = items.temporalExtent.begin + ' - ' + items.temporalExtent.end;
 
 	// Table Array

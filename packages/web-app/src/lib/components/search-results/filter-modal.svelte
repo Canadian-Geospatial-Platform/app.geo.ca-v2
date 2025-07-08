@@ -10,6 +10,8 @@
 	import Organizations from '$lib/components/search-results/filters/organizations.svelte';
 	import Types from '$lib/components/search-results/filters/types.svelte';
 	import Themes from '$lib/components/search-results/filters/themes.svelte';
+	import EoCollections from '$lib/components/search-results/filters/eo-collections.svelte';
+	import SourceSystem from '$lib/components/search-results/filters/source-system.svelte';
 	import OtherFilters from '$lib/components/search-results/filters/other-filters.svelte';
 	import SpatioTemporal from '$lib/components/search-results/filters/spatio-temporal.svelte';
 
@@ -35,6 +37,9 @@
 	const typeKey = 'type';
 	const themeKey = 'theme';
 	const foundationalKey = 'foundational';
+	const mappableKey = 'mappable';
+	const eoCollectionKey = 'eo_collection';
+	const sourceSystemKey = 'source_system';
 	const bboxKey = 'bbox';
 	const dateRangeKey = 'dateRange';
 	const delineator = ',';
@@ -45,6 +50,8 @@
 	let themeCompontent = $state();
 	let typeCompontent = $state();
 	let spatioTemporalComponent = $state();
+	let eoCollectionsComponent = $state();
+	let sourceSystemComponent = $state();
 
 	let searchParams = $derived($page.url.searchParams);
 	$effect(() => {
@@ -78,11 +85,14 @@
 			bbox: formData.get('spatio-temporal-spatial-extent') ? parseBoundingBox() : null,
 			dateRange: formData.get('spatio-temporal-temporal-extent') ? parseDateRange() : null,
 			other: {
-				foundational: formData.has('others-foundational')
+				foundational: formData.has('others-foundational'),
+				mappable: formData.has('others-mappable')
 			},
 			org: {},
 			typeFilter: {},
-			theme: {}
+			theme: {},
+			eoCollection: {},
+			sourceSystem: {}
 		};
 
 		for (let [key, value] of formData.entries()) {
@@ -92,6 +102,10 @@
 				filters.typeFilter[key.replace('type-', '')] = value === 'on';
 			} else if (key.startsWith('theme-')) {
 				filters.theme[key.replace('theme-', '')] = value === 'on';
+			} else if (key.startsWith('eo_collection-')) {
+				filters.eoCollection[key.replace('eo_collection-', '')] = value === 'on';
+			} else if (key.startsWith('source_system-')) {
+				filters.sourceSystem[key.replace('source_system-', '')] = value === 'on';
 			}
 		}
 
@@ -117,6 +131,8 @@
 		typeCompontent.resetFilters();
 		themeCompontent.resetFilters();
 		spatioTemporalComponent.resetFilters();
+		eoCollectionsComponent.resetFilters();
+		sourceSystemComponent.resetFilters();
 	}
 
 	function setFilterCountFromUrl(searchParams) {
@@ -125,9 +141,12 @@
 			categoryList: getList(categoriesKey, false, searchParams),
 			dateRangeList: getList('begin', false, searchParams),
 			foundationalList: getList(foundationalKey, false, searchParams),
+			mappableList: getList(mappableKey, false, searchParams),
 			orgList: getList(orgKey, true, searchParams),
 			typeFilterList: getList(typeKey, true, searchParams),
-			themeList: getList(themeKey, true, searchParams)
+			themeList: getList(themeKey, true, searchParams),
+			eoCollectionList: getList(eoCollectionKey, true, searchParams),
+			sourceSystemList: getList(sourceSystemKey, true, searchParams)
 		};
 
 		numFilters = countFilters(filterLists);
@@ -138,6 +157,8 @@
 		othersCompontent.clearAllFilters();
 		typeCompontent.clearAllFilters();
 		themeCompontent.clearAllFilters();
+		eoCollectionsComponent.clearAllFilters();
+		sourceSystemComponent.clearAllFilters();
 		spatioTemporalComponent.clearAllFilters();
 	}
 
@@ -169,9 +190,12 @@
 		const category = filters.category;
 		const dateRange = filters.dateRange;
 		const foundational = filters.other.foundational;
+		const mappable = filters.other.mappable;
 		const org = filters.org;
 		const typeFilter = filters.typeFilter;
 		const theme = filters.theme;
+		const eoCollections = filters.eoCollection;
+		const sourceSystem = filters.sourceSystem;
 
 		const query = new URLSearchParams($page.url.searchParams.toString());
 
@@ -204,6 +228,7 @@
 		category ? query.set(categoriesKey, category) : query.delete(categoriesKey);
 
 		foundational ? query.set(foundationalKey, foundational) : query.delete(foundationalKey);
+		mappable ? query.set(mappableKey, mappable) : query.delete(mappableKey);
 
 		const orgString = getFilterStringFromObj(Object.entries(org));
 		orgString ? query.set(orgKey, orgString) : query.delete(orgKey);
@@ -213,6 +238,12 @@
 
 		const themeString = getFilterStringFromObj(Object.entries(theme));
 		themeString ? query.set(themeKey, themeString) : query.delete(themeKey);
+		
+		const eoCollectionString = getFilterStringFromObj(Object.entries(eoCollections));
+		eoCollectionString ? query.set(eoCollectionKey, eoCollectionString) : query.delete(eoCollectionKey);
+		
+		const sourceSystemString = getFilterStringFromObj(Object.entries(sourceSystem));
+		sourceSystemString ? query.set(sourceSystemKey, sourceSystemString) : query.delete(sourceSystemKey);
 
 		// When filters change, reset the page and pagination element back to the start
 		query.set('page-number', '0');
@@ -271,6 +302,8 @@
 				<Organizations bind:this={orgCompontent} />
 				<Types bind:this={typeCompontent} />
 				<Themes bind:this={themeCompontent} />
+				<EoCollections bind:this={eoCollectionsComponent} />
+				<SourceSystem bind:this={sourceSystemComponent} />
 				<OtherFilters bind:this={othersCompontent} />
 			</div>
 		</div>
