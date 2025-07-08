@@ -5,7 +5,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import NoMap from '$lib/components/icons/no-map.svelte';
 	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-	import FavoritesMap from '$lib/components/map/favorites-map.svelte';
+	import FavoritesMap from '$lib/components/map/favourites-map.svelte';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 	import MapCartListSkeleton from '$lib/components/loading-mask/mapcart-list-skeleton.svelte';
 	import Checkmark from '$lib/components/icons/checkmark.svelte';
