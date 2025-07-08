@@ -5,7 +5,7 @@
 	import Card from '$lib/components/card/card.svelte';
 	import NoMap from '$lib/components/icons/no-map.svelte';
 	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-	import MapcartMap from '$lib/components/map/mapcart-map.svelte';
+	import FavoritesMap from '$lib/components/map/favorites-map.svelte';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 	import MapCartListSkeleton from '$lib/components/loading-mask/mapcart-list-skeleton.svelte';
 	import Checkmark from '$lib/components/icons/checkmark.svelte';
@@ -180,7 +180,7 @@
 		{#if records.length > 0}
 			{#if mapToggle}
 				<!-------------- Map -------------->
-				<MapcartMap layerIds={selectedIds} />
+				<FavoritesMap layerIds={selectedIds} />
 				<button
 					class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
 					onclick={(event) => handleReturnToListClick(event)}
