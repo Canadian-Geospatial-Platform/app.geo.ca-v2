@@ -238,12 +238,16 @@
 
 		const themeString = getFilterStringFromObj(Object.entries(theme));
 		themeString ? query.set(themeKey, themeString) : query.delete(themeKey);
-		
+
 		const eoCollectionString = getFilterStringFromObj(Object.entries(eoCollections));
-		eoCollectionString ? query.set(eoCollectionKey, eoCollectionString) : query.delete(eoCollectionKey);
-		
+		eoCollectionString
+			? query.set(eoCollectionKey, eoCollectionString)
+			: query.delete(eoCollectionKey);
+
 		const sourceSystemString = getFilterStringFromObj(Object.entries(sourceSystem));
-		sourceSystemString ? query.set(sourceSystemKey, sourceSystemString) : query.delete(sourceSystemKey);
+		sourceSystemString
+			? query.set(sourceSystemKey, sourceSystemString)
+			: query.delete(sourceSystemKey);
 
 		// When filters change, reset the page and pagination element back to the start
 		query.set('page-number', '0');

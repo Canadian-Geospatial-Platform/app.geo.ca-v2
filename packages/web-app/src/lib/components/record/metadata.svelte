@@ -31,7 +31,7 @@
 
 	// Top Section
 	const dateCreated = properties.created || 'N/A';
-	const datePublished = properties.published  || 'N/A';
+	const datePublished = properties.published || 'N/A';
 	const accessLast30 = data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : 'N/A';
 	const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
 
@@ -64,7 +64,7 @@
 					x?.onlineResource?.onlineResource &&
 					x.onlineResource.onlineResource != 'null' &&
 					(x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'http' ||
-					x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'https')
+						x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'https')
 				) {
 					return x.onlineResource.onlineResource;
 				}

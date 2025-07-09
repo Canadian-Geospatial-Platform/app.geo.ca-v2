@@ -67,8 +67,9 @@
 	const east = items.bbox.east || 'N/A';
 	const south = items.bbox.south || 'N/A';
 	const west = items.bbox.west || 'N/A';
-	const spatialRepresentation = items?.spatialRepresentation ?
-	    items?.spatialRepresentation.split('; ')[langIndex] : 'N/A';
+	const spatialRepresentation = items?.spatialRepresentation
+		? items?.spatialRepresentation.split('; ')[langIndex]
+		: 'N/A';
 	const projection = items.refSys || 'N/A';
 
 	const dateCreated = items.created || 'N/A';

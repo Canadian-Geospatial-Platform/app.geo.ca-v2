@@ -117,11 +117,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 				// convert back to string
 				dist.organisation = orgs.length > 0 ? orgs.join('; ') : '';
 			} else {
-				item_v2.distributor[i] = { 'organisation': '' };
+				item_v2.distributor[i] = { organisation: '' };
 			}
 		});
 	} else {
-		item_v2.distributor = [{ 'organisation': '' }]
+		item_v2.distributor = [{ organisation: '' }];
 	}
 
 	// If coordinates are a string, convert them to an array (or nested arrays) instead
@@ -159,14 +159,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
 	// a comma-separated or semi-colon-separated list. We can do this with regular expressions.
 	if (item_v2.topicCategory && typeof item_v2.topicCategory == 'string') {
-		item_v2.topicCategory = item_v2.topicCategory
-			.split(/[;,]/)
-			.map((item) => {
-				// Insert space before a capital letter, but only if it's preceded
-				// by a lowercase letter i.e. this ensures there is no space added
-				// for acronyms so, for example, NRCan does not become N R Can.
-				return item.replace(/([a-z])([A-Z])/g, '$1 $2');
-			});
+		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]/).map((item) => {
+			// Insert space before a capital letter, but only if it's preceded
+			// by a lowercase letter i.e. this ensures there is no space added
+			// for acronyms so, for example, NRCan does not become N R Can.
+			return item.replace(/([a-z])([A-Z])/g, '$1 $2');
+		});
 	}
 
 	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
