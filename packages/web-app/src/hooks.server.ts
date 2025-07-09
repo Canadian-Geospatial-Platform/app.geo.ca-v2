@@ -24,6 +24,22 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 
+	if (url.pathname.startsWith('/map')) {
+		// Get the id and language from the url
+		const id = url.searchParams.get('rvKey');
+		let lang = url.searchParams.get('lang') ?? 'en';
+
+		// Convert language code e.g. 'en' to 'en-ca'
+		if (lang === 'en') lang = 'en-ca';
+		else if (lang === 'fr') lang = 'fr-ca';
+
+		if (id) {
+			// Construct the new URL, throw redirect
+			const newUrl = `/${lang}/map-browser/record/${id}`;
+			throw redirect(307, newUrl);
+		}
+	}
+
 	// todo: remove this hack when geoview have fixed the [issue](https://github.com/Canadian-Geospatial-Platform/geoview/issues/2816).
 	// If the request is for fetch-esri-worker-script.worker.js.map,
 	// return a 204 No Content response to prevent errors from missing source maps.
