@@ -26,7 +26,7 @@
 
 	const theme = 'geo.ca';
 	const components = ['north-arrow', 'overview-map'];
-	const appBarTabs = ['geolocator', 'legend'];
+	const appBarTabs = ['geolocator', 'legend', 'export'];
 	const footerBarTabs = ['layers', 'details', 'data-table', 'time-slider', 'geochart'];
 	const footerBarCollapsed = true;
 

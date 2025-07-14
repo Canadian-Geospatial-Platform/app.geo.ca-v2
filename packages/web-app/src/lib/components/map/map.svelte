@@ -50,7 +50,7 @@
 		corePackages: [],
 		appBar: {
 			tabs: {
-				core: ['geolocator', 'legend']
+				core: ['geolocator', 'legend', 'export']
 			}
 		}
 	});
