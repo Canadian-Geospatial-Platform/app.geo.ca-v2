@@ -41,22 +41,6 @@ export default {
         });
 
       /*** Other Resources ***/
-      const OIDC_CLIENT_ID = new Config.Parameter(stack, "OIDC_CLIENT_ID", {
-        value: process.env.OIDC_CLIENT_ID,
-      });
-      const COGNITO_USERPOOL_ID = new Config.Parameter(stack, "COGNITO_USERPOOL_ID", {
-        value: process.env.COGNITO_USERPOOL_ID,
-      });
-      const OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
-      const OIDC_CUSTOM_DOMAIN = new Config.Parameter(stack, "OIDC_CUSTOM_DOMAIN", {
-        value: process.env.OIDC_CUSTOM_DOMAIN,
-      });
-      const GEOCORE_API_DOMAIN = new Config.Parameter(stack, "GEOCORE_API_DOMAIN", {
-        value: process.env.GEOCORE_API_DOMAIN,
-      });
-      const SEMANTIC_SEARCH_URL = new Config.Parameter(stack, "SEMANTIC_SEARCH_URL", {
-        value: process.env.SEMANTIC_SEARCH_URL,
-      });
       const FEATURE_SIGN_IN = new Config.Parameter(stack, "FEATURE_SIGN_IN", {
         value: "false",
       });
@@ -70,11 +54,6 @@ export default {
       const site = new SvelteKitSite(stack, "site", {
         path: "packages/web-app/",
         bind: [
-          OIDC_CLIENT_ID,
-          COGNITO_USERPOOL_ID,
-          OIDC_CLIENT_SECRET,
-          OIDC_CUSTOM_DOMAIN,
-          GEOCORE_API_DOMAIN,
           userTableConfig,
           FEATURE_SIGN_IN,
         ],

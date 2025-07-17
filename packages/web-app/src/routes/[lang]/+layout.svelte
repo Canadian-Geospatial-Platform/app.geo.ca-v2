@@ -8,6 +8,7 @@
 	import Feedback from '$lib/components/feedback/feedback.svelte';
 	import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
 	import LeavingNotice from '$lib/components/leaving-notice/leaving-notice.svelte';
+	import GoogleTag from '$lib/components/google-tag/google-tag.svelte';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -70,6 +71,7 @@
 	});
 </script>
 
+<GoogleTag />
 <Header />
 <main
 	class="flex flex-col content-width bg-custom-1 min-h-screen pt-8"
