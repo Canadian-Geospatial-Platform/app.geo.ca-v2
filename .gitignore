@@ -8,3 +8,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .direnv/
 *.d.ts
+.sst.config.*.mjs
