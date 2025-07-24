@@ -34,6 +34,7 @@
 {#if import.meta.env.VITE_STAGE == 'staging'}
 	<noscript
 		><iframe
+			title="Google Tag"
 			src="https://www.googletagmanager.com/ns.html?id=GTM-MK9H4CK"
 			height="0"
 			width="0"
@@ -43,6 +44,7 @@
 {:else if import.meta.env.VITE_STAGE == 'production'}
 	<noscript
 		><iframe
+			title="Google Tag"
 			src="https://www.googletagmanager.com/ns.html?id=GTM-KG9WWH6"
 			height="0"
 			width="0"
