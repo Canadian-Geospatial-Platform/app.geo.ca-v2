@@ -119,11 +119,6 @@
 					"subCategory": "prov"
 				},
 				{
-					"label": "Gouvernement du Nunavut",
-					"value": "Gouvernement+du+Nunavut",
-					"subCategory": "prov"
-				},
-				{
 					"label": "Gouvernement du Yukon",
 					"value": "Gouvernement+du+Yukon",
 					"subCategory": "prov"
@@ -132,11 +127,6 @@
 					"label": "Gouvernement et municipalités du Québec",
 					"value": "Gouvernement+et+municipalités+du+Québec",
 					"subCategory": "prov"
-				},
-				{
-					"label": "Innovation, Sciences et Développement économique Canada",
-					"value": "Innovation,+Sciences+et+Développement+économique+Canada",
-					"subCategory": "fed"
 				},
 				{
 					"label": "Ministère de la Justice",
@@ -164,8 +154,8 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Services aux Autochtones Canada",
-					"value": "Services+aux+Autochtones+Canada",
+					"label": "Affaires autochtones et du Nord Canada",
+					"value": "Affaires+autochtones+et+du+Nord+Canada",
 					"subCategory": "fed"
 				},
 				{

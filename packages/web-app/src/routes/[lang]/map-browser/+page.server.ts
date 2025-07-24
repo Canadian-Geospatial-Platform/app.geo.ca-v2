@@ -84,6 +84,7 @@ function generateUrl(fetch, searchParams, lang, token) {
 		.toString()
 		.replaceAll('%2B', '+')
 		.replaceAll('%27', '%27%27');
+
 	return fetch(url, {
 		headers: { Authentication: 'Bearer ' + token }
 	});
