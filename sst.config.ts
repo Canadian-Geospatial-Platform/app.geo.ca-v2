@@ -45,6 +45,9 @@ export default {
         value: "false",
       });
 
+      const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca"
+      const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca/search-opensearch"
+
       // Wrap the user table in SST’s Config.Parameter so that it can be referenced in SST functions
       // This is necessary when an existing table is imported using the Table.fromTableArn method
       const userTableConfig = new Config.Parameter(stack, "USER_TABLE_NAME", {
@@ -57,6 +60,10 @@ export default {
           userTableConfig,
           FEATURE_SIGN_IN,
         ],
+        environment: {
+          GEOCORE_API_DOMAIN,
+          SEMANTIC_SEARCH_URL
+        }
       });
 
       stack.addOutputs({

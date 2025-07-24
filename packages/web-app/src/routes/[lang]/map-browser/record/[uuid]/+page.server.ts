@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	// are not available during the build process. To avoid this, we import it inside
 	// the `load()` function so it's only accessed when the server is running.
 	const config = await import('sst/node/config');
-	const GEOCORE_API_DOMAIN = config.Config.GEOCORE_API_DOMAIN;
+	const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
@@ -96,6 +96,11 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const related = await fetchRelated(params.uuid);
 
 	let item_v2 = record.body.Items[0];
+
+	if (item_v2?.keywords) {
+		console.log(typeof item_v2?.keywords);
+		item_v2.keywords = item_v2.keywords.split(',');
+	}
 
 	if (item_v2?.description) {
 		item_v2.description = parseText(item_v2.description);
