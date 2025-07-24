@@ -29,7 +29,7 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Agence de la santé publique du Canada",
+					"label": "Santé Canada",
 					"value": "Agence+de+la+santé+publique+du+Canada",
 					"subCategory": "fed"
 				},
@@ -166,6 +166,21 @@
 				{
 					"label": "Transports Canada",
 					"value": "Transports+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Régie de l’énergie du Canada",
+					"value": "Régie+de+l’énergie+du+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Services aux Autochtones Canada",
+					"value": "Services+aux+Autochtones+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Commission de la capitale nationale",
+					"value": "Commission+de+la+capitale+nationale",
 					"subCategory": "fed"
 				}
 			]

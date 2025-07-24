@@ -154,7 +154,7 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Public Health Agency of Canada",
+					"label": "Health Canada",
 					"value": "Public+Health+Agency+of+Canada",
 					"subCategory": "fed"
 				},
@@ -166,6 +166,21 @@
 				{
 					"label": "Transport Canada",
 					"value": "Transport+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Canada Energy Regulator",
+					"value": "Canada+Energy+Regulator",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Indigenous Services Canada",
+					"value": "Indigenous+Services+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "National Capital Commission",
+					"value": "National+Capital+Commission",
 					"subCategory": "fed"
 				}
 			]
