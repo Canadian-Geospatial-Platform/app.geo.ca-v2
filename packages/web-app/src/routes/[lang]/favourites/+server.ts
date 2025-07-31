@@ -1,5 +1,7 @@
 import { json } from '@sveltejs/kit';
 
+const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
+
 export async function POST({ request }) {
 	const { ids, lang } = await request.json();
 
@@ -28,7 +30,7 @@ export async function POST({ request }) {
 }
 
 function getRecord(id, lang) {
-	const url = new URL('https://geocore.api.geo.ca/id/v2');
+	const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
 	const params = {
 		id: id,
 		lang: lang.split('-')[0]
@@ -71,7 +73,7 @@ async function checkForMapLayers(ids, lang) {
 	let filteredIds = [];
 
 	// Set url search params
-	const url = new URL('https://geocore.api.geo.ca/vcs');
+	const url = new URL(`${GEOCORE_API_DOMAIN}/vcs`);
 	const params = {
 		id: ids,
 		lang: langShort,

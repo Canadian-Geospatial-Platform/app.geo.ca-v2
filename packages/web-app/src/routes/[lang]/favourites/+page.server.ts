@@ -58,7 +58,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 };
 
 function getRecord(id, lang, fetch) {
-	const url = new URL('https://geocore.api.geo.ca/id');
+	const url = new URL(`${GEOCORE_API_DOMAIN}/id`);
 	const params = {
 		id: id,
 		lang: lang.split('-')[0]

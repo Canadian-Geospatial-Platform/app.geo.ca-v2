@@ -7,6 +7,7 @@ import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results.
 import { formatNumber } from '$lib/utils/format-number.ts';
 
 const SEMANTIC_SEARCH_URL = process.env.SEMANTIC_SEARCH_URL;
+const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let searchMode = params?.searchMethod == 'classic' ? 'classic' : 'semantic';
@@ -27,10 +28,12 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let sanitizedResults;
 	try {
 		parsedResponse = await response.json();
+		console.log(parsedResponse);
 		if (searchMode == 'classic') {
 			sanitizedResults = sanitize(parsedResponse.Items, params.lang);
 		} else {
 			sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items, params.lang);
+			console.log(sanitizedResults);
 		}
 	} catch (e) {
 		console.error(e);
@@ -74,7 +77,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 };
 
 function generateUrl(fetch, searchParams, lang, token) {
-	let url = new URL('https://geocore.api.geo.ca/geo');
+	let url = new URL(`${GEOCORE_API_DOMAIN}/geo`);
 	const params = mapSearchParams(searchParams, lang);
 	// URLSearchParams automatically encodes special characters to the html counterpart.
 	// However, the geocore get requests require the '+' to be unencoded, so
@@ -94,7 +97,7 @@ function generateSemanticUrl(fetch, searchParams, lang, token) {
 	// Commenting out prod url out for now in case we decide to switch back.
 	// todo: switch this to an environment variable.
 	// let url = new URL(SEMANTIC_SEARCH_URL);
-	let url = new URL('https://search-recherche.geocore.api.geo.ca/search-opensearch');
+	let url = new URL(`${SEMANTIC_SEARCH_URL}/search-opensearch`);
 	// let url = new URL('https://search-recherche.geocore-stage.api.geo.ca/search-opensearch');
 
 	const params = mapSemanticSearchResults(searchParams, lang);
@@ -108,7 +111,7 @@ function generateSemanticUrl(fetch, searchParams, lang, token) {
 }
 
 async function getAnalytics(fetch) {
-	let analytics = await fetch('https://geocore.api.geo.ca/analytics/11');
+	let analytics = await fetch(`${GEOCORE_API_DOMAIN}/analytics/11`);
 	let parsedAnalytics = [];
 
 	try {

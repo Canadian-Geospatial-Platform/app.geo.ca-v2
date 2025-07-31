@@ -4,6 +4,9 @@ import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { DynamoDBClient, DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 
+const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca"
+const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca"
+
 async function getExistingUserTableArn(tableName: string, region: string) {
   const dynamoDBClient = new DynamoDBClient({ region });
   try {
@@ -44,9 +47,6 @@ export default {
       const FEATURE_SIGN_IN = new Config.Parameter(stack, "FEATURE_SIGN_IN", {
         value: "false",
       });
-
-      const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca"
-      const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca/search-opensearch"
 
       // Wrap the user table in SST’s Config.Parameter so that it can be referenced in SST functions
       // This is necessary when an existing table is imported using the Table.fromTableArn method

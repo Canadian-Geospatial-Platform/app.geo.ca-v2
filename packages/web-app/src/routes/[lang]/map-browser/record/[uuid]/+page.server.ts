@@ -98,7 +98,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let item_v2 = record.body.Items[0];
 
 	if (item_v2?.keywords) {
-		console.log(typeof item_v2?.keywords);
 		item_v2.keywords = item_v2.keywords.split(',');
 	}
 

@@ -1,8 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { getRecord } from '$lib/db/record.ts';
 
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
-
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
