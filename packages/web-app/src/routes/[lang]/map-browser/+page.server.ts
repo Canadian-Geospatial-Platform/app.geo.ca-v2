@@ -9,17 +9,24 @@ import { formatNumber } from '$lib/utils/format-number.ts';
 const SEMANTIC_SEARCH_URL = process.env.SEMANTIC_SEARCH_URL;
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
-export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
+export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
 	let searchMode = params?.searchMethod == 'classic' ? 'classic' : 'semantic';
 	let response;
 	if (searchMode == 'classic') {
-		response = await generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token'));
+		response = await generateUrl(
+			fetch,
+			url.searchParams,
+			params.lang,
+			cookies.get('id_token'),
+			request.headers.get('x-forwarded-for')
+		);
 	} else {
 		response = await generateSemanticUrl(
 			fetch,
 			url.searchParams,
 			params.lang,
-			cookies.get('id_token')
+			cookies.get('id_token'),
+			request.headers.get('x-forwarded-for')
 		);
 	}
 	let analytics = await getAnalytics(fetch);
@@ -28,12 +35,10 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let sanitizedResults;
 	try {
 		parsedResponse = await response.json();
-		console.log(parsedResponse);
 		if (searchMode == 'classic') {
 			sanitizedResults = sanitize(parsedResponse.Items, params.lang);
 		} else {
 			sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items, params.lang);
-			console.log(sanitizedResults);
 		}
 	} catch (e) {
 		console.error(e);
@@ -76,7 +81,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	};
 };
 
-function generateUrl(fetch, searchParams, lang, token) {
+function generateUrl(fetch, searchParams, lang, token, ip) {
 	let url = new URL(`${GEOCORE_API_DOMAIN}/geo`);
 	const params = mapSearchParams(searchParams, lang);
 	// URLSearchParams automatically encodes special characters to the html counterpart.
@@ -88,11 +93,14 @@ function generateUrl(fetch, searchParams, lang, token) {
 		.replaceAll('%2B', '+')
 		.replaceAll('%27', '%27%27');
 	return fetch(url, {
-		headers: { Authentication: 'Bearer ' + token }
+		headers: {
+			Authentication: 'Bearer ' + token,
+			'x-forwarded-for': ip
+		}
 	});
 }
 
-function generateSemanticUrl(fetch, searchParams, lang, token) {
+function generateSemanticUrl(fetch, searchParams, lang, token, ip) {
 	// Testing staging version of semantic search instead of the prod version.
 	// Commenting out prod url out for now in case we decide to switch back.
 	// todo: switch this to an environment variable.
@@ -106,7 +114,10 @@ function generateSemanticUrl(fetch, searchParams, lang, token) {
 	// we can fix it with replaceAll().
 	url.search = new URLSearchParams(params).toString().replaceAll('%2B', '+');
 	return fetch(url, {
-		headers: { Authentication: 'Bearer ' + token }
+		headers: {
+			Authentication: 'Bearer ' + token,
+			'x-forwarded-for': ip
+		}
 	});
 }
 

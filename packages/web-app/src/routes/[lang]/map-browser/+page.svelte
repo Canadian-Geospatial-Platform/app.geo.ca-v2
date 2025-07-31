@@ -3,7 +3,6 @@
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
 	let results = $derived($page.data.results ? $page.data.results : []);
-	console.log($page.data.results);
 
 	const lang = $page.data.lang;
 	const title =

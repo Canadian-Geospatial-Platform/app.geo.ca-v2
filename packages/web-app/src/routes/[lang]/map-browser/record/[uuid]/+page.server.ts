@@ -5,7 +5,7 @@ import { error } from '@sveltejs/kit';
 import { parseText } from '$lib/utils/parse-text.ts';
 import { formatNumber } from '$lib/utils/format-number.ts';
 
-export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
+export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
 	// The "sst/node/config" package dynamically binds resources at runtime.
 	// Importing it at the top level would cause build-time errors because SST resources
 	// are not available during the build process. To avoid this, we import it inside
@@ -16,7 +16,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
 	let record;
-	let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token'));
+	let response = await generateUrl(
+		fetch,
+		params.uuid,
+		lang,
+		cookies.get('id_token'),
+		request.headers.get('x-forwarded-for')
+	);
 	try {
 		record = await response.json();
 	} catch (e) {
@@ -203,11 +209,14 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		metaDescription: metaDescription
 	};
 
-	function generateUrl(fetch, uuid, lang, token) {
+	function generateUrl(fetch, uuid, lang, token, ip) {
 		let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
 		console.log(url.href);
 		return fetch(url, {
-			headers: { Authentication: 'Bearer ' + token }
+			headers: {
+				Authentication: 'Bearer ' + token,
+				'x-forwarded-for': ip
+			}
 		});
 	}
 };
