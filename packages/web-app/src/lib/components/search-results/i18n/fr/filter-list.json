@@ -19,6 +19,11 @@
 			"label": "Organisations",
 			"filterList": [
 				{
+					"label": "Affaires autochtones et du Nord Canada",
+					"value": "Affaires+autochtones+et+du+Nord+Canada",
+					"subCategory": "fed"
+				},
+				{
 					"label": "Agence Canadienne de Développement économique du Nord",
 					"value": "Agence+canadienne+de+développement+économique+du+Nord",
 					"subCategory": "fed"
@@ -26,11 +31,6 @@
 				{
 					"label": "Agence d'évaluation d'impact du Canada",
 					"value": "Agence+d'évaluation+d'impact+du+Canada",
-					"subCategory": "fed"
-				},
-				{
-					"label": "Santé Canada",
-					"value": "Agence+de+la+santé+publique+du+Canada",
 					"subCategory": "fed"
 				},
 				{
@@ -46,6 +46,11 @@
 				{
 					"label": "Commission canadienne de sûreté nucléaire",
 					"value": "Commission+canadienne+de+sûreté+nucléaire",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Commission de la capitale nationale",
+					"value": "Commission+de+la+capitale+nationale",
 					"subCategory": "fed"
 				},
 				{
@@ -74,23 +79,38 @@
 					"subCategory": "prov"
 				},
 				{
-					"label": "Gouvernement de l'Île-du-Prince-Édouard",
-					"value": "Gouvernement+de+l'Île-du-Prince-Édouard",
-					"subCategory": "prov"
-				},
-				{
-					"label": "Gouvernement de l'Ontario",
-					"value": "Gouvernement+de+l'Ontario",
-					"subCategory": "prov"
-				},
-				{
 					"label": "Gouvernement de la Colombie-Britannique",
 					"value": "Gouvernement+de+la+Colombie-Britannique",
 					"subCategory": "prov"
 				},
 				{
+					"label": "Gouvernement de l'Île-du-Prince-Édouard",
+					"value": "Gouvernement+de+l'Île-du-Prince-Édouard",
+					"subCategory": "prov"
+				},
+				{
+					"label": "Gouvernement et municipalités du Québec",
+					"value": "Gouvernement+et+municipalités+du+Québec",
+					"subCategory": "prov"
+				},
+				{
+					"label": "Gouvernement du Manitoba",
+					"value": "Gouvernement+du+Manitoba",
+					"subCategory": "prov"
+				},
+				{
+					"label": "Gouvernement du Nouveau-Brunswick",
+					"value": "Gouvernement+du+Nouveau-Brunswick",
+					"subCategory": "prov"
+				},
+				{
 					"label": "Gouvernement de la Nouvelle-Écosse",
 					"value": "Gouvernement+de+la+Nouvelle-Écosse",
+					"subCategory": "prov"
+				},
+				{
+					"label": "Gouvernement de l'Ontario",
+					"value": "Gouvernement+de+l'Ontario",
 					"subCategory": "prov"
 				},
 				{
@@ -109,23 +129,8 @@
 					"subCategory": "prov"
 				},
 				{
-					"label": "Gouvernement du Manitoba",
-					"value": "Gouvernement+du+Manitoba",
-					"subCategory": "prov"
-				},
-				{
-					"label": "Gouvernement du Nouveau-Brunswick",
-					"value": "Gouvernement+du+Nouveau-Brunswick",
-					"subCategory": "prov"
-				},
-				{
 					"label": "Gouvernement du Yukon",
 					"value": "Gouvernement+du+Yukon",
-					"subCategory": "prov"
-				},
-				{
-					"label": "Gouvernement et municipalités du Québec",
-					"value": "Gouvernement+et+municipalités+du+Québec",
 					"subCategory": "prov"
 				},
 				{
@@ -154,8 +159,18 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Affaires autochtones et du Nord Canada",
-					"value": "Affaires+autochtones+et+du+Nord+Canada",
+					"label": "Régie de l’énergie du Canada",
+					"value": "Régie+de+l’énergie+du+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Santé Canada",
+					"value": "Agence+de+la+santé+publique+du+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Services aux Autochtones Canada",
+					"value": "Services+aux+Autochtones+Canada",
 					"subCategory": "fed"
 				},
 				{
@@ -166,21 +181,6 @@
 				{
 					"label": "Transports Canada",
 					"value": "Transports+Canada",
-					"subCategory": "fed"
-				},
-				{
-					"label": "Régie de l’énergie du Canada",
-					"value": "Régie+de+l’énergie+du+Canada",
-					"subCategory": "fed"
-				},
-				{
-					"label": "Services aux Autochtones Canada",
-					"value": "Services+aux+Autochtones+Canada",
-					"subCategory": "fed"
-				},
-				{
-					"label": "Commission de la capitale nationale",
-					"value": "Commission+de+la+capitale+nationale",
 					"subCategory": "fed"
 				}
 			]

@@ -24,6 +24,11 @@
 					"subCategory": "fed"
 				},
 				{
+					"label": "Canada Energy Regulator",
+					"value": "Canada+Energy+Regulator",
+					"subCategory": "fed"
+				},
+				{
 					"label": "Canadian Heritage",
 					"value": "Canadian+Heritage",
 					"subCategory": "fed"
@@ -129,13 +134,28 @@
 					"subCategory": "prov"
 				},
 				{
+					"label": "Health Canada",
+					"value": "Public+Health+Agency+of+Canada",
+					"subCategory": "fed"
+				},
+				{
 					"label": "Impact Assessment Agency of Canada",
 					"value": "Impact+Assessment+Agency+of+Canada",
 					"subCategory": "fed"
 				},
 				{
+					"label": "Indigenous Services Canada",
+					"value": "Indigenous+Services+Canada",
+					"subCategory": "fed"
+				},
+				{
 					"label": "Indigenous and Northern Affairs Canada",
 					"value": "Indigenous+and+Northern+Affairs+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "National Capital Commission",
+					"value": "National+Capital+Commission",
 					"subCategory": "fed"
 				},
 				{
@@ -154,11 +174,6 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Health Canada",
-					"value": "Public+Health+Agency+of+Canada",
-					"subCategory": "fed"
-				},
-				{
 					"label": "Statistics Canada",
 					"value": "Statistics+Canada",
 					"subCategory": "fed"
@@ -166,21 +181,6 @@
 				{
 					"label": "Transport Canada",
 					"value": "Transport+Canada",
-					"subCategory": "fed"
-				},
-				{
-					"label": "Canada Energy Regulator",
-					"value": "Canada+Energy+Regulator",
-					"subCategory": "fed"
-				},
-				{
-					"label": "Indigenous Services Canada",
-					"value": "Indigenous+Services+Canada",
-					"subCategory": "fed"
-				},
-				{
-					"label": "National Capital Commission",
-					"value": "National+Capital+Commission",
 					"subCategory": "fed"
 				}
 			]
