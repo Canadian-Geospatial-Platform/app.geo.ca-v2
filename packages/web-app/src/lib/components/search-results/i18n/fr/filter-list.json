@@ -20,7 +20,7 @@
 			"filterList": [
 				{
 					"label": "Agence Canadienne de Développement économique du Nord",
-					"value": "Agence+Canadienne+de+Développement+économique+du+Nord",
+					"value": "Agence+canadienne+de+développement+économique+du+Nord",
 					"subCategory": "fed"
 				},
 				{
@@ -29,7 +29,7 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Agence de la santé publique du Canada",
+					"label": "Santé Canada",
 					"value": "Agence+de+la+santé+publique+du+Canada",
 					"subCategory": "fed"
 				},
@@ -119,11 +119,6 @@
 					"subCategory": "prov"
 				},
 				{
-					"label": "Gouvernement du Nunavut",
-					"value": "Gouvernement+du+Nunavut",
-					"subCategory": "prov"
-				},
-				{
 					"label": "Gouvernement du Yukon",
 					"value": "Gouvernement+du+Yukon",
 					"subCategory": "prov"
@@ -132,11 +127,6 @@
 					"label": "Gouvernement et municipalités du Québec",
 					"value": "Gouvernement+et+municipalités+du+Québec",
 					"subCategory": "prov"
-				},
-				{
-					"label": "Innovation, Sciences et Développement économique Canada",
-					"value": "Innovation,+Sciences+et+Développement+économique+Canada",
-					"subCategory": "fed"
 				},
 				{
 					"label": "Ministère de la Justice",
@@ -164,8 +154,8 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Services aux Autochtones Canada",
-					"value": "Services+aux+Autochtones+Canada",
+					"label": "Affaires autochtones et du Nord Canada",
+					"value": "Affaires+autochtones+et+du+Nord+Canada",
 					"subCategory": "fed"
 				},
 				{
@@ -176,6 +166,21 @@
 				{
 					"label": "Transports Canada",
 					"value": "Transports+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Régie de l’énergie du Canada",
+					"value": "Régie+de+l’énergie+du+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Services aux Autochtones Canada",
+					"value": "Services+aux+Autochtones+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Commission de la capitale nationale",
+					"value": "Commission+de+la+capitale+nationale",
 					"subCategory": "fed"
 				}
 			]

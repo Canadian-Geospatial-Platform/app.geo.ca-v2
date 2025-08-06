@@ -109,11 +109,6 @@
 					"subCategory": "prov"
 				},
 				{
-					"label": "Government of Nunavut",
-					"value": "Government+of+Nunavut",
-					"subCategory": "prov"
-				},
-				{
 					"label": "Government of Ontario",
 					"value": "Government+of+Ontario",
 					"subCategory": "prov"
@@ -139,18 +134,13 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Indigenous Services Canada",
-					"value": "Indigenous+Services+Canada",
+					"label": "Indigenous and Northern Affairs Canada",
+					"value": "Indigenous+and+Northern+Affairs+Canada",
 					"subCategory": "fed"
 				},
 				{
-					"label": "Innovation, Science and Economic Development Canada",
-					"value": "Innovation,+Science+and+Economic+Development",
-					"subCategory": "fed"
-				},
-				{
-					"label": "National Defense",
-					"value": "National+Defense",
+					"label": "National Defence",
+					"value": "National+Defence",
 					"subCategory": "fed"
 				},
 				{
@@ -164,7 +154,7 @@
 					"subCategory": "fed"
 				},
 				{
-					"label": "Public Health Agency of Canada",
+					"label": "Health Canada",
 					"value": "Public+Health+Agency+of+Canada",
 					"subCategory": "fed"
 				},
@@ -176,6 +166,21 @@
 				{
 					"label": "Transport Canada",
 					"value": "Transport+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Canada Energy Regulator",
+					"value": "Canada+Energy+Regulator",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Indigenous Services Canada",
+					"value": "Indigenous+Services+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "National Capital Commission",
+					"value": "National+Capital+Commission",
 					"subCategory": "fed"
 				}
 			]
