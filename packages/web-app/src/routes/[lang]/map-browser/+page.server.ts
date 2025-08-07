@@ -181,7 +181,7 @@ function mapSemanticSearchResults(searchParams, lang) {
 		// Revisit which search method is better after user testing
 		method: 'SemanticSearch', // 'HybridSearch',
 		q: searchTerms ? searchTerms.replaceAll('"', '') : '',
-		topicCategory: searchParams.get('category-of-interest') ?? '',
+		topic_category: searchParams.get('category-of-interest') ?? '',
 		bbox: bbox,
 		relation: searchParams.get('relation') ?? 'intersects',
 		begin: searchParams.get('begin') ? new Date(searchParams.get('begin')).toISOString() : '',
