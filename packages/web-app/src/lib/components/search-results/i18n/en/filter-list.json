@@ -135,7 +135,7 @@
 				},
 				{
 					"label": "Health Canada",
-					"value": "Public+Health+Agency+of+Canada",
+					"value": "Health+Canada",
 					"subCategory": "fed"
 				},
 				{
@@ -171,6 +171,11 @@
 				{
 					"label": "Parks Canada",
 					"value": "Parks+Canada",
+					"subCategory": "fed"
+				},
+				{
+					"label": "Public Health Agency of Canada",
+					"value": "Public+Health+Agency+of+Canada",
 					"subCategory": "fed"
 				},
 				{

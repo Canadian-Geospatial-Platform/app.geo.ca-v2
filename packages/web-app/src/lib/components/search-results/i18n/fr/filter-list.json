@@ -29,6 +29,11 @@
 					"subCategory": "fed"
 				},
 				{
+					"label": "Agence de la santé publique du Canada",
+					"value": "Agence+de+la+santé+publique+du+Canada",
+					"subCategory": "fed"
+				},
+				{
 					"label": "Agence d'évaluation d'impact du Canada",
 					"value": "Agence+d'évaluation+d'impact+du+Canada",
 					"subCategory": "fed"
@@ -165,7 +170,7 @@
 				},
 				{
 					"label": "Santé Canada",
-					"value": "Agence+de+la+santé+publique+du+Canada",
+					"value": "Santé+Canada",
 					"subCategory": "fed"
 				},
 				{
