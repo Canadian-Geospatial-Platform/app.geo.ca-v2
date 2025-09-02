@@ -9,7 +9,7 @@ export async function POST({ request }) {
 		return json({ error: 'Invalid IDs' }, { status: 400 });
 	}
 
-	const records = await getRecordsByIds(ids, lang);
+	const records = await getRecordsByIds(ids, lang, request.headers.get('x-forwarded-for'));
 	const idsWithLayers = await checkForMapLayers(ids, lang);
 
 	// Update the record data with the following:
@@ -29,11 +29,12 @@ export async function POST({ request }) {
 	return json(records);
 }
 
-function getRecord(id, lang) {
+function getRecord(id, lang, ip) {
 	const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
 	const params = {
 		id: id,
-		lang: lang.split('-')[0]
+		lang: lang.split('-')[0],
+		'x-forwarded-for': ip
 	};
 	url.search = new URLSearchParams(params).toString();
 	return fetch(url);
@@ -112,7 +113,7 @@ async function checkForMapLayers(ids, lang) {
 	return filteredIds;
 }
 
-async function getRecordsByIds(idIterator, lang) {
+async function getRecordsByIds(idIterator, lang, ip) {
 	let promises = [];
 
 	for (const id of idIterator) {
