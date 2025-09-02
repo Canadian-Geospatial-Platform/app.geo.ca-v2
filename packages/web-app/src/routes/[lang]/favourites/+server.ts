@@ -46,7 +46,7 @@ function getFormats(record, lang) {
 	const formatArray = options.map((x) => {
 		const description = x.description;
 		const descriptionString = lang == 'fr' ? description.fr : description.en;
-		const descriptionArray = descriptionString.split(';');
+		const descriptionArray = descriptionString ? descriptionString.split(';') : [];
 
 		// The description string is always in this format 'type;format;language',
 		// so when splitting the string to an array, we can get the format by returning
