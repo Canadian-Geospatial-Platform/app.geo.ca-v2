@@ -32,7 +32,15 @@
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
 	const items = data.item_v2;
-	const contact = items.contact[0];
+	let contact = null;
+	
+	if (Array.isArray(items.cited)) {
+	  contact = items.cited.find((c) => c != null) || null;
+	}
+	
+	if (!contact && Array.isArray(items.contact)) {
+	  contact = items.contact.find((c) => c != null) || null;
+	}
 
 	// It is common for the contact data to be the string 'null' instead of just the value null,
 	// so we should check for that
