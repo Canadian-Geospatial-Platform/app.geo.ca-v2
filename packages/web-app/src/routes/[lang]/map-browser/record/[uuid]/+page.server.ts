@@ -60,34 +60,16 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		}
 	};
 
-	const fetchAnalytics = async (id, lang) => {
-		let parsedAnalyticResponse;
-		try {
-			const analyticResponse = await fetch(
-				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
-			);
-			parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
-		} catch (e) {
-			console.error(
-				'error fetching analytics from:',
-				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}\nerror message:`,
-				e
-			);
-		}
-		return parsedAnalyticResponse;
-	};
-
+	// Extract analytics from record.hits
+	let analyticRes = {};
+	if (record?.hits) {
+		analyticRes = {
+			'30': formatNumber(record.hits.last_30_days),
+			all: formatNumber(record.hits.all_time)
+		};
+	}
+	
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
-
-	const analyticRes = await fetchAnalytics(params.uuid, lang);
-
-	if (analyticRes['30']) {
-		analyticRes['30'] = formatNumber(analyticRes['30']);
-	}
-
-	if (analyticRes.all) {
-		analyticRes.all = formatNumber(analyticRes.all);
-	}
 
 	const related = await fetchRelated(params.uuid);
 
