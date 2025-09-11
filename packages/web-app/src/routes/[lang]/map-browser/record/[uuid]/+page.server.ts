@@ -29,18 +29,9 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		console.error(e);
 	}
 
-	// @ts-ignore
-	const fetchSimilar = async (id) => {
-		try {
-			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/id/v2?id=${id}&lang=${lang}`);
-			const parsedCollectionsResponse = await collectionsResponse.json();
-			const similar = parsedCollectionsResponse?.body?.Items?.[0]?.similarity ?? [];
-			return similar;
-		} catch (e) {
-			console.error('Error fetching similar items:', e);
-			return []; // Return empty array if fetch fails
-		}
-	};
+	function extractSimilar(item: any) {
+		return Array.isArray(item?.similarity) ? item.similarity : [];
+	}
 
 	const fetchRelated = async (id) => {
 		try {
@@ -69,36 +60,17 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		}
 	};
 
-	const fetchAnalytics = async (id, lang) => {
-		let parsedAnalyticResponse;
-		try {
-			const analyticResponse = await fetch(
-				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}`
-			);
-			parsedAnalyticResponse = JSON.parse(await analyticResponse.json());
-		} catch (e) {
-			console.error(
-				'error fetching analytics from:',
-				`${GEOCORE_API_DOMAIN}/analytics/10?uuid=${id}&lang=${lang}\nerror message:`,
-				e
-			);
-		}
-		return parsedAnalyticResponse;
-	};
-
+	// Extract analytics from record.hits
+	let analyticRes = {};
+	if (record?.hits) {
+		analyticRes = {
+			'30': formatNumber(record.hits.last_30_days),
+			all: formatNumber(record.hits.all_time)
+		};
+	}
+	
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 
-	const analyticRes = await fetchAnalytics(params.uuid, lang);
-
-	if (analyticRes['30']) {
-		analyticRes['30'] = formatNumber(analyticRes['30']);
-	}
-
-	if (analyticRes.all) {
-		analyticRes.all = formatNumber(analyticRes.all);
-	}
-
-	const similar = await fetchSimilar(params.uuid);
 	const related = await fetchRelated(params.uuid);
 
 	let item_v2 = record.body.Items[0];
@@ -198,7 +170,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		},
 		lang: params.lang,
 		uuid: params.uuid,
-		similar: similar,
+		similar: extractSimilar(item_v2),
 		related: related,
 		analyticRes: analyticRes,
 		t: t,
