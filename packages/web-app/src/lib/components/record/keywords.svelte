@@ -9,7 +9,7 @@
 	const lang = data.lang;
 	const shortLang = lang.slice(0, 2);
 	const items = data.item_v2;
-	const keywords = items['keywords'];
+	const keywords = items['keywords'].map((k: string) => (k[0] === ' ' ? k.slice(1) : k));
 	const mapBrowserUrl = url.origin + '/' + lang + '/map-browser';
 	const searchUrl = mapBrowserUrl + '?search-terms=';
 </script>
@@ -22,7 +22,7 @@
 		{#each keywords as keyword, i}
 			<a
 				class="font-custom-style-body-2 block sm:inline"
-				href={searchUrl + encodeURI(keyword.toLowerCase().replaceAll(' ', '+'))}
+				href={searchUrl + encodeURIComponent(keyword.toLowerCase())}
 			>
 				{keyword.toLowerCase()}
 			</a><span class="hidden sm:inline">{i < keywords.length - 1 ? ', ' : ''}</span>

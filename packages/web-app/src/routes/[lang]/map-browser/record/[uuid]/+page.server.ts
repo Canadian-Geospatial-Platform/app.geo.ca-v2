@@ -68,7 +68,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 			all: formatNumber(record.hits.all_time)
 		};
 	}
-	
+
 	let t = params.lang == 'en-ca' ? enLabels : frLabels;
 
 	const related = await fetchRelated(params.uuid);
