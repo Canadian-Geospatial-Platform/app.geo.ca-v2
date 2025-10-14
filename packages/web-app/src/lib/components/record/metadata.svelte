@@ -63,8 +63,8 @@
 				if (
 					x?.onlineResource?.onlineResource &&
 					x.onlineResource.onlineResource != 'null' &&
-					(x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'http' ||
-						x?.onlineResource?.onlineResource_Protocol.toLowerCase() === 'https')
+					(x?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'http' ||
+						x?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'https')
 				) {
 					return x.onlineResource.onlineResource;
 				}
