@@ -1,16 +1,20 @@
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 import { urlEncode } from '$lib/utils/url-encode';
+import { Config } from 'sst/node/config';
 
 const CLIENT_ID = process.env.OIDC_CLIENT_ID;
 const CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
-const CLIENT_SECRET = process.env.OIDC_CLIENT_SECRET;
+const CLIENT_SECRET = Config.OIDC_CLIENT_SECRET;
 
 export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
 	let jwt = null;
 	cookies.set('test', 'test cookie set', { path: '/' });
 	try {
 		jwt = await getJWT(url.searchParams.get('code'), url.origin + url.pathname, fetch);
+		if (!jwt.id_token || !jwt.access_token || !jwt.refresh_token) {
+			throw new Error('Falsey jwt values returned. There was an error with the sign-in request.');
+		}
 		cookies.set('id_token', jwt.id_token, { path: '/' });
 		cookies.set('access_token', jwt.access_token, { path: '/' });
 		cookies.set('refresh_token', jwt.refresh_token, { path: '/' });

@@ -6,6 +6,7 @@ const CLIENT_ID = process.env.OIDC_CLIENT_ID;
 const CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 
 export const load: PageServerLoad = async ({ params, url }) => {
+	console.log(CLIENT_ID);
 	const authUrl = CUSTOM_DOMAIN + '/oauth2/authorize?';
 	const data = {
 		client_id: CLIENT_ID,
