@@ -4,6 +4,7 @@
 	import Navitem from './navitem.svelte';
 	import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
 	import Chevronleft from '../icons/chevronleft.svelte';
+	import SignIn from '$lib/components/profile/sign-in.svelte';
 
 	const userId = $page.data.userData?.uuid;
 	const navItems = $page.data.navitems;
@@ -47,8 +48,11 @@
 			{/if}
 		{/each}
 	</div>
-	<div class="text-custom-1 nav-item">
-		<Navitem linkData={navItems.lang} {orientation} dropDownClick={toggleMenuView} />
+	<div class="flex m-3">
+		<div class="text-custom-1 nav-item grow">
+			<Navitem linkData={navItems.lang} {orientation} dropDownClick={toggleMenuView} />
+		</div>
+		<SignIn light="true" />
 	</div>
 </div>
 
