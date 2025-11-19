@@ -7,6 +7,7 @@ import { DynamoDBClient, DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca"
 const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca"
 const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
+const OIDC_HOST_CERTIFICATE = process.env.OIDC_HOST_CERTIFICATE;
 const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 
 async function getExistingUserTableArn(tableName: string, region: string) {
@@ -68,6 +69,7 @@ export default {
           GEOCORE_API_DOMAIN,
           SEMANTIC_SEARCH_URL,
           OIDC_CLIENT_ID,
+          OIDC_HOST_CERTIFICATE,
           OIDC_CUSTOM_DOMAIN
         }
       });

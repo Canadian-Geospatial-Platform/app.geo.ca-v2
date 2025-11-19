@@ -1,9 +1,10 @@
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { error } from '@sveltejs/kit';
 import { parseText } from '$lib/utils/parse-text.ts';
 import { formatNumber } from '$lib/utils/format-number.ts';
+import { addToFavourites, removeFromFavourites } from '$lib/actions.ts';
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
 	// The "sst/node/config" package dynamically binds resources at runtime.
@@ -192,3 +193,8 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		});
 	}
 };
+
+export const actions = {
+	removeFromFavourites: removeFromFavourites,
+	addToFavourites: addToFavourites
+} satisfies Actions;

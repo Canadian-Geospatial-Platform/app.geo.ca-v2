@@ -1,4 +1,4 @@
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { getUserData } from '$lib/db/user.ts';
 import { removeFromFavourites } from '$lib/actions.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';

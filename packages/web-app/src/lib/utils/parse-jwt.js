@@ -1,32 +1,21 @@
-// import { CognitoJwtVerifier } from 'aws-jwt-verify';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
 
-const COGNITO_USERPOOL_ID = process.env.COGNITO_USERPOOL_ID;
+const OIDC_CLIENT_SECRET = process.env.OIDC_CLIENT_SECRET;
 const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
-
-// const verifier = CognitoJwtVerifier.create({
-// 	userPoolId: COGNITO_USERPOOL_ID,
-// 	tokenUse: 'access',
-// 	clientId: OIDC_CLIENT_ID
-// });
-
-// const getToken = async (cookies) => {
-// 	let access_token = cookies.get('access_token');
-
-// 	try {
-// 		const payload = await verifier.verify(access_token);
-// 		console.log('Token is valid.');
-// 		return { ok: true, value: payload };
-// 	} catch {
-// 		cookies.delete('access_token', { path: '/' });
-// 		cookies.delete('id_token', { path: '/' });
-// 		cookies.delete('refresh_token', { path: '/' });
-// 		console.log('Token not valid! Deleting token cookies.');
-// 		return { ok: false };
-// 	}
-// };
+const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
+const OIDC_REDIRECT_URIS = ["https://localhost:8080/en-ca/logout", "https://localhost:8080/fr-ca/logout"]
+const HOST_CERTIFICATE = process.env.OIDC_HOST_CERTIFICATE;
+const RESPONSE_TYPE = "code";
+const SCOPE = 'openid profile email phone language';
 
 const getToken = async (cookies) => {
-	return { ok: false };
+	try {
+		// validate token here
+		return { ok: true, value: "payload" };
+	} catch (error) {
+		console.log('Token is invalid.', error);
+		return { ok: false };
+	}
 };
 
 export { getToken };

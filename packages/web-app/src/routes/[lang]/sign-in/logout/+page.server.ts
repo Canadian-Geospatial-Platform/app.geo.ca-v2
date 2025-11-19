@@ -5,5 +5,6 @@ export const load: PageServerLoad = ({ cookies, params, fetch }) => {
 	cookies.delete('access_token', { path: '/' });
 	cookies.delete('id_token', { path: '/' });
 	cookies.delete('refresh_token', { path: '/' });
+	cookies.delete('jwt', { path: '/' });
 	throw redirect(303, '/' + params.lang + '/map-browser');
 };
