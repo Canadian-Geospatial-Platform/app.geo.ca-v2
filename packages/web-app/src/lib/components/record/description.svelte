@@ -73,29 +73,31 @@
 	</p>
 
 	{#if favouriteRecordList.includes(properties.id)}
-	<form method="POST" action="?/removeFromFavourites">
-		<input type="text" value={properties.id} />
-		<button type="submit"
-			class="text-custom-1 font-custom-style-body-5 bg-custom-16 border-custom-16 border-2
+		<form method="POST" action="?/removeFromFavourites">
+			<input type="text" value={properties.id} />
+			<button
+				type="submit"
+				class="text-custom-1 font-custom-style-body-5 bg-custom-16 border-custom-16 border-2
         rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mx-5 md:mx-0 mt-5 py-1 px-6 w-fit
         hover:border-custom-23 hover:bg-custom-23"
-			onclick={() => handleFavouriteClick(properties.id)}
-		>
-			<HeartFilled classes="h-6 inline my-2 mr-1" />
-			{removeFromFavourites}
-		</button>
+				onclick={() => handleFavouriteClick(properties.id)}
+			>
+				<HeartFilled classes="h-6 inline my-2 mr-1" />
+				{removeFromFavourites}
+			</button>
 		</form>
 	{:else}
-	<form method="POST" action="?/addToFavourites">
-		<input type="text" id="id" name="id" value={properties.id} />
-		<button type="submit"
-		 class="text-custom-16 font-custom-style-body-3 border-custom-16 border-2
+		<form method="POST" action="?/addToFavourites">
+			<input type="text" id="id" name="id" value={properties.id} />
+			<button
+				type="submit"
+				class="text-custom-16 font-custom-style-body-3 border-custom-16 border-2
         rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mx-5 md:mx-0 mt-5 py-1 px-6 w-fit
         hover:text-custom-1 hover:border-custom-23 hover:bg-custom-23"
-		>
-			<Heart classes="h-6 inline my-2 mr-1" />
-			{addToFavourites}
-		</button>
+			>
+				<Heart classes="h-6 inline my-2 mr-1" />
+				{addToFavourites}
+			</button>
 		</form>
 	{/if}
 </div>
