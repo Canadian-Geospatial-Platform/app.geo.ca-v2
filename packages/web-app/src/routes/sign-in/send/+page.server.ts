@@ -4,9 +4,10 @@ import { urlEncode } from '$lib/utils/url-encode';
 import { signIn } from '$lib/utils/sign-in';
 
 export const load: PageServerLoad = async ({ params, cookies, url }) => {
-	let signInUrl = await signIn(cookies);
+	let signInUrl = await signIn(cookies, url.href);
 	if (signInUrl.ok) {
-		throw redirect(303, signInUrl.value || '/');
+		let redirectUrl = signInUrl.value || '/'
+		throw redirect(303, redirectUrl);
 	} else {
 		//handle error
 	}

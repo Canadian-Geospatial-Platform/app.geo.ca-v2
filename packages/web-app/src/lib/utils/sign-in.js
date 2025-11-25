@@ -20,18 +20,19 @@ let config = await client.discovery(
 	clientId,
 	clientSecret,
 )
-console.log(config)
+
 // configuration end
 
-const signIn = async (cookies) => {
+// returns a url that the user must be redirected to.
+const signIn = async (cookies, state) => {
 	console.log("signing in.")
 	try {
 		/**
 		 * Value used in the authorization request as the redirect_uri parameter, this
 		 * is typically pre-registered at the Authorization Server.
 		 */
-		let redirect_uri = "https://localhost:8080/en-ca/receive"
-		let scope = SCOPE// Scope of the access request
+		let redirect_uri = "http://localhost:8080/sign-in/receive"
+		let scope = SCOPE // Scope of the access request
 		/**
 		 * PKCE: The following MUST be generated for every redirect to the
 		 * authorization_endpoint. You must store the code_verifier and state in the
@@ -40,6 +41,7 @@ const signIn = async (cookies) => {
 		 */
 		let code_verifier = client.randomPKCECodeVerifier()
 		cookies.set("code_verifier", code_verifier, { path: '/' })
+		cookies.set("state", state, { path: '/' })
 		let code_challenge =
 			await client.calculatePKCECodeChallenge(code_verifier)
 
@@ -57,26 +59,35 @@ const signIn = async (cookies) => {
 
 		return { ok: true, value: redirectTo };
 	} catch (error) {
-		console.log('Token is invalid.', error);
+		console.log('Error building sign-in url.', error);
 		return { ok: false };
 	}
 };
 
-const exchangeCode = async (currentUrl, state, cookies) => {
-	let getCurrentUrl = currentUrl
+const exchangeCode = async (currentUrl, cookies) => {
 
-	let tokens = await client.authorizationCodeGrant(
-		config,
-		getCurrentUrl(),
-		{
-			pkceCodeVerifier: cookies.get("code_verifier"),
-			expectedState: state,
-		},
-	)
+	currentUrl = new URL("http://localhost:8080/sign-in/receive")
+	let ret = { ok: false, payload: null }
+	try {
+		let tokens = await client.authorizationCodeGrant(
+			config,
+			currentUrl,
+			{
+				pkceCodeVerifier: cookies.get("code_verifier"),
+				expectedState: cookies.get("state"),
+			},
+		)
 
-	console.log('Token Endpoint Response', tokens)
-	cookies.set('jwt', JSON.stringify(tokens), { path: '/' });
-	return tokens;
+		console.log('Token Endpoint Response', tokens)
+		cookies.set('jwt', JSON.stringify(tokens), { path: '/' });
+		ret.ok = true;
+		ret.payload = cookies.get("state")
+		console.log("payload is:\n", payload)
+		return ret;
+	} catch (error) {
+		console.error("error exchanging code.", error)
+		return ret;
+	}
 }
 
 const signOut = async (cookies) => {

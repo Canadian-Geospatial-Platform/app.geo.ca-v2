@@ -8,13 +8,15 @@ const CLIENT_ID = process.env.OIDC_CLIENT_ID;
 const CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 const CLIENT_SECRET = Config.OIDC_CLIENT_SECRET;
 
-export const load: PageServerLoad = async ({ cookies, params, url, fetch }) => {
+export const load: PageServerLoad = async ({ cookies, url }) => {
 	let jwt = null;
 	try {
-		jwt = exchangeCode()
+		let state = await exchangeCode(url, cookies)
+		console.log(state)
+		if (redirect.ok)
+			throw redirect(303, state.payload || '/');
 	} catch (error) {
 		console.warn('error fetching and setting jwt', error);
 	}
 
-	throw redirect(303, url.searchParams.get('state'));
 };
