@@ -10,11 +10,10 @@ const CLIENT_SECRET = Config.OIDC_CLIENT_SECRET;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	let jwt = null;
-	try {
-		let state = await exchangeCode(url, cookies);
-		console.log(state);
-		if (redirect.ok) throw redirect(303, state.payload || '/');
-	} catch (error) {
-		console.warn('error fetching and setting jwt', error);
+	let res = await exchangeCode(url, cookies);
+	if (res.ok) {
+		throw redirect(303, res.value || '/');
+	} else {
+		console.warn('error fetching and setting jwt');
 	}
 };

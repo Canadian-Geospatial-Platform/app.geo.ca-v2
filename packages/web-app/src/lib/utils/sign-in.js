@@ -64,20 +64,17 @@ const signIn = async (cookies, state) => {
 };
 
 const exchangeCode = async (currentUrl, cookies) => {
-	console.log(currentUrl);
-	// currentUrl = new URL("http://localhost:8080/sign-in/receive")
-	let ret = { ok: false, payload: null };
+	let ret = { ok: false, value: null };
 	try {
 		let tokens = await client.authorizationCodeGrant(config, currentUrl, {
 			pkceCodeVerifier: cookies.get('code_verifier'),
 			expectedState: cookies.get('state')
 		});
 
-		console.log('Token Endpoint Response', tokens);
 		cookies.set('jwt', JSON.stringify(tokens), { path: '/' });
+		ret.value = cookies.get('state');
 		ret.ok = true;
-		ret.payload = cookies.get('state');
-		console.log('payload is:\n', payload);
+		console.log('prereturn');
 		return ret;
 	} catch (error) {
 		console.error('error exchanging code.', error);
