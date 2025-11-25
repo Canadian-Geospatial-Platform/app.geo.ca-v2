@@ -70,11 +70,13 @@ const exchangeCode = async (currentUrl, cookies) => {
 			pkceCodeVerifier: cookies.get('code_verifier'),
 			expectedState: cookies.get('state')
 		});
-
-		cookies.set('jwt', JSON.stringify(tokens), { path: '/' });
+		cookies.set('access_token', tokens.access_token, { path: '/' });
+		cookies.set('id_token', tokens.id_token, { path: '/' });
+		cookies.set('refresh_token', tokens.refresh_token, { path: '/' });
+		cookies.set('grant_id', tokens.grant_id, { path: '/' });
 		ret.value = cookies.get('state');
 		ret.ok = true;
-		console.log('prereturn');
+		console.log('User is signed in.');
 		return ret;
 	} catch (error) {
 		console.error('error exchanging code.', error);
@@ -86,8 +88,8 @@ const signOut = async (cookies) => {
 	cookies.delete('access_token', { path: '/' });
 	cookies.delete('id_token', { path: '/' });
 	cookies.delete('refresh_token', { path: '/' });
-	cookies.delete('jwt', { path: '/' });
-	console.log('signed out.');
+	cookies.delete('grant_id', { path: '/' });
+	console.log('User is signed out.');
 };
 
 export { signIn, signOut, exchangeCode };
