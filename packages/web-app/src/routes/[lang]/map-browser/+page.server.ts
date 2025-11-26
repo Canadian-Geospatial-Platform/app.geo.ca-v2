@@ -5,21 +5,10 @@ import { getUserData } from '$lib/db/user.ts';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results.ts';
 import { formatNumber } from '$lib/utils/format-number.ts';
-import { Config } from 'sst/node/config';
+import { getGeocoreApiDomain, getSemanticSearchUrl } from '$lib/utils/environment-variables.ts';
 
-let GEOCORE_API_DOMAIN: string;
-let SEMANTIC_SEARCH_URL: string;
-try {
-	console.log('Reading values from sst/config/node.');
-	GEOCORE_API_DOMAIN = Config.VITE_GEOCORE_API_DOMAIN;
-	SEMANTIC_SEARCH_URL = Config.VITE_SEMANTIC_SEARCH_URL;
-} catch (error) {
-	console.warn(
-		'Error using values from sst/config/node, assuming the project is running locally and reading from .env.\n If this is not the case please ensure correct configuration of environment variables.'
-	);
-	GEOCORE_API_DOMAIN = import.meta.env.VITE_GEOCORE_API_DOMAIN;
-	SEMANTIC_SEARCH_URL = import.meta.env.VITE_SEMANTIC_SEARCH_URL;
-}
+const GEOCORE_API_DOMAIN = getGeocoreApiDomain();
+const SEMANTIC_SEARCH_URL = getSemanticSearchUrl();
 
 console.log(GEOCORE_API_DOMAIN);
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {

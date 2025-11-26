@@ -4,8 +4,6 @@ import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { DynamoDBClient, DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 
-const VITE_GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca"
-const VITE_SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca"
 const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID || "";
 const OIDC_HOST_CERTIFICATE = process.env.OIDC_HOST_CERTIFICATE || "";
 const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN || "";
@@ -47,7 +45,15 @@ export default {
 
       /*** Other Resources ***/
       const FEATURE_SIGN_IN = new Config.Parameter(stack, "FEATURE_SIGN_IN", {
-        value: "false",
+        value: "true",
+      });
+
+      const VITE_GEOCORE_API_DOMAIN = new Config.Parameter(stack, "VITE_GEOCORE_API_DOMAIN", {
+        value: "https://geocore.api.geo.ca", 
+      });
+
+      const VITE_SEMANTIC_SEARCH_URL = new Config.Parameter(stack, "VITE_SEMANTIC_SEARCH_URL ", {
+        value: "https://search-recherche.geocore.api.geo.ca", 
       });
 
       const site = new SvelteKitSite(stack, "site", {
@@ -55,11 +61,11 @@ export default {
         bind: [
           USER_TABLE,
           FEATURE_SIGN_IN,
-          OIDC_CLIENT_SECRET
+          OIDC_CLIENT_SECRET,
+          VITE_GEOCORE_API_DOMAIN,
+          VITE_SEMANTIC_SEARCH_URL           
         ],
         environment: {
-          VITE_GEOCORE_API_DOMAIN,
-          VITE_SEMANTIC_SEARCH_URL,
           OIDC_CLIENT_ID,
           OIDC_HOST_CERTIFICATE,
           OIDC_CUSTOM_DOMAIN
