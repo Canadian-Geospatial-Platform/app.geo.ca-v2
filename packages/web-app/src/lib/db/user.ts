@@ -2,17 +2,16 @@ import { Table } from 'sst/node/table';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { getToken } from '$lib/utils/parse-jwt';
-import { Config } from "sst/node/config";
+import { Config } from 'sst/node/config';
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
-const tableName = Config.USER_TABLE_NAME; // Comes from your SST binding
 
 const getUserData = async (cookies) => {
 	let token = await getToken(cookies);
 	if (!token.ok) return { Item: { uuid: null, favourites: [] } };
 	const command = new GetCommand({
-		TableName: tableName,
+		TableName: Table.users.tableName,
 		Key: {
 			uuid: token.value.username
 		}

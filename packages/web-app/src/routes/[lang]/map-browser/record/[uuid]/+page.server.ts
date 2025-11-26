@@ -5,6 +5,18 @@ import { error } from '@sveltejs/kit';
 import { parseText } from '$lib/utils/parse-text.ts';
 import { formatNumber } from '$lib/utils/format-number.ts';
 import { addToFavourites, removeFromFavourites } from '$lib/actions.ts';
+import { Config } from 'sst/node/config';
+
+let GEOCORE_API_DOMAIN: string;
+try {
+	console.log('Reading values from sst/config/node.');
+	GEOCORE_API_DOMAIN = Config.VITE_GEOCORE_API_DOMAIN;
+} catch (e) {
+	console.warn(
+		'Error using values from sst/config/node, assuming the project is running locally and reading from .env.\n If this is not the case please ensure correct configuration of environment variables.'
+	);
+	GEOCORE_API_DOMAIN = import.meta.env.VITE_GEOCORE_API_DOMAIN;
+}
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
 	// The "sst/node/config" package dynamically binds resources at runtime.
@@ -12,7 +24,6 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	// are not available during the build process. To avoid this, we import it inside
 	// the `load()` function so it's only accessed when the server is running.
 	const config = await import('sst/node/config');
-	const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
 	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 

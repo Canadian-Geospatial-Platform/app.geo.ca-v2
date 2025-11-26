@@ -1,6 +1,16 @@
 import { json } from '@sveltejs/kit';
+import { Config } from 'sst/node/config';
 
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
+let GEOCORE_API_DOMAIN: string;
+try {
+	console.log('Reading values from sst/config/node.');
+	GEOCORE_API_DOMAIN = Config.VITE_GEOCORE_API_DOMAIN;
+} catch (e) {
+	console.warn(
+		'Error using values from sst/config/node, assuming the project is running locally and reading from .env.\n If this is not the case please ensure correct configuration of environment variables.'
+	);
+	GEOCORE_API_DOMAIN = import.meta.env.VITE_GEOCORE_API_DOMAIN;
+}
 
 export async function POST({ request }) {
 	const { ids, lang } = await request.json();

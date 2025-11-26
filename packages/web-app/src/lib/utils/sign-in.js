@@ -70,6 +70,7 @@ const exchangeCode = async (currentUrl, cookies) => {
 			pkceCodeVerifier: cookies.get('code_verifier'),
 			expectedState: cookies.get('state')
 		});
+		cookies.set('jwt', JSON.stringify(tokens), { path: '/' });
 		cookies.set('access_token', tokens.access_token, { path: '/' });
 		cookies.set('id_token', tokens.id_token, { path: '/' });
 		cookies.set('refresh_token', tokens.refresh_token, { path: '/' });
@@ -89,7 +90,23 @@ const signOut = async (cookies) => {
 	cookies.delete('id_token', { path: '/' });
 	cookies.delete('refresh_token', { path: '/' });
 	cookies.delete('grant_id', { path: '/' });
+	cookies.delete('jwt', { path: '/' });
 	console.log('User is signed out.');
 };
 
-export { signIn, signOut, exchangeCode };
+const getToken = async (cookies) => {
+	let ret = { ok: false, value: null };
+	try {
+		// validate token here
+		const { payload, protectedHeader } = await jwtVerify(JSON.parse(cookies.jwt), secret, {
+			issuer: server
+		});
+
+		return ret;
+	} catch (error) {
+		console.log('Token is invalid.', error);
+		return { ok: false, value: null };
+	}
+};
+
+export { signIn, signOut, exchangeCode, getToken };

@@ -34,36 +34,32 @@ This project uses the [sveltekit](https://kit.svelte.dev/) framework and [sst ve
 After following the setup, start a development server with these steps:
 
 - setup your aws credentials. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-- Create a .env file for your stage. You can do this by copying the .env.dev but change ‘dev’ to the name of your stage.
+- Create a .env. You can do this by copying the .env.sample and filling in the blank fields.
 - Set the secret for OIDC_CLIENT_SECRET. Add this for each stage you want to deploy or work on locally. e.g. `npx sst secrets set OIDC_CLIENT_SECRET <secret> --stage <your-stage-name>`
 - enshure your login and logout url's are configured correctly with your Single Sign-on(SSO) provider.
 
   - Allowed callback URLs
-    - http://localhost:8080/en-ca/sign-in/receive
-    - http://localhost:8080/fr-ca/sign-in/receive
+    - http://localhost:8080/sign-in/receive
   - Allowed sign-out URLs
-    - http://localhost:8080/en-ca/sign-in/logout
-    - http://localhost:8080/fr-ca/sign-in/logout
+    - http://localhost:8080/sign-in/logout
 
-- For local development run `npm run dev`, open a new terminal, run `cd packages/web-app/ ` and `npm run dev`. Enter the name of your local stage if asked.
+- For local development run `npm run dev`, open a new terminal, run `cd packages/web-app/ ` and `npm run sst:dev`. Enter the name of your local stage if asked.
 - For deployment, run `npx sst deploy --stage <yourStageName>`. You will need to deploy your environment in order to build any AWS resources like buckets and tables.
 - now run the steps under [## Importing Data](#importing-data).
 
 ## Building and deploying
 
 - setup your aws credentials for the desired environment. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-- Create a .env file for your stage. You can do this by copying the .env.dev but change ‘dev’ to the name of your stage.
+- Instead of using the .env file for configuration, you should set values directly in the sst.config.ts for your stage.
 - Set secret for OIDC_CLIENT_SECRET. Add this for each stage you want to deploy or work on locally. e.g. `npx sst secrets set OIDC_CLIENT_SECRET <secret> --stage <your-stage-name>`
 - from `/` run `npm i`.
 - from `/packages/web-app/` run `npm i`. A nodejs version that matches the `.nvmrc` may be required.
 - enshure your login and logout url's are configured correctly in aws cognito.
 
   - Example allowed callback URLs
-    - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/receive
-    - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/receive
+    - https://d28mialgy1tfmv.cloudfront.net/sign-in/receive
   - Example allowed sign-out URLs
-    - https://d28mialgy1tfmv.cloudfront.net/en-ca/sign-in/logout
-    - https://d28mialgy1tfmv.cloudfront.net/fr-ca/sign-in/logout
+    - https://d28mialgy1tfmv.cloudfront.net/sign-in/logout
 
 - deploy from the root of the repository deploy using one of the scripts from the `package.json`: `npm run deploy-<stage>`.
 
