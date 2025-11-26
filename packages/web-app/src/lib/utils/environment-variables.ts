@@ -21,4 +21,28 @@ const getSemanticSearchUrl = function () {
 		: import.meta.env.VITE_SEMANTIC_SEARCH_URL;
 };
 
-export { getGeocoreApiDomain, getSemanticSearchUrl };
+const getOidcCustomDomain = function () {
+	return 'VITE_OIDC_CUSTOM_DOMAIN' in Config
+		? Config.VITE_OIDC_CUSTOM_DOMAIN
+		: import.meta.env.VITE_OIDC_CUSTOM_DOMAIN;
+};
+
+const getOidcClientId = function () {
+	return 'VITE_OIDC_CLIENT_ID' in Config
+		? Config.VITE_OIDC_CLIENT_ID
+		: import.meta.env.VITE_OIDC_CLIENT_ID;
+};
+
+const getOidcClientSecret = function () {
+	return 'VITE_OIDC_CLIENT_SECRET' in Config
+		? Config.VITE_OIDC_CLIENT_SECRET
+		: import.meta.env.VITE_OIDC_CLIENT_SECRET;
+};
+
+export {
+	getGeocoreApiDomain,
+	getSemanticSearchUrl,
+	getOidcCustomDomain,
+	getOidcClientId,
+	getOidcClientSecret
+};

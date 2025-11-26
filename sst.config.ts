@@ -56,6 +56,16 @@ export default {
         value: "https://search-recherche.geocore.api.geo.ca", 
       });
 
+      const VITE_OIDC_CUSTOM_DOMAIN = new Config.Parameter(stack, "VITE_OIDC_CUSTOM_DOMAIN ", {
+        value: "https://cds-gcsignin-test.verify.ibm.com", 
+      });
+
+      const VITE_OIDC_CLIENT_ID = new Config.Parameter(stack, "VITE_OIDC_CLIENT_ID ", {
+        value: "cb802d19-a800-4433-ba7e-369d8ab58604", 
+      });
+
+      const VITE_OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
+
       const site = new SvelteKitSite(stack, "site", {
         path: "packages/web-app/",
         bind: [
@@ -63,8 +73,11 @@ export default {
           FEATURE_SIGN_IN,
           OIDC_CLIENT_SECRET,
           VITE_GEOCORE_API_DOMAIN,
-          VITE_SEMANTIC_SEARCH_URL           
-        ],
+          VITE_SEMANTIC_SEARCH_URL,
+          VITE_OIDC_CUSTOM_DOMAIN,
+          VITE_OIDC_CLIENT_ID,
+          VITE_OIDC_CLIENT_SECRET
+                  ],
         environment: {
           OIDC_CLIENT_ID,
           OIDC_HOST_CERTIFICATE,

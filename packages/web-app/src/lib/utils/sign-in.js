@@ -1,17 +1,19 @@
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import * as client from 'openid-client';
 import { page } from '$app/stores';
+import {
+	getOidcCustomDomain,
+	getOidcClientId,
+	getOidcClientSecret
+} from '$lib/utils/environment-variables.ts';
 
-const OIDC_CLIENT_SECRET = process.env.OIDC_CLIENT_SECRET;
-const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
-const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
-const OIDC_REDIRECT_URIS = [
-	'https://localhost:8080/en-ca/logout',
-	'https://localhost:8080/fr-ca/logout'
-];
-const HOST_CERTIFICATE = process.env.OIDC_HOST_CERTIFICATE;
+const OIDC_CLIENT_SECRET = getOidcClientSecret();
+const OIDC_CLIENT_ID = getOidcClientId();
+const OIDC_CUSTOM_DOMAIN = getOidcCustomDomain();
 const RESPONSE_TYPE = 'code';
 const SCOPE = 'openid profile email phone language';
+
+console.log(OIDC_CLIENT_SECRET, OIDC_CLIENT_ID, OIDC_CUSTOM_DOMAIN);
 
 // configuration
 let server = new URL(OIDC_CUSTOM_DOMAIN + '/oauth2/.well-known/openid-configuration'); // Authorization Server's Issuer Identifier
