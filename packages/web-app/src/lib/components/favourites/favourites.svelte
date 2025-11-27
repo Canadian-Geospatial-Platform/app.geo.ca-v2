@@ -135,45 +135,6 @@
 		}
 		mapToggle = false;
 	}
-
-	// Local storage is only accessible from the client side, so we need to get
-	// the FavouritesResources array inside onMount
-	onMount(async () => {
-		// If not signed in, check the local storage for saved resources instead
-		if (!$page.data.signedIn) {
-			let stored = localStorage.getItem('FavouritesResources');
-
-			if (stored) {
-				// local storage is always a string, so we need to convert to an array
-				stored = stored.split(',');
-				favouriteRecordList = [...stored];
-			}
-
-			// Issue POST request for record details
-			if (favouriteRecordList.length > 0) {
-				const response = await fetch('/' + lang + '/favourites', {
-					method: 'POST',
-					body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
-					headers: { 'Content-Type': 'application/json' }
-				});
-
-				records = await response.json();
-
-				tableDataArray = records.map((record) => {
-					return {
-						disableCheckbox: !record.hasMapLayer ?? true,
-						id: record.id,
-						formats: record.formats.join(', '),
-						name: record[titleKey],
-						url: $page.url.origin + '/' + lang + '/map-browser/record/' + record.id
-					};
-				});
-			}
-
-			// Turn off the loading mask once the records have finished loading
-			loading = false;
-		}
-	});
 </script>
 
 <h1 class="mt-12 mb-7 mx-5 md:mx-0 font-custom-style-h1 md:mr-auto leading-tight">

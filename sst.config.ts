@@ -4,10 +4,6 @@ import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { DynamoDBClient, DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 
-const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID || "";
-const OIDC_HOST_CERTIFICATE = process.env.OIDC_HOST_CERTIFICATE || "";
-const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN || "";
-
 async function getExistingUserTableArn(tableName: string, region: string) {
   const dynamoDBClient = new DynamoDBClient({ region });
   try {
@@ -33,7 +29,6 @@ export default {
     const existingUserTableArn = await getExistingUserTableArn(tableName, app.region);
 
     app.stack(function Site({ stack }) {
-      const OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
       /*** User Table ***/
 
       // Check if an existing user table exists. If it does, use it instead of
@@ -49,22 +44,22 @@ export default {
       });
 
       const VITE_GEOCORE_API_DOMAIN = new Config.Parameter(stack, "VITE_GEOCORE_API_DOMAIN", {
-        value: "https://geocore.api.geo.ca", 
+        value: "https://geocore.api.geo.ca",
       });
 
-      const VITE_SEMANTIC_SEARCH_URL = new Config.Parameter(stack, "VITE_SEMANTIC_SEARCH_URL ", {
-        value: "https://search-recherche.geocore.api.geo.ca", 
+      const VITE_SEMANTIC_SEARCH_URL = new Config.Parameter(stack, "VITE_SEMANTIC_SEARCH_URL", {
+        value: "https://search-recherche.geocore.api.geo.ca",
       });
 
-      const VITE_OIDC_CUSTOM_DOMAIN = new Config.Parameter(stack, "VITE_OIDC_CUSTOM_DOMAIN ", {
-        value: "https://cds-gcsignin-test.verify.ibm.com", 
+      const VITE_OIDC_CUSTOM_DOMAIN = new Config.Parameter(stack, "VITE_OIDC_CUSTOM_DOMAIN", {
+        value: "https://cds-gcsignin-test.verify.ibm.com",
       });
 
-      const VITE_OIDC_CLIENT_ID = new Config.Parameter(stack, "VITE_OIDC_CLIENT_ID ", {
-        value: "cb802d19-a800-4433-ba7e-369d8ab58604", 
+      const VITE_OIDC_CLIENT_ID = new Config.Parameter(stack, "VITE_OIDC_CLIENT_ID", {
+        value: "cb802d19-a800-4433-ba7e-369d8ab58604",
       });
 
-      const VITE_OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
+      const OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
 
       const site = new SvelteKitSite(stack, "site", {
         path: "packages/web-app/",
@@ -76,13 +71,7 @@ export default {
           VITE_SEMANTIC_SEARCH_URL,
           VITE_OIDC_CUSTOM_DOMAIN,
           VITE_OIDC_CLIENT_ID,
-          VITE_OIDC_CLIENT_SECRET
-                  ],
-        environment: {
-          OIDC_CLIENT_ID,
-          OIDC_HOST_CERTIFICATE,
-          OIDC_CUSTOM_DOMAIN
-        }
+        ],
       });
 
       stack.addOutputs({

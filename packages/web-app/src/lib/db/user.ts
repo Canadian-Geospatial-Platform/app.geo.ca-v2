@@ -9,11 +9,11 @@ const docClient = DynamoDBDocumentClient.from(client);
 
 const getUserData = async (cookies) => {
 	let token = await getToken(cookies);
-	if (!token.ok) return { Item: { uuid: null, favourites: [] } };
+	if (!token.ok) { return { Item: { uuid: null, favourites: [] } } };
 	const command = new GetCommand({
 		TableName: Table.users.tableName,
 		Key: {
-			uuid: token.value.username
+			uuid: token.value.sub
 		}
 	});
 

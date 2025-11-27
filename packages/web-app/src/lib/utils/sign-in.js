@@ -104,16 +104,15 @@ const signOut = async (cookies) => {
 
 const getToken = async (cookies) => {
 	let ret = { ok: false, value: null };
-	console.log(JSON.parse(cookies.get('jwt')));
+	// console.log(JSON.parse(cookies.get('jwt')));
 	try {
 		// validate token here
 		const { payload, protectedHeader } = await jwtVerify(cookies.get('id_token'), JWKS, {
 			issuer: configValues.issuer,
 			audience: OIDC_CLIENT_ID
 		});
-		console.log('payload is:\n', payload);
-		console.log('header is:\n', protectedHeader);
-
+		ret.value = payload;
+		ret.ok = true;
 		return ret;
 	} catch (error) {
 		console.log('Token is invalid.', error);
