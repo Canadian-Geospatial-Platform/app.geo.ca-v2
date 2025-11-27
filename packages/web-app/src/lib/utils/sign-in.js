@@ -13,26 +13,32 @@ const OIDC_CUSTOM_DOMAIN = getOidcCustomDomain();
 const RESPONSE_TYPE = 'code';
 const SCOPE = 'openid profile email phone language';
 
-console.log(OIDC_CLIENT_SECRET, OIDC_CLIENT_ID, OIDC_CUSTOM_DOMAIN);
-
 // configuration
-let server = new URL(OIDC_CUSTOM_DOMAIN + '/oauth2/.well-known/openid-configuration'); // Authorization Server's Issuer Identifier
-let clientId = OIDC_CLIENT_ID || ''; // Client identifier at the Authorization Server
-let clientSecret = OIDC_CLIENT_SECRET || ''; // Client Secret
+const server = new URL(OIDC_CUSTOM_DOMAIN + '/oauth2/.well-known/openid-configuration'); // Authorization Server's Issuer Identifier
+const clientId = OIDC_CLIENT_ID || ''; // Client identifier at the Authorization Server
+const clientSecret = OIDC_CLIENT_SECRET || ''; // Client Secret
 
-let config = await client.discovery(server, clientId, clientSecret);
+const config = await client.discovery(server, clientId, clientSecret);
+
+// Fetch OIDC configuration
+const configValues = await fetch(
+	`${OIDC_CUSTOM_DOMAIN}/oauth2/.well-known/openid-configuration`
+).then((res) => res.json());
+
+// Create JWKS client
+const JWKS = createRemoteJWKSet(new URL(configValues.jwks_uri));
 
 // configuration end
 
 // returns a url that the user must be redirected to.
-const signIn = async (cookies, state) => {
+const signIn = async (cookies, state, url) => {
 	console.log('signing in.');
 	try {
 		/**
 		 * Value used in the authorization request as the redirect_uri parameter, this
 		 * is typically pre-registered at the Authorization Server.
 		 */
-		let redirect_uri = 'http://localhost:8080/sign-in/receive';
+		let redirect_uri = url.origin + '/sign-in/receive';
 		let scope = SCOPE; // Scope of the access request
 		/**
 		 * PKCE: The following MUST be generated for every redirect to the
@@ -98,11 +104,15 @@ const signOut = async (cookies) => {
 
 const getToken = async (cookies) => {
 	let ret = { ok: false, value: null };
+	console.log(JSON.parse(cookies.get('jwt')));
 	try {
 		// validate token here
-		const { payload, protectedHeader } = await jwtVerify(JSON.parse(cookies.jwt), secret, {
-			issuer: server
+		const { payload, protectedHeader } = await jwtVerify(cookies.get('id_token'), JWKS, {
+			issuer: configValues.issuer,
+			audience: OIDC_CLIENT_ID
 		});
+		console.log('payload is:\n', payload);
+		console.log('header is:\n', protectedHeader);
 
 		return ret;
 	} catch (error) {

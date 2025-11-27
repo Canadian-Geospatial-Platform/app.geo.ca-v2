@@ -1,7 +1,7 @@
 import { Table } from 'sst/node/table';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
-import { getToken } from '$lib/utils/parse-jwt';
+import { getToken } from '$lib/utils/sign-in';
 import { Config } from 'sst/node/config';
 
 const client = new DynamoDBClient({});
