@@ -30,6 +30,20 @@ const JWKS = createRemoteJWKSet(new URL(configValues.jwks_uri));
 
 // configuration end
 
+// Base64 URL encoding/decoding helpers
+const base64UrlEncode = (str) => {
+	return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+
+const base64UrlDecode = (str) => {
+	// Add back padding
+	let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+	while (base64.length % 4) {
+		base64 += '=';
+	}
+	return atob(base64);
+};
+
 // returns a url that the user must be redirected to.
 const signIn = async (cookies, state, url) => {
 	console.log('signing in.');
@@ -38,6 +52,8 @@ const signIn = async (cookies, state, url) => {
 		 * Value used in the authorization request as the redirect_uri parameter, this
 		 * is typically pre-registered at the Authorization Server.
 		 */
+		console.log('url is:\n', url);
+		console.log('url is:\n', JSON.stringify(url));
 		let redirect_uri = url.origin + '/sign-in/receive';
 		let scope = SCOPE; // Scope of the access request
 		/**
@@ -48,13 +64,15 @@ const signIn = async (cookies, state, url) => {
 		 */
 		let code_verifier = client.randomPKCECodeVerifier();
 		cookies.set('code_verifier', code_verifier, { path: '/' });
-		cookies.set('state', state, { path: '/' });
+		// Encode state as base64 URL before storing
+		const encodedState = base64UrlEncode(state);
+		cookies.set('state', encodedState, { path: '/' });
 		let code_challenge = await client.calculatePKCECodeChallenge(code_verifier);
 
 		let parameters = {
 			redirect_uri,
 			scope,
-			state,
+			state: encodedState,
 			code_challenge,
 			code_challenge_method: 'S256'
 		};
@@ -74,16 +92,19 @@ const signIn = async (cookies, state, url) => {
 const exchangeCode = async (currentUrl, cookies) => {
 	let ret = { ok: false, value: null };
 	try {
+		// Decode the state from base64 URL
+		const encodedState = cookies.get('state');
 		let tokens = await client.authorizationCodeGrant(config, currentUrl, {
 			pkceCodeVerifier: cookies.get('code_verifier'),
-			expectedState: cookies.get('state')
+			expectedState: encodedState
 		});
 		cookies.set('jwt', JSON.stringify(tokens), { path: '/' });
 		cookies.set('access_token', tokens.access_token, { path: '/' });
 		cookies.set('id_token', tokens.id_token, { path: '/' });
 		cookies.set('refresh_token', tokens.refresh_token, { path: '/' });
 		cookies.set('grant_id', tokens.grant_id, { path: '/' });
-		ret.value = cookies.get('state');
+		// Decode the state before returning
+		ret.value = base64UrlDecode(encodedState);
 		ret.ok = true;
 		console.log('User is signed in.');
 		return ret;
