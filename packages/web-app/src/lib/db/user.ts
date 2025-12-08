@@ -8,12 +8,12 @@ const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
 const getUserData = async (cookies) => {
-	console.log("getting user data")
+	console.log('getting user data');
 	let token = await getToken(cookies);
 	if (!token.ok) {
-		console.log("token not ok, returning default value");
-		return { Item: { uuid: null, favourites: [] } }
-	};
+		console.log('token not ok, returning default value');
+		return { Item: { uuid: null, favourites: [] } };
+	}
 	const command = new GetCommand({
 		TableName: Table.users.tableName,
 		Key: {
@@ -29,9 +29,9 @@ const getUserData = async (cookies) => {
 		console.error(error);
 	}
 	if (response?.Item == undefined) {
-		console.log("response.Item was undefined", response)
+		console.log('response.Item was undefined', response);
 		response = { Item: { uuid: token.value.sub, favourites: [] } };
-		}
+	}
 	return response;
 };
 

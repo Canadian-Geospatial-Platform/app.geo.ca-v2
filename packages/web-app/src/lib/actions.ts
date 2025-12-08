@@ -2,11 +2,15 @@ import { getUserData, putUserData } from '$lib/db/user.ts';
 import { redirect } from '@sveltejs/kit';
 
 const addToFavourites = async ({ url, cookies, request, event }) => {
+	console.log('adding to favorites');
 	let userData = await getUserData(cookies);
 	userData = userData.Item;
 	const fd = await request.formData();
 	userData.favourites.push(fd.get('id'));
+
+	console.log('here is what will be put', userData);
 	putUserData(userData, cookies);
+	console.log('finished put request');
 	throw redirect(303, url.href);
 };
 const removeFromFavourites = async ({ url, cookies, request, event }) => {

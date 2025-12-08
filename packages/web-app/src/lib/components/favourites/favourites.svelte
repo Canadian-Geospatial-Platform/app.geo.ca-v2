@@ -55,7 +55,7 @@
 	let selectedIds = $state(new Set());
 	let numSelected = $derived(selectedIds.size);
 
-	let loading = $state(true);
+	let loading = $state(false);
 	let mapToggle = $state(false);
 
 	let favouriteRecordList = $state(

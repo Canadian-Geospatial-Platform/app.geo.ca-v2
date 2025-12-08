@@ -22,14 +22,14 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		console.error('error fetching user data in records: \n', e);
 	}
 
-	console.log("getting records")
+	console.log('getting records');
 	try {
 		response = await getRecords(userData.Item.favourites, params.lang, fetch);
 	} catch (e) {
 		console.error('error fetching records: \n', e);
 	}
 
-	console.log("getting results")
+	console.log('getting results');
 	let results = [];
 	try {
 		results = await response;
@@ -38,7 +38,8 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 		console.error('error fetching records: \n', e);
 		results = [];
 	}
-	console.log("results are:\n", results)
+	console.log('results are:\n', results);
+	console.log('userData is:\n', userData);
 
 	return {
 		lang: params.lang,
