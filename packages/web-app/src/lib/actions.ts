@@ -14,11 +14,13 @@ const addToFavourites = async ({ url, cookies, request, event }) => {
 	throw redirect(303, url.href);
 };
 const removeFromFavourites = async ({ url, cookies, request, event }) => {
+	console.log('Remove from favorites');
 	let userData = await getUserData(cookies);
 	userData = userData.Item;
 	const fd = await request.formData();
 	let x = userData.favourites.filter((x) => x !== fd.get('id'));
 	userData.favourites = userData.favourites.filter((x) => x !== fd.get('id'));
+	console.log('here is what will be put', userData);
 	putUserData(userData, cookies);
 	throw redirect(303, url.href);
 };

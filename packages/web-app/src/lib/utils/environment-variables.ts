@@ -34,8 +34,8 @@ const getOidcClientId = function () {
 };
 
 const getOidcClientSecret = function () {
-	return 'VITE_OIDC_CLIENT_SECRET' in Config
-		? Config.VITE_OIDC_CLIENT_SECRET
+	return 'OIDC_CLIENT_SECRET' in Config
+		? Config.OIDC_CLIENT_SECRET
 		: import.meta.env.VITE_OIDC_CLIENT_SECRET;
 };
 

@@ -232,23 +232,29 @@
 
 							<!------------- Favourites button ------------->
 							{#if favouriteRecordList.includes(result.id)}
-								<button
-									class="col-start-10 justify-self-end text-custom-16 self-center w-fit
+								<form method="POST" action="?/removeFromFavourites">
+									<input type="text" value={result.id} name="id" />
+									<button
+										type="submit"
+										class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23"
-									title={translations.removeFromFavourites}
-									onclick={() => handleFavouriteClick(result.id)}
-								>
-									<HeartFilled classes="h-9" />
-								</button>
+										title={translations.removeFromFavourites}
+									>
+										<HeartFilled classes="h-9" />
+									</button>
+								</form>
 							{:else}
-								<button
-									class="col-start-10 justify-self-end text-custom-16 self-center w-fit
+								<form method="POST" action="?/addToFavourites">
+									<input type="text" value={result.id} name="id" />
+									<button
+										type="submit"
+										class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23"
-									title={translations.addToFavourites}
-									onclick={() => handleFavouriteClick(result.id)}
-								>
-									<Heart classes="h-9 hover:fill-custom-23" />
-								</button>
+										title={translations.addToFavourites}
+									>
+										<Heart classes="h-9 hover:fill-custom-23" />
+									</button>
+								</form>
 							{/if}
 						</div>
 					{/snippet}

@@ -74,7 +74,7 @@
 
 	{#if favouriteRecordList.includes(properties.id)}
 		<form method="POST" action="?/removeFromFavourites">
-			<input type="text" value={properties.id} />
+			<input type="text" value={properties.id} name="id" />
 			<button
 				type="submit"
 				class="text-custom-1 font-custom-style-body-5 bg-custom-16 border-custom-16 border-2
@@ -88,7 +88,7 @@
 		</form>
 	{:else}
 		<form method="POST" action="?/addToFavourites">
-			<input type="text" id="id" name="id" value={properties.id} />
+			<input type="text" value={properties.id} name="id" />
 			<button
 				type="submit"
 				class="text-custom-16 font-custom-style-body-3 border-custom-16 border-2

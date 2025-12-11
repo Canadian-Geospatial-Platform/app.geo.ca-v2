@@ -7,6 +7,16 @@ import { Config } from 'sst/node/config';
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
+// Lazy getter for table name to avoid accessing bound resources at module load time
+const getTableName = () => {
+	try {
+		return Table.users.tableName;
+	} catch (error) {
+		console.warn('Table binding not available, using environment variable');
+		return process.env.SST_Table_tableName_users || 'dev-app-geo-ca-v2-users';
+	}
+};
+
 const getUserData = async (cookies) => {
 	console.log('getting user data');
 	let token = await getToken(cookies);
@@ -15,7 +25,7 @@ const getUserData = async (cookies) => {
 		return { Item: { uuid: null, favourites: [] } };
 	}
 	const command = new GetCommand({
-		TableName: Table.users.tableName,
+		TableName: getTableName(),
 		Key: {
 			uuid: token.value.sub
 		}
@@ -41,7 +51,7 @@ const putUserData = async (data: Object, cookies) => {
 	data.uuid = token.value.sub;
 	await docClient.send(
 		new PutCommand({
-			TableName: Table.users.tableName,
+			TableName: getTableName(),
 			Item: data
 		})
 	);

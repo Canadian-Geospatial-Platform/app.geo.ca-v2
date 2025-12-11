@@ -11,7 +11,7 @@ const OIDC_CLIENT_SECRET = getOidcClientSecret();
 const OIDC_CLIENT_ID = getOidcClientId();
 const OIDC_CUSTOM_DOMAIN = getOidcCustomDomain();
 const RESPONSE_TYPE = 'code';
-const SCOPE = 'openid profile email phone language';
+const SCOPE = 'openid profile email phone language'; // remove profile if you do not need identifying user info such as name. the rest is self explanatory.
 
 // configuration
 const server = new URL(OIDC_CUSTOM_DOMAIN + '/oauth2/.well-known/openid-configuration'); // Authorization Server's Issuer Identifier
@@ -30,11 +30,13 @@ const JWKS = createRemoteJWKSet(new URL(configValues.jwks_uri));
 
 // configuration end
 
+// todo: validate this ai generated code.
 // Base64 URL encoding/decoding helpers
 const base64UrlEncode = (str) => {
 	return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
 
+// todo: validate this ai generated code.
 const base64UrlDecode = (str) => {
 	// Add back padding
 	let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
