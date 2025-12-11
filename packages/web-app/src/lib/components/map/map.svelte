@@ -37,7 +37,8 @@
 		map: {
 			interaction: dynamic ? 'dynamic' : 'static',
 			viewSettings: {
-				projection: mapProjection
+				projection: mapProjection,
+				initialView: { layerIds: [] }
 			},
 			basemapOptions: {
 				basemapId: 'transport',
@@ -258,15 +259,6 @@
 							fillOpacity: 0.2
 						}
 					});
-
-					// Zoom to the bounding box of the layer
-					zoomToBBox(coordinates, cgpv);
-				});
-			} else {
-				// Check to make sure the layers have finished loading before zooming
-				cgpv.api.getMapViewer(mapId)?.onMapLayersLoaded(() => {
-					// Zoom to the bounding box of the layer
-					zoomToBBox(coordinates, cgpv);
 				});
 			}
 		} catch (e) {
