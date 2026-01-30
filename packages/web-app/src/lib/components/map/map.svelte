@@ -50,7 +50,7 @@
 		corePackages: [],
 		appBar: {
 			tabs: {
-				core: ['geolocator', 'legend', 'export']
+				core: ['geolocator', 'legend', 'export', 'details']
 			}
 		}
 	});
@@ -58,7 +58,7 @@
 	if (footer) {
 		config.footerBar = {
 			tabs: {
-				core: ['layers', 'details', 'data-table']
+				core: ['layers', 'data-table']
 			},
 			collapsed: true
 		};
@@ -208,14 +208,18 @@
 			if (cgpv.api.hasMapViewer(mapId)) {
 				await cgpv.api.deleteMapViewer(mapId, false);
 			}
+			
+			let geoviewLayerConfig;
+            try {
+                // Try to create the layer config to check if the geocore record has a map
+                geoviewLayerConfig = await cgpv.api.config.createInitConfigFromType('geoCore', id, '', id);
+            } catch (e) {
+                // If an error is thrown, it means the geocore record has no map
+                geoviewLayerConfig = undefined;
+            }
 
 			// Create the layer config to check if the geocore record has a map. It is undefined if no map exists.
-			const geoviewLayerConfig = await cgpv.api.config.createLayerConfig(
-				id,
-				'geoCore',
-				[],
-				mapLang
-			);
+            //const geoviewLayerConfig = await cgpv.api.config.createInitConfigFromType('geoCore', id, '', id);	
 
 			// Add the geocore layer to the map config if it exists
 			if (geoviewLayerConfig) {
@@ -276,4 +280,5 @@
 	class="bg-blue-500/5 w-full aspect-video"
 	data-config={sConfig}
 	data-lang={mapLang}
+	style="border: gray 1px solid;"
 ></div>

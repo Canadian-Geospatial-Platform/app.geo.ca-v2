@@ -26,8 +26,8 @@
 
 	const theme = 'geo.ca';
 	const components = ['north-arrow', 'overview-map'];
-	const appBarTabs = ['geolocator', 'legend', 'export'];
-	const footerBarTabs = ['layers', 'details', 'data-table', 'time-slider', 'geochart'];
+	const appBarTabs = ['geolocator', 'legend', 'export', 'details'];
+	const footerBarTabs = ['layers', 'data-table', 'time-slider', 'geochart'];
 	const footerBarCollapsed = true;
 
 	let config = $state({
@@ -102,4 +102,5 @@
 	class="bg-blue-500/5 w-full aspect-video"
 	data-config={sConfig}
 	data-lang={mapLang}
+	style="border: gray 1px solid;"
 ></div>
