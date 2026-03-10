@@ -6,8 +6,6 @@ import { DynamoDBClient, DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 
 const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca"
 const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca"
-const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
-const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 
 async function getExistingUserTableArn(tableName: string, region: string) {
   const dynamoDBClient = new DynamoDBClient({ region });
@@ -34,7 +32,6 @@ export default {
     const existingUserTableArn = await getExistingUserTableArn(tableName, app.region);
 
     app.stack(function Site({ stack }) {
-      const OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
       /*** User Table ***/
 
       // Check if an existing user table exists. If it does, use it instead of
@@ -62,13 +59,10 @@ export default {
         bind: [
           userTableConfig,
           FEATURE_SIGN_IN,
-          OIDC_CLIENT_SECRET
         ],
         environment: {
           GEOCORE_API_DOMAIN,
-          SEMANTIC_SEARCH_URL,
-          OIDC_CLIENT_ID,
-          OIDC_CUSTOM_DOMAIN
+          SEMANTIC_SEARCH_URL
         }
       });
 
