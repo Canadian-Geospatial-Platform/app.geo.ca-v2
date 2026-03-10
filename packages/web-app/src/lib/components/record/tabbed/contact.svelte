@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
+	import type { ContactInfo } from '$lib/db/db-types';
 
 	type ContactRow = {
 		label: string;
@@ -8,7 +9,7 @@
 	};
 
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	// Row labels
 	const organizationText = translations?.organization
@@ -28,18 +29,18 @@
 	const descriptionText = translations?.description ? translations['description'] : 'Description';
 
 	/******************* Data *******************/
-	const data = $page.data;
+	const data = page.data;
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
 	const items = data.item_v2;
 	let contact = null;
 
 	if (Array.isArray(items.cited)) {
-		contact = items.cited.find((c) => c != null) || null;
+		contact = items.cited.find((contactItem: ContactInfo) => contactItem != null) || null;
 	}
 
 	if (!contact && Array.isArray(items.contact)) {
-		contact = items.contact.find((c) => c != null) || null;
+		contact = items.contact.find((contactItem: ContactInfo) => contactItem != null) || null;
 	}
 
 	// It is common for the contact data to be the string 'null' instead of just the value null,

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
 	import DateRange from '$lib/components/search-results/filters/date-range.svelte';
-	import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
+	import type { BBox, DateRangeItem, Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
 	import BoundingBox from './bounding-box.svelte';
 
 	interface Props {
@@ -13,20 +13,23 @@
 	let { temporalActive = $bindable(false), spatialActive = $bindable(false) }: Props = $props();
 
 	/************* Filter Data ***************/
-	const filters = $page.data.filters.filters;
-	const spatioTemporalFilters = filters.find((x: Filter) => x.section === 'spatio-temporal');
+	const filters = page.data.filters.filters;
+	const spatioTemporalFilters = filters.find((filter: Filter) => filter.section === 'spatio-temporal');
 	const section = spatioTemporalFilters.section;
 	const label = spatioTemporalFilters.label;
 	const filterList = spatioTemporalFilters.filterList;
 
-	let checkedStates = $state({});
-	let temporalComponent = $state();
-	let spatialComponent = $state();
+	let checkedStates: Record<string, boolean | string> = $state({});
+	let temporalComponent: DateRange | undefined = $state();
+	let spatialComponent: BoundingBox | undefined = $state();
 
-	export function resetFilters() {
-		const spatialKey = $page.url.searchParams.get('bbox');
-		const beginKey = $page.url.searchParams.get('begin');
-		const endKey = $page.url.searchParams.get('end');
+	/**
+	 * Resets the Spatio-Temporal filters to match the URL parameters.
+	 */
+	export function resetFilters(): void {
+		const spatialKey = page.url.searchParams.get('bbox');
+		const beginKey = page.url.searchParams.get('begin');
+		const endKey = page.url.searchParams.get('end');
 
 		// Update checkbox states
 		checkedStates['spatial-extent'] = !!spatialKey;
@@ -40,30 +43,48 @@
 		temporalComponent?.resetFilters();
 	}
 
-	export function clearAllFilters() {
+	/**
+	 * Clears all Spatio-Temporal filters.
+	 */
+	export function clearAllFilters(): void {
 		checkedStates = {};
 		spatialComponent?.resetFilters();
 		temporalComponent?.resetFilters();
 	}
 
-	export function getBBox() {
-		return spatialComponent.getBBox();
+	/**
+	 * Gets the bounding box from the Spatial component.
+	 * 
+	 * @returns The bounding box or undefined if not set.
+	 */
+	export function getBBox(): BBox | null | undefined {
+		return spatialComponent?.getBBox();
 	}
 
-	export function getDateRange() {
-		return temporalComponent.getDateRange();
+	/**
+	 * Gets the date range from the Temporal component.
+	 * 
+	 * @returns The date range or undefined if not set.
+	 */
+	export function getDateRange(): DateRangeItem | null | undefined {
+		return temporalComponent?.getDateRange();
 	}
 
 	/************* Handlers ***************/
-	function handleCheckboxClick(event: CustomEvent) {
+	/**
+	 * Handles checkbox click events to toggle spatial and temporal filters.
+	 * 
+	 * @param event - The checkbox click event.
+	 */
+	function handleCheckboxClick(event: Event): void {
 		let checkbox = event.target as HTMLInputElement;
 
 		if (checkbox.id == 'spatio-temporal-temporal-extent') {
 			temporalActive = !temporalActive;
-			checkedStates['temporal-extent'] = event.target.checked;
+			checkedStates['temporal-extent'] = checkbox?.checked;
 		} else if (checkbox.id == 'spatio-temporal-spatial-extent') {
 			spatialActive = !spatialActive;
-			checkedStates['spatial-extent'] = event.target.checked;
+			checkedStates['spatial-extent'] = checkbox?.checked;
 		}
 	}
 </script>
@@ -75,7 +96,7 @@
 			checkboxId={section + '-' + filterListItem.value}
 			checkboxName={section + '-' + filterListItem.value}
 			checkboxLabel={filterListItem.label}
-			checked={checkedStates[filterListItem.value] || false}
+			checked={!!checkedStates[filterListItem.value] || false}
 			checkedStateChange={handleCheckboxClick}
 		/>
 		{#if filterListItem.value == 'spatial-extent'}

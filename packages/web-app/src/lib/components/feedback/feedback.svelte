@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
-	const lang = $page.data.lang;
+	const lang = page.data.lang;
 	const title = lang == 'fr-ca' ? 'Dites-nous ce que vous pensez!' : 'Tell us what you think!';
 </script>
 

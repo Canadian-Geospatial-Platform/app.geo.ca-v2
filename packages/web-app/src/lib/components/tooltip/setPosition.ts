@@ -1,32 +1,44 @@
-export function setPosition(node: any) {
-	/***
-	 * The purpose of this function is to ensure that the tooltip does not flow
-	 * off the page on small screens. Vertical or horizontal translations are
-	 * applied if the default position causes the tooltip to overflow.
+/**
+ * The purpose of this function is to ensure that the tooltip does not flow off the page on small screens.
+ *
+ * Vertical or horizontal translations are applied if the default position causes the tooltip to overflow.
+ *
+ * @param node - The tooltip DOM node.
+ * @returns An object with a destroy method to remove event listeners.
+ */
+export function setPosition(node: HTMLElement): { destroy: () => void } {
+	let parentNode: Node | null = node.parentNode;
+
+	let nodeBounding: DOMRect;
+	let nodeLeft: number;
+	let nodeRight: number;
+	let nodeTop: number;
+	let nodeBottom: number;
+	let windowWidth: number;
+	let windowHeight: number;
+	let bottomPadding: number;
+	let transformX: number;
+	let transformY: number;
+	let transformed: boolean;
+
+	/**
+	 * Event handler for mouseover event on parent node.
 	 */
-	let parentNode = node.parentNode;
-
-	let nodeBounding;
-	let nodeLeft;
-	let nodeRight;
-	let nodeTop;
-	let nodeBottom;
-	let windowWidth;
-	let windowHeight;
-	let bottomPadding;
-	let transformX;
-	let transformY;
-	let transformed;
-
-	function handleMouseover() {
+	function handleMouseover(): void {
 		calcPosition();
 	}
 
-	function handleFocus() {
+	/**
+	 * Event handler for focus event on parent node.
+	 */
+	function handleFocus(): void {
 		calcPosition();
 	}
 
-	function calcPosition() {
+	/**
+	 * Calculate and set the position of the tooltip node.
+	 */
+	function calcPosition(): void {
 		// Reset node position to default
 		node.style.transform = 'translate(0rem, 0rem)';
 

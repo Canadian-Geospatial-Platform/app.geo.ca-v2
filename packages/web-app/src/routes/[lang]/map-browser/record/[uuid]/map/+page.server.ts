@@ -1,9 +1,7 @@
 import type { PageServerLoad } from './$types';
-import { getRecord } from '$lib/db/record.ts';
+import { getRecord } from '$lib/db/record';
 
-export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
-
+export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	let record;
 	let features;
 	let properties;

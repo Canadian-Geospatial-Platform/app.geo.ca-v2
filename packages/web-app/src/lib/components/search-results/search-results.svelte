@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import ResultList from '$lib/components/search-results/result-list.svelte';
 	import SearchBar from '$lib/components/search-results/search-bar.svelte';
 
 	/************* Translations ***************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	const searchDatasets = translations?.searchDatasets
 		? translations['searchDatasets']
@@ -13,7 +13,7 @@
 		? translations['searchResults']
 		: 'Search results';
 
-	let resultMessage = $derived($page.data.resultMessage);
+	let resultMessage = $derived(page.data.resultMessage);
 </script>
 
 <h1 class="font-custom-style-h1 mt-8 px-5 md:px-0 leading-tight">

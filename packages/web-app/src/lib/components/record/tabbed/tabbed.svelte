@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import TabCard from '$lib/components/tab-card/tab-card.svelte';
 	import DataResources from './data-resources.svelte';
 	import AdvancedMetadata from './advanced-metadata.svelte';
 	import Contact from './contact.svelte';
 	import RelatedProducts from './related-products.svelte';
-
+	import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
+	
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 	const dataResources: string = translations?.dataResources
 		? translations['dataResources']
 		: 'Data resources';
@@ -20,25 +21,25 @@
 		: 'Related products';
 
 	/******************* Data *******************/
-	const tabContentArray = [
+	const tabContentArray: SelectOption[] = [
 		{
 			label: dataResources,
-			value: 1,
+			value: '1',
 			component: DataResources
 		},
 		{
 			label: advancedMetadata,
-			value: 2,
+			value: '2',
 			component: AdvancedMetadata
 		},
 		{
 			label: contactData,
-			value: 3,
+			value: '3',
 			component: Contact
 		},
 		{
 			label: relatedProducts,
-			value: 4,
+			value: '4',
 			component: RelatedProducts
 		}
 	];

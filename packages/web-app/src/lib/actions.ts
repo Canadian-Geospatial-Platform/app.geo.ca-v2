@@ -1,22 +1,42 @@
-import { getUserData, putUserData } from '$lib/db/user.ts';
-import { redirect } from '@sveltejs/kit';
+import { getUserData, putUserData } from '$lib/db/user';
+import { redirect, type Cookies } from '@sveltejs/kit';
 
-const addToFavourites = async ({ url, cookies, request, event }) => {
-	let userData = await getUserData(cookies);
-	userData = userData.Item;
-	const fd = await request.formData();
-	userData.favourites.push(fd.get('id'));
-	putUserData(userData, cookies);
-	throw redirect(303, url.href);
-};
-const removeFromFavourites = async ({ url, cookies, request, event }) => {
-	let userData = await getUserData(cookies);
-	userData = userData.Item;
-	const fd = await request.formData();
-	let x = userData.favourites.filter((x) => x !== fd.get('id'));
-	userData.favourites = userData.favourites.filter((x) => x !== fd.get('id'));
-	putUserData(userData, cookies);
-	throw redirect(303, url.href);
-};
+interface favouritesProps {
+	url: URL;
+	cookies: Cookies;
+	request: Request;
+}
 
-export { addToFavourites, removeFromFavourites };
+/**
+ * Adds an item to the user's favourites and redirects back to the original URL.
+ *
+ * @param props - The properties including URL, cookies, and request.
+ * @returns A promise that resolves when the operation is complete.
+ */
+export async function addToFavourites({ url, cookies, request }: favouritesProps): Promise<void> {
+	const userData = await getUserData(cookies);
+	const formData = await request.formData();
+	userData.Item.favourites.push(formData.get('id') as string);
+	putUserData(userData.Item, cookies);
+	throw redirect(303, url.href);
+}
+
+/**
+ * Removes an item from the user's favourites and redirects back to the original URL.
+ *
+ * @param props - The properties including URL, cookies, and request.
+ * @returns A promise that resolves when the operation is complete.
+ */
+export async function removeFromFavourites({
+	url,
+	cookies,
+	request
+}: favouritesProps): Promise<void> {
+	const userData = await getUserData(cookies);
+	const formData = await request.formData();
+	userData.Item.favourites = userData.Item.favourites.filter(
+		(favourite: string) => favourite !== formData.get('id')
+	);
+	putUserData(userData.Item, cookies);
+	throw redirect(303, url.href);
+}

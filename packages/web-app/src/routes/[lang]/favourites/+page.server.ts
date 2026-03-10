@@ -1,10 +1,11 @@
-import type { PageServerLoad } from './$types';
-import { getUserData } from '$lib/db/user.ts';
-import { removeFromFavourites } from '$lib/actions.ts';
-import { sanitize } from '$lib/utils/data-sanitization/geocore-result.ts';
+import type { Actions, PageServerLoad } from './$types';
+import { getUserData } from '$lib/db/user';
+import { removeFromFavourites } from '$lib/actions';
+import { sanitize } from '$lib/utils/data-sanitization/geocore-result';
+import type { GeospatialRecord } from '$lib/db/db-types';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-	let response = [];
+	let response: any[] = [];
 	let userData;
 	let sanitizedResults;
 
@@ -23,18 +24,15 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	}
 
 	try {
-		response = await getRecords(userData.Item.favourites, params.lang, fetch);
+		response = await getRecords(userData?.Item.favourites ?? [], params.lang, fetch);
 	} catch (e) {
 		console.error('error fetching records: \n', e);
 	}
 
-	let results = [];
 	try {
-		results = await response;
-		sanitizedResults = sanitize(results, params.lang);
+		sanitizedResults = sanitize(response, params.lang);
 	} catch (e) {
 		console.error('error fetching records: \n', e);
-		results = [];
 	}
 
 	return {
@@ -49,7 +47,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 			href: url.href
 		},
 		results: sanitizedResults,
-		userData: userData.Item,
+		userData: userData?.Item || { uuid: null, favourites: [] },
 		canonicalUrl: canonicalUrl,
 		alternateUrl: alternateUrl,
 		alternateLang: alternateLang,
@@ -57,7 +55,20 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	};
 };
 
-function getRecord(id, lang, fetch) {
+/**
+ * Gets a record from the GeoCore API.
+ *
+ * @param id - The record ID.
+ * @param lang - The language code.
+ * @param fetch - The fetch function.
+ * @returns A promise that resolves to the fetch response.
+ */
+function getRecord(
+	id: string,
+	lang: string,
+	fetch: (url: string | URL, options?: RequestInit) => Promise<Response>
+): Promise<Response> {
+	const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 	const url = new URL(`${GEOCORE_API_DOMAIN}/id`);
 	const params = {
 		id: id,
@@ -67,7 +78,19 @@ function getRecord(id, lang, fetch) {
 	return fetch(url);
 }
 
-async function getRecords(idIterator, lang, fetch) {
+/**
+ * Gets multiple records from the GeoCore API.
+ *
+ * @param idIterator - An iterable of record IDs.
+ * @param lang - The language code.
+ * @param fetch - The fetch function.
+ * @returns A promise that resolves to an array of records.
+ */
+async function getRecords(
+	idIterator: Iterable<string>,
+	lang: string,
+	fetch: (url: string | URL, options?: RequestInit) => Promise<Response>
+): Promise<GeospatialRecord[]> {
 	let promises = [];
 
 	for (const id of idIterator) {
@@ -82,8 +105,8 @@ async function getRecords(idIterator, lang, fetch) {
 			try {
 				const contents = await v.json();
 				if (contents.Items[0]) return contents.Items[0];
-			} catch {
-				(error) => console.log(error);
+			} catch (error) {
+				console.log(error);
 			}
 		})
 	);

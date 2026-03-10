@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { item, lang } = $props();
+	const { item, lang } = $props();
 </script>
 
 {#each item.distributor as x}

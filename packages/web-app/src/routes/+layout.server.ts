@@ -12,7 +12,7 @@ import frShareTranslations from '$lib/components/share/i18n/fr/translations.json
 
 export const load: LayoutServerLoad = async ({ cookies, params }) => {
 	return {
-		lang: params.lang,
+		lang: params.lang as 'en-ca' | 'fr-ca',
 		signedIn: cookies.get('id_token') ? true : false,
 		FEATURE_SIGN_IN: process.env.FEATURE_SIGN_IN === 'true' ? true : false,
 		footerLinks: params.lang == 'fr-ca' ? frFooterLinks : enFooterLinks,

@@ -46,7 +46,7 @@
 	{/each}
 </div>
 
-<style>
+<style lang="postcss">
 	.horizontal {
 		@apply flex;
 		@apply absolute;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { fly } from 'svelte/transition';
 	import Chevronleft from '$lib/components/icons/chevronleft.svelte';
 	import Chevronright from '$lib/components/icons/chevronright.svelte';
@@ -16,7 +16,7 @@
 
 	let { cardData }: Props = $props();
 
-	let lang = $page.data.lang;
+	let lang = page.data.lang;
 
 	let activeIndex = $state(0);
 	let nextIndex = $state(1);
@@ -30,16 +30,23 @@
 
 	/*************** Utility methods ***************/
 
-	// Incremet or decrement the slide index based on the provided direction.
-	// The direction should either be 1 (increment) or -1 (decrement).
-	function changeIndex(direction: number) {
+	/**
+	 * Incremet or decrement the slide index by either be 1 (increment) or -1 (decrement).
+	 * 
+	 * @param direction - The direction to change the index by (1 or -1)
+	 */
+	function changeIndex(direction: number): void {
 		setFlyLength();
 		slideDirection = direction;
 		activeIndex = (activeIndex + direction + cardData.length) % cardData.length;
 		nextIndex = (activeIndex + 1) % cardData.length;
 	}
 
-	function setFlyLength() {
+	/**
+	 * Sets the flyLength variable based on the width of a carousel card.
+	 * This determines how far the cards should translate during the fly transition.
+	 */
+	function setFlyLength(): void {
 		// Get the size of a carousel card to determine the amount a slide should translate
 		const cardEl1 = document.getElementById('carousel-card-1');
 		const cardEl2 = document.getElementById('carousel-card-2');
@@ -47,19 +54,27 @@
 		// Add 20px to the card's width to account for the gutter between the two cards,
 		// but only if both cards are visible
 		const gutter = 20;
-		const width = cardEl2.checkVisibility() ? cardEl1.offsetWidth + gutter : cardEl1.offsetWidth;
+		const width = cardEl2?.checkVisibility() ? (cardEl1?.offsetWidth ?? 0) + gutter : (cardEl1?.offsetWidth ?? 0);
 		flyLength = width;
 	}
 
 	/*************** Handlers ***************/
 
-	// Handle clicking on either the increment index or decrement index buttons
-	function handleChangeIndex(direction: number) {
+	/**
+	 * Handle clicking on either the increment index or decrement index buttons.
+	 * 
+	 * @param direction - The direction to change the index by (1 or -1)
+	 */
+	function handleChangeIndex(direction: number): void {
 		changeIndex(direction);
 	}
 
-	// Set the slide index based on the index of the button
-	function handleIndexButtonClick(index: number) {
+	/**
+	 * Handle clicking on one of the select index buttons. Sets the slide index to the index of the clicked button.
+	 * 
+	 * @param index - The index to set the slide to
+	 */
+	function handleIndexButtonClick(index: number): void {
 		setFlyLength();
 		slideDirection = index > activeIndex ? 1 : -1;
 		activeIndex = (index + cardData.length) % cardData.length;
@@ -160,7 +175,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.carousel-card {
 		@apply absolute;
 		@apply inset-0;

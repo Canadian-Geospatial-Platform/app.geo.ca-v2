@@ -6,7 +6,15 @@
 // top of the body to the scroll position of the window ensures the page
 // doesn't jump to the top when toggling the scroll.
 
-export function toggleScroll(active: Boolean) {
+/**
+ * Toggles the ability to scroll the main document body.
+ *
+ * When active is true, scrolling is disabled.
+ * When active is false, scrolling is enabled.
+ *
+ * @param active - Whether to disable (true) or enable (false) scrolling.
+ */
+export function toggleScroll(active: boolean): void {
 	// Check if 'document' is defined to avoid error during server side rendering
 	if (typeof document !== 'undefined') {
 		const body = document.body;

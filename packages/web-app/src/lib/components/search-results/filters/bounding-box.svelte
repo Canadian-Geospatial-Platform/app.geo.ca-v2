@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import SpatioFilterMap from '$lib/components/map/spatio-filter-map.svelte';
+	import type { BBox } from './filter-types';
 
 	interface Props {
 		coordinatesId: string;
@@ -10,7 +11,7 @@
 
 	let { coordinatesId, active = $bindable(false) }: Props = $props();
 
-	const searchMode = $page.data.searchMode;
+	const searchMode = page.data.searchMode;
 
 	// Default coord values
 	let northCoord = 83.23324;
@@ -19,8 +20,9 @@
 	let westCoord = -140.99778;
 
 	/************* Translations ***************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
+	type directions = 'north' | 'east' | 'south' | 'west';
 	const north = translations?.north ? translations['north'] : 'North';
 	const east = translations?.east ? translations['east'] : 'East';
 	const south = translations?.south ? translations['south'] : 'South';
@@ -58,10 +60,10 @@
 	];
 
 	// Element references
-	let inputs = $state({});
-	let filterMap = $state();
+	let inputs: { [key: string]: HTMLInputElement } = $state({});
+	let filterMap: SpatioFilterMap | undefined = $state();
 
-	let relation = $page.url.searchParams.get('relation') ?? 'intersects';
+	let relation = page.url.searchParams.get('relation') ?? 'intersects';
 	let relationGroup = $state(relation);
 
 	/************* Check screen size for map **************/
@@ -69,14 +71,17 @@
 	// For small screens, don't include the map, use inputs only
 	let showMap = $state(true);
 
-	const checkScreenSize = () => {
+	/**
+	 * Checks the screen size and updates the showMap variable.
+	 */
+	const checkScreenSize = (): void => {
 		// Tailwind's 'sm' breakpoint starts at 640px
 		showMap = window.matchMedia('(min-width: 640px)').matches;
 	};
 
 	// This is wrapped in onMount to account for the use of window and
 	// avoid errors while rendering on the server
-	onMount(() => {
+	onMount((): () => void => {
 		checkScreenSize();
 
 		// Update map visibility on window resize
@@ -89,8 +94,11 @@
 		};
 	});
 
-	export function resetFilters() {
-		const urlParams = $page.url.searchParams;
+	/**
+	 * Resets the filters to the values in the URL parameters or defaults.
+	 */
+	export function resetFilters(): void {
+		const urlParams = page.url.searchParams;
 		const spatialRelation = urlParams.get('relation') ?? 'intersects';
 		relationGroup = spatialRelation;
 
@@ -104,8 +112,8 @@
 		labels.forEach(({ id }) => {
 			if (inputs) {
 				const key = id.replace(coordinatesId + '-', '');
-				const value = coords[key];
-				inputs[id].value = value && !isNaN(Number.parseFloat(value)) ? value : null;
+				const value = coords[key as directions];
+				inputs[id].value = value && typeof value === 'string' && !isNaN(Number.parseFloat(value)) ? value : '';
 			}
 		});
 
@@ -116,7 +124,12 @@
 		}
 	}
 
-	export function getBBox() {
+	/**
+	 * Gets the bounding box values from the input fields.
+	 * 
+	 * @returns The bounding box values or null if any are missing.
+	 */
+	export function getBBox(): BBox | null {
 		let northEl = inputs['spatio-temporal-north'];
 		let eastEl = inputs['spatio-temporal-east'];
 		let southEl = inputs['spatio-temporal-south'];
@@ -135,45 +148,62 @@
 		return bbox;
 	}
 
-	function handleCoodinateChange() {
+	/**
+	 * Handles coordinate input field changes.
+	 */
+	function handleCoordinateChange(): void {
 		if (filterMap) {
-			let coordinates = getCoordinates();
+			const coordinates = getCoordinates();
 			filterMap.setVertices(coordinates);
 		}
 	}
 
-	function handleBboxModify(coords) {
-		let northVal = coords.find((coord, i, arr) => i > 0 && coord[1] > arr[i - 1][1])[1];
-		let eastVal = coords.find((coord, i, arr) => i > 0 && coord[0] > arr[i - 1][0])[0];
-		let southVal = coords.find((coord, i, arr) => i > 0 && coord[1] < arr[i - 1][1])[1];
-		let westVal = coords.find((coord, i, arr) => i > 0 && coord[0] < arr[i - 1][0])[0];
+	/**
+	 * Handles bounding box modifications from the map.
+	 * 
+	 * @param coords - The new bounding box coordinates.
+	 */
+	function handleBboxModify(coords: number[][]) : void {
+		let northVal = coords.find((coord, index, arr) => index > 0 && coord[1] > arr[index - 1][1])?.[1] ?? coords[0][1];
+		let eastVal = coords.find((coord, index, arr) => index > 0 && coord[0] > arr[index - 1][0])?.[0] ?? coords[0][0];
+		let southVal = coords.find((coord, index, arr) => index > 0 && coord[1] < arr[index - 1][1])?.[1] ?? coords[0][1];
+		let westVal = coords.find((coord, index, arr) => index > 0 && coord[0] < arr[index - 1][0])?.[0] ?? coords[0][0];
 
-		inputs['spatio-temporal-north'].value = Math.round(northVal * 100000) / 100000;
-		inputs['spatio-temporal-east'].value = Math.round(eastVal * 100000) / 100000;
-		inputs['spatio-temporal-south'].value = Math.round(southVal * 100000) / 100000;
-		inputs['spatio-temporal-west'].value = Math.round(westVal * 100000) / 100000;
+		inputs['spatio-temporal-north'].value = String(Math.round(northVal * 100000) / 100000);
+		inputs['spatio-temporal-east'].value = String(Math.round(eastVal * 100000) / 100000);
+		inputs['spatio-temporal-south'].value = String(Math.round(southVal * 100000) / 100000);
+		inputs['spatio-temporal-west'].value = String(Math.round(westVal * 100000) / 100000);
 	}
 
-	function getCoordinates() {
-		let northVal = inputs['spatio-temporal-north']?.value ?? northCoord;
-		let eastVal = inputs['spatio-temporal-east']?.value ?? eastCoord;
-		let southVal = inputs['spatio-temporal-south']?.value ?? southCoord;
-		let westVal = inputs['spatio-temporal-west']?.value ?? westCoord;
+	/**
+	 * Gets the bounding box coordinates in the required format.
+	 * 
+	 * @returns The bounding box coordinates.
+	 */
+	function getCoordinates(): number[][] {
+		let northVal = Number(inputs['spatio-temporal-north']?.value) || northCoord;
+		let eastVal = Number(inputs['spatio-temporal-east']?.value) || eastCoord;
+		let southVal = Number(inputs['spatio-temporal-south']?.value) || southCoord;
+		let westVal = Number(inputs['spatio-temporal-west']?.value) || westCoord;
 
 		return [
-			[
-				[westVal, southVal],
-				[westVal, northVal],
-				[eastVal, northVal],
-				[eastVal, southVal],
-				[westVal, southVal]
-			]
+			[westVal, southVal],
+			[westVal, northVal],
+			[eastVal, northVal],
+			[eastVal, southVal],
+			[westVal, southVal]
 		];
 	}
 
-	function init(key: string) {
+	/**
+	 * Initializes the input fields with URL parameters or defaults.
+	 * 
+	 * @param key - The input field key.
+	 * @returns The initial value for the input field.
+	 */
+	function init(key: string): number {
 		let searchKey = key.replace(coordinatesId + '-', '');
-		let coord = $page.url.searchParams.get(searchKey);
+		let coord: number | null = Number(page.url.searchParams.get(searchKey));
 
 		// Use defaults if no coordinate is available.
 		// Defaults are based on the extent of canada's bounding box.
@@ -193,12 +223,21 @@
 	}
 
 	/************* Validators ***************/
-
-	// Note: we are using a custom validator here because, at this time,
-	// there is no way to control the language setting of the browser's
-	// default validator messages. This way, we can translate them.
-	function customizeValiditor(input: HTMLInputElement) {
-		function validate() {
+	/**
+	 * Customizes the validity messages for the input fields.
+	 * 
+	 * Note: we are using a custom validator here because, at this time,
+	 * there is no way to control the language setting of the browser's
+	 * default validator messages. This way, we can translate them.
+	 * 
+	 * @param input - The input element to customize validity for.
+	 * @returns An object with a destroy method to remove the event listener.
+	 */
+	function customizeValiditor(input: HTMLInputElement): { destroy: () => void } {
+		/**
+		 * Validates the input field and sets custom validity messages.
+		 */
+		function validate(): void {
 			let message = '';
 			let number = Number.parseFloat(input.value);
 			let min = Number.parseFloat(input.min);
@@ -287,7 +326,7 @@
 				class="border-2 rounded border-custom-16 px-3.5 py-[0.5625rem]"
 				required
 				use:customizeValiditor
-				oninput={handleCoodinateChange}
+				oninput={handleCoordinateChange}
 			/>
 		</div>
 	{/each}
@@ -307,7 +346,7 @@
 	</div>
 {/if}
 
-<style>
+<style lang="postcss">
 	input[type='radio'] {
 		@apply appearance-none;
 		@apply h-7;

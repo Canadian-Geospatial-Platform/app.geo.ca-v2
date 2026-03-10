@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
+	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
 	import Card from '$lib/components/card/card.svelte';
 	import NoMap from '$lib/components/icons/no-map.svelte';
-	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
 	import FavoritesMap from '$lib/components/map/favourites-map.svelte';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 	import MapCartListSkeleton from '$lib/components/loading-mask/mapcart-list-skeleton.svelte';
@@ -16,11 +15,18 @@
 		id: string;
 		name: string;
 		url: string;
+		[key: string]: string;
+	};
+
+	type SortableTableInstance = {
+		getSelectedIds: () => string[];
+		setSelectedIds: (ids: string[]) => void;
+		updateTableContent: (newTableContent: MapCartRow[]) => void;
 	};
 
 	/************* Translations ***************/
-	const translations = $page.data.t;
-	const lang = $page.data.lang;
+	const translations = page.data.t;
+	const lang = page.data.lang;
 
 	const findAResource = translations?.findAResource
 		? translations.findAResource
@@ -47,38 +53,44 @@
 	const titleKey = 'title_' + langShort;
 
 	/************* Resource Table ***************/
-	let sortableTable = $state();
-	let selectedIds = $state(new Set());
-	let numSelected = $derived(selectedIds.size);
+	let sortableTable: SortableTableInstance | undefined = $state();
+	let selectedIds: string[] = $state([]);
+	let numSelected: number = $derived(selectedIds.length);
 
-	let loading = $state(true);
-	let mapToggle = $state(false);
+	let loading: boolean = $state(true);
+	let mapToggle: boolean = $state(false);
 
-	let favouriteRecordList = $state(
-		$page.data?.userData?.mapCart ? [...$page.data?.userData?.mapCart] : []
+	let favouriteRecordList: string[] = $state(
+		page.data?.userData?.mapCart ? [...page.data?.userData?.mapCart] : []
 	);
-	let records = $state([]);
-	let tableDataArray = $state([]);
+	let records: MapCartRow[] = $state([]);
+	let tableDataArray: MapCartRow[] = $state([]);
 
 	// Table column labels
 	const tableLabels: MapCartRow = {
 		name: resourceNameLabel,
-		id: resourceIdLabel
+		id: resourceIdLabel,
+		url: ''
 	};
 
 	/************* Handlers ***************/
 
-	function handleDeleteResource(id) {
+    /**
+	 * Handles the deletion of a resource from the map cart.
+	 * 
+	 * @param id - The ID of the resource to delete.
+	 */
+	function handleDeleteResource(id: string): void {
 		// Before deleting, ask the user's permission
-		const resource = tableDataArray.find((resource) => resource.id == id);
-		const resourceName = resource.name;
+		const resource = tableDataArray.find((tableData) => tableData.id == id);
+		const resourceName = resource?.name;
 		const permissionText =
 			lang == 'fr-ca'
 				? `Êtes-vous sûr de vouloir supprimer la ressource suivante? \n\n${resourceName} (${id})`
 				: `Are you sure you want to delete the following resource? \n\n${resourceName} (${id})`;
 
 		if (confirm(permissionText) == true) {
-			let selectedSet = new Set(sortableTable.getSelectedIds());
+			let selectedSet = new Set(sortableTable?.getSelectedIds());
 			selectedSet.delete(id);
 
 			// Update resource lists
@@ -87,8 +99,8 @@
 			records = records.filter((record) => record.id != id);
 
 			// Update the table and button label
-			sortableTable.updateTableContent(tableDataArray);
-			sortableTable.setSelectedIds(selectedSet);
+			sortableTable?.updateTableContent(tableDataArray);
+			sortableTable?.setSelectedIds(Array.from(selectedSet));
 
 			// Update localStorage and dispatch localstorage_updated event
 			updateLocalStorage('MapCartResources', favouriteRecordList);
@@ -97,7 +109,10 @@
 		}
 	}
 
-	function handleRemoveAllClick(event) {
+	/**
+	 * Handles the removal of all resources from the map cart.
+	 */
+	function handleRemoveAllClick(): void {
 		const permissionText =
 			lang == 'fr-ca'
 				? `Êtes-vous certain de vouloir supprimer ${favouriteRecordList.length} ressources?`
@@ -110,8 +125,8 @@
 			records = [];
 
 			// Update the table and button label
-			sortableTable.updateTableContent([]);
-			sortableTable.setSelectedIds(new Set());
+			sortableTable?.updateTableContent([]);
+			sortableTable?.setSelectedIds([]);
 
 			// Update localStorage and dispatch localstorage_updated event
 			updateLocalStorage('MapCartResources', []);
@@ -120,26 +135,29 @@
 		}
 	}
 
-	function handleOpenMapClick(event) {
+	/**
+	 * Handles the opening of the map view.
+	 */
+	function handleOpenMapClick(): void {
 		// checkedIds = sortableTable.getSelectedIds();
 		mapToggle = true;
 	}
 
-	function handleReturnToListClick(event) {
+	/**
+	 * Handles the return to list view click.
+	 */
+	function handleReturnToListClick(): void {
 		mapToggle = false;
 	}
 
-	// Local storage is only accessible from the client side, so we need to get
-	// the MapCartResources array inside onMount
-	onMount(async () => {
+	onMount(async (): Promise<void> => {
 		// If not signed in, check the local storage for saved resources instead
-		if (!$page.data.signedIn) {
+		if (!page.data.signedIn) {
 			let stored = localStorage.getItem('MapCartResources');
 
 			if (stored) {
-				// local storage is always a string, so we need to convert to an array
-				stored = stored.split(',');
-				favouriteRecordList = [...stored];
+				// Local storage is always a string, so we need to convert to an array
+				favouriteRecordList = stored.split(',');
 			}
 
 			// Issue POST request for record details
@@ -156,7 +174,7 @@
 					return {
 						id: record.id,
 						name: record[titleKey],
-						url: $page.url.origin + '/' + lang + '/map-browser/record/' + record.id
+						url: page.url.origin + '/' + lang + '/map-browser/record/' + record.id
 					};
 				});
 			}
@@ -183,7 +201,7 @@
 				<FavoritesMap layerIds={selectedIds} />
 				<button
 					class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
-					onclick={(event) => handleReturnToListClick(event)}
+					onclick={handleReturnToListClick}
 				>
 					{returnToList}
 				</button>
@@ -204,6 +222,7 @@
 							checkboxCol={true}
 							allSelected={true}
 							removeCol={true}
+							paginated={false}
 							deleteResource={handleDeleteResource}
 							bind:this={sortableTable}
 							bind:selectedIds
@@ -223,11 +242,12 @@
 										id={'check-' + item.id}
 										name={'check-' + item.id}
 										class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-                      border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
-										checked={selectedIds.has(item.id)}
-										onchange={(e) => {
-											const newSet = new Set(selectedIds);
-											e.target.checked ? newSet.add(item.id) : newSet.delete(item.id);
+					  border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
+										checked={selectedIds.includes(item.id)}
+										onchange={(event: Event) => {
+											if (!event.target) return;
+											let newSet = [...selectedIds];
+											(event.target as HTMLInputElement).checked ? newSet.push(item.id) : newSet = newSet.filter(id => id !== item.id);
 											selectedIds = newSet;
 										}}
 									/>
@@ -264,7 +284,7 @@
 						<div class="sm:grow">
 							<button
 								class="sm:inline-block button-5 w-full sm:w-fit mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
-								onclick={(event) => handleOpenMapClick(event)}
+								onclick={handleOpenMapClick}
 							>
 								{viewOnMapLabel} ({numSelected})
 							</button>
@@ -273,7 +293,7 @@
 						<button
 							class="sm:inline-block button-3 w-full sm:w-fit
                 shadow-[0_0.1875rem_0.375rem_#00000029]"
-							onclick={(event) => handleRemoveAllClick(event)}
+							onclick={handleRemoveAllClick}
 						>
 							<GarbageCan classes={'h-4 inline mb-1'} />
 							{removeAll}
@@ -295,7 +315,7 @@
 					{resourceListEmpty}
 				</p>
 
-				<a class="block m-auto w-fit mt-5" href={$page.url.origin + '/' + lang + '/map-browser'}>
+				<a class="block m-auto w-fit mt-5" href={page.url.origin + '/' + lang + '/map-browser'}>
 					<div class="button-3 w-fit shadow-[0_0.1875rem_0.375rem_#00000029]">
 						{findAResource}
 					</div>

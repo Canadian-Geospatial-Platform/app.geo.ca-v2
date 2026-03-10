@@ -1,8 +1,19 @@
+<script module lang="ts">
+	// Declare cgpv as a global variable
+	declare const cgpv: any;
+</script>
+
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { loadCGPVScript } from '$lib/components/map/loadCGPVScript.ts';
+	import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
+	import type { GeoviewConfig } from './map-types';
+
+	interface Props {
+		coordinates?: number[][];
+		dynamic?: boolean;
+		bboxModify: (coords: number[][]) => void;
+	}
 
 	let {
 		coordinates = [
@@ -20,7 +31,7 @@
 
 	const mapId = 'map-spatio-filter';
 	const interactionType = dynamic ? 'dynamic' : 'static';
-	const mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	const mapLang = page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
 	const basemapId = 'transport';
 	const shaded = true;
@@ -31,7 +42,7 @@
 	const zoom = 2;
 	const maxExtent = [-180, -90, 180, 90];
 
-	let config = {
+	let config: GeoviewConfig = {
 		map: {
 			interaction: interactionType,
 			viewSettings: {
@@ -47,9 +58,20 @@
 				labeled: labeled
 			}
 		},
-		navBar: ['zoom'],
+		navBar: ['zoom', 'rotation', 'home'],
+		footerBar: {
+			tabs: {
+				core: []
+			}
+		},
+		appBar: {
+			tabs: {
+				core: ['geolocator']
+			}
+		},
 		components: [],
-		corePackages: []
+		corePackages: [],
+		theme: 'geo.ca'
 	};
 
 	const sConfig = JSON.stringify(config);
@@ -58,34 +80,50 @@
 
 	// This placeholder function logs a warning if called before the map is initialized.
 	// It gets replaced later with a function to update bbox coordinates.
-	let setVerticesFromCoords: (coords: number[][][]) => void = () => {
+	let setVerticesFromCoords: (coords: number[][]) => void = () => {
 		console.warn('map not initialized');
 	};
 
-	// This allows for the bbox vertices to be updated programatically,
-	// but only after the map has been initialized
-	export function setVertices(coords: number[][][]) {
+	/**
+	 * Sets the vertices of the bounding box polygon on the map.
+	 * 
+	 * This allows for the bbox vertices to be updated programatically, but only after the map has been initialized
+	 * 
+	 * @param coords - An array of coordinates representing the vertices of the bounding box polygon.
+	 * @returns void
+	*/
+	export function setVertices(coords: number[][]): void {
 		setVerticesFromCoords(coords);
 	}
 
-	// The geoview modify interaction typically updates only one vertex in a polygon.
-	// To ensure the bounding box remains a rectangle, the vertices adjacent to the one
-	// being modified, need to be updated too. This method determines what the coordinates
-	// should be to maintain a rectangular shape.
-	function enforceRectangle(coords, movedIndex, newCoord) {
+
+	/**
+	 * Enforces rectangular shape by adjusting adjacent vertices when one vertex is moved.
+	 * 
+	 * The geoview modify interaction typically updates only one vertex in a polygon.
+	 * To ensure the bounding box remains a rectangle, the vertices adjacent to the one
+	 * being modified, need to be updated too. This method determines what the coordinates
+	 * should be to maintain a rectangular shape.
+	 * 
+	 * @param coords - The current coordinates of the polygon vertices.
+	 * @param movedIndex - The index of the vertex that was moved.
+	 * @param newCoord - The new coordinate of the moved vertex.
+	 * @returns The modified coordinates maintaining a rectangular shape.
+	 */
+	function enforceRectangle(coords: number[][], movedIndex: number, newCoord: number[]): number[][] {
 		// Only modify the polygon if it has four vertices. We check for five
 		// since the first and last coordinates will be same to close the polygon.
 		if (coords.length != 5) {
 			return coords;
 		}
 
-		let modifiedCoords = [];
+		let modifiedCoords: number[][] = [];
 
 		// Determine which vertices are adjacent to the modified vertex
 		// Only these will change, leaving the oposite in the same place
-		let oppositeIndex = (movedIndex + 2) % 4;
-		let adjacentIndex1 = (movedIndex + 1) % 4;
-		let adjacentIndex2 = (movedIndex + 3) % 4;
+		const oppositeIndex = (movedIndex + 2) % 4;
+		const adjacentIndex1 = (movedIndex + 1) % 4;
+		const adjacentIndex2 = (movedIndex + 3) % 4;
 
 		// Apply the changes to the feature's coordinates
 		modifiedCoords[movedIndex] = [newCoord[0], newCoord[1]];
@@ -101,7 +139,7 @@
 
 	/************ After Map Initialization ************/
 
-	onMount(async () => {
+	onMount(async (): Promise<void> => {
 		// The loadCGPVScript function ensures the external cgpv library is fully loaded before
 		// trying to use the geocore code, otherwise it sometimes fails
 		await loadCGPVScript();
@@ -145,7 +183,7 @@
 				layerGeometry.createGeometryGroup(groupKey);
 
 				// Redefine setVerticesFromCoords after polygon has been added
-				setVerticesFromCoords = (coords: number[][][]) => {
+				setVerticesFromCoords = (coords: number[][]) => {
 					layerGeometry.setFeatureCoords(bboxId, coords, lonLatProjection);
 				};
 
@@ -153,7 +191,7 @@
 
 				const buttonGroupName = 'buttonGroup';
 				const buttonTooltip =
-					$page.data.lang == 'fr-ca'
+					page.data.lang == 'fr-ca'
 						? "Définir le cadre de délimitation sur l'étendue visible"
 						: 'Set bounding box to visible extent';
 
@@ -176,7 +214,7 @@
 						cgpv.reactUtilities.react.createElement('circle', { cx: 21, cy: 21, r: 2 })
 					),
 					tooltipPlacement: 'left',
-					onClick: function () {
+					onClick: function (): void {
 						// Get view extent and resolution
 						const viewExtent = map.getView().calculateExtent();
 						const resolution = map.getView().getResolution();
@@ -195,13 +233,11 @@
 						const southGapSize = heightOfFooterBar + latGapSize;
 
 						const viewBboxCoords = [
-							[
-								[viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
-								[viewExtent[2] - longGapSize, viewExtent[1] + southGapSize],
-								[viewExtent[2] - longGapSize, viewExtent[3] - latGapSize],
-								[viewExtent[0] + longGapSize, viewExtent[3] - latGapSize],
-								[viewExtent[0] + longGapSize, viewExtent[1] + southGapSize]
-							]
+							[viewExtent[0] + longGapSize, viewExtent[1] + southGapSize],
+							[viewExtent[2] - longGapSize, viewExtent[1] + southGapSize],
+							[viewExtent[2] - longGapSize, viewExtent[3] - latGapSize],
+							[viewExtent[0] + longGapSize, viewExtent[3] - latGapSize],
+							[viewExtent[0] + longGapSize, viewExtent[1] + southGapSize]
 						];
 
 						// Set coordinates of bbox
@@ -221,7 +257,7 @@
 
 				const translateInteraction = map.initTranslateOneFeatureInteractions(groupKey);
 
-				translateInteraction.onTranslateEnded((sender, payload) => {
+				translateInteraction.onTranslateEnded(() => {
 					const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
 					bboxModify(lonLatCoords);
 				});
@@ -238,7 +274,7 @@
 					pixelTolerance
 				);
 
-				let bboxCoordinates = [];
+				let bboxCoordinates: number[][] = [];
 
 				// While the modify interaction is taking place, the modifyDragged event is triggered
 				// whenever the vertices of the bounding box are modified. So, when the enforceRectangle()
@@ -251,7 +287,11 @@
 				// enforceRectangle() is applied only to the dragged vertex, preventing redundant calls.
 				let modifiedIndex = -1;
 
-				modifyInteraction.onModifyStarted((sender, payload) => {
+				/**
+				 * Event handler for the modify interaction events.
+				 * It captures the starting and ending of the modification,
+				*/
+				modifyInteraction.onModifyStarted((sender: any, payload: { features: { item: (arg0: number) => any; }; }): void => {
 					// Get coordinates of the bounding box
 					const feature = payload.features.item(0);
 					if (feature) {
@@ -262,7 +302,7 @@
 					}
 				});
 
-				modifyInteraction.onModifyEnded((sender, payload) => {
+				modifyInteraction.onModifyEnded((sender: any, payload: { features: { item: (arg0: number) => any; }; }) => {
 					// Set the final coordinates of the bounding box.
 					// Skipping this step causes the modify vertices and bbox vertices to
 					// be mismatched.
@@ -282,7 +322,7 @@
 					bboxModify(lonLatCoords);
 				});
 
-				modifyInteraction.onModifyDragged((sender, payload) => {
+				modifyInteraction.onModifyDragged((sender: any, payload: { features: { item: (arg0: number) => any; }; }) => {
 					// Prevents redundant and recursive calls from the enforceRectangle() function.
 					if (isUpdating) {
 						return;
@@ -342,8 +382,8 @@
 					}
 				});
 			});
-		} catch (e) {
-			console.error(e);
+		} catch (error) {
+			console.error(error);
 		}
 	});
 </script>
@@ -353,4 +393,5 @@
 	class="bg-blue-500/5 h-[25rem] max-w-[36rem]"
 	data-config={sConfig}
 	data-lang={mapLang}
+	style="border: gray 1px solid;"
 ></div>

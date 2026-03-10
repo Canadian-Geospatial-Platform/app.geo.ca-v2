@@ -1,27 +1,34 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-	import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
+	import type { Filter, FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
 
 	/************* Filter Data ***************/
-	const filters = $page.data.filters.filters;
-	const eoCollections = filters.find((x: Filter) => x.section === 'eo_collection');
-	let checkedStates = $state({});
+	const filters = page.data.filters.filters;
+	const eoCollections = filters.find((filter: Filter) => filter.section === 'eo_collection');
+	let checkedStates: Record<string, boolean> = $state({});
 
-	// Reset filters based on current URL search params
-	export function resetFilters() {
-		let eoCollectionKey = $page.url.searchParams.get('eo_collection');
+	// TODO: Extract this and clearAllFilters from here, organisations.svelte, source-system.svelte, themes.svelte, and types.svelte into a utility file
+	/**
+	 * Resets the EO Collections filters to match the URL parameters.
+	 */
+	export function resetFilters(): void {
+		let eoCollectionKey = page.url.searchParams.get('eo_collection');
 		if (eoCollections) {
-			eoCollections.filterList.forEach((filterListItem) => {
+			eoCollections.filterList.forEach((filterListItem: FilterItem) => {
 				const key = filterListItem.value;
 				checkedStates[key] = eoCollectionKey?.includes(key) || false;
 			});
 		}
 	}
 
-	export function clearAllFilters() {
+	/**
+	 * Clears all EO Collections filters.
+	 */
+	export function clearAllFilters(): void {
 		checkedStates = {};
 	}
+
 </script>
 
 <h3 class="font-custom-style-h3">
@@ -34,7 +41,7 @@
 			checkboxName={eoCollections.section + '-' + filterListItem.value}
 			checkboxLabel={filterListItem.label}
 			checked={checkedStates[filterListItem.value] || false}
-			checkedStateChange={(event) => (checkedStates[filterListItem.value] = event.target.checked)}
+			checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}
 		/>
 	{/each}
 </div>

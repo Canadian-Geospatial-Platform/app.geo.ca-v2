@@ -2,8 +2,8 @@ import type { PageLoad } from './$types';
 import enLabels from '$lib/components/favourites/i18n/en/translations.json';
 import frLabels from '$lib/components/favourites/i18n/fr/translations.json';
 
-export const load: PageLoad = ({ params, data, url }) => {
-	let lang = params.lang;
+export const load: PageLoad = ({ params, data }) => {
+	let lang = params.lang as 'fr-ca' | 'en-ca';
 	let t = lang == 'fr-ca' ? frLabels : enLabels;
 
 	return {

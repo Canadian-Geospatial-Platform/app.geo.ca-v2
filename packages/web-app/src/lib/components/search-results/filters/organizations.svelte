@@ -1,31 +1,37 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
+	import type { Filter, FilterItem } from './filter-types';
 
 	/************* Filter Data ***************/
-	const filters = $page.data.filters.filters;
-	const organizations = filters.find((x: Filter) => x.section === 'org');
-	let checkedStates = $state({});
+	const filters = page.data.filters.filters;
+	const organizations = filters.find((filter: Filter) => filter.section === 'org');
+	let checkedStates: Record<string, boolean> = $state({});
 
 	// Labels
-	const federal = $page.lang == 'fr-ca' ? 'Organisations - Fédérales' : 'Organizations - Federal';
+	const federal = page.data.lang == 'fr-ca' ? 'Organisations - Fédérales' : 'Organizations - Federal';
 	const provincial =
-		$page.lang == 'fr-ca'
+		page.data.lang == 'fr-ca'
 			? 'Organisations - Provinciales/Territoriales'
 			: 'Organizations - Provincial/Territorial';
 
-	// Reset filters based on current URL search params
-	export function resetFilters() {
-		let orgKey = $page.url.searchParams.get('org');
+	/**
+	 * Resets the Organizations filters to match the URL parameters.
+	 */
+	export function resetFilters(): void {
+		let orgKey = page.url.searchParams.get('org');
 		if (organizations) {
-			organizations.filterList.forEach((filterListItem) => {
+			organizations.filterList.forEach((filterListItem: FilterItem) => {
 				const key = filterListItem.value;
 				checkedStates[key] = orgKey?.includes(key) || false;
 			});
 		}
 	}
 
-	export function clearAllFilters() {
+	/**
+	 * Clears all Organizations filters.
+	 */
+	export function clearAllFilters(): void {
 		checkedStates = {};
 	}
 </script>
@@ -44,7 +50,7 @@
 					checkboxLabel={filterListItem.label}
 					checked={checkedStates[filterListItem.value] || false}
 					checkedStateChange={(event) =>
-						(checkedStates[filterListItem.value] = event.target.checked)}
+						(checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}
 				/>
 			</div>
 		{/if}
@@ -65,7 +71,7 @@
 					checkboxLabel={filterListItem.label}
 					checked={checkedStates[filterListItem.value] || false}
 					checkedStateChange={(event) =>
-						(checkedStates[filterListItem.value] = event.target.checked)}
+						(checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}
 				/>
 			</div>
 		{/if}

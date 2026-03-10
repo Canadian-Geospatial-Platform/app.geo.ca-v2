@@ -2,26 +2,45 @@
 	import Chevronup from '$lib/components/icons/chevronup.svelte';
 	import Chevrondown from '$lib/components/icons/chevrondown.svelte';
 
-	let { accordionTitle, accordionContent }: Props = $props();
+	let { accordionTitle, accordionContent } = $props();
 
 	let open = $state(false);
 
-	// Allow parent component to control when the Accordian closes
-	export function closeAccordion() {
+	/**
+	 * Closes the accordion by setting the open state to false.
+	 * 
+	 * This function is exported to allow parent components to control when the accordion closes.
+	 */
+	export function closeAccordion(): void {
 		open = false;
 	}
 
-	function handleButtonClick(event) {
+	/**
+	 * Handles click events on the accordion header.
+	 * 
+	 * Toggles the accordion open/closed state unless an anchor tag or button element was clicked.
+	 * This prevents unintended accordion toggling when clicking interactive elements within the header.
+	 * 
+	 * @param event - The mouse or keyboard event triggered by user interaction
+	 */
+	function handleButtonClick(event: MouseEvent | KeyboardEvent): void {
 		// Do nothing if an <a> or <button> was clicked, this prevents the search results
 		// page from loading maps unnecessarily
-		if (event.target.closest('a') || event.target.closest('button')) {
+		if (event.target instanceof Element && (event.target.closest('a') || event.target.closest('button'))) {
 			return;
 		}
 
 		open = !open;
 	}
 
-	function handleKeydown(event) {
+	/**
+	 * Handles keydown events for keyboard accessibility.
+	 * 
+	 * Triggers the accordion toggle when Enter or Space key is pressed.
+	 * 
+	 * @param event - The keyboard event from user input
+	 */
+	function handleKeydown(event: KeyboardEvent): void {
 		if (event.key === 'Enter' || event.key === ' ') {
 			handleButtonClick(event);
 		}

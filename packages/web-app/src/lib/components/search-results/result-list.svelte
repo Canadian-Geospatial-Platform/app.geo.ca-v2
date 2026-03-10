@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { page, navigating } from '$app/stores';
-	import { afterNavigate, goto } from '$app/navigation';
-	import { tick, onMount } from 'svelte';
-	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
+	import { page, navigating } from '$app/state';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
 	import Accordion from '$lib/components/accordion/accordion.svelte';
 	import Card from '$lib/components/card/card.svelte';
 	import ResultListSkeleton from '$lib/components/loading-mask/result-list-skeleton.svelte';
@@ -12,12 +12,21 @@
 	import NotVisible from '$lib/components/icons/not-visible.svelte';
 	import Heart from '$lib/components/icons/heart.svelte';
 	import HeartFilled from '$lib/components/icons/heart-filled.svelte';
+	import type { SelectOption } from '$lib/components/select-customized/selected-types';
+	import type { DistributionOption, GeospatialRecord } from '$lib/db/db-types';
+	import type { MapTypes } from '$lib/components/map/map-types';
+
+	type SearchResult = GeospatialRecord & {
+		description_en: string;
+		description_fr: string;
+		coordinates: number[][];
+	};
 
 	/************* User Data ***************/
-	const userId = $page.data.userData?.uuid;
+	const userId = page.data.userData?.uuid;
 
 	/************* Translations ***************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	const mapNotAvailableText = translations?.mapNotAvailable
 		? translations['mapNotAvailable']
@@ -32,8 +41,8 @@
 	const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
 
 	/************* Accordion Components ***************/
-	let data = $derived($page.data);
-	let accordionComponents = $state([]);
+	let data = $derived(page.data);
+	let accordionComponents: Accordion[] = $state([]);
 
 	// When the page data changes, close all of the accordions.
 	// This will reset the maps.
@@ -41,9 +50,12 @@
 		closeAllAccordions();
 	});
 
-	function closeAllAccordions() {
+	/**
+	 * Closes all of the accordions in the result list.
+	*/
+	function closeAllAccordions(): void {
 		if (data) {
-			accordionComponents.forEach((accordion) => {
+			accordionComponents.forEach((accordion: Accordion) => {
 				if (accordion) {
 					accordion.closeAccordion();
 				}
@@ -53,97 +65,113 @@
 
 	/****************** Sorting ******************/
 	// + 1 because the first page of results is page 0, but the pagination element starts at 1
-	let currentPage = $state(Number($page.url.searchParams.get('page-number') ?? '0') + 1);
+	let currentPage: number = $state(Number(page.url.searchParams.get('page-number') ?? '0') + 1);
 
-	const sortBySelectData = $page.data.sortOptions;
-	const searchMode = $page.data.searchMode ?? 'semantic';
+	const sortBySelectData = page.data.sortOptions;
+	const searchMode = page.data.searchMode ?? 'semantic';
 
 	let sortOrder;
-	if (searchMode == 'semantic') {
-		sortOrder = $page.url.searchParams.get('sort') ?? 'relevancy';
+	if (searchMode === 'semantic') {
+		sortOrder = page.url.searchParams.get('sort') ?? 'relevancy';
 	} else {
-		sortOrder = $page.url.searchParams.get('sort') ?? 'popularity-desc';
+		sortOrder = page.url.searchParams.get('sort') ?? 'popularity-desc';
 	}
 
-	let defaultOption = sortBySelectData.find((x) => x.value == sortOrder);
+	let defaultOption = sortBySelectData.find((sortData: { value: string; }) => sortData.value === sortOrder);
 	let selected = $state(defaultOption ?? sortBySelectData[0]);
 
-	function changeSort(event: CustomEvent) {
-		selected = event;
-		currentPage = 1;
-		$page.url.searchParams.set('sort', selected.value);
-		$page.url.searchParams.set('page-number', '0');
-		goto($page.url, { invalidateAll: true });
+	/**
+	 * Changes the sort order of the search results.
+	 * 
+	 * @param newSelected - The newly selected sort option.
+	*/
+	function changeSort(newSelected: SelectOption | null): void {
+		if (newSelected) {
+			selected = newSelected;
+			currentPage = 1;
+			page.url.searchParams.set('sort', selected.value);
+			page.url.searchParams.set('page-number', '0');
+			goto(page.url, { invalidateAll: true });
+		}
 	}
 
 	/****************** Pagination ******************/
 	let itemsPerPage = 10;
-	let pageMessage = $derived($page.data.numPageText);
-	let results = $derived($page.data.results ?? []);
-	let total = $derived($page.data.total ?? 0);
-	let totalPages = $derived(Math.ceil(total / itemsPerPage));
+	let pageMessage = $derived(page.data.numPageText);
+	let results: SearchResult[] = $derived(page.data.results ?? []);
+	let total = $derived(page.data.total ?? 0);
 
-	let hrefPrefix = $page.url.origin + $page.url.pathname + '/record/';
+	let hrefPrefix = page.url.origin + page.url.pathname + '/record/';
 
-	function parsePageMessage(message, page, numPages) {
-		message = message.replaceAll('{{page}}', page);
-		message = message.replaceAll('{{totalPages}}', numPages);
-
-		return message;
-	}
-
-	function changePage(event: CustomEvent) {
+	/**
+	 * Changes the current page of the search results.
+	 * 
+	 * @param newPage - The custom event containing the new page number.
+	*/
+	function changePage(newPage: number): void {
 		// Go to the top of the page with new page load
 		window.scrollTo({
 			top: 0,
 			behavior: 'smooth'
 		});
 
-		currentPage = event;
-		$page.url.searchParams.set('page-number', `${currentPage - 1}`);
-		$page.url.searchParams.set('results-per-page', `${itemsPerPage}`);
-		goto($page.url, { invalidateAll: true });
+		currentPage = newPage;
+		page.url.searchParams.set('page-number', `${currentPage - 1}`);
+		page.url.searchParams.set('results-per-page', `${itemsPerPage}`);
+		goto(page.url, { invalidateAll: true });
 	}
 
-	function getFormats(record) {
+	/**
+	 * Gets the unique formats from a record's options.
+	 * 
+	 * @param record - The record to get the formats from.
+	 * @returns An array of unique formats.
+	*/
+	function getFormats(record: SearchResult): string[] {
 		const options = record.options;
 
 		// Get an array of just the format of each record option
-		const formatArray = options.map((x) => {
-			const description = x.description;
+		const formatArray = options.map((option: DistributionOption) => {
+			const description = option.description;
 			const descriptionString = lang == 'fr' ? description.fr : description.en;
-			const descriptionArray = descriptionString.split(';');
+			const descriptionArray = descriptionString?.split(';');
 
 			// The description string is always in this format 'type;format;language',
 			// so when splitting the string to an array, we can get the format by returning
 			// the item in the second array index.
-			return descriptionArray[1];
+			return descriptionArray?.[1];
 		});
 
 		// Note: In the geocore records, the protocol is sometimes listed as the string 'null',
-		// not just the value null, so we should check for the string to filer it out.
+		// not just the value null, so we should check for the string to filter it out.
 		// We can also check for 'undefined' as a string too for good measure.
 		// Using indexOf allows us to check for duplicate values since it always returns the
 		// first instance of the value being searched. If it doesn't match the current index,
 		// then it must be a duplicate.
-		const filteredFormats = formatArray.filter((x, index, self) => {
-			return x && x !== 'null' && x != 'undefined' && self.indexOf(x) === index;
-		});
+		const filteredFormats = formatArray.filter((format: string | undefined, index: number, self: (string | undefined)[]) => {
+			return format && format !== 'null' && format != 'undefined' && self.indexOf(format) === index;
+		}).filter((format) => format !== undefined);
 
 		return filteredFormats;
 	}
 
 	/****************** Favourites Resources ******************/
-	let favouriteRecordList = $state(
-		$page.data?.userData?.favourites ? [...$page.data?.userData?.favourites] : []
+	let favouriteRecordList: string[] = $state(
+		page.data?.userData?.favourites ? [...page.data?.userData?.favourites] : []
 	);
 
-	async function handleFavouriteClick(recordId) {
+	/**
+	 * Handles the click event for the favourite button.
+	 * 
+	 * @param recordId - The ID of the record to be favourited or unfavourited.
+	 * @returns A promise that resolves when the operation is complete.
+	*/
+	async function handleFavouriteClick(recordId: string): Promise<void> {
 		if (!favouriteRecordList.includes(recordId)) {
 			// Add to list of ids
 			favouriteRecordList.push(recordId);
 
-			if ($page.data.signedIn) {
+			if (page.data.signedIn) {
 				// TODO: Add item to the favourites when login system has been approved
 			}
 		} else {
@@ -153,7 +181,7 @@
 				favouriteRecordList.splice(index, 1);
 			}
 
-			if ($page.data.signedIn) {
+			if (page.data.signedIn) {
 				// TODO: Remove item from the favourites when login system has been approved
 			}
 		}
@@ -165,27 +193,25 @@
 	// Local storage is only accessible from the client side, so we need to get
 	// the FavouritesResources array inside onMount
 	onMount(() => {
-		if (!$page.data.signedIn) {
+		if (!page.data.signedIn) {
 			let stored = localStorage.getItem('FavouritesResources');
 
 			if (stored) {
-				// local storage is always a string, so we need to convert to an array
-				stored = stored.split(',');
-				favouriteRecordList = [...stored];
+				favouriteRecordList = stored.split(',');
 			}
 		}
 	});
 
 	/****************** Map ******************/
-	let mapType = 'resultList';
-	let lang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	let mapType: MapTypes = 'resultList';
+	let lang = page.data.lang == 'fr-ca' ? 'fr' : 'en';
 </script>
 
 <!-- When the window is resized, we can close each accordion to reset the map variables. -->
 <svelte:window onresize={closeAllAccordions} />
 
 <Card>
-	{#if $navigating}
+	{#if navigating.type !== null}
 		<ResultListSkeleton numRecords={results.length} />
 	{:else}
 		<!-- Header -->
@@ -259,8 +285,8 @@
 								<p>
 									<span class="font-semibold">{organizationText}: </span>
 									{lang == 'fr'
-										? result.contact[0].organisation.fr.replaceAll(';', '; ')
-										: result.contact[0].organisation.en.replaceAll(';', '; ')}
+										? result.contact[0]?.organisation?.fr?.replaceAll(';', '; ')
+										: result.contact[0]?.organisation?.en?.replaceAll(';', '; ')}
 								</p>
 								<p class="mt-2">
 									<span class="font-semibold">{formatText}: </span>

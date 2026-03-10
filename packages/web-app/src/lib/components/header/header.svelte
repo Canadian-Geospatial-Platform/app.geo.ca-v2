@@ -1,10 +1,10 @@
 <script>
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Navbarhorizontal from './navbarhorizontal.svelte';
 	import Navbarvertical from './navbarvertical.svelte';
 
-	const translations = $page.data.headerTranslations;
-	const lang = $page.data.lang;
+	const translations = page.data.headerTranslations;
+	const lang = page.data.lang;
 	const logoAlt = translations?.logoAlt ? translations['logoAlt'] : '';
 	const logoHref = lang == 'fr-ca' ? 'https://geo.ca/fr/accueil/' : 'https://geo.ca/home';
 	const logoSrc = translations?.logoSrc ? translations['logoSrc'] : '';

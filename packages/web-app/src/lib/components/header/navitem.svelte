@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { clickOutside } from '$lib/components/component-utils/clickOutside';
 	import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
-	import { LOCALSTORAGE_UPDATED } from '$lib/utils/event-dispatchers/local-storage-changed.js';
+	import { LOCALSTORAGE_UPDATED } from '$lib/utils/event-dispatchers/local-storage-changed';
 	import Navdropdown from '$lib/components/header/navdropdown.svelte';
 	import Chevronup from '$lib/components/icons/chevronup.svelte';
 	import Chevrondown from '$lib/components/icons/chevrondown.svelte';
@@ -12,7 +12,7 @@
 
 	let { linkData, orientation, dropDownClick } = $props();
 
-	const lang = $page.data.lang;
+	const lang = page.data.lang;
 	const homeText = lang == 'fr-ca' ? 'Accueil' : 'Home';
 
 	let localStorageKey = linkData?.localStorageKey;
@@ -29,7 +29,14 @@
 	let chevronDown = $state(true);
 	let active = $state(false);
 
-	function setActive(isActive: boolean, down: boolean, activateScroll: boolean) {
+	/**
+	 * Sets the active state of the nav item.
+	 * 
+	 * @param isActive - Whether the nav item is active
+	 * @param down - Whether the chevron is pointing down.
+	 * @param activateScroll - Whether to activate scroll toggle.
+	 */
+	function setActive(isActive: boolean, down: boolean, activateScroll: boolean): void {
 		active = isActive;
 		chevronDown = down;
 		if (activateScroll) {
@@ -37,14 +44,24 @@
 		}
 	}
 
-	function handleClickOutside(menuOrientation: string) {
+	/**
+	 * Handles click outside event to close the dropdown.
+	 * 
+	 * @param menuOrientation - The orientation of the menu.
+	 */
+	function handleClickOutside(menuOrientation: string): void {
 		if (active) {
 			let isHorizontal = menuOrientation === 'horizontal';
 			setActive(false, true, isHorizontal);
 		}
 	}
 
-	function handleDropdownClick(menuOrientation: string) {
+	/**
+	 * Handles dropdown click event to toggle the dropdown.
+	 * 
+	 * @param menuOrientation - The orientation of the menu.
+	 */
+	function handleDropdownClick(menuOrientation: string): void {
 		let isHorizontal = menuOrientation === 'horizontal';
 		if (active) {
 			setActive(false, true, isHorizontal);
@@ -57,34 +74,50 @@
 		}
 	}
 
-	function handleLocalStorageUpdated(event) {
-		const { key, value } = event.detail;
+	/**
+	 * Handles local storage updated event to update the local storage value.
+	 * 
+	 * @param event - The custom event.
+	 */
+	function handleLocalStorageUpdated(event: Event): void {
+		const { key, value } = (event as CustomEvent<{ key: string; value: string }>).detail;
 		if (key === localStorageKey) {
 			localStorageValue = value;
 		}
 	}
 
-	function dispatchDropDownClick() {
+	/**
+	 * Dispatches the drop down click event to the parent component.
+	 */
+	function dispatchDropDownClick(): void {
 		dropDownClick({ menu: linkData });
 	}
 
-	function resetNav() {
+	/**
+	 * Resets the navigation state.
+	 */
+	function resetNav(): void {
 		if (active) {
 			setActive(false, true, true);
 		}
 	}
 
-	function toggleLanguage(lang) {
-		let currentUrl = $page.url.origin + $page.url.pathname;
+
+	/**
+	 * Toggles the language and returns the new URL.
+	 * 
+	 * @param lang - The language to toggle to.
+	 * @returns The new URL.
+	 */
+	function toggleLanguage(lang: string): string {
+		let currentUrl = page.url.origin + page.url.pathname;
 		let url =
 			lang == 'fr-ca' ? currentUrl.replace('en-ca', 'fr-ca') : currentUrl.replace('fr-ca', 'en-ca');
 		return url;
 	}
 
-	// Local storage is only accessible from the client side, so we need to get
-	// the FavouritesResources array inside onMount
-	onMount(async () => {
-		localStorageValue = localStorage.getItem('FavouritesResources');
+	onMount((): () => void => {
+		localStorageValue = localStorage.getItem('FavouritesResources') || '';
 
 		window.addEventListener(LOCALSTORAGE_UPDATED, handleLocalStorageUpdated);
 
@@ -97,11 +130,9 @@
 
 <div class={['h-full', active && orientation === 'horizontal' && 'active']}>
 	{#if linkData?.options && orientation == 'horizontal'}
-		<!-- TODO: fix typescript error for click_outside event-->
 		<button
 			class="nav-link"
-			use:clickOutside
-			onclick_outside={() => handleClickOutside(orientation)}
+			use:clickOutside={() => handleClickOutside(orientation)}
 			onclick={() => handleDropdownClick(orientation)}
 		>
 			{linkData.title}
@@ -119,8 +150,7 @@
 	{:else if linkData?.options}
 		<button
 			class="nav-link w-full justify-between"
-			use:clickOutside
-			onclick_outside={() => handleClickOutside(orientation)}
+			use:clickOutside={() => handleClickOutside(orientation)}
 			onclick={() => handleDropdownClick(orientation)}
 		>
 			<div>
@@ -172,7 +202,7 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
 	.nav-link {
 		@apply flex;
 		@apply h-full;

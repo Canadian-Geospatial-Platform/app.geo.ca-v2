@@ -20,7 +20,7 @@
 ------------------------------------------------------------------>
 
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Chevrondown from '$lib/components/icons/chevrondown.svelte';
 	import Chevronup from '$lib/components/icons/chevronup.svelte';
 	import Close from '$lib/components/icons/close.svelte';
@@ -29,11 +29,11 @@
 	interface Props {
 		optionsData: Array<SelectOption>;
 		// The default selection object
-		selected: SelectOption | undefined | null;
+		selected: SelectOption | undefined;
 		removableSelection?: boolean;
 		defaultLabel?: string;
 		selectType?: string;
-		selectedChange: CustomEvent;
+		selectedChange: (selected: SelectOption | null) => void;
 	}
 
 	let {
@@ -45,37 +45,56 @@
 		selectedChange
 	}: Props = $props();
 
-	const lang = $page.data.lang;
+	const lang = page.data.lang;
 	let clearAriaLabel = lang == 'fr-ca' ? 'Effacer la sélection' : 'Clear selection';
 
 	let expanded = $state(false);
-	let selectEl = $state();
+	let selectEl = $state<HTMLSelectElement>();
 
-	function handleSelectionChange(event) {
-		let value = event?.target?.value;
+	/**
+	 * Handles the selection change event.
+	 * 
+	 * @param event - The change event.
+	 */
+	function handleSelectionChange(event: Event): void {
+		let value = (event.target as HTMLSelectElement)?.value;
 
 		if (value != selected?.value) {
 			selected = optionsData.find((x) => x.value == value);
-			selectedChange(selected);
+			selectedChange(selected || null);
 		}
 	}
 
-	function handleSelectClick(event) {
+	/**
+	 * Handles the select element click event.
+	 */
+	function handleSelectClick(): void {
 		expanded = !expanded;
 	}
 
-	function handleSearchEnterKeyDown(event) {
+	/**
+	 * Handles the keydown event on the select element.
+	 * 
+	 * @param event - The keyboard event.
+	 */
+	function handleSearchEnterKeyDown(event: KeyboardEvent): void {
 		let key = event.key;
 		if (key == 'Enter' || (key == ' ' && !expanded)) {
 			expanded = !expanded;
 		}
 	}
 
-	function handleBlur() {
+	/**
+	 * Handles the blur event on the select element.
+	 */
+	function handleBlur(): void {
 		expanded = false;
 	}
 
-	function handleRemoveSelect(event) {
+	/**
+	 * Handles the remove selection button click event.
+	 */
+	function handleRemoveSelect(): void {
 		// Change focus to select element instead of the remove button
 		// since the remove button will be removed from the DOM when no
 		// option is selected
@@ -85,8 +104,8 @@
 
 		// remove the selection
 		expanded = false;
-		selected = null;
-		selectedChange(selected);
+		selected = undefined;
+		selectedChange(selected || null);
 	}
 </script>
 
@@ -144,7 +163,7 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
 	.resultList,
 	.default {
 		@apply text-custom-16;

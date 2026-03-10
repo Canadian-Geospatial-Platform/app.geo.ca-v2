@@ -1,23 +1,27 @@
+<script module lang="ts">
+	// Declare cgpv as a global variable
+	declare const cgpv: any;
+</script>
+
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { loadCGPVScript } from '$lib/components/map/loadCGPVScript.ts';
+	import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
+	import type { GeoviewConfig } from './map-types';
 
 	interface Props {
-		layerIds: any;
+		layerIds: string[];
 	}
 
 	let { layerIds }: Props = $props();
 
 	let mapId = 'map-favourites-resources';
-	let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	let mapLang = page.data.lang == 'fr-ca' ? 'fr' : 'en';
 
 	/***************** Map config *****************/
 	const interaction = 'dynamic';
 	const center = [-100, 68];
 	const zoom = 2;
-	const maxExtent = [-180, -90, 180, 90];
 	const mapProjection = 3978;
 
 	const basemapId = 'transport';
@@ -26,11 +30,11 @@
 
 	const theme = 'geo.ca';
 	const components = ['north-arrow', 'overview-map'];
-	const appBarTabs = ['geolocator', 'legend', 'export', 'details'];
+	const appBarTabs = ['geolocator', 'legend', 'details', 'export'];
 	const footerBarTabs = ['layers', 'data-table', 'time-slider', 'geochart'];
 	const footerBarCollapsed = true;
 
-	let config = $state({
+	let config: GeoviewConfig = $state({
 		map: {
 			interaction: interaction,
 			viewSettings: {
@@ -60,8 +64,10 @@
 
 	let sConfig = $derived(JSON.stringify(config));
 
-	// Allow for the map to be destroyed by the parent component
-	export function destroyMapViewer() {
+	/**
+	 * Destroys the map viewer instance.
+	 */
+	export function destroyMapViewer(): void {
 		try {
 			if (cgpv.api.hasMapViewer(mapId)) {
 				cgpv.api.deleteMapViewer(mapId, false);
@@ -71,8 +77,7 @@
 		}
 	}
 
-	/***************** Create map *****************/
-	onMount(async () => {
+	onMount(async (): Promise<void> => {
 		// The loadCGPVScript function ensures the external cgpv library is fully loaded before
 		// trying to use the geocore code, otherwise it sometimes fails
 		await loadCGPVScript();
@@ -88,11 +93,11 @@
 			await cgpv.api.createMapFromConfig(mapId, sConfig);
 
 			// Add map layers for each id
-			layerIds.forEach((layer) => {
+			layerIds.forEach((layer: string) => {
 				cgpv.api.getMapViewer(mapId).layer.addGeoviewLayerByGeoCoreUUID(layer);
 			});
-		} catch (e) {
-			console.error(e);
+		} catch (error) {
+			console.error(error);
 		}
 	});
 </script>

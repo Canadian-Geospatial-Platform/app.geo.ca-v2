@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
-	const legalData: { [key: string]: string } = $page.data.legalData;
+	const legalData: { [key: string]: string } | undefined = page.data.legalData;
 
 	let logoUrl = legalData?.logoUrl ? legalData['logoUrl'] : '';
 	let logoAlt = legalData?.logoAlt ? legalData['logoAlt'] : '';
@@ -43,7 +43,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.legal-col {
 		@apply p-3;
 	}

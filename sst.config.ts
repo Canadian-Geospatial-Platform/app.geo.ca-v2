@@ -1,18 +1,30 @@
 import type { SSTConfig } from "sst";
-import { SvelteKitSite, Config, Bucket, Table, Function } from "sst/constructs";
-import * as cdk from "aws-cdk-lib";
+import { SvelteKitSite, Config, Table } from "sst/constructs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { DynamoDBClient, DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 
-const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca"
-const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca"
+const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca";
+const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca";
+const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
+const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 
-async function getExistingUserTableArn(tableName: string, region: string) {
+/**
+ * Gets the ARN of an existing DynamoDB table if it exists.
+ * @param {string} tableName The name of the DynamoDB table.
+ * @param {string} region The AWS region where the table is located.
+ * @returns {Promise<string | undefined>} The ARN of the existing DynamoDB table, or undefined if the table does not exist.
+ */
+async function getExistingUserTableArn(
+  tableName: string,
+  region: string,
+): Promise<string | undefined> {
   const dynamoDBClient = new DynamoDBClient({ region });
   try {
-    const response = await dynamoDBClient.send(new DescribeTableCommand({ TableName: tableName }));
+    const response = await dynamoDBClient.send(
+      new DescribeTableCommand({ TableName: tableName }),
+    );
     return response.Table?.TableArn;
-  } catch (error) {
+  } catch (error: any) {
     if (error.name !== "ResourceNotFoundException") {
       throw error;
     }
@@ -29,9 +41,13 @@ export default {
   },
   async stacks(app) {
     const tableName = `${app.stage}-app-geo-ca-v2-users`;
-    const existingUserTableArn = await getExistingUserTableArn(tableName, app.region);
+    const existingUserTableArn = await getExistingUserTableArn(
+      tableName,
+      app.region,
+    );
 
     app.stack(function Site({ stack }) {
+      const OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
       /*** User Table ***/
 
       // Check if an existing user table exists. If it does, use it instead of
@@ -39,9 +55,9 @@ export default {
       const USER_TABLE = existingUserTableArn
         ? dynamodb.Table.fromTableArn(stack, "users", existingUserTableArn)
         : new Table(stack, "users", {
-          fields: { uuid: "string" },
-          primaryIndex: { partitionKey: "uuid" },
-        });
+            fields: { uuid: "string" },
+            primaryIndex: { partitionKey: "uuid" },
+          });
 
       /*** Other Resources ***/
       const FEATURE_SIGN_IN = new Config.Parameter(stack, "FEATURE_SIGN_IN", {
@@ -56,14 +72,11 @@ export default {
 
       const site = new SvelteKitSite(stack, "site", {
         path: "packages/web-app/",
-        bind: [
-          userTableConfig,
-          FEATURE_SIGN_IN,
-        ],
+        bind: [userTableConfig, FEATURE_SIGN_IN, OIDC_CLIENT_SECRET],
         environment: {
           GEOCORE_API_DOMAIN,
-          SEMANTIC_SEARCH_URL
-        }
+          SEMANTIC_SEARCH_URL,
+        },
       });
 
       stack.addOutputs({

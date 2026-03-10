@@ -1,36 +1,48 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Email from '$lib/components/icons/email.svelte';
 	import Facebook from '$lib/components/icons/facebook.svelte';
 	import Linkedin from '$lib/components/icons/linkedin.svelte';
 	import X from '$lib/components/icons/x.svelte';
 
-	const translations = $page.data.shareTranslations;
-	let shareText = translations?.shareText ? translations['shareText'] : 'Share';
+	const translations = page.data.shareTranslations;
+	const shareText = translations?.shareText ? translations['shareText'] : 'Share';
 
 	// Note: these variables need to be computed to react to changes to the page's url
-	let path = $derived($page.url.href);
+	let path = $derived(page.url.href);
 	let encodedPath = $derived(encodeURIComponent(String(path)));
 
-	function handleFacebookLink() {
+	/**
+	 * Handles the Facebook share link.
+	 */
+	function handleFacebookLink(): void {
 		let facebookLink = 'https://www.facebook.com/sharer/sharer.php';
 		let fbShareLink = facebookLink + '?u=' + encodedPath;
 		window.open(fbShareLink);
 	}
 
-	function handleXLink() {
+	/**
+	 * Handles the X share link.
+	 */
+	function handleXLink(): void {
 		let xLink = 'https://x.com/intent/post';
 		let xShareLink = xLink + '?url=' + encodedPath;
 		window.open(xShareLink);
 	}
 
-	function handleLinkedInLink() {
+	/**
+	 * Handles the LinkedIn share link.
+	 */
+	function handleLinkedInLink(): void {
 		let linkedInLink = 'https://linkedin.com/shareArticle';
 		let linkedInShareLink = linkedInLink + '?url=' + encodedPath + '&mini=true';
 		window.open(linkedInShareLink);
 	}
 
-	function handleEmailLink() {
+	/**
+	 * Handles the email share link.
+	 */
+	function handleEmailLink(): void {
 		let mailToLink = 'mailto:?body=' + encodeURIComponent(path);
 		window.open(mailToLink);
 	}

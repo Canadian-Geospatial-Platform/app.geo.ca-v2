@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { updateTempCategoryOfInterest } from '$lib/components/search-results/store';
 	import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
@@ -14,15 +14,32 @@
 	import SourceSystem from '$lib/components/search-results/filters/source-system.svelte';
 	import OtherFilters from '$lib/components/search-results/filters/other-filters.svelte';
 	import SpatioTemporal from '$lib/components/search-results/filters/spatio-temporal.svelte';
+	import type { BBox, DateRangeItem } from './filters/filter-types';
 
 	interface Props {
 		active?: boolean;
 		numFilters?: number;
 	}
 
+	interface Filters {
+		category: string | null;
+		relation: string | null;
+		bbox: { north: string; east: string; south: string; west: string } | null | undefined;
+		dateRange: DateRangeItem | null | undefined;
+		other: {
+			foundational: boolean;
+			mappable: boolean;
+		};
+		org: { [key: string]: boolean };
+		typeFilter: { [key: string]: boolean };
+		theme: { [key: string]: boolean };
+		eoCollection: { [key: string]: boolean };
+		sourceSystem: { [key: string]: boolean };
+	}
+
 	let { active = $bindable(false), numFilters = $bindable(0) }: Props = $props();
 
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	const filterByText = translations?.filterBy ?? 'Filter By';
 	const filterDescriptionText = translations?.filterDescription ?? '';
@@ -44,43 +61,56 @@
 	const dateRangeKey = 'dateRange';
 	const delineator = ',';
 
-	let categoriesComponent = $state();
-	let othersCompontent = $state();
-	let orgCompontent = $state();
-	let themeCompontent = $state();
-	let typeCompontent = $state();
-	let spatioTemporalComponent = $state();
-	let eoCollectionsComponent = $state();
-	let sourceSystemComponent = $state();
+	let categoriesComponent: CategoryOfInterest | undefined= $state();
+	let othersCompontent: OtherFilters | undefined = $state();
+	let orgCompontent: Organizations | undefined = $state();
+	let themeCompontent: Themes | undefined = $state();
+	let typeCompontent: Types | undefined = $state();
+	let spatioTemporalComponent: SpatioTemporal | undefined = $state();
+	let eoCollectionsComponent: EoCollections | undefined = $state();
+	let sourceSystemComponent: SourceSystem | undefined = $state();
 
-	let searchParams = $derived($page.url.searchParams);
+	let searchParams = $derived(page.url.searchParams);
 	$effect(() => {
 		setFilterCountFromUrl(searchParams);
 	});
 
 	/************* Handlers ***************/
-	function handleCloseButtonClick(event: Event) {
+	/**
+	 * Handles close button click event to close the modal.
+	 */
+	function handleCloseButtonClick(): void {
 		closeModal();
 	}
 
-	function handleClearAllClick(event: Event) {
+	/**
+	 * Handles clear all button click event to reset all filters.
+	 */
+	function handleClearAllClick(): void {
 		temporalActive = false;
 		spatialActive = false;
 		updateTempCategoryOfInterest(null);
 		clearAllChecks();
 	}
 
-	function handleSubmit(event: Event) {
+	/**
+	 * Handles form submission to apply filters.
+	 * 
+	 * @param event - The form submission event.
+	 */
+	function handleSubmit(event: Event): void {
 		event.preventDefault();
 		const formEl = event.target;
+		if (!(formEl instanceof HTMLFormElement)) return;
+
 		const formData = new FormData(formEl);
-		const categoryVal = categoriesComponent.getValue();
+		const categoryVal = categoriesComponent?.getValue();
 
 		const filters = {
 			category: categoryVal ? categoryVal : null,
 			relation:
 				formData.get('spatial-relation') && formData.get('spatio-temporal-spatial-extent')
-					? formData.get('spatial-relation')
+					? formData.get('spatial-relation')?.toString() || null
 					: null,
 			bbox: formData.get('spatio-temporal-spatial-extent') ? parseBoundingBox() : null,
 			dateRange: formData.get('spatio-temporal-temporal-extent') ? parseDateRange() : null,
@@ -97,45 +127,56 @@
 
 		for (let [key, value] of formData.entries()) {
 			if (key.startsWith('org-')) {
-				filters.org[key.replace('org-', '')] = value === 'on';
+				(filters.org as { [key: string]: boolean })[key.replace('org-', '')] = value === 'on';
 			} else if (key.startsWith('type-')) {
-				filters.typeFilter[key.replace('type-', '')] = value === 'on';
+				(filters.typeFilter as { [key: string]: boolean })[key.replace('type-', '')] = value === 'on';
 			} else if (key.startsWith('theme-')) {
-				filters.theme[key.replace('theme-', '')] = value === 'on';
+				(filters.theme as { [key: string]: boolean })[key.replace('theme-', '')] = value === 'on';
 			} else if (key.startsWith('eo_collection-')) {
-				filters.eoCollection[key.replace('eo_collection-', '')] = value === 'on';
+				(filters.eoCollection as { [key: string]: boolean })[key.replace('eo_collection-', '')] = value === 'on';
 			} else if (key.startsWith('source_system-')) {
-				filters.sourceSystem[key.replace('source_system-', '')] = value === 'on';
+				(filters.sourceSystem as { [key: string]: boolean })[key.replace('source_system-', '')] = value === 'on';
 			}
 		}
 
 		numFilters = countFilters(filters);
 
 		const query = buildFilterParams(filters);
-		goto(`?${query.toString()}`, { replaceState: true, keepfocus: true });
+		goto(`?${query.toString()}`, { replaceState: true, keepFocus: true });
 
 		closeModal();
 	}
 
-	function handleClickOutside(event: Event) {
+	/**
+	 * Handles click outside event to close the dropdown.
+	 */
+	function handleClickOutside(): void {
 		if (active) {
 			closeModal();
 		}
 	}
 
 	/************* utility methods ***************/
-	export function setFiltersFromURL() {
-		categoriesComponent.resetFilters();
-		orgCompontent.resetFilters();
-		othersCompontent.resetFilters();
-		typeCompontent.resetFilters();
-		themeCompontent.resetFilters();
-		spatioTemporalComponent.resetFilters();
-		eoCollectionsComponent.resetFilters();
-		sourceSystemComponent.resetFilters();
+	/**
+	 * Resets all filters based on the URL parameters.
+	 */
+	export function setFiltersFromURL(): void {
+		if (categoriesComponent) categoriesComponent.resetFilters();
+		if (orgCompontent) orgCompontent.resetFilters();
+		if (othersCompontent) othersCompontent.resetFilters();
+		if (typeCompontent) typeCompontent.resetFilters();
+		if (themeCompontent) themeCompontent.resetFilters();
+		if (spatioTemporalComponent) spatioTemporalComponent.resetFilters();
+		if (eoCollectionsComponent) eoCollectionsComponent.resetFilters();
+		if (sourceSystemComponent) sourceSystemComponent.resetFilters();
 	}
 
-	function setFilterCountFromUrl(searchParams) {
+	/**
+	 * Sets the filter count based on the URL parameters.
+	 * 
+	 * @param searchParams - The URL search parameters.
+	 */
+	function setFilterCountFromUrl(searchParams: URLSearchParams): void {
 		const filterLists = {
 			bboxList: getList(bboxKey, false, searchParams),
 			categoryList: getList(categoriesKey, false, searchParams),
@@ -152,25 +193,47 @@
 		numFilters = countFilters(filterLists);
 	}
 
-	function clearAllChecks() {
-		orgCompontent.clearAllFilters();
-		othersCompontent.clearAllFilters();
-		typeCompontent.clearAllFilters();
-		themeCompontent.clearAllFilters();
-		eoCollectionsComponent.clearAllFilters();
-		sourceSystemComponent.clearAllFilters();
-		spatioTemporalComponent.clearAllFilters();
+	/**
+	 * Clears all filter selections in child components.
+	 */
+	function clearAllChecks(): void {
+		if (orgCompontent) orgCompontent.clearAllFilters();
+		if (othersCompontent) othersCompontent.clearAllFilters();
+		if (typeCompontent) typeCompontent.clearAllFilters();
+		if (themeCompontent) themeCompontent.clearAllFilters();
+		if (eoCollectionsComponent) eoCollectionsComponent.clearAllFilters();
+		if (sourceSystemComponent) sourceSystemComponent.clearAllFilters();
+		if (spatioTemporalComponent) spatioTemporalComponent.clearAllFilters();
 	}
 
-	function parseBoundingBox() {
-		return spatioTemporalComponent.getBBox();
+	// TODO: get rid of null returns in the two functions below by adjusting the SpatioTemporal component methods,
+	// TODOCONT: or get rid of undefined if the components must be set.
+
+	/**
+	 * Parses the bounding box from the Spatio-Temporal component.
+	 * 
+	 * @returns The bounding box or null/undefined if not set.
+	 */
+	function parseBoundingBox(): BBox | null | undefined {
+		return spatioTemporalComponent?.getBBox();
 	}
 
-	function parseDateRange() {
-		return spatioTemporalComponent.getDateRange();
+	/**
+	 * Parses the date range from the Spatio-Temporal component.
+	 * 
+	 * @returns The date range or null/undefined if not set.
+	 */
+	function parseDateRange(): DateRangeItem | null | undefined {
+		return spatioTemporalComponent?.getDateRange();
 	}
 
-	function countFilters(filters) {
+	/**
+	 * Counts the number of active filters.
+	 * 
+	 * @param filters - The filters object.
+	 * @returns The count of active filters.
+	 */
+	function countFilters(filters: object): number {
 		let filterCount = 0;
 
 		for (const [key, value] of Object.entries(filters)) {
@@ -184,11 +247,17 @@
 		return filterCount;
 	}
 
-	function buildFilterParams(filters) {
-		const bbox = filters.bbox;
+	/**
+	 * Builds the URL search parameters based on the filters.
+	 * 
+	 * @param filters - The filters object.
+	 * @returns The URL search parameters.
+	 */
+	function buildFilterParams(filters: Filters): URLSearchParams {
+		const bbox: BBox | null | undefined = filters.bbox;
 		const relation = filters.relation;
 		const category = filters.category;
-		const dateRange = filters.dateRange;
+		const dateRange: DateRangeItem | null | undefined = filters.dateRange;
 		const foundational = filters.other.foundational;
 		const mappable = filters.other.mappable;
 		const org = filters.org;
@@ -197,7 +266,7 @@
 		const eoCollections = filters.eoCollection;
 		const sourceSystem = filters.sourceSystem;
 
-		const query = new URLSearchParams($page.url.searchParams.toString());
+		const query = new URLSearchParams(page.url.searchParams.toString());
 
 		// BBOX
 		if (bbox) {
@@ -227,8 +296,8 @@
 
 		category ? query.set(categoriesKey, category) : query.delete(categoriesKey);
 
-		foundational ? query.set(foundationalKey, foundational) : query.delete(foundationalKey);
-		mappable ? query.set(mappableKey, mappable) : query.delete(mappableKey);
+		foundational ? query.set(foundationalKey, String(foundational)) : query.delete(foundationalKey);
+		mappable ? query.set(mappableKey, String(mappable)) : query.delete(mappableKey);
 
 		const orgString = getFilterStringFromObj(Object.entries(org));
 		orgString ? query.set(orgKey, orgString) : query.delete(orgKey);
@@ -255,18 +324,35 @@
 		return query;
 	}
 
-	function getFilterStringFromObj(filterObj) {
+	/**
+	 * Converts a filter object to a delimited string of active filter keys.
+	 * 
+	 * @param filterObj - The filter entries array.
+	 * @returns The delimited string of active filter keys.
+	 */
+	function getFilterStringFromObj(filterObj: Array<[string, boolean]>): string {
 		const checkedEntries = filterObj.filter(([, checked]) => checked);
 		const checkedKeys = checkedEntries.map(([key]) => key);
 		return checkedKeys.join(delineator);
 	}
 
-	function getList(key, split, searchParams) {
+	/**
+	 * Retrieves a list from the URL search parameters.
+	 * 
+	 * @param key - The key to retrieve.
+	 * @param split - Whether to split the value into an array.
+	 * @param searchParams - The URL search parameters.
+	 * @returns The retrieved value or array of values.
+	 */
+	function getList(key: string, split: boolean, searchParams: URLSearchParams): string | string[] | null {
 		const value = searchParams.getAll(key)[0];
 		return split && value ? value.split(delineator) : value;
 	}
 
-	function closeModal() {
+	/**
+	 * Closes the filter modal and toggles scroll.
+	 */
+	function closeModal(): void {
 		active = false;
 		toggleScroll(active);
 	}
@@ -288,8 +374,7 @@
 	<form
 		class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-full md:w-2/3 h-fit md:mt-2 m-5 md:m-0"
 		onsubmit={handleSubmit}
-		use:clickOutside
-		onclick_outside={() => handleClickOutside()}
+		use:clickOutside={handleClickOutside}
 	>
 		<div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
 			<div>
@@ -346,7 +431,7 @@
 	</form>
 </div>
 
-<style>
+<style lang="postcss">
 	.hide-scroll {
 		-ms-overflow-style: none; /* Edge */
 		scrollbar-width: none; /* Firefox */

@@ -1,29 +1,30 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import Carousel from '$lib/components/carousel/carousel.svelte';
+	import type { SimilarityRecord } from '$lib/db/db-types';
 
-	const translations = $page.data.t;
+	const translations = page.data.t;
 	const similarRecordsText = translations?.similarProducts
 		? translations['similarProducts']
 		: 'Similar records';
 
-	const data = $page.data;
+	const data = page.data;
 	const lang = data.lang;
 	const recordId = data.item_v2.id;
-	const urlPrefix = $page.url.origin + '/' + lang + '/map-browser/record/';
-	const similarRecords = data.similar;
-	const similarDescriptions = $state({});
+	const urlPrefix = page.url.origin + '/' + lang + '/map-browser/record/';
+	const similarRecords = data.similar || [];
+	const similarDescriptions: Record<string, string> = $state({});
 
-	const similarRecordIs = similarRecords.map((record) => {
+	const similarRecordIs = similarRecords.map((record: SimilarityRecord) => {
 		return record.features_properties_id;
 	});
 
 	const cardData = $derived(
-		similarRecords.map((record) => {
+		similarRecords.map((record: SimilarityRecord) => {
 			const title =
 				lang == 'fr-ca' ? record.features_properties_title_fr : record.features_properties_title_en;
-			const id = record.features_properties_id;
+			const id: string = record.features_properties_id;
 
 			// Todo: Change description when it becomes available from the similarity query.
 			// For now, we can use a POST query to get the description for each record. This is slow,
@@ -44,7 +45,7 @@
 	// TODO: This is a temporary way to get the similar record descriptions.
 	// It should be removed once the similarity descriptions have been added to
 	// the 'similarity' list in the record data
-	onMount(async () => {
+	onMount(async (): Promise<void> => {
 		// Get record data for each of the similar records
 		const response = await fetch('/' + lang + '/map-browser/record/' + recordId, {
 			method: 'POST',

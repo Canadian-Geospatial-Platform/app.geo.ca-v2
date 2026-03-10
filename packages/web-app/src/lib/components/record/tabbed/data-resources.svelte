@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { parseDataResources } from '$lib/components/record/tabbed/parseDataResources';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 
@@ -11,7 +11,7 @@
 	};
 
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	// Buttons
 	const downloadMetadataText = translations?.downloadMetadata
@@ -31,7 +31,7 @@
 		: '';
 
 	/******************* Data *******************/
-	const data = $page.data;
+	const data = page.data;
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
 	const items = data.item_v2;
@@ -48,12 +48,18 @@
 		languages: languagesText
 	};
 
-	function handleDownloadButtonClick() {
+	/**
+	 * Handles the click event for the download metadata button. Opens the Geocore metadata download URL in a new window.
+	 */
+	function handleDownloadButtonClick(): void {
 		let downloadUrl = 'https://geocore.metadata.geo.ca/' + uuid + '.geojson';
 		window.open(downloadUrl);
 	}
 
-	function handleViewISO1915ButtonClick() {
+	/**
+	 * Handles the click event for the view ISO1915 button. Opens the ISO1915 metadata view URL in a new window.
+	 */
+	function handleViewISO1915ButtonClick(): void {
 		let downloadUrl =
 			'https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&version=2.0.2&request=GetRecordById&outputSchema=csw:IsoRecord&ElementSetName=full&id=' +
 			uuid;
@@ -136,7 +142,7 @@
 	</button>
 </div>
 
-<style>
+<style lang="postcss">
 	button {
 		@apply px-6;
 		@apply py-2;

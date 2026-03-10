@@ -79,7 +79,7 @@
 	<div class="sm:inline-block div-fill h-11 w-full sm:w-56 mt-5"></div>
 </div>
 
-<style>
+<style lang="postcss">
 	.div-fill {
 		@apply animate-pulse;
 		@apply bg-custom-9;
