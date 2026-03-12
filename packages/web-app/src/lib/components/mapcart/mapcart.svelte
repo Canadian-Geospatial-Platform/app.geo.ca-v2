@@ -49,7 +49,7 @@
 		: 'Search for additional resources';
 	const viewOnMapLabel = translations?.viewOnMap ? translations.viewOnMap : 'View on map';
 
-	const langShort = lang == 'fr-ca' ? 'fr' : 'en';
+	const langShort = lang === 'fr-ca' ? 'fr' : 'en';
 	const titleKey = 'title_' + langShort;
 
 	/************* Resource Table ***************/
@@ -82,21 +82,21 @@
 	 */
 	function handleDeleteResource(id: string): void {
 		// Before deleting, ask the user's permission
-		const resource = tableDataArray.find((tableData) => tableData.id == id);
+		const resource = tableDataArray.find((tableData) => tableData.id === id);
 		const resourceName = resource?.name;
 		const permissionText =
-			lang == 'fr-ca'
+			lang === 'fr-ca'
 				? `Êtes-vous sûr de vouloir supprimer la ressource suivante? \n\n${resourceName} (${id})`
 				: `Are you sure you want to delete the following resource? \n\n${resourceName} (${id})`;
 
-		if (confirm(permissionText) == true) {
+		if (confirm(permissionText) === true) {
 			let selectedSet = new Set(sortableTable?.getSelectedIds());
 			selectedSet.delete(id);
 
 			// Update resource lists
-			favouriteRecordList = favouriteRecordList.filter((listItem) => listItem != id);
-			tableDataArray = tableDataArray.filter((row) => row.id != id);
-			records = records.filter((record) => record.id != id);
+			favouriteRecordList = favouriteRecordList.filter((listItem) => listItem !== id);
+			tableDataArray = tableDataArray.filter((row) => row.id !== id);
+			records = records.filter((record) => record.id !== id);
 
 			// Update the table and button label
 			sortableTable?.updateTableContent(tableDataArray);
@@ -114,11 +114,11 @@
 	 */
 	function handleRemoveAllClick(): void {
 		const permissionText =
-			lang == 'fr-ca'
+			lang === 'fr-ca'
 				? `Êtes-vous certain de vouloir supprimer ${favouriteRecordList.length} ressources?`
 				: `Are you sure you want to delete ${favouriteRecordList.length} resources?`;
 
-		if (confirm(permissionText) == true) {
+		if (confirm(permissionText) === true) {
 			// Update resource lists
 			favouriteRecordList = [];
 			tableDataArray = [];

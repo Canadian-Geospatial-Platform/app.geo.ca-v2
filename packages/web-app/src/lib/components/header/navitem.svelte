@@ -13,13 +13,13 @@
 	let { linkData, orientation, dropDownClick } = $props();
 
 	const lang = page.data.lang;
-	const homeText = lang == 'fr-ca' ? 'Accueil' : 'Home';
+	const homeText = lang === 'fr-ca' ? 'Accueil' : 'Home';
 
 	let localStorageKey = linkData?.localStorageKey;
 	let localStorageValue = $state('');
 	let localStorageList = $derived(
 		localStorageValue
-			? typeof localStorageValue == 'string'
+			? typeof localStorageValue === 'string'
 				? [...localStorageValue.split(',')]
 				: [...localStorageValue]
 			: []
@@ -112,7 +112,7 @@
 	function toggleLanguage(lang: string): string {
 		let currentUrl = page.url.origin + page.url.pathname;
 		let url =
-			lang == 'fr-ca' ? currentUrl.replace('en-ca', 'fr-ca') : currentUrl.replace('fr-ca', 'en-ca');
+			lang === 'fr-ca' ? currentUrl.replace('en-ca', 'fr-ca') : currentUrl.replace('fr-ca', 'en-ca');
 		return url;
 	}
 
@@ -129,7 +129,7 @@
 <svelte:window onresize={resetNav} />
 
 <div class={['h-full', active && orientation === 'horizontal' && 'active']}>
-	{#if linkData?.options && orientation == 'horizontal'}
+	{#if linkData?.options && orientation === 'horizontal'}
 		<button
 			class="nav-link"
 			use:clickOutside={() => handleClickOutside(orientation)}
@@ -160,18 +160,18 @@
 				<Chevronright classes="h-[2.1875rem] w-[2.1875rem] text-custom-16" />
 			</div>
 		</button>
-	{:else if linkData?.title && linkData?.title == 'English'}
+	{:else if linkData?.title && linkData?.title === 'English'}
 		<a class="nav-link" href={toggleLanguage('en-ca')} data-sveltekit-reload>
 			<Globe classes="h-[1.25rem] w-[1.25rem] mr-1" />
 			{linkData.title}
 		</a>
-	{:else if linkData?.title && linkData?.title == 'Français'}
+	{:else if linkData?.title && linkData?.title === 'Français'}
 		<a class="nav-link" href={toggleLanguage('fr-ca')} data-sveltekit-reload>
 			<Globe classes="h-[1.25rem] w-[1.25rem] mr-1" />
 			{linkData.title}
 		</a>
-	{:else if linkData?.title && linkData?.title == homeText}
-		{#if orientation == 'vertical'}
+	{:else if linkData?.title && linkData?.title === homeText}
+		{#if orientation === 'vertical'}
 			<a class="nav-link" href={linkData['href']}>
 				{linkData.title}
 			</a>
@@ -191,7 +191,7 @@
 			</a>
 			{#if linkData?.counter && localStorageKey}
 				<div
-					class:hidden={!localStorageListLength || localStorageListLength == 0}
+					class:hidden={!localStorageListLength || localStorageListLength === 0}
 					class="align-middle absolute top-3.5 right-0 lg:-right-5 bg-red-700 rounded-full min-w-[1.625rem] h-[1.625rem]
           p-1 text-center text-custom-1 font-open-sans text-xs font-normal border-2 border-custom-1"
 				>

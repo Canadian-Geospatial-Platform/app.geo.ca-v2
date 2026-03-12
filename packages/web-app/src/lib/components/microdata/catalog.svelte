@@ -5,12 +5,12 @@
 
 	// todo: this component needs to be reworked to get the values from the item with the new schema and handle it correctly. The current HTML is just for reference.
 	const catalogDescription = $derived(
-		page.data.lang == 'en-ca'
+		page.data.lang === 'en-ca'
 			? 'This catalog contains open datasets available on the Geo.ca platform.'
 			: 'Ce catalogue contient des données ouvertes disponibles sur la plateforme Geo.ca.'
 	);
 	const catalogTitle = $derived(
-		page.data.lang == 'en-ca'
+		page.data.lang === 'en-ca'
 			? 'Government Of Canada Geo.ca Data Catalog.'
 			: 'Catalogue de données de la plateforme Geo.ca du gouvernement du Canada.'
 	);

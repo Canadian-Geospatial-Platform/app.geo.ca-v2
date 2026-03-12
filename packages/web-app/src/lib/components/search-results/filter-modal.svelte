@@ -237,7 +237,7 @@
 		let filterCount = 0;
 
 		for (const [key, value] of Object.entries(filters)) {
-			if (typeof value === 'object' && value !== null && key != bboxKey && key != dateRangeKey) {
+			if (typeof value === 'object' && value !== null && key !== bboxKey && key !== dateRangeKey) {
 				filterCount = filterCount + countFilters(value);
 			} else if (value) {
 				filterCount = filterCount + 1;

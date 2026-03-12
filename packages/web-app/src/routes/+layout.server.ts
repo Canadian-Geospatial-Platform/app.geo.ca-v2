@@ -15,10 +15,10 @@ export const load: LayoutServerLoad = async ({ cookies, params }) => {
 		lang: params.lang as 'en-ca' | 'fr-ca',
 		signedIn: cookies.get('id_token') ? true : false,
 		FEATURE_SIGN_IN: process.env.FEATURE_SIGN_IN === 'true' ? true : false,
-		footerLinks: params.lang == 'fr-ca' ? frFooterLinks : enFooterLinks,
-		legalData: params.lang == 'fr-ca' ? frLegal : enLegal,
-		navitems: params.lang == 'fr-ca' ? frNavitems : enNavitems,
-		headerTranslations: params.lang == 'fr-ca' ? frHeaderTranslations : enHeaderTranslations,
-		shareTranslations: params.lang == 'fr-ca' ? frShareTranslations : enShareTranslations
+		footerLinks: params.lang === 'fr-ca' ? frFooterLinks : enFooterLinks,
+		legalData: params.lang === 'fr-ca' ? frLegal : enLegal,
+		navitems: params.lang === 'fr-ca' ? frNavitems : enNavitems,
+		headerTranslations: params.lang === 'fr-ca' ? frHeaderTranslations : enHeaderTranslations,
+		shareTranslations: params.lang === 'fr-ca' ? frShareTranslations : enShareTranslations
 	};
 };

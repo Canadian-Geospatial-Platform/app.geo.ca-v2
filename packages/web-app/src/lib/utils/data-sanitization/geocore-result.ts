@@ -10,7 +10,7 @@ import type { GeospatialRecord } from '$lib/db/db-types';
 function sanitize(results: GeospatialRecord[], lang: string): GeospatialRecord[] {
 	let truthyResults = results.filter((result) => result);
 	let fixedCoordsResults = fixCoordinatesType(truthyResults);
-	let normalizedLanguagedResults = normaliseLangage(fixedCoordsResults, lang);
+	let normalizedLanguagedResults = normalizeLanguage(fixedCoordsResults, lang);
 	return normalizedLanguagedResults;
 }
 
@@ -35,7 +35,7 @@ function fixCoordinatesType(results: GeospatialRecord[]): GeospatialRecord[] {
  * @param lang - The language code for normalization.
  * @returns The array of records with normalized language fields.
  */
-function normaliseLangage(records: GeospatialRecord[], lang: string): GeospatialRecord[] {
+function normalizeLanguage(records: GeospatialRecord[], lang: string): GeospatialRecord[] {
 	for (const record of records) {
 		try {
 			let title = record[('title_' + lang.split('-')[0]) as 'title_en' | 'title_fr'];

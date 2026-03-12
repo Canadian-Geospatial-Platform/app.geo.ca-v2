@@ -208,13 +208,13 @@
 		// Use defaults if no coordinate is available.
 		// Defaults are based on the extent of canada's bounding box.
 		if (!coord) {
-			if (searchKey == 'north') {
+			if (searchKey === 'north') {
 				coord = northCoord;
-			} else if (searchKey == 'east') {
+			} else if (searchKey === 'east') {
 				coord = eastCoord;
-			} else if (searchKey == 'south') {
+			} else if (searchKey === 'south') {
 				coord = southCoord;
-			} else if (searchKey == 'west') {
+			} else if (searchKey === 'west') {
 				coord = westCoord;
 			}
 		}
@@ -254,12 +254,12 @@
 				message = validatorTooSmall + min;
 			} else if (!Number.isNaN(max) && number > max) {
 				message = validatorTooBig + max;
-			} else if (input.id == coordinatesId + '-north') {
+			} else if (input.id === coordinatesId + '-north') {
 				const southValue = Number.parseFloat(inputs[coordinatesId + '-south']?.value || '');
 				if (!Number.isNaN(southValue) && number < southValue) {
 					message = validatorNorthGreater;
 				}
-			} else if (input.id == coordinatesId + '-south') {
+			} else if (input.id === coordinatesId + '-south') {
 				const northValue = Number.parseFloat(inputs[coordinatesId + '-north']?.value || '');
 				if (!Number.isNaN(northValue) && number > northValue) {
 					message = validatorNorthGreater;
@@ -280,7 +280,7 @@
 	}
 </script>
 
-{#if searchMode == 'semantic'}
+{#if searchMode === 'semantic'}
 	<p class="mt-4 mb-2">{relationInstructions}</p>
 	<div class="mb-4">
 		<input

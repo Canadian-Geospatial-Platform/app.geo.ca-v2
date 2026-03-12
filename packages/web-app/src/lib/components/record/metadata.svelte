@@ -27,6 +27,7 @@
 	/******************* Data *******************/
 	const data = page.data;
 	const lang = data.lang;
+	const langPrefix = lang.split('-')[0] as 'en' | 'fr';
 	const properties = data.item_v2;
 
 	// Top Section
@@ -37,7 +38,7 @@
 
 	let temporalCoverage = properties.temporalExtent?.begin + ' - ' + properties.temporalExtent?.end;
 
-	if (lang == 'fr-ca') {
+	if (lang === 'fr-ca') {
 		temporalCoverage = temporalCoverage.replaceAll('null', 'Présent');
 	} else {
 		temporalCoverage = temporalCoverage.replaceAll('null', 'Present');
@@ -54,7 +55,9 @@
 	// Sources
 	const title = properties.title;
 	const distributors: ContactInfo[] = properties.distributor || [];
-	const distributorOrgArray = distributors.map((distributor: ContactInfo) => distributor?.organisation);
+	const distributorOrgArray = distributors.map(
+		(distributor: ContactInfo) => distributor?.organisation[langPrefix]
+	);
 
 	const onlineResourceArray = distributors
 		? distributors.map((distributor: ContactInfo) => {
@@ -62,7 +65,7 @@
 				// Also ignore cases where the value is the string 'null'
 				if (
 					distributor?.onlineResource?.onlineResource &&
-					distributor.onlineResource.onlineResource != 'null' &&
+					distributor.onlineResource.onlineResource !== 'null' &&
 					(distributor?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'http' ||
 						distributor?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'https')
 				) {

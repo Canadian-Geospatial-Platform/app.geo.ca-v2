@@ -14,16 +14,16 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	}
 
 	return {
-		t_title_1: {
+		tTitle1: {
 			text:
-				params.lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+				params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
 			href: url.origin + '/' + params.lang + '/map-browser'
 		},
-		t_title_2: {
-			text: params.lang == 'en-ca' ? 'Metadata' : 'Métadonnées',
+		tTitle2: {
+			text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
 			href: url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid
 		},
-		t_title_3: {
+		tTitle3: {
 			text: properties.title,
 			href: url.href
 		},

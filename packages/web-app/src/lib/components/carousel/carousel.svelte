@@ -25,13 +25,13 @@
 
 	/*************** Aria Labels ***************/
 	const carouselLabel =
-		lang == 'fr-ca' ? 'Carrousel de dossiers similaires' : 'Similar records carousel';
-	const similarRecordLabelPrefix = lang == 'fr-ca' ? 'Dossiers similaire ' : 'Similar record ';
+		lang === 'fr-ca' ? 'Carrousel de dossiers similaires' : 'Similar records carousel';
+	const similarRecordLabelPrefix = lang === 'fr-ca' ? 'Dossiers similaire ' : 'Similar record ';
 
 	/*************** Utility methods ***************/
 
 	/**
-	 * Incremet or decrement the slide index by either be 1 (increment) or -1 (decrement).
+	 * Increment or decrement the slide index by either be 1 (increment) or -1 (decrement).
 	 * 
 	 * @param direction - The direction to change the index by (1 or -1)
 	 */
@@ -146,7 +146,7 @@
 		<!-- Select Index Buttons -->
 		<div class="grow flex justify-center text-center">
 			{#each cardData as card, j}
-				{#if j == activeIndex}
+				{#if j === activeIndex}
 					<button
 						class="card-index text-lg hover:text-xl text-custom-20"
 						onclick={() => handleIndexButtonClick(j)}

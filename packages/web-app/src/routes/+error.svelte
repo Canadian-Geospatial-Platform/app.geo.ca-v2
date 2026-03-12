@@ -16,7 +16,7 @@
 <div class="flex flex-col content-width space-y-7 bg-custom-1 min-h-screen pt-7">
 	<Breadcrumbs />
 	<div>
-		{#if page.data.lang == 'fr-ca'}
+		{#if page.data.lang === 'fr-ca'}
 			Oups... Une erreur s'est produite. N'hésitez pas à le signaler en nous envoyant un email à
 			<a class="text-custom-16 underline hover:no-underline" href="mailto:geo@nrcan-rncan.gc.ca"
 				>geo@nrcan-rncan.gc.ca</a

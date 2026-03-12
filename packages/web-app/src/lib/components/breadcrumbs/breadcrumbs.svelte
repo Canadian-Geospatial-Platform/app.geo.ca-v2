@@ -5,15 +5,15 @@
 	const lang = page.data.lang ?? 'en-ca';
 
 	const geoCaUrl = $derived(
-		lang == 'fr-ca' ? 'https://geo.ca/fr/accueil/index.html' : 'https://geo.ca/home'
+		lang === 'fr-ca' ? 'https://geo.ca/fr/accueil/index.html' : 'https://geo.ca/home'
 	);
-	const homeLabel = $derived(lang == 'fr-ca' ? 'Accueil' : 'Home');
+	const homeLabel = $derived(lang === 'fr-ca' ? 'Accueil' : 'Home');
 
-	const appGeoCaUrl = $derived('/' + lang + '/map-browser');
-	const searchLabel = $derived(lang == 'fr-ca' ? 'Recherche' : 'Search');
+	const appGeoCaUrl = $derived(`/${lang}/map-browser`);
+	const searchLabel = $derived(lang === 'fr-ca' ? 'Recherche' : 'Search');
 
-	const title2 = $derived(page.data.t_title_2);
-	const title3 = $derived(page.data.t_title_3);
+	const title2 = $derived(page.data.tTitle2);
+	const title3 = $derived(page.data.tTitle3);
 
 	const breadcrumbs = $derived([
 		{ text: homeLabel, href: geoCaUrl },

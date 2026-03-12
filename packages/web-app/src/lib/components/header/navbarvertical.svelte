@@ -48,7 +48,7 @@
 <div class={['nav-items-container bg-custom-23', (!active || !mainMenuVisible) && 'hidden']}>
 	<div class="rounded-[0.3125rem] bg-custom-1 divide-y divide-custom-16">
 		{#each Object.entries(navItems) as [key, data]}
-			{#if key != 'lang' && (key != 'collections' || userId)}
+			{#if key !== 'lang' && (key !== 'collections' || userId)}
 				<div class="nav-item">
 					<Navitem linkData={data} {orientation} dropDownClick={toggleMenuView} />
 				</div>

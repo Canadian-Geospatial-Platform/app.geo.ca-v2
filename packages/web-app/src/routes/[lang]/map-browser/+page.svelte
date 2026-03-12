@@ -4,7 +4,7 @@
 
 	const lang = page.data.lang;
 	const title =
-		lang == 'fr-ca' ? 'app.geo.ca - Résultats de recherche' : 'app.geo.ca - Search Results';
+		lang === 'fr-ca' ? 'app.geo.ca - Résultats de recherche' : 'app.geo.ca - Search Results';
 
 	const canonicalUrl = page.data.canonicalUrl;
 	const alternateUrl = page.data.alternateUrl;

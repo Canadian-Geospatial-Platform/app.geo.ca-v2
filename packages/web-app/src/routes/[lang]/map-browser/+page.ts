@@ -14,15 +14,15 @@ import { formatNumber } from '$lib/utils/format-number';
 export const load: PageLoad = ({ params, data, url }) => {
 	let searchMode = data.searchMode ? (data.searchMode as 'classic' | 'semantic') : 'semantic';
 	let lang = params.lang as 'en-ca' | 'fr-ca';
-	let t = lang == 'fr-ca' ? frLabels : enLabels;
-	let filters = lang == 'fr-ca' ? frFilters : enFilters;
-	let categories = lang == 'fr-ca' ? frCategories : enCategories;
+	let t = lang === 'fr-ca' ? frLabels : enLabels;
+	let filters = lang === 'fr-ca' ? frFilters : enFilters;
+	let categories = lang === 'fr-ca' ? frCategories : enCategories;
 
 	let sortOptions;
-	if (searchMode == 'semantic') {
-		sortOptions = lang == 'fr-ca' ? frSortOptionsSemantic : enSortOptionsSemantic;
+	if (searchMode === 'semantic') {
+		sortOptions = lang === 'fr-ca' ? frSortOptionsSemantic : enSortOptionsSemantic;
 	} else {
-		sortOptions = lang == 'fr-ca' ? frSortOptions : enSortOptions;
+		sortOptions = lang === 'fr-ca' ? frSortOptions : enSortOptions;
 	}
 
 	let totalResults = data.totalHits ? data.totalHits : 0;
@@ -35,8 +35,8 @@ export const load: PageLoad = ({ params, data, url }) => {
 		start: data.start,
 		end: data.end,
 		t: t,
-		t_title_1: {
-			text: lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+		tTitle1: {
+			text: lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
 			href: url.href
 		},
 		total: totalResults,
@@ -77,7 +77,7 @@ function parsePageMessage(lang: string, url: URL, totalResults: number): string 
 	const totalPages = formatNumber(Math.ceil(totalResults / countPerPage));
 	const formattedNumberOfResults = formatNumber(totalResults);
 
-	if (lang == 'fr-ca') {
+	if (lang === 'fr-ca') {
 		datasetsText = totalResults === 1 ? 'Ensemble de données' : 'Ensembles de données';
 		pageOfText = 'Page ' + pageNumber + ' sur ' + totalPages;
 		message = formattedNumberOfResults + ' ' + datasetsText + ', ' + pageOfText;
@@ -106,7 +106,7 @@ function parseResultMessage(lang: string, url: URL, totalResults: number): strin
 
 	const formattedNumberOfResults = formatNumber(totalResults);
 
-	if (lang == 'fr-ca') {
+	if (lang === 'fr-ca') {
 		datasetsText = totalResults === 1 ? 'ensemble de données' : 'ensembles de données';
 		if (searchTerm) {
 			message =

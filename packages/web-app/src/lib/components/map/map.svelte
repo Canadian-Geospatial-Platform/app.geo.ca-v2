@@ -9,7 +9,6 @@
 	import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
 	import type { GeoviewConfig, MapTypes } from '$lib/components/map/map-types';
 
-
 	interface Props {
 		coordinates: number[][];
 		id: string;
@@ -37,8 +36,9 @@
 	}: Props = $props();
 
 	let mapId = 'map-' + mapType + '-' + id;
-	let mapLang = page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	let mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
 
+	// TODO: extract to use one config for this and favourites map.
 	let config: GeoviewConfig = $state({
 		map: {
 			interaction: dynamic ? 'dynamic' : 'static',
@@ -101,7 +101,7 @@
 
 	/**
 	 * Gets the bounding box from the provided coordinates.
-	 * 
+	 *
 	 * @param coordinates - The coordinates to extract the bounding box from.
 	 * @returns The bounding box coordinates.
 	 */
@@ -122,17 +122,13 @@
 		let bbox = coordinates;
 
 		// If first and last points are the same, remove the redundant one
-		if (
-			bbox[0][0] == bbox[bbox.length - 1][0] &&
-			bbox[0][1] == bbox[bbox.length - 1][1]
-		) {
-
+		if (bbox[0][0] === bbox[bbox.length - 1][0] && bbox[0][1] === bbox[bbox.length - 1][1]) {
 			bbox = bbox.slice(0, -1);
 		}
 
 		// For the Lambert projection (3978), we can add extra points along the top and bottom
 		// edge of the bbox to get it to approximate the curve of the latitude lines.
-		if (mapProjection == 3978 && bbox.length === 4) {
+		if (mapProjection === 3978 && bbox.length === 4) {
 			// Find which vertices belong to the top and bottom edges.
 			// To do this, we can sort the vertices based on the latitude,
 			// to determine the top and bottom vertices, then find which which
@@ -153,7 +149,7 @@
 		for (const coord of bbox) {
 			// Check to make sure coordinates are valid
 			if (
-				coord.length != 2 ||
+				coord.length !== 2 ||
 				isNaN(coord[0]) ||
 				isNaN(coord[1]) ||
 				coord[0] > 180 ||
@@ -169,8 +165,20 @@
 	}
 
 	/**
+	 * Gets the extent from the provided coordinates.
+	 *
+	 * @param coordinates - The coordinates to extract the extent from.
+	 * @returns The extent coordinates.
+	 */
+	function getExtentFromCoordinates(coordinates: number[][]): number[] {
+		const lons = coordinates.map((coord) => coord[0]);
+		const lats = coordinates.map((coord) => coord[1]);
+		return [Math.min(...lons), Math.min(...lats), Math.max(...lons), Math.max(...lats)];
+	}
+
+	/**
 	 * Adds additional vertices to a latitudinal edge.
-	 * 
+	 *
 	 * @param west - The western coordinate [longitude, latitude].
 	 * @param east - The eastern coordinate [longitude, latitude].
 	 * @param numVerticesToAdd - The number of vertices to add between west and east.
@@ -204,7 +212,7 @@
 			}
 
 			// Create the layer config to check if the geocore record has a map. It is undefined if no map exists.
-            //const geoviewLayerConfig = await cgpv.api.config.createInitConfigFromType('geoCore', id, '', id);	
+			//const geoviewLayerConfig = await cgpv.api.config.createInitConfigFromType('geoCore', id, '', id);
 			let geoviewLayerConfig;
 			try {
 				// Try to create the layer config to check if the geocore record has a map
@@ -251,6 +259,10 @@
 							fillOpacity: 0.2
 						}
 					});
+
+					// Zoom to the extent of the coordinates.
+					const extent = getExtentFromCoordinates(coordinates);
+					cgpv.api.getMapViewer(mapId).zoomToLonLatExtentOrCoordinate(extent);
 				});
 			}
 		} catch (e) {
@@ -264,5 +276,4 @@
 	class="bg-blue-500/5 w-full aspect-video"
 	data-config={sConfig}
 	data-lang={mapLang}
-	style="border: gray 1px solid;"
 ></div>

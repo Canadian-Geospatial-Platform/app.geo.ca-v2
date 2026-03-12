@@ -100,7 +100,7 @@
 	<button
 		class="arrows mr-2 text-custom-16 disabled:text-custom-19"
 		onclick={() => handlePageClick(currentPage - 1)}
-		disabled={currentPage == 1 || totalItems == 0}
+		disabled={currentPage === 1 || totalItems === 0}
 	>
 		<Chevronleft classes="h-6" />
 	</button>
@@ -108,8 +108,8 @@
 		<button
 			class={[
 				'font-custom-style-button-1 h-7 min-w-7 px-1 mx-1',
-				page == currentPage && 'current-page',
-				page != currentPage && 'page-button'
+				page === currentPage && 'current-page',
+				page !== currentPage && 'page-button'
 			]}
 			onclick={() => handlePageClick(page)}
 		>
@@ -119,7 +119,7 @@
 	<button
 		class="arrows ml-2 text-custom-16 disabled:text-custom-19"
 		onclick={() => handlePageClick(currentPage + 1)}
-		disabled={currentPage == numPages || totalItems == 0}
+		disabled={currentPage === numPages || totalItems === 0}
 	>
 		<Chevronright classes="h-6" />
 	</button>

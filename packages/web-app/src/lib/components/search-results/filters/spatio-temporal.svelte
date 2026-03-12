@@ -79,10 +79,10 @@
 	function handleCheckboxClick(event: Event): void {
 		let checkbox = event.target as HTMLInputElement;
 
-		if (checkbox.id == 'spatio-temporal-temporal-extent') {
+		if (checkbox.id === 'spatio-temporal-temporal-extent') {
 			temporalActive = !temporalActive;
 			checkedStates['temporal-extent'] = checkbox?.checked;
-		} else if (checkbox.id == 'spatio-temporal-spatial-extent') {
+		} else if (checkbox.id === 'spatio-temporal-spatial-extent') {
 			spatialActive = !spatialActive;
 			checkedStates['spatial-extent'] = checkbox?.checked;
 		}
@@ -99,7 +99,7 @@
 			checked={!!checkedStates[filterListItem.value] || false}
 			checkedStateChange={handleCheckboxClick}
 		/>
-		{#if filterListItem.value == 'spatial-extent'}
+		{#if filterListItem.value === 'spatial-extent'}
 			<div class={[!spatialActive && 'hidden']}>
 				<BoundingBox
 					coordinatesId={section}
@@ -107,7 +107,7 @@
 					bind:this={spatialComponent}
 				/>
 			</div>
-		{:else if filterListItem.value == 'temporal-extent'}
+		{:else if filterListItem.value === 'temporal-extent'}
 			<div class={[!temporalActive && 'hidden']}>
 				<DateRange dateId={section} bind:active={temporalActive} bind:this={temporalComponent} />
 			</div>

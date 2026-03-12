@@ -4,7 +4,7 @@
 	import Record from './record.svelte';
 
 	let { item } = $props();
-	let lang = $derived(page.data.lang == 'en-ca' ? 'en' : 'fr');
+	let lang = $derived(page.data.lang === 'en-ca' ? 'en' : 'fr');
 </script>
 
 {#if item}

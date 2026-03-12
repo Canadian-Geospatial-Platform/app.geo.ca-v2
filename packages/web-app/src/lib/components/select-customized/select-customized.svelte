@@ -46,7 +46,7 @@
 	}: Props = $props();
 
 	const lang = page.data.lang;
-	let clearAriaLabel = lang == 'fr-ca' ? 'Effacer la sélection' : 'Clear selection';
+	let clearAriaLabel = lang === 'fr-ca' ? 'Effacer la sélection' : 'Clear selection';
 
 	let expanded = $state(false);
 	let selectEl = $state<HTMLSelectElement>();
@@ -59,8 +59,8 @@
 	function handleSelectionChange(event: Event): void {
 		let value = (event.target as HTMLSelectElement)?.value;
 
-		if (value != selected?.value) {
-			selected = optionsData.find((x) => x.value == value);
+		if (value !== selected?.value) {
+			selected = optionsData.find((x) => x.value === value);
 			selectedChange(selected || null);
 		}
 	}
@@ -79,7 +79,7 @@
 	 */
 	function handleSearchEnterKeyDown(event: KeyboardEvent): void {
 		let key = event.key;
-		if (key == 'Enter' || (key == ' ' && !expanded)) {
+		if (key === 'Enter' || (key === ' ' && !expanded)) {
 			expanded = !expanded;
 		}
 	}
@@ -112,17 +112,17 @@
 <div
 	class={[
 		'relative',
-		selectType == 'resultList' && 'resultList',
-		selectType == 'default' && 'default'
+		selectType === 'resultList' && 'resultList',
+		selectType === 'default' && 'default'
 	]}
 >
 	<select
 		class={[
 			'pr-16 md:pr-12 appearance-none cursor-pointer',
-			selectType == 'tabCard' && 'tabCard',
-			selectType == 'categoryFilter' && 'categoryFilter',
-			(selectType == 'resultList' || selectType == 'default') && 'select-button-2',
-			(selectType == 'categoryFilter' || selectType == 'tabCard') && 'button-4'
+			selectType === 'tabCard' && 'tabCard',
+			selectType === 'categoryFilter' && 'categoryFilter',
+			(selectType === 'resultList' || selectType === 'default') && 'select-button-2',
+			(selectType === 'categoryFilter' || selectType === 'tabCard') && 'button-4'
 		]}
 		onchange={handleSelectionChange}
 		onclick={handleSelectClick}
@@ -139,7 +139,7 @@
 		{/if}
 
 		{#each optionsData as option}
-			{#if selected && selected.value == option.value}
+			{#if selected && selected.value === option.value}
 				<option value={option.value} selected>{option.label}</option>
 			{:else}
 				<option value={option.value}>{option.label}</option>

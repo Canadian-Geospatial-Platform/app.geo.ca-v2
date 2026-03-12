@@ -23,7 +23,7 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string): 
 		zxx: { en: 'Not available', fr: 'Pas disponible' }
 	};
 
-	const translationLang: keyof Translation = lang == 'fr' ? 'fr' : 'en';
+	const translationLang: keyof Translation = lang === 'fr' ? 'fr' : 'en';
 	let dataResources: Array<any> = [];
 	let description;
 	let name;

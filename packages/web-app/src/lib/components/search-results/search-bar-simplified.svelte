@@ -37,7 +37,7 @@
 	*/
 	function handleSearchEnterKeyDown(event: KeyboardEvent): void {
 		let key = event.key;
-		if (key == 'Enter') {
+		if (key === 'Enter') {
 			const searchTerm = searchTextInput?.value;
 			if (searchTerm) applyKeywordSearch(searchTerm);
 		}

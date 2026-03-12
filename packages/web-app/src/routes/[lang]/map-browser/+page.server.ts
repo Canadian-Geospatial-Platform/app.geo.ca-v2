@@ -53,9 +53,9 @@ const SEMANTIC_SEARCH_URL = process.env.SEMANTIC_SEARCH_URL;
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-	let searchMode = url.searchParams.get('searchMethod') == 'classic' ? 'classic' : 'semantic';
+	let searchMode = url.searchParams.get('searchMethod') === 'classic' ? 'classic' : 'semantic';
 	let response;
-	if (searchMode == 'classic') {
+	if (searchMode === 'classic') {
 		response = await generateUrl(
 			fetch,
 			url.searchParams,
@@ -78,7 +78,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	let sanitizedResults: string | any[] = [];
 	try {
 		parsedResponse = await response.json();
-		if (searchMode == 'classic') {
+		if (searchMode === 'classic') {
 			sanitizedResults = sanitize(parsedResponse.Items, params.lang);
 		} else {
 			sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items);
@@ -88,7 +88,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	}
 
 	let totalHits;
-	if (searchMode == 'classic') {
+	if (searchMode === 'classic') {
 		totalHits = parseInt(sanitizedResults?.[0]?.total ? sanitizedResults[0].total : 0);
 	} else {
 		totalHits = parsedResponse?.response?.total_hits ?? 0;
@@ -101,10 +101,10 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	}
 
 	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser';
-	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
 	const metaDescription =
-		params.lang == 'fr-ca'
+		params.lang === 'fr-ca'
 			? 'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.'
 			: 'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.';
 
@@ -310,7 +310,7 @@ function mapSemanticSearchResults(
 		orbit_direction: '',
 		lang: lang.split('-')[0],
 		sort: searchParams.get('sort') ?? 'relevancy',
-		order: searchParams.get('sort') == 'title' ? 'asc' : 'desc',
+		order: searchParams.get('sort') === 'title' ? 'asc' : 'desc',
 		size: searchParams.get('results-per-page') ?? '10',
 		from: getMin(searchParams)
 	};

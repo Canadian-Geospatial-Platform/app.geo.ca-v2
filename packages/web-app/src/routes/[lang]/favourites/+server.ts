@@ -73,7 +73,7 @@ function getFormats(record: GeospatialRecord, lang: string): string[] {
 	// Get an array of just the format of each record option
 	const formatArray = options.map((option: DistributionOption) => {
 		const description = option.description;
-		const descriptionString = lang == 'fr' ? description.fr : description.en;
+		const descriptionString = lang === 'fr' ? description.fr : description.en;
 		const descriptionArray = descriptionString ? descriptionString.split(';') : [];
 
 		// The description string is always in this format 'type;format;language',
@@ -89,7 +89,7 @@ function getFormats(record: GeospatialRecord, lang: string): string[] {
 	// first instance of the value being searched. If it doesn't match the current index,
 	// then it must be a duplicate.
 	const filteredFormats = formatArray.filter((format: string, index: number, self: string[]) => {
-		return format && format !== 'null' && format != 'undefined' && self.indexOf(format) === index;
+		return format && format !== 'null' && format !== 'undefined' && self.indexOf(format) === index;
 	});
 
 	return filteredFormats;
