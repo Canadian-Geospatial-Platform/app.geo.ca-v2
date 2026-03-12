@@ -1,17 +1,22 @@
+<script module lang="ts">
+	// Declare cgpv as a global variable
+	declare const cgpv: any;
+</script>
+
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { loadCGPVScript } from '$lib/components/map/loadCGPVScript.ts';
+	import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
+	import type { GeoviewConfig, MapTypes } from '$lib/components/map/map-types';
 
 	interface Props {
-		coordinates: any;
-		id: any;
+		coordinates: number[][];
+		id: string;
 		dynamic?: boolean;
 		width?: string;
 		height?: string;
 		mapProjection?: number;
-		mapType?: any;
+		mapType?: MapTypes;
 		footer?: boolean;
 		timeSlider?: boolean;
 		chart?: boolean;
@@ -31,13 +36,15 @@
 	}: Props = $props();
 
 	let mapId = 'map-' + mapType + '-' + id;
-	let mapLang = $page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	let mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
 
-	let config = $state({
+	// TODO: extract to use one config for this and favourites map.
+	let config: GeoviewConfig = $state({
 		map: {
 			interaction: dynamic ? 'dynamic' : 'static',
 			viewSettings: {
-				projection: mapProjection
+				projection: mapProjection,
+				initialView: { layerIds: [] }
 			},
 			basemapOptions: {
 				basemapId: 'transport',
@@ -50,7 +57,7 @@
 		corePackages: [],
 		appBar: {
 			tabs: {
-				core: ['geolocator', 'legend', 'export', 'details']
+				core: ['geolocator', 'legend', 'details', 'export']
 			}
 		}
 	});
@@ -66,7 +73,7 @@
 
 	if (timeSlider) {
 		if (footer) {
-			config.footerBar.tabs.core.push('time-slider');
+			config.footerBar!.tabs.core.push('time-slider');
 		} else {
 			config.footerBar = {
 				tabs: {
@@ -79,7 +86,7 @@
 
 	if (chart) {
 		if (footer) {
-			config.footerBar.tabs.core.push('geochart');
+			config.footerBar!.tabs.core.push('geochart');
 		} else {
 			config.footerBar = {
 				tabs: {
@@ -92,35 +99,13 @@
 
 	let sConfig = $derived(JSON.stringify(config));
 
-	// Note: This method can only be called after the map and map layers
-	// have finished loading
-	function zoomToBBox(coordinates, cgpv) {
-		// Since the coordinates are in long-lat format, we need to project them
-		const projectedExtent = coordinates[0].map((coordinate) => {
-			return cgpv.api.utilities.projection.transformFromLonLat(
-				coordinate,
-				cgpv.api.utilities.projection.PROJECTIONS[mapProjection]
-			);
-		});
-
-		// The extent needs to be formatted like this
-		//   [furthestWestLong, furthestSouthLat, furthestEastLong, furthestNorthLat]
-		// for the zoomToExtent method to work, so we can pull the coordinates from
-		// the projected extent
-		const longitudes = projectedExtent.map((coord) => coord[0]);
-		const latitudes = projectedExtent.map((coord) => coord[1]);
-
-		const furthestWest = Math.min(...longitudes);
-		const furthestSouth = Math.min(...latitudes);
-		const furthestEast = Math.max(...longitudes);
-		const furthestNorth = Math.max(...latitudes);
-
-		const extent = [furthestWest, furthestSouth, furthestEast, furthestNorth];
-
-		cgpv.api.getMapViewer(mapId).zoomToExtent(extent);
-	}
-
-	function getBbox(coordinates) {
+	/**
+	 * Gets the bounding box from the provided coordinates.
+	 *
+	 * @param coordinates - The coordinates to extract the bounding box from.
+	 * @returns The bounding box coordinates.
+	 */
+	function getBbox(coordinates: number[][]): number[][] {
 		// This is the bounding coordinates of Canada
 		const defaultValue = [
 			[-140.99778, 41.6751050889],
@@ -137,16 +122,13 @@
 		let bbox = coordinates;
 
 		// If first and last points are the same, remove the redundant one
-		if (
-			bbox[0][0][0] == bbox[0][bbox.length - 1][0] &&
-			bbox[0][0][1] == bbox[0][bbox.length - 1][1]
-		) {
-			bbox = bbox[0].slice(0, -1);
+		if (bbox[0][0] === bbox[bbox.length - 1][0] && bbox[0][1] === bbox[bbox.length - 1][1]) {
+			bbox = bbox.slice(0, -1);
 		}
 
 		// For the Lambert projection (3978), we can add extra points along the top and bottom
 		// edge of the bbox to get it to approximate the curve of the latitude lines.
-		if (mapProjection == 3978 && bbox.length === 4) {
+		if (mapProjection === 3978 && bbox.length === 4) {
 			// Find which vertices belong to the top and bottom edges.
 			// To do this, we can sort the vertices based on the latitude,
 			// to determine the top and bottom vertices, then find which which
@@ -167,7 +149,7 @@
 		for (const coord of bbox) {
 			// Check to make sure coordinates are valid
 			if (
-				coord.length != 2 ||
+				coord.length !== 2 ||
 				isNaN(coord[0]) ||
 				isNaN(coord[1]) ||
 				coord[0] > 180 ||
@@ -182,22 +164,42 @@
 		return bbox;
 	}
 
-	// Add additional vertices to a latitudinal edge
-	function addVertices(west, east, numVerticesToAdd) {
+	/**
+	 * Gets the extent from the provided coordinates.
+	 *
+	 * @param coordinates - The coordinates to extract the extent from.
+	 * @returns The extent coordinates.
+	 */
+	function getExtentFromCoordinates(coordinates: number[][]): number[] {
+		const lons = coordinates.map((coord) => coord[0]);
+		const lats = coordinates.map((coord) => coord[1]);
+		return [Math.min(...lons), Math.min(...lats), Math.max(...lons), Math.max(...lats)];
+	}
+
+	/**
+	 * Adds additional vertices to a latitudinal edge.
+	 *
+	 * @param west - The western coordinate [longitude, latitude].
+	 * @param east - The eastern coordinate [longitude, latitude].
+	 * @param numVerticesToAdd - The number of vertices to add between west and east.
+	 * @returns The array of vertices added between west and east.
+	 */
+	function addVertices(west: number[], east: number[], numVerticesToAdd: number): number[][] {
 		const fraction = (east[0] - west[0]) / numVerticesToAdd;
 		const latitude = west[1];
 
-		let vertices = [];
+		let vertices: number[][] = [];
 		let newLongitude;
 
 		for (let i = 0; i <= numVerticesToAdd; i++) {
 			newLongitude = west[0] + i * fraction;
 			vertices.push([newLongitude, latitude]);
 		}
+
 		return vertices;
 	}
 
-	onMount(async () => {
+	onMount(async (): Promise<void> => {
 		// The loadCGPVScript function ensures the external cgpv library is fully loaded before
 		// trying to use the geocore code, otherwise it sometimes fails
 		await loadCGPVScript();
@@ -208,18 +210,16 @@
 			if (cgpv.api.hasMapViewer(mapId)) {
 				await cgpv.api.deleteMapViewer(mapId, false);
 			}
-			
-			let geoviewLayerConfig;
-            try {
-                // Try to create the layer config to check if the geocore record has a map
-                geoviewLayerConfig = await cgpv.api.config.createInitConfigFromType('geoCore', id, '', id);
-            } catch (e) {
-                // If an error is thrown, it means the geocore record has no map
-                geoviewLayerConfig = undefined;
-            }
 
 			// Create the layer config to check if the geocore record has a map. It is undefined if no map exists.
-            //const geoviewLayerConfig = await cgpv.api.config.createInitConfigFromType('geoCore', id, '', id);	
+			let geoviewLayerConfig;
+			try {
+				// Try to create the layer config to check if the geocore record has a map
+				geoviewLayerConfig = await cgpv.api.config.createInitConfigFromType('geoCore', id, '', id);
+			} catch (error) {
+				// If an error is thrown, it means the geocore record has no map
+				geoviewLayerConfig = undefined;
+			}
 
 			// Add the geocore layer to the map config if it exists
 			if (geoviewLayerConfig) {
@@ -238,7 +238,7 @@
 			// Note: We can safely use document here since it is inside onMount.
 			if (document.getElementById(mapId)) {
 				// Build the map from the config
-				await cgpv.api.createMapFromConfig(mapId, sConfig);
+				await cgpv.api.createMapFromConfig(mapId, JSON.stringify(config));
 			}
 
 			// Add bounding box when no map is available
@@ -259,14 +259,9 @@
 						}
 					});
 
-					// Zoom to the bounding box of the layer
-					zoomToBBox(coordinates, cgpv);
-				});
-			} else {
-				// Check to make sure the layers have finished loading before zooming
-				cgpv.api.getMapViewer(mapId)?.onMapLayersLoaded(() => {
-					// Zoom to the bounding box of the layer
-					zoomToBBox(coordinates, cgpv);
+					// Zoom to the extent of the coordinates.
+					const extent = getExtentFromCoordinates(coordinates);
+					cgpv.api.getMapViewer(mapId).zoomToLonLatExtentOrCoordinate(extent);
 				});
 			}
 		} catch (e) {
@@ -280,5 +275,4 @@
 	class="bg-blue-500/5 w-full aspect-video"
 	data-config={sConfig}
 	data-lang={mapLang}
-	style="border: gray 1px solid;"
 ></div>

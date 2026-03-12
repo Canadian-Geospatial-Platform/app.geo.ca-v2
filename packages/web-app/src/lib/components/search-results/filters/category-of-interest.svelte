@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import {
 		tempCategoryOfInterest,
 		updateTempCategoryOfInterest
@@ -11,57 +11,81 @@
 	// Note: the list of categories are based on the Topic Categories from ISO 19115-1
 	// https://icsm-au.github.io/metadata-working-group/defs/TopicCategory
 	const categoriesKey = 'category-of-interest';
-	const categories = $page.data.categories;
-	let selected: SelectOption | null = null;
+	const categories = page.data.categories;
+	let selected: SelectOption | undefined = undefined;
 	let categoryStoreVal: string | null = null;
 
-	let selectedValue = $page.url.searchParams.get(categoriesKey);
+	const selectedValue = page.url.searchParams.get(categoriesKey);
 	let selectedCategory = findCategory(selectedValue);
 	if (selectedCategory && selected !== selectedCategory) {
-		selected = selectedCategory;
+		selected = selectedCategory || undefined;
 		updateTempCategoryOfInterest(selected?.value ?? null);
 	}
 
-	export function resetFilters() {
-		let catKey = $page.url.searchParams.get('category-of-interest');
+	/**
+	 * Resets the filter to the value in the URL parameters.
+	 */
+	export function resetFilters(): void {
+		let catKey = page.url.searchParams.get('category-of-interest');
 		let selectedCategory = findCategory(catKey);
 
-		selected = selectedCategory;
+		selected = selectedCategory || undefined;
 		updateTempCategoryOfInterest(selected?.value ?? null);
 	}
 
-	export function getValue() {
+	/**
+	 * Gets the current value of the category of interest filter.
+	 * 
+	 * @returns The selected category value or null.
+	 */
+	export function getValue(): string | null {
 		return categoryStoreVal;
 	}
 
 	/************* Translations ***************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 	const categoryOfInterestText = translations?.categoryOfInterest
 		? translations['categoryOfInterest']
 		: 'Select Category of Interest';
-	const categorySelectDefautText = translations?.categorySelectDefaut
-		? translations['categorySelectDefaut']
+	const categorySelectDefaultText = translations?.categorySelectDefault
+		? translations['categorySelectDefault']
 		: 'Select a Category...';
 
 	/************* Filter Data ***************/
-	function findCategory(categoryName: string | null) {
-		return categories.find((x: FilterItem) => x.value == categoryName) ?? null;
+	/**
+	 * Finds a category by its name.
+	 * 
+	 * @param categoryName - The name of the category to find.
+	 * @returns The found category or null if not found.
+	 */
+	function findCategory(categoryName: string | null): FilterItem | null {
+		return categories.find((category: FilterItem) => category.value === categoryName) ?? null;
 	}
 
-	function changeSelection(newSelection: SelectOption | null) {
-		selected = newSelection;
+	/**
+	 * Changes the selected category.
+	 * 
+	 * @param newSelection - The new selected option.
+	 */
+	function changeSelection(newSelection: SelectOption | null): void {
+		selected = newSelection || undefined;
 	}
 
 	/************* Handlers ***************/
-	function handleCategoryOfInterestChange(event: CustomEvent) {
+	/**
+	 * Handles changes to the category of interest selection.
+	 * 
+	 * @param event - The selected option.
+	 */
+	function handleCategoryOfInterestChange(event: SelectOption | null): void {
 		changeSelection(event);
 		updateTempCategoryOfInterest(selected?.value ?? null);
 	}
 
 	/************* Subscriptions ***************/
-	tempCategoryOfInterest.subscribe((value) => {
+	tempCategoryOfInterest.subscribe((value: string | null) => {
 		let category = findCategory(value);
-		if (selected != category) {
+		if (selected !== category) {
 			changeSelection(category);
 		}
 		categoryStoreVal = value;
@@ -76,7 +100,7 @@
 		<SelectCustomized
 			optionsData={categories}
 			removableSelection={true}
-			defaultLabel={categorySelectDefautText}
+			defaultLabel={categorySelectDefaultText}
 			selectType={'categoryFilter'}
 			bind:selected
 			selectedChange={handleCategoryOfInterestChange}

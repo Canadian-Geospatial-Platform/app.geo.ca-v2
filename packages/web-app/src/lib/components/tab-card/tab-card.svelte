@@ -1,26 +1,17 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import type { ComponentType } from 'svelte';
+	import { page } from '$app/state';
 	import Card from '$lib/components/card/card.svelte';
+	import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
 	import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
 
-	type Tab = {
-		label: string;
-		// Id used to determine which tab is active
-		value: number;
-		component: ComponentType;
-	};
-
-	type Tabs = Array<Tab>;
-
 	interface Props {
-		tabContentArray: Tabs;
+		tabContentArray: SelectOption[];
 	}
 
 	let { tabContentArray }: Props = $props();
 
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 	const selectCategory = translations?.selectCategory
 		? translations['selectCategory']
 		: 'Select Category';
@@ -28,16 +19,19 @@
 
 	// Set the first tab to active by default
 	let activeTabId = $state(tabContentArray[0].value);
-	let activeTab = $state(tabContentArray.find((x: Tab) => x.value == activeTabId));
+	let activeTab = $state(tabContentArray.find((tab: SelectOption) => tab.value === activeTabId));
 	let title = $derived(activeTab ? activeTab.label : '');
 
-	function handleTabClick(tab: Tab) {
-		activeTab = tab;
-		activeTabId = tab.value;
-	}
-
-	function handleDropdownClick(event: CustomEvent) {
-		handleTabClick(event);
+	/**
+	 * Handles tab click event to set the active tab.
+	 * 
+	 * @param tab - The tab that was clicked.
+	 */
+	function handleTabClick(tab: SelectOption | null): void {
+		if (tab) {
+			activeTab = tab;
+			activeTabId = tab.value;
+		}
 	}
 </script>
 
@@ -60,8 +54,8 @@
 					class={[
 						'hidden lg:flex items-center min-h-9 px-5 font-custom-style-body-3',
 						'bg-custom-5 border-b-[0.1875rem] border-custom-16 rounded-t',
-						tab.value == activeTabId && 'active',
-						tab.value != activeTabId && 'hover:bg-custom-25'
+						tab.value === activeTabId && 'active',
+						tab.value !== activeTabId && 'hover:bg-custom-25'
 					]}
 					onclick={() => handleTabClick(tab)}
 				>
@@ -80,12 +74,12 @@
 				optionsData={tabContentArray}
 				selectType={'tabCard'}
 				bind:selected={activeTab}
-				selectedChange={handleDropdownClick}
+				selectedChange={handleTabClick}
 			/>
 		</div>
 	</div>
 	{#each tabContentArray as tabContent}
-		{#if activeTabId == tabContent.value}
+		{#if activeTabId === tabContent.value}
 			<Card type="tabbed">
 				<div class="lg:hidden">
 					<h2 class="font-open-sans font-bold text-xl">
@@ -98,7 +92,7 @@
 	{/each}
 </div>
 
-<style>
+<style lang="postcss">
 	.active {
 		@apply border-b-0;
 		@apply text-custom-7;

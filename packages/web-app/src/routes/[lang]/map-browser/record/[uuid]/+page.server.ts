@@ -1,9 +1,9 @@
 import type { PageServerLoad } from './$types';
 import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
-import { error } from '@sveltejs/kit';
-import { parseText } from '$lib/utils/parse-text.ts';
-import { formatNumber } from '$lib/utils/format-number.ts';
+import { parseText } from '$lib/utils/parse-text';
+import { formatNumber } from '$lib/utils/format-number';
+import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '$lib/db/db-types';
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
 	// The "sst/node/config" package dynamically binds resources at runtime.
@@ -20,20 +20,26 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		fetch,
 		params.uuid,
 		lang,
-		cookies.get('id_token'),
-		request.headers.get('x-forwarded-for')
+		cookies.get('id_token') || '',
+		request.headers.get('x-forwarded-for') || ''
 	);
 	try {
 		record = await response.json();
-	} catch (e) {
-		console.error(e);
+	} catch (error) {
+		console.error(error);
 	}
 
-	function extractSimilar(item: any) {
+	/**
+	 * Extracts similarity records from a GeospatialRecord item.
+	 *
+	 * @param item - The record item.
+	 * @returns An array of similarity records.
+	 */
+	function extractSimilar(item: GeospatialRecord): SimilarityRecord[] {
 		return Array.isArray(item?.similarity) ? item.similarity : [];
 	}
 
-	const fetchRelated = async (id) => {
+	const fetchRelated = async (id: string): Promise<GeospatialRecord[]> => {
 		try {
 			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
 			const parsedCollectionsResponse = await collectionsResponse.json();
@@ -43,13 +49,13 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 				related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
 			}
 			if (parsedCollectionsResponse.sibling_count > 0) {
-				parsedCollectionsResponse.sibling.forEach((s) => {
-					related.push({ ...s, ...{ type: 'member' } });
+				parsedCollectionsResponse.sibling.forEach((sibling: GeospatialRecord) => {
+					related.push({ ...sibling, ...{ type: 'member' } });
 				});
 			}
 			if (parsedCollectionsResponse.child_count > 0) {
-				parsedCollectionsResponse.child.forEach((s) => {
-					related.push({ ...s, ...{ type: 'member' } });
+				parsedCollectionsResponse.child.forEach((child: GeospatialRecord) => {
+					related.push({ ...child, ...{ type: 'member' } });
 				});
 			}
 
@@ -69,7 +75,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		};
 	}
 
-	let t = params.lang == 'en-ca' ? enLabels : frLabels;
+	let t = params.lang === 'en-ca' ? enLabels : frLabels;
 
 	const related = await fetchRelated(params.uuid);
 
@@ -92,24 +98,25 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	// Sometimes, the organisation list in the distributor array has duplicate entries,
 	// those will be filtered out here.
 	if (item_v2.distributor) {
-		item_v2.distributor.forEach((dist, i) => {
-			if (dist) {
+		item_v2.distributor.forEach((dist: ContactInfo | null, index: number) => {
+			if (dist && dist.organisation) {
 				// Filter for unique values with a new Set object
-				const orgs = [...new Set(dist.organisation[lang].split('; '))];
+				const orgString = dist.organisation[lang as 'en' | 'fr'];
+				const orgs = [...new Set(orgString?.split('; ') || [])];
 				// convert back to string
-				dist.organisation = orgs.length > 0 ? orgs.join('; ') : '';
+				dist.organisation[lang as 'en' | 'fr'] = orgs.length > 0 ? orgs.join('; ') : '';
 			} else {
-				item_v2.distributor[i] = { organisation: '' };
+				item_v2.distributor[index] = { organisation: { en: '', fr: '' } } as ContactInfo;
 			}
 		});
 	} else {
-		item_v2.distributor = [{ organisation: '' }];
+		item_v2.distributor = [{ organisation: { en: '', fr: '' } } as ContactInfo];
 	}
 
 	// If coordinates are a string, convert them to an array (or nested arrays) instead
 	let coords = item_v2.coordinates ?? [];
 
-	if (typeof item_v2.coordinates == 'string') {
+	if (typeof item_v2.coordinates === 'string') {
 		coords = JSON.parse(coords);
 		item_v2.coordinates = coords;
 	}
@@ -122,7 +129,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	let south = Infinity;
 	let north = -Infinity;
 
-	coords.flat().forEach(([x, y]) => {
+	coords.flat().forEach(([x, y]: [number, number]) => {
 		if (x < west) west = x; // West
 		if (x > east) east = x; // East
 		if (y < south) south = y; // South
@@ -140,8 +147,8 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	// Sometimes the categories are in one single camel case string like this:
 	// "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
 	// a comma-separated or semi-colon-separated list. We can do this with regular expressions.
-	if (item_v2.topicCategory && typeof item_v2.topicCategory == 'string') {
-		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]/).map((item) => {
+	if (item_v2.topicCategory && typeof item_v2.topicCategory === 'string') {
+		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]/).map((item: string) => {
 			// Insert space before a capital letter, but only if it's preceded
 			// by a lowercase letter i.e. this ensures there is no space added
 			// for acronyms so, for example, NRCan does not become N R Can.
@@ -150,22 +157,22 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	}
 
 	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
-	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
 	const metaDescription =
-		params.lang == 'fr-ca'
+		params.lang === 'fr-ca'
 			? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
 			: 'The metadata page and map for the GeoCore record ' + params.uuid;
 
 	item_v2.title = item_v2['title_' + lang];
 	return {
-		t_title_1: {
+		tTitle1: {
 			text:
-				params.lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+				params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
 			href: url.origin + '/' + params.lang + '/map-browser'
 		},
-		t_title_2: {
-			text: params.lang == 'en-ca' ? 'Metadata' : 'Métadonnées',
+		tTitle2: {
+			text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
 			href: url.href
 		},
 		lang: params.lang,
@@ -181,9 +188,25 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		metaDescription: metaDescription
 	};
 
-	function generateUrl(fetch, uuid, lang, token, ip) {
+	/**
+	 * Generates a fetch request to get a record from the GeoCore API.
+	 *
+	 * @param fetch - The fetch function.
+	 * @param uuid - The UUID of the record.
+	 * @param lang - The language code.
+	 * @param token - The authentication token.
+	 * @param ip - The IP address.
+	 * @returns A promise that resolves to the fetch response.
+	 */
+	function generateUrl(
+		fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
+		uuid: string,
+		lang: string,
+		token: string,
+		ip: string
+	): Promise<Response> {
 		let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
-		console.log(url.href);
+
 		return fetch(url, {
 			headers: {
 				Authentication: 'Bearer ' + token,

@@ -1,28 +1,22 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
+	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
 	import Card from '$lib/components/card/card.svelte';
 	import NoMap from '$lib/components/icons/no-map.svelte';
-	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
 	import MycartMap from '$lib/components/map/favourites-map.svelte';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 	import FavouritesListSkeleton from '$lib/components/loading-mask/favourites-list-skeleton.svelte';
 	import Checkmark from '$lib/components/icons/checkmark.svelte';
 	import GarbageCan from '$lib/components/icons/garbage-can.svelte';
 	import SearchBarSimplified from '$lib/components/search-results/search-bar-simplified.svelte';
+	import type { FavouritesRecord, FavouritesRow } from '$lib/db/db-types';
 
-	type FavouritesRow = {
-		id: string;
-		name: string;
-		url: string;
-	};
-
-	let mapComponent = $state();
+	let mapComponent: MycartMap | undefined = $state();
 
 	/************* Translations ***************/
-	const translations = $page.data.t;
-	const lang = $page.data.lang;
+	const translations = page.data.t;
+	const lang = page.data.lang;
 
 	const findAResource = translations?.findAResource
 		? translations.findAResource
@@ -47,52 +41,57 @@
 		: 'Search for additional resources';
 	const viewOnMapLabel = translations?.viewOnMap ? translations.viewOnMap : 'View on map';
 
-	const langShort = lang == 'fr-ca' ? 'fr' : 'en';
-	const titleKey = 'title_' + langShort;
+	const langShort = lang === 'fr-ca' ? 'fr' : 'en';
+	const titleKey: 'title_en' | 'title_fr' = `title_${langShort}` as 'title_en' | 'title_fr';
 
 	/************* Resource Table ***************/
-	let sortableTable = $state();
-	let selectedIds = $state(new Set());
-	let numSelected = $derived(selectedIds.size);
+	let sortableTable: SortableTable | undefined = $state();
+	let selectedIds: string[] = $state([]);
+	let numSelected: number = $derived(selectedIds.length);
 
-	let loading = $state(true);
-	let mapToggle = $state(false);
+	let loading: boolean = $state(true);
+	let mapToggle: boolean = $state(false);
 
-	let favouriteRecordList = $state(
-		$page.data?.userData?.favourites ? [...$page.data?.userData?.favourites] : []
+	let favouriteRecordList: string[] = $state(
+		page.data?.userData?.favourites ? [...page.data?.userData?.favourites] : []
 	);
-	let records = $state([]);
-	let tableDataArray = $state([]);
+	let records: FavouritesRecord[] = $state([]);
+	let tableDataArray: FavouritesRow[] = $state([]);
 
 	// Table column labels
-	const tableLabels: FavouritesRow = {
+	const tableLabels: Record<string, string> = {
 		name: resourceNameLabel,
 		formats: resourceFormatsLabel
 	};
 
 	/************* Handlers ***************/
 
-	function handleDeleteResource(id) {
+	/**
+	 * Handle deleting a resource from the favourites list.
+	 * 
+	 * @param id - The ID of the resource to delete.
+	 */
+	function handleDeleteResource(id: string): void {
 		// Before deleting, ask the user's permission
-		const resource = tableDataArray.find((resource) => resource.id == id);
-		const resourceName = resource.name;
+		const resource = tableDataArray.find((tableData: FavouritesRow) => tableData.id === id);
+		const resourceName = resource?.name;
 		const permissionText =
-			lang == 'fr-ca'
+			lang === 'fr-ca'
 				? `Êtes-vous sûr de vouloir supprimer la ressource suivante? \n\n${resourceName} (${id})`
 				: `Are you sure you want to delete the following resource? \n\n${resourceName} (${id})`;
 
-		if (confirm(permissionText) == true) {
-			let selectedSet = new Set(sortableTable.getSelectedIds());
+		if (confirm(permissionText) === true) {
+			let selectedSet = new Set(sortableTable?.getSelectedIds());
 			selectedSet.delete(id);
 
 			// Update resource lists
-			favouriteRecordList = favouriteRecordList.filter((listItem) => listItem != id);
-			tableDataArray = tableDataArray.filter((row) => row.id != id);
-			records = records.filter((record) => record.id != id);
+			favouriteRecordList = favouriteRecordList.filter((listItem) => listItem !== id);
+			tableDataArray = tableDataArray.filter((row) => row.id !== id);
+			records = records.filter((record) => record.id !== id);
 
 			// Update the table and button label
-			sortableTable.updateTableContent(tableDataArray);
-			sortableTable.setSelectedIds(selectedSet);
+			sortableTable?.updateTableContent(tableDataArray);
+			sortableTable?.setSelectedIds(Array.from(selectedSet));
 
 			// Update localStorage and dispatch localstorage_updated event
 			updateLocalStorage('FavouritesResources', favouriteRecordList);
@@ -101,21 +100,24 @@
 		}
 	}
 
-	function handleRemoveAllClick(event) {
+	/**
+	 * Handle removing all resources from the favourites list.
+	 */
+	function handleRemoveAllClick(): void {
 		const permissionText =
-			lang == 'fr-ca'
+			lang === 'fr-ca'
 				? `Êtes-vous certain de vouloir supprimer ${favouriteRecordList.length} ressources?`
 				: `Are you sure you want to delete ${favouriteRecordList.length} resources?`;
 
-		if (confirm(permissionText) == true) {
+		if (confirm(permissionText) === true) {
 			// Update resource lists
 			favouriteRecordList = [];
 			tableDataArray = [];
 			records = [];
 
 			// Update the table and button label
-			sortableTable.updateTableContent([]);
-			sortableTable.setSelectedIds(new Set());
+			sortableTable?.updateTableContent([]);
+			sortableTable?.setSelectedIds([]);
 
 			// Update localStorage and dispatch localstorage_updated event
 			updateLocalStorage('FavouritesResources', []);
@@ -124,11 +126,17 @@
 		}
 	}
 
-	function handleOpenMapClick(event) {
+	/**
+	 * Handle opening the map view.
+	 */
+	function handleOpenMapClick(): void {
 		mapToggle = true;
 	}
 
-	function handleReturnToListClick(event) {
+	/**
+	 * Handle returning to the list view from the map.
+	 */
+	function handleReturnToListClick(): void {
 		// Remove the map viewer to avoid conflicts
 		if (mapComponent) {
 			mapComponent.destroyMapViewer();
@@ -140,13 +148,11 @@
 	// the FavouritesResources array inside onMount
 	onMount(async () => {
 		// If not signed in, check the local storage for saved resources instead
-		if (!$page.data.signedIn) {
-			let stored = localStorage.getItem('FavouritesResources');
+		if (!page.data.signedIn) {
+			let stored: string | null = localStorage.getItem('FavouritesResources');
 
 			if (stored) {
-				// local storage is always a string, so we need to convert to an array
-				stored = stored.split(',');
-				favouriteRecordList = [...stored];
+				favouriteRecordList = stored.split(',');
 			}
 
 			// Issue POST request for record details
@@ -159,13 +165,13 @@
 
 				records = await response.json();
 
-				tableDataArray = records.map((record) => {
+				tableDataArray = records.map((record: FavouritesRecord) => {
 					return {
-						disableCheckbox: !record.hasMapLayer ?? true,
+						disableCheckbox: !record.hasMapLayer,
 						id: record.id,
 						formats: record.formats.join(', '),
 						name: record[titleKey],
-						url: $page.url.origin + '/' + lang + '/map-browser/record/' + record.id
+						url: page.url.origin + '/' + lang + '/map-browser/record/' + record.id
 					};
 				});
 			}
@@ -192,7 +198,7 @@
 				<MycartMap layerIds={selectedIds} bind:this={mapComponent} />
 				<button
 					class="sm:inline-block button-5 w-full sm:w-fit mt-5 mb-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
-					onclick={(event) => handleReturnToListClick(event)}
+					onclick={handleReturnToListClick}
 				>
 					{returnToList}
 				</button>
@@ -213,6 +219,7 @@
 							checkboxCol={true}
 							allSelected={true}
 							removeCol={true}
+							paginated={false}
 							deleteResource={handleDeleteResource}
 							bind:this={sortableTable}
 							bind:selectedIds
@@ -233,10 +240,10 @@
 										name={'check-' + item.id}
 										class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
                       border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
-										checked={selectedIds.has(item.id)}
-										onchange={(e) => {
-											const newSet = new Set(selectedIds);
-											e.target.checked ? newSet.add(item.id) : newSet.delete(item.id);
+										checked={selectedIds.includes(item.id)}
+										onchange={(event: Event) => {
+											let newSet = [...selectedIds];
+											(event.target as HTMLInputElement).checked ? newSet.push(item.id) : newSet = newSet.filter(id => id !== item.id);
 											selectedIds = newSet;
 										}}
 									/>
@@ -273,7 +280,7 @@
 						<div class="sm:grow">
 							<button
 								class="sm:inline-block button-5 w-full sm:w-fit mb-4 sm:mb-0 shadow-[0_0.1875rem_0.375rem_#00000029]"
-								onclick={(event) => handleOpenMapClick(event)}
+								onclick={handleOpenMapClick}
 							>
 								{viewOnMapLabel} ({numSelected})
 							</button>
@@ -282,7 +289,7 @@
 						<button
 							class="sm:inline-block button-3 w-full sm:w-fit
                 shadow-[0_0.1875rem_0.375rem_#00000029]"
-							onclick={(event) => handleRemoveAllClick(event)}
+							onclick={handleRemoveAllClick}
 						>
 							<GarbageCan classes={'h-4 inline mb-1'} />
 							{removeAll}
@@ -304,7 +311,7 @@
 					{resourceListEmpty}
 				</p>
 
-				<a class="block m-auto w-fit mt-5" href={$page.url.origin + '/' + lang + '/map-browser'}>
+				<a class="block m-auto w-fit mt-5" href={page.url.origin + '/' + lang + '/map-browser'}>
 					<div class="button-3 w-fit shadow-[0_0.1875rem_0.375rem_#00000029]">
 						{findAResource}
 					</div>

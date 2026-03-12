@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setPosition } from './setPosition';
+	import { setPosition } from '$lib/components/tooltip/setPosition';
 
 	let { describedById, tooltipText } = $props();
 </script>
@@ -23,7 +23,7 @@
 	{tooltipText}
 </div>
 
-<style>
+<style lang="postcss">
 	[role='tooltip'] {
 		@apply hidden;
 		@apply absolute;

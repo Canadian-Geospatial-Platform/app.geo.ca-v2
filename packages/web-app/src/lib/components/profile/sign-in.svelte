@@ -2,7 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';
 	$: lang = $page.data.lang;
-	$: signInText = lang == 'en-ca' ? 'Sign In' : 'connexion';
+	$: signInText = lang === 'en-ca' ? 'Sign In' : 'connexion';
 	export let light = false;
 </script>
 

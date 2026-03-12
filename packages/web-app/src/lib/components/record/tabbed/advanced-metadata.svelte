@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 
 	type AdvMetadataRow = {
@@ -8,7 +8,7 @@
 	};
 
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	// Row labels
 	const statusText = translations?.status ? translations['status'] : 'Status';
@@ -40,14 +40,13 @@
 	const descriptionText = translations?.description ? translations['description'] : 'Description';
 
 	/******************* Data *******************/
-	const data = $page.data;
+	const data = page.data;
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
-	const langIndex = langShort == 'fr' ? 1 : 0;
+	const langIndex = langShort === 'fr' ? 1 : 0;
 	const items = data.item_v2;
-	const geographicExtent = items.coordinates;
 
-	const url = $page.url;
+	const url = page.url;
 	const mapBrowserUrl = url.origin + '/' + lang + '/map-browser';
 	const searchUrl = mapBrowserUrl + '?search-terms=';
 
@@ -56,8 +55,8 @@
 	const id = data.uuid;
 
 	// Each topic category should be a link back to the search page
-	const topicCategoryArray = items.topicCategory.map((x) => {
-		const label = x.toLowerCase();
+	const topicCategoryArray = items.topicCategory.map((category: string) => {
+		const label = category.toLowerCase();
 		return `<a href="${searchUrl}${encodeURIComponent(label)}" class="underline hover:no-underline text-custom-16">${label}</a>`;
 	});
 	const topicCategory = topicCategoryArray.join(', ');
@@ -98,4 +97,4 @@
 	const tableLabels: AdvMetadataRow = { label: labelText, description: descriptionText };
 </script>
 
-<SortableTable tableContent={tableDataArray} {tableLabels} clickableRows={false} />
+<SortableTable tableContent={tableDataArray} {tableLabels} clickableRows={false}/>

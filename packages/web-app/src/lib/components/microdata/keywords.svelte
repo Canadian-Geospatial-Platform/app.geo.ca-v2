@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { item, lang } = $props();
+	const { item } = $props();
 </script>
 
 {#each item.keywords as k}

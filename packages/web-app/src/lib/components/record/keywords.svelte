@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
-	const translations = $page.data.t;
+	const translations = page.data.t;
 	const keywordsText = translations?.keywords ? translations['keywords'] : 'Related keywords';
 
-	const url = $page.url;
-	const data = $page.data;
-	const lang = data.lang;
-	const shortLang = lang.slice(0, 2);
+	const url = page.url;
+	const data = page.data;
 	const items = data.item_v2;
-	const keywords = items['keywords'].map((k: string) => (k[0] === ' ' ? k.slice(1) : k));
-	const mapBrowserUrl = url.origin + '/' + lang + '/map-browser';
+	const keywords = items['keywords'];
+	const mapBrowserUrl = url.origin + '/' + data.lang + '/map-browser';
 	const searchUrl = mapBrowserUrl + '?search-terms=';
 </script>
 

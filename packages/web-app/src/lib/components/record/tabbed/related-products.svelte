@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 	import Pagination from '$lib/components/pagination/pagination.svelte';
 
@@ -9,8 +9,15 @@
 		url: string;
 	};
 
+	type RelatedRecord = {
+		id: string;
+		description_en: string;
+		description_fr: string;
+		type: string;
+	};
+
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 	const relatedProductsNotAvailable = translations?.relatedProductsNotAvailable
 		? translations['relatedProductsNotAvailable']
 		: 'The related products for this record are unavailable.';
@@ -20,38 +27,44 @@
 	const typeText = translations?.type ? translations['type'] : 'Type';
 
 	/******************* Data *******************/
-	const data = $page.data;
+	const data = page.data;
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
 	const descriptionLang = 'description_' + langShort;
 
-	const url = $page.url;
+	const url = page.url;
 
-	const relatedRecords = data.related;
-	let tableDataArray: Array<ContactRow> = relatedRecords.map((x) => {
-		const recordUrl = url.origin + '/' + lang + '/map-browser/record/' + x.id;
-		const row = { name: x[descriptionLang], type: x.type, url: recordUrl };
+	const relatedRecords: RelatedRecord[] | undefined = data.related || [];
+	let tableDataArray: Array<RelatedProductsRow> = relatedRecords.map((relatedRecord: RelatedRecord) => {
+		const recordUrl = url.origin + '/' + lang + '/map-browser/record/' + relatedRecord.id;
+		const row = { name: relatedRecord[descriptionLang as 'description_en' | 'description_fr'], type: relatedRecord.type, url: recordUrl };
 		return row;
 	});
 
 	// Translation of table column labels
 	const tableLabels: RelatedProductsRow = {
 		name: nameText,
-		type: typeText
+		type: typeText,
+		url: ''
 	};
 
 	/****************** Pagination ******************/
-	let itemsPerPage = 10;
-	let total = $derived(relatedRecords.length ?? 0);
-	let totalPages = $derived(Math.ceil(total / itemsPerPage));
+	// TODO: move to constants file if used in other places
+	const itemsPerPage = 10;
+	const total = $derived(relatedRecords.length ?? 0);
 	let currentPage = $state(1);
 
-	function changePage(event: CustomEvent) {
-		currentPage = event;
+	/**
+	 * Handles page change event from Pagination component.
+	 * 
+	 * @param page - The new page number.
+	 */
+	function changePage(page: number): void {
+		currentPage = page;
 	}
 </script>
 
-{#if tableDataArray.length == 0}
+{#if tableDataArray.length === 0}
 	<div>
 		{relatedProductsNotAvailable}
 	</div>

@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Card from '$lib/components/card/card.svelte';
+	import type { ContactInfo } from '$lib/db/db-types';
 
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	// Description
 	const metadatatext = translations?.metadata ? translations['metadata'] : 'Metadata';
@@ -24,9 +25,9 @@
 	const useLimitationsText = translations?.useLimitations ? translations['useLimitations'] : '';
 
 	/******************* Data *******************/
-	const data = $page.data;
+	const data = page.data;
 	const lang = data.lang;
-	const langShort = lang === 'fr-ca' ? 'fr' : 'en';
+	const langPrefix = lang.split('-')[0] as 'en' | 'fr';
 	const properties = data.item_v2;
 
 	// Top Section
@@ -35,9 +36,9 @@
 	const accessLast30 = data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : 'N/A';
 	const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
 
-	let temporalCoverage = properties.temporalExtent?.begin + ' - ' + properties.temporalExtent?.end;
+	let temporalCoverage = `${properties.temporalExtent?.begin} - ${properties.temporalExtent?.end}`;
 
-	if (lang == 'fr-ca') {
+	if (lang === 'fr-ca') {
 		temporalCoverage = temporalCoverage.replaceAll('null', 'Présent');
 	} else {
 		temporalCoverage = temporalCoverage.replaceAll('null', 'Present');
@@ -53,20 +54,22 @@
 
 	// Sources
 	const title = properties.title;
-	const distributor = properties.distributor;
-	const distributorOrgArray = distributor.map((x) => x?.['organisation']);
+	const distributors: ContactInfo[] = properties.distributor || [];
+	const distributorOrgArray = distributors.map(
+		(distributor: ContactInfo) => distributor?.organisation[langPrefix]
+	);
 
-	const onlineResourceArray = distributor
-		? distributor.map((x) => {
+	const onlineResourceArray = distributors
+		? distributors.map((distributor: ContactInfo) => {
 				// Only return the resource if it is a link
 				// Also ignore cases where the value is the string 'null'
 				if (
-					x?.onlineResource?.onlineResource &&
-					x.onlineResource.onlineResource != 'null' &&
-					(x?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'http' ||
-						x?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'https')
+					distributor?.onlineResource?.onlineResource &&
+					distributor.onlineResource.onlineResource !== 'null' &&
+					(distributor?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'http' ||
+						distributor?.onlineResource?.onlineResource_Protocol?.toLowerCase() === 'https')
 				) {
-					return x.onlineResource.onlineResource;
+					return distributor.onlineResource.onlineResource;
 				}
 			})
 		: null;
@@ -127,7 +130,7 @@
 						{#if distributor}
 							{distributor}.
 						{/if}
-						{#if onlineResourceArray[i]}
+						{#if onlineResourceArray?.[i]}
 							<a href={onlineResourceArray[i]} class="underline hover:no-underline text-custom-16"
 								>{onlineResourceArray[i]}</a
 							>
@@ -143,7 +146,7 @@
 	</Card>
 </div>
 
-<style>
+<style lang="postcss">
 	.card-div {
 		@apply bg-custom-1;
 		@apply p-5;

@@ -8,7 +8,7 @@ export const load: PageServerLoad = ({ url, cookies, params, fetch }) => {
 	throw redirect(
 		303,
 		CUSTOM_DOMAIN +
-			'/logout?client_id=' +
+			'/oauth2/rplogout?client_id=' +
 			CLIENT_ID +
 			'&logout_uri=' +
 			url.origin +

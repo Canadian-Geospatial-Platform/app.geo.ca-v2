@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed.js';
+	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
 	import Heart from '$lib/components/icons/heart.svelte';
 	import HeartFilled from '$lib/components/icons/heart-filled.svelte';
 
-	const data = $page.data;
+	const data = page.data;
 	const translations = data.t;
-	const lang = data.lang;
 	const items = data.item_v2;
 	const properties = items;
 
@@ -21,11 +20,17 @@
 		: 'Remove from Favourites';
 
 	/****************** Favourites Resources ******************/
-	let favouriteRecordList = $state(
+	let favouriteRecordList = $state<string[]>(
 		data?.userData?.favourites ? [...data?.userData?.favourites] : []
 	);
 
-	async function handleFavouriteClick(recordId) {
+	/**
+	 * Handles the favourite click event.
+	 * 
+	 * @param recordId - The ID of the record to toggle in favourites.
+	 * @returns A promise that resolves when the operation is complete.
+	 */
+	async function handleFavouriteClick(recordId: string): Promise<void> {
 		if (!favouriteRecordList.includes(recordId)) {
 			// Add to list of ids
 			favouriteRecordList.push(recordId);
@@ -50,15 +55,13 @@
 	}
 
 	// Local storage is only accessible from the client side, so we need to get
-	// the FavouritesResources array inside onMount
-	onMount(() => {
+	// the FavouritesResources array inside onMount.
+	onMount((): void => {
 		if (!data.signedIn) {
 			let stored = localStorage.getItem('FavouritesResources');
 
 			if (stored) {
-				// local storage is always a string, so we need to convert to an array
-				stored = stored.split(',');
-				favouriteRecordList = [...stored];
+				favouriteRecordList = stored.split(',');
 			}
 		}
 	});

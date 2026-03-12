@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigating, page } from '$app/stores';
+	import { page, navigating } from '$app/state'
 	import MicroData from '$lib/components/microdata/microdata.svelte';
 	import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
 	import Description from './description.svelte';
@@ -9,12 +9,12 @@
 	import SimilarRecords from './similar-records.svelte';
 	import Tabbed from './tabbed/tabbed.svelte';
 
-	const similarRecords = $page.data.similar;
+	const similarRecords = page.data.similar || [];
 </script>
 
-<MicroData item={$page.data.item_v2} />
+<MicroData item={page.data.item_v2} />
 
-{#if $navigating}
+{#if navigating.type !== null}
 	<LoadingMask classes="fixed left-0 top-0 items-center" />
 {/if}
 <div class="flex flex-col space-y-10">

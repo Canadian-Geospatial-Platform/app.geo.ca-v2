@@ -23,7 +23,12 @@
 		checkedStateChange
 	}: Props = $props();
 
-	function handleCheckboxClick(event: Event) {
+	/**
+	 * Handles the checkbox click event.
+	 * 
+	 * @param event - The click event.
+	 */
+	function handleCheckboxClick(event: Event):void {
 		checkedStateChange(event);
 	}
 </script>

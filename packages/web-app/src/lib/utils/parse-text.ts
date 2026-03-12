@@ -1,6 +1,12 @@
-// Returns the original text string but with html formatting for links and markdown.
-// Note: requires @html on the client side to properly display any html.
-export const parseText = function (text: string) {
+/**
+ * Returns the original text string but with html formatting for links and markdown.
+ *
+ * Note: requires @html on the client side to properly display any html.
+ *
+ * @param text - The text to parse and format.
+ * @returns The formatted text with HTML.
+ */
+export const parseText = function (text: string): string {
 	// Replace new line characters with html equivalent
 	text = text.replaceAll(/\\n/g, '<br>');
 
@@ -36,10 +42,10 @@ export const parseText = function (text: string) {
 	// Instead, the links will temporarily be replaced with a placeholder
 	// and restored in Step 3.
 
-	let markdownLinkRegEx = /\[([^\]]+)\]\((https?:\/\/[^\s|)]+)\)/g;
-	let links = [];
+	const markdownLinkRegEx = /\[([^\]]+)\]\((https?:\/\/[^\s|)]+)\)/g;
+	const links: string[] = [];
 
-	let textWithPlaceholders = text.replaceAll(markdownLinkRegEx, (x, text, url) => {
+	const textWithPlaceholders = text.replaceAll(markdownLinkRegEx, (x, text, url) => {
 		// Store the html version of the link in the links array
 		let link = `<a href="${url}" class="underline hover:no-underline decoration-from-font text-custom-16">${text}</a>`;
 		links.push(link);
@@ -51,15 +57,15 @@ export const parseText = function (text: string) {
 	/****** Step 2 ******/
 	// Convert plain URLs into clickable links
 
-	let urlRegEx = /(https?:\/\/[^\s|)]+)/g;
-	let textWithAnchors = textWithPlaceholders.replaceAll(urlRegEx, (url) => {
+	const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
+	const textWithAnchors = textWithPlaceholders.replaceAll(urlRegEx, (url) => {
 		return `<a href="${url}" class="underline hover:no-underline decoration-from-font text-custom-16">${url}</a>`;
 	});
 
 	/****** Step 3 ******/
 	//Restore the Markdown links from the links array
 
-	let anchoredText = textWithAnchors.replaceAll(
+	const anchoredText = textWithAnchors.replaceAll(
 		/__PLACEHOLDER_(\d+)__/g,
 		(x, index) => links[parseInt(index)]
 	);

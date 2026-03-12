@@ -1,37 +1,41 @@
-import { Bucket } from 'sst/node/bucket';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import type { GeospatialRecord } from './db-types';
 
+// TODO: Move constants like bucket name and prefix to a config file or environment variables
 // This should point to the bucket containing geojson from the newest geocore transformation lambda with the improved schema.
 const PREFIX = 'geocore/';
+const BUCKET_NAME = process.env.BUCKET_NAME || '';
 const s3Client = new S3Client({ region: 'ca-central-1' });
 
-const getRecord = async (uuid) => {
+/**
+ * Retrieves a record from the S3 bucket based on the provided UUID.
+ *
+ * @param uuid The unique identifier for the record.
+ * @returns A promise that resolves to the record data.
+ * @throws {Error} If the record cannot be retrieved.
+ */
+const getRecord = async (uuid: string): Promise<GeospatialRecord> => {
 	let key = PREFIX + uuid + '.geojson';
-	return new Promise(async (resolve, reject) => {
-		try {
-			const { Body } = await s3Client.send(
-				new GetObjectCommand({
-					Bucket: Bucket.hnap.bucketName,
-					Key: key
-				})
-			);
-			// Store all of data chunks returned from the response data stream
-			// into an array then use Array#join() to use the returned contents as a String
-			let responseDataChunks = [];
+	try {
+		const response = await s3Client.send(
+			new GetObjectCommand({
+				Bucket: BUCKET_NAME,
+				Key: key
+			})
+		);
 
-			// Handle an error while streaming the response body
-			Body.once('error', (err) => reject(err));
-
-			// Attach a 'data' listener to add the chunks of data to our array
-			// Each chunk is a Buffer instance
-			Body.on('data', (chunk) => responseDataChunks.push(chunk));
-
-			// Once the stream has no more data, join the chunks into a string and return the string
-			Body.once('end', () => resolve(JSON.parse(responseDataChunks.join(''))));
-		} catch (err) {
-			// Handle the error or throw
-			return reject(err);
+		if (!response.Body) {
+			throw new Error('No body in S3 response');
 		}
-	});
+
+		// Convert the stream to a string
+		const bodyString = await response.Body.transformToString();
+
+		// Parse and return the JSON
+		return JSON.parse(bodyString) as GeospatialRecord;
+	} catch (err) {
+		// Handle the error or throw
+		throw err;
+	}
 };
 export { getRecord };

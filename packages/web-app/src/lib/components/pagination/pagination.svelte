@@ -27,27 +27,26 @@
 <script lang="ts">
 	import Chevronleft from '$lib/components/icons/chevronleft.svelte';
 	import Chevronright from '$lib/components/icons/chevronright.svelte';
-	import { page } from '$app/stores';
-	import { afterNavigate } from '$app/navigation';
-	import { formatNumber } from '$lib/utils/format-number.ts';
+	import { page } from '$app/state';
+	import { formatNumber } from '$lib/utils/format-number';
 
 	interface Props {
 		totalItems?: number;
 		itemsPerPage?: number;
 		currentPage: number;
 		numPageButtons?: number;
-		pageChange: CustomEvent;
+		pageChange: (newPage: number) => void;
 	}
 
 	let {
-		totalItems = $bindable($page.data.total ?? 0),
-		itemsPerPage = $bindable(parseInt($page.url.searchParams.get('per-page') || 10, 10)),
-		currentPage = $bindable(parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1),
+		totalItems = $bindable(page.data.total ?? 0),
+		itemsPerPage = $bindable(parseInt(page.url.searchParams.get('per-page') || '10', 10)),
+		currentPage = $bindable(parseInt(page.url.searchParams.get('page-number') || '0', 10) + 1),
 		numPageButtons = 5,
 		pageChange
 	}: Props = $props();
 
-	let urlPageNumber = $derived(parseInt($page.url.searchParams.get('page-number') || '0', 10) + 1);
+	let urlPageNumber = $derived(parseInt(page.url.searchParams.get('page-number') || '0', 10) + 1);
 	let numPages = $derived(Math.ceil(totalItems / itemsPerPage));
 	let halfNumPageButtons = $derived(Math.floor(numPageButtons / 2));
 	let pageButtons = $derived(pageRange(currentPage, numPages, numPageButtons));
@@ -56,7 +55,15 @@
 		currentPage = urlPageNumber;
 	});
 
-	function pageRange(current: number, totalPages: number, numButtons: number) {
+	/**
+	 * Generates an array of page numbers to display as buttons.
+	 * 
+	 * @param current - The current page number.
+	 * @param totalPages - The total number of pages.
+	 * @param numButtons - The number of page buttons to display.
+	 * @returns An array of page numbers to display.
+	 */
+	function pageRange(current: number, totalPages: number, numButtons: number): number[] {
 		if (totalPages > numButtons) {
 			let startPage;
 			if (current <= halfNumPageButtons) {
@@ -72,7 +79,12 @@
 		return Array.from({ length: totalPages }, (_, i) => i + 1);
 	}
 
-	function handlePageClick(page: number) {
+	/**
+	 * Handles page button click event.
+	 * 
+	 * @param page - The page number to navigate to.
+	 */
+	function handlePageClick(page: number): void {
 		currentPage = page;
 		pageChange(page);
 	}
@@ -88,7 +100,7 @@
 	<button
 		class="arrows mr-2 text-custom-16 disabled:text-custom-19"
 		onclick={() => handlePageClick(currentPage - 1)}
-		disabled={currentPage == 1 || totalItems == 0}
+		disabled={currentPage === 1 || totalItems === 0}
 	>
 		<Chevronleft classes="h-6" />
 	</button>
@@ -96,8 +108,8 @@
 		<button
 			class={[
 				'font-custom-style-button-1 h-7 min-w-7 px-1 mx-1',
-				page == currentPage && 'current-page',
-				page != currentPage && 'page-button'
+				page === currentPage && 'current-page',
+				page !== currentPage && 'page-button'
 			]}
 			onclick={() => handlePageClick(page)}
 		>
@@ -107,13 +119,13 @@
 	<button
 		class="arrows ml-2 text-custom-16 disabled:text-custom-19"
 		onclick={() => handlePageClick(currentPage + 1)}
-		disabled={currentPage == numPages || totalItems == 0}
+		disabled={currentPage === numPages || totalItems === 0}
 	>
 		<Chevronright classes="h-6" />
 	</button>
 </div>
 
-<style>
+<style lang="postcss">
 	.arrows {
 		@apply flex;
 		@apply items-center;

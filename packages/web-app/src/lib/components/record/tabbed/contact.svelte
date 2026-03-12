@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
+	import type { ContactInfo } from '$lib/db/db-types';
 
 	type ContactRow = {
 		label: string;
@@ -8,7 +9,7 @@
 	};
 
 	/******************* Translations *******************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	// Row labels
 	const organizationText = translations?.organization
@@ -28,18 +29,18 @@
 	const descriptionText = translations?.description ? translations['description'] : 'Description';
 
 	/******************* Data *******************/
-	const data = $page.data;
+	const data = page.data;
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
 	const items = data.item_v2;
 	let contact = null;
 
 	if (Array.isArray(items.cited)) {
-		contact = items.cited.find((c) => c != null) || null;
+		contact = items.cited.find((contactItem: ContactInfo) => contactItem !== null) || null;
 	}
 
 	if (!contact && Array.isArray(items.contact)) {
-		contact = items.contact.find((c) => c != null) || null;
+		contact = items.contact.find((contactItem: ContactInfo) => contactItem !== null) || null;
 	}
 
 	// It is common for the contact data to be the string 'null' instead of just the value null,
@@ -48,22 +49,22 @@
 
 	// For the address, we only need one copy of N/A, so we'll add it later
 	const address =
-		contact?.address && contact.address[langShort] != 'null' ? contact.address[langShort] : '';
-	const city = contact?.city && contact.city != 'null' ? contact.city : '';
-	const postalCode = contact?.postalcode && contact.postalcode != 'null' ? contact.postalcode : '';
+		contact?.address && contact.address[langShort] !== 'null' ? contact.address[langShort] : '';
+	const city = contact?.city && contact.city !== 'null' ? contact.city : '';
+	const postalCode = contact?.postalcode && contact.postalcode !== 'null' ? contact.postalcode : '';
 	const country =
-		contact?.country && contact.country[langShort] != 'null' ? contact.country[langShort] : '';
+		contact?.country && contact.country[langShort] !== 'null' ? contact.country[langShort] : '';
 
 	let fullAddress = [address, city, postalCode, country].filter(Boolean).join(', ') || 'N/A';
 
 	const individualName =
-		contact?.individual && contact.individual != 'null' ? contact.individual : 'N/A';
-	const role = contact?.role && contact.role != 'null' ? contact['role'] : 'N/A';
+		contact?.individual && contact.individual !== 'null' ? contact.individual : 'N/A';
+	const role = contact?.role && contact.role !== 'null' ? contact['role'] : 'N/A';
 	const telephone =
-		contact?.telephone && contact.telephone[langShort] != 'null'
+		contact?.telephone && contact.telephone[langShort] !== 'null'
 			? contact['telephone'][langShort]
 			: 'N/A';
-	const fax = contact?.fax && contact.fax != 'null' ? contact['fax'] : 'N/A';
+	const fax = contact?.fax && contact.fax !== 'null' ? contact['fax'] : 'N/A';
 
 	const description = contact?.onlineResource?.onlineresource_description
 		? contact['onlineResource']['onlineresource_description']
@@ -75,7 +76,7 @@
 		: 'N/A';
 
 	const website =
-		contact?.onlineResource?.url && contact['onlineResource']['url'] != null
+		contact?.onlineResource?.url && contact['onlineResource']['url'] !== null
 			? contact['onlineResource']['url']
 			: null;
 	const websiteLink = website

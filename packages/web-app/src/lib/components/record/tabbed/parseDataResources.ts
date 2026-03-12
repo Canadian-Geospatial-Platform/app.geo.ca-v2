@@ -1,4 +1,11 @@
-export function parseDataResources(dataResourcesRaw: Array<any>, lang: string) {
+/**
+ * Parses raw data resources from a metadata record into a structured array.
+ *
+ * @param dataResourcesRaw - Raw data resources array from the metadata record.
+ * @param lang - Language code ('en' or 'fr').
+ * @returns Parsed data resources array.
+ */
+export function parseDataResources(dataResourcesRaw: Array<any>, lang: string): Array<any> {
 	type Translation = {
 		en: string;
 		fr: string;
@@ -16,7 +23,7 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string) {
 		zxx: { en: 'Not available', fr: 'Pas disponible' }
 	};
 
-	const translationLang: keyof Translation = lang == 'fr' ? 'fr' : 'en';
+	const translationLang: keyof Translation = lang === 'fr' ? 'fr' : 'en';
 	let dataResources: Array<any> = [];
 	let description;
 	let name;
@@ -29,7 +36,7 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string) {
 	for (let resource of dataResourcesRaw) {
 		// Some entries have the string 'null' (i.e. not the value null)
 		// for all values in the resource object. In these cases, we can skip the resource.
-		if (resource.url == 'null' || !resource.url) {
+		if (!resource.url) {
 			continue;
 		}
 

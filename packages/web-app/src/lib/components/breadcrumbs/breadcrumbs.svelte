@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	// Assign a default lang to prevent 'undefined' in the url when lang is not set
-	const lang = $page.data.lang ?? 'en-ca';
+	const lang = page.data.lang ?? 'en-ca';
 
 	const geoCaUrl = $derived(
-		lang == 'fr-ca' ? 'https://geo.ca/fr/accueil/index.html' : 'https://geo.ca/home'
+		lang === 'fr-ca' ? 'https://geo.ca/fr/accueil/index.html' : 'https://geo.ca/home'
 	);
-	const homeLabel = $derived(lang == 'fr-ca' ? 'Accueil' : 'Home');
+	const homeLabel = $derived(lang === 'fr-ca' ? 'Accueil' : 'Home');
 
-	const appGeoCaUrl = $derived('/' + lang + '/map-browser');
-	const searchLabel = $derived(lang == 'fr-ca' ? 'Recherche' : 'Search');
+	const appGeoCaUrl = $derived(`/${lang}/map-browser`);
+	const searchLabel = $derived(lang === 'fr-ca' ? 'Recherche' : 'Search');
 
-	const title2 = $derived($page.data.t_title_2);
-	const title3 = $derived($page.data.t_title_3);
+	const title2 = $derived(page.data.tTitle2);
+	const title3 = $derived(page.data.tTitle3);
 
-	let breadcrumbs = $derived([
+	const breadcrumbs = $derived([
 		{ text: homeLabel, href: geoCaUrl },
 		{ text: searchLabel, href: appGeoCaUrl },
 		...(title2 ? [title2] : []),
@@ -29,7 +29,7 @@
       A link isn't needed for the current page, but the search
       page link should always available from +error.svelte.
     -->
-		{#if i < breadcrumbs.length - 1 || $page.error}
+		{#if i < breadcrumbs.length - 1 || page.error}
 			<span><a href={breadcrumb.href}>{breadcrumb.text}</a></span>
 			/
 		{:else}
@@ -38,7 +38,7 @@
 	{/each}
 </p>
 
-<style>
+<style lang="postcss">
 	a {
 		@apply hover:no-underline;
 		@apply underline;

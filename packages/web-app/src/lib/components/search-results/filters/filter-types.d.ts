@@ -12,6 +12,18 @@ export type Filter = {
 	filterList: Array<FilterItem>;
 };
 
+export type BBox = {
+	north: string;
+	east: string;
+	south: string;
+	west: string;
+};
+
+export type DateRangeItem = {
+	begin: string;
+	end: string;
+};
+
 /********* Types for the filter store **********/
 
 export type CategoryOfInterest = string | null;

@@ -39,7 +39,7 @@
 	<div class="div-fill h-10 max-w-72 w-full ml-auto"></div>
 </div>
 
-<style>
+<style lang="postcss">
 	.div-fill {
 		@apply animate-pulse;
 		@apply bg-custom-9;

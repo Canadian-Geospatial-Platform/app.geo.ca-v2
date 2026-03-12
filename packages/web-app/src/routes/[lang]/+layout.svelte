@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { updated } from '$app/stores';
+	import { page, updated } from '$app/state';
 	import { onMount } from 'svelte';
 	import '../../app.css';
 	import Header from '$lib/components/header/header.svelte';
@@ -16,7 +15,7 @@
 
 	let { children }: Props = $props();
 	let showLeavingSitePopup = $state(false);
-	const lang = $page.data.lang?.slice(0, 2) ?? 'en';
+	const lang = page.data.lang?.slice(0, 2) ?? 'en';
 
 	// Set the language of the page. This needs to be done using onMount to
 	// ensure it is only executed after the <html> element is present in the DOM.
@@ -41,9 +40,13 @@
 		};
 		/************************ Hack Ends Here ******************************/
 
-		// When the user clicks on an external link, indicate to the user that they are leaving
-		const handleClick = (event) => {
-			const anchor = event.target.closest('a');
+		/**
+		 * When the user clicks on an external link, indicate to the user that they are leaving.
+		 * 
+		 * @param event - The click event.
+		 */
+		function handleClick(event: MouseEvent): void {
+			const anchor = (event.target as HTMLElement)?.closest('a');
 			if (!anchor) {
 				return;
 			}
@@ -51,7 +54,7 @@
 			const href = anchor.href;
 			const isExternal =
 				href &&
-				!href.includes($page.url.host) &&
+				!href.includes(page.url.host) &&
 				!href.includes('geo.ca') &&
 				!href.startsWith('mailto');
 
@@ -75,7 +78,7 @@
 <Header />
 <main
 	class="flex flex-col content-width bg-custom-1 min-h-screen pt-8"
-	data-sveltekit-reload={$updated ? '' : 'off'}
+	data-sveltekit-reload={updated.current ? '' : 'off'}
 >
 	<Breadcrumbs />
 	<div>

@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import SearchResults from '$lib/components/search-results/search-results.svelte';
 
-	let results = $derived($page.data.results ? $page.data.results : []);
-
-	const lang = $page.data.lang;
+	const lang = page.data.lang;
 	const title =
-		lang == 'fr-ca' ? 'app.geo.ca - Résultats de recherche' : 'app.geo.ca - Search Results';
+		lang === 'fr-ca' ? 'app.geo.ca - Résultats de recherche' : 'app.geo.ca - Search Results';
 
-	const canonicalUrl = $page.data.canonicalUrl;
-	const alternateUrl = $page.data.alternateUrl;
-	const alternateLang = $page.data.alternateLang;
-	const metaDescription = $page.data.metaDescription;
+	const canonicalUrl = page.data.canonicalUrl;
+	const alternateUrl = page.data.alternateUrl;
+	const alternateLang = page.data.alternateLang;
+	const metaDescription = page.data.metaDescription;
 </script>
 
 <svelte:head>

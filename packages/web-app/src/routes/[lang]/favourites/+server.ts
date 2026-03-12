@@ -1,21 +1,34 @@
+import type { DistributionOption, GeospatialRecord } from '$lib/db/db-types';
 import { json } from '@sveltejs/kit';
 
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
-export async function POST({ request }) {
+interface LayerResult {
+	layers: Array<{ id: string }>;
+}
+
+/**
+ * Handles POST requests to fetch records by IDs and check for map layers.
+ *
+ * @param request - The request object.
+ * @returns A promise that resolves to the record response.
+ */
+export async function POST({ request }: { request: Request }): Promise<Response> {
 	const { ids, lang } = await request.json();
 
 	if (!Array.isArray(ids)) {
 		return json({ error: 'Invalid IDs' }, { status: 400 });
 	}
 
-	const records = await getRecordsByIds(ids, lang, request.headers.get('x-forwarded-for'));
+	const records = await getRecordsByIds(ids, lang, request.headers.get('x-forwarded-for') || '');
 	const idsWithLayers = await checkForMapLayers(ids, lang);
 
 	// Update the record data with the following:
 	//   (1) a list of resource formats
 	//   (2) a boolean including if the resource has a map layer
 	for (let record of records) {
+		if (!record) continue;
+
 		const formats = getFormats(record, lang);
 		record.formats = formats;
 
@@ -26,10 +39,17 @@ export async function POST({ request }) {
 		}
 	}
 
-	return json(records);
+	return json(records.filter((record) => record !== undefined));
 }
 
-function getRecord(id, lang, ip) {
+/** Gets a record from the GeoCore API.
+ *
+ * @param id - The record ID.
+ * @param lang - The language code.
+ * @param ip - The IP address.
+ * @returns A promise that resolves to the fetch response.
+ */
+function getRecord(id: string, lang: string, ip: string): Promise<Response> {
 	const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
 	const params = {
 		id: id,
@@ -40,13 +60,20 @@ function getRecord(id, lang, ip) {
 	return fetch(url);
 }
 
-function getFormats(record, lang) {
+/**
+ * Extracts and returns unique formats from a record's options.
+ *
+ * @param record - The record object.
+ * @param lang - The language code.
+ * @returns An array of unique formats.
+ */
+function getFormats(record: GeospatialRecord, lang: string): string[] {
 	const options = record.options;
 
 	// Get an array of just the format of each record option
-	const formatArray = options.map((x) => {
-		const description = x.description;
-		const descriptionString = lang == 'fr' ? description.fr : description.en;
+	const formatArray = options.map((option: DistributionOption) => {
+		const description = option.description;
+		const descriptionString = lang === 'fr' ? description.fr : description.en;
 		const descriptionArray = descriptionString ? descriptionString.split(';') : [];
 
 		// The description string is always in this format 'type;format;language',
@@ -61,22 +88,28 @@ function getFormats(record, lang) {
 	// Using indexOf allows us to check for duplicate values since it always returns the
 	// first instance of the value being searched. If it doesn't match the current index,
 	// then it must be a duplicate.
-	const filteredFormats = formatArray.filter((x, index, self) => {
-		return x && x !== 'null' && x != 'undefined' && self.indexOf(x) === index;
+	const filteredFormats = formatArray.filter((format: string, index: number, self: string[]) => {
+		return format && format !== 'null' && format !== 'undefined' && self.indexOf(format) === index;
 	});
 
 	return filteredFormats;
 }
 
-// Query vcs to check if resources have map layers
-async function checkForMapLayers(ids, lang) {
+/**
+ * Query vcs to check if resources have map layers
+ *
+ * @param ids - An array of record IDs.
+ * @param lang - The language code.
+ * @returns A promise that resolves to an array of IDs that have map layers.
+ */
+async function checkForMapLayers(ids: string[], lang: string): Promise<string[]> {
 	const langShort = lang.split('-')[0];
 	let filteredIds = [];
 
 	// Set url search params
 	const url = new URL(`${GEOCORE_API_DOMAIN}/vcs`);
 	const params = {
-		id: ids,
+		id: ids.join(','),
 		lang: langShort,
 		referrer: 'geo.ca'
 	};
@@ -90,7 +123,7 @@ async function checkForMapLayers(ids, lang) {
 		// Get a list of ids with map layers. For resources with no map layers
 		const rcs = results.response.rcs;
 		const layersArray = rcs[langShort];
-		filteredIds = layersArray.map((result) => {
+		filteredIds = layersArray.map((result: LayerResult) => {
 			// Since we are only checking if at least one layer exists,
 			// we can stop at the first layer for each resource
 			const layer = result.layers[0];
@@ -113,25 +146,37 @@ async function checkForMapLayers(ids, lang) {
 	return filteredIds;
 }
 
-async function getRecordsByIds(idIterator, lang, ip) {
+/**
+ * Gets multiple records from the GeoCore API.
+ *
+ * @param idIterator - An iterable of record IDs.
+ * @param lang - The language code.
+ * @param ip - The IP address.
+ * @returns A promise that resolves to an array of records.
+ */
+async function getRecordsByIds(
+	idIterator: Iterable<string>,
+	lang: string,
+	ip: string
+): Promise<GeospatialRecord[]> {
 	let promises = [];
 
 	for (const id of idIterator) {
-		promises.push(getRecord(id, lang));
+		promises.push(getRecord(id, lang, ip));
 	}
 
 	const results = await Promise.all(promises);
-	const values = [...results];
 
-	let ret = await Promise.all(
-		values.map(async (v) => {
+	const ret = await Promise.all(
+		results.map(async (result: Response) => {
 			try {
-				const contents = await v.json();
+				const contents = await result.json();
 				if (contents?.body?.Items[0]) return contents.body.Items[0];
-			} catch {
-				(error) => console.log(error);
+			} catch (error) {
+				console.log(error);
 			}
 		})
 	);
+
 	return ret;
 }

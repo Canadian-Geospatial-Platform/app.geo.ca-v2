@@ -1,17 +1,26 @@
-export function setPosition(node: any, isHorizontal: boolean) {
+/**
+ * Sets the position of a dropdown menu to ensure it stays within the viewport.
+ *
+ * @param node - The dropdown menu element.
+ * @param isHorizontal - Whether the menu is horizontal.
+ * @returns An object with a destroy method to clean up observers and event listeners.
+ */
+export function setPosition(
+	node: HTMLElement,
+	isHorizontal: boolean
+): { destroy: () => void } | void {
 	/**************************************************************************
 	 * The purpose of this function is to ensure that the menu dropdowns don't
 	 * flow off the page for smaller screens. In the case where the default
 	 * position is off screen, a vertical translation is applied.
 	 ***************************************************************************/
 	if (isHorizontal) {
-		let nodeBounding;
-		let nodeLeft;
-		let nodeWidth;
-		let transformX;
-		let transformed;
-
-		let observer = new MutationObserver(function () {
+		let nodeBounding: DOMRect;
+		let nodeLeft: number;
+		let nodeWidth: number;
+		let transformX: number;
+		let transformed: boolean;
+		let observer = new MutationObserver(function (): void {
 			/***********************************************************************
 			 *  Note: The 'shifted' class will act as a flag to indicate if the
 			 *  node has already been shifted or not to prevent an infinate loop.
@@ -20,18 +29,24 @@ export function setPosition(node: any, isHorizontal: boolean) {
 			 *  translate value, and readded at the end of the calcPosition method.
 			 ************************************************************************/
 			if (
-				window.getComputedStyle(node, null).display != 'none' &&
+				window.getComputedStyle(node, null).display !== 'none' &&
 				!node.classList.contains('shifted')
 			) {
 				calcPosition();
 			}
 		});
 
-		function handleResize() {
+		/**
+		 * Handles the window resize event.
+		 */
+		function handleResize(): void {
 			node.classList.remove('shifted');
 		}
 
-		function calcPosition() {
+		/**
+		 * Calculates and sets the position of the dropdown menu.
+		 */
+		function calcPosition(): void {
 			// Reset default transform value
 			nodeBounding = node.getBoundingClientRect();
 			nodeWidth = nodeBounding.width;

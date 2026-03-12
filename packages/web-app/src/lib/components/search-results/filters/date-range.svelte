@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
+	import type { DateRangeItem } from './filter-types';
 
 	interface Props {
 		dateId: string;
@@ -9,7 +10,7 @@
 	let { dateId, active = $bindable(false) }: Props = $props();
 
 	/************* Translations ***************/
-	const translations = $page.data.t;
+	const translations = page.data.t;
 
 	const startDate = translations?.startDate ? translations['startDate'] : 'Start Date';
 	const endDate = translations?.endDate ? translations['endDate'] : 'End Date';
@@ -28,12 +29,15 @@
 		end: { label: endDate, key: endDateKey }
 	};
 
-	let beginInput: HTMLInputElement = $state();
-	let endInput: HTMLInputElement = $state();
+	let beginInput: HTMLInputElement | undefined = $state();
+	let endInput: HTMLInputElement | undefined = $state();
 
-	export function resetFilters() {
-		let beginKey = $page.url.searchParams.get('begin');
-		let endKey = $page.url.searchParams.get('end');
+	/**
+	 * Resets the date range inputs to the values from the URL parameters or defaults.
+	 */
+	export function resetFilters(): void {
+		let beginKey = page.url.searchParams.get('begin');
+		let endKey = page.url.searchParams.get('end');
 
 		if (beginInput) {
 			beginInput.value = beginKey && !isNaN(Date.parse(beginKey)) ? beginKey : '';
@@ -44,7 +48,12 @@
 		}
 	}
 
-	export function getDateRange() {
+	/**
+	 * Retrieves the current date range from the input fields.
+	 * 
+	 * @returns The date range object or null if inputs are missing.
+	 */
+	export function getDateRange(): DateRangeItem | null {
 		let beginEl = beginInput;
 		let endEl = endInput;
 		let dateRange = null;
@@ -59,19 +68,35 @@
 		return dateRange;
 	}
 
-	function init(key: string) {
+	/**
+	 * Initializes the input fields with URL parameters or defaults.
+	 * 
+	 * @param key - The input field key.
+	 * @returns The initial value for the input field.
+	 */
+	function init(key: string): string | null {
 		let searchKey = key.replace(dateId + '-', '');
-		let date = $page.url.searchParams.get(searchKey);
+		let date = page.url.searchParams.get(searchKey);
 		return date;
 	}
 
 	/************* Validators ***************/
 
-	// Note: we are using a custom validator here because, at this time,
-	// there is no way to control the language setting of the browser's
-	// default validator messages. This way, we can translate them to French.
-	function customizeValiditor(input: HTMLInputElement) {
-		function validate() {
+	/**
+	 * Customizes the validity messages for the date inputs.
+	 * 
+	 * Note: we are using a custom validator here because, at this time,
+	 * there is no way to control the language setting of the browser's
+	 * default validator messages. This way, we can translate them to French.
+	 * 
+	 * @param input - The input element to customize.
+	 * @returns An object with a destroy method to clean up event listeners.
+	 */
+	function customizeValiditor(input: HTMLInputElement): { destroy: () => void } {
+		/**
+		 * Validates the input and sets custom validity messages.
+		 */
+		function validate(): void {
 			let message = '';
 			let date = Date.parse(input.value);
 

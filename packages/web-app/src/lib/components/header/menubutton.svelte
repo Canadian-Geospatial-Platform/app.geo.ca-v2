@@ -1,18 +1,21 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
 
 	interface Props {
-		active: Boolean;
-		mainMenuVisible: Boolean;
+		active: boolean;
+		mainMenuVisible: boolean;
 	}
 
 	let { active = $bindable(), mainMenuVisible = $bindable() }: Props = $props();
 
-	const translations = $page.data.headerTranslations;
+	const translations = page.data.headerTranslations;
 	const menuButton = translations?.menuButton ? translations['menuButton'] : '';
 
-	function handleMenuButtonClick() {
+	/**
+	 * Handles the menu button click event.
+	 */
+	function handleMenuButtonClick(): void {
 		active = !active;
 		mainMenuVisible = active;
 		toggleScroll(active);
@@ -44,7 +47,7 @@
 	{/if}
 </button>
 
-<style>
+<style lang="postcss">
 	.bar {
 		@apply w-[1.125rem];
 		@apply h-0.5;

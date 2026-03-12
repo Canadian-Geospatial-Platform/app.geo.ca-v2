@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Map from '$lib/components/map/map.svelte';
 	import NotVisible from '$lib/components/icons/not-visible.svelte';
 
-	const translations = $page.data.t;
+	const translations = page.data.t;
 	const mapText = translations?.map ? translations['map'] : 'Map';
 	const mapNotAvailableText = translations?.mapNotAvailable ? translations['mapNotAvailable'] : '';
 	const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
 
-	const data = $page.data;
-	const uuid = data.uuid;
+	const data = page.data;
+	const uuid = data.uuid || '';
 	const items = data.item_v2;
-	const coordinates = items.coordinates;
+	const coordinates = items.coordinates[0];
 
 	/***************** Time Slider *************************/
 	// Note: Geoview checks for a valid time dimension for each map layer before adding the
@@ -29,18 +29,21 @@
 	// For small screens, don't include the map
 	let showMap = $state(true);
 
-	const checkScreenSize = () => {
+	/**
+	 * Checks the screen size and updates the showMap variable.
+	 */
+	const checkScreenSize = (): void => {
 		// Tailwind's 'sm' breakpoint starts at 640px
-		showMap = window.matchMedia('(min-width: 640px)').matches;
+		showMap = window.matchMedia('(min-width: 200px)').matches;
 	};
 
 	// This is wrapped in onMount to account for the use of window and
 	// avoid errors while rendering on the server
-	onMount(() => {
+	onMount((): () => void => {
 		checkScreenSize();
 
 		// Update map visibility on window resize
-		const resizeListener = () => checkScreenSize();
+		const resizeListener = (): void => checkScreenSize();
 		window.addEventListener('resize', resizeListener);
 
 		// Remove the event listener when the component is destroyed
@@ -55,15 +58,17 @@
 		{mapText}
 	</h2>
 	{#if coordinates && showMap}
-		<Map
-			{coordinates}
-			id={uuid}
-			dynamic={true}
-			mapType="record"
-			footer={true}
-			timeSlider={useTimeSlider}
-			chart={addChart}
-		/>
+		<div style="min-height: 300px; border: gray 1px solid;">
+			<Map
+				{coordinates}
+				id={uuid}
+				dynamic={true}
+				mapType="record"
+				footer={true}
+				timeSlider={useTimeSlider}
+				chart={addChart}
+			/>
+		</div>
 	{:else if coordinates}
 		<p class="mx-5 md:mx-0">
 			{windowTooSmall}

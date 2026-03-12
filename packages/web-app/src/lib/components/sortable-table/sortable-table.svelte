@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import SortDown from '$lib/components/icons/sort-down.svelte';
 	import SortInactive from '$lib/components/icons/sort-inactive.svelte';
 	import SortUp from '$lib/components/icons/sort-up.svelte';
@@ -14,21 +14,21 @@
 
 	interface Props {
 		tableContent: TableContent;
-		tableLabels: any;
+		tableLabels: { [key: string]: string };
 		// Requires a url attriute in the tableContent array
 		clickableRows: boolean;
 		// currentPage and itemsPerPage are only needed when paginated is true
-		paginated: boolean;
-		currentPage: number;
-		itemsPerPage: number;
+		paginated?: boolean;
+		currentPage?: number;
+		itemsPerPage?: number;
 		// Add a checkbox column
-		checkboxCol: boolean;
+		checkboxCol?: boolean;
 		// Check all boxes by default
-		allSelected: boolean;
+		allSelected?: boolean;
 		// Add remove column
-		removeCol: boolean;
-		deleteResource: (id: string) => void;
-		selectedIds: Set;
+		removeCol?: boolean;
+		deleteResource?: (id: string) => void;
+		selectedIds?: string[];
 	}
 
 	let {
@@ -42,13 +42,13 @@
 		allSelected = false,
 		removeCol = false,
 		deleteResource = () => {},
-		selectedIds = $bindable(new Set())
+		selectedIds = $bindable([])
 	}: Props = $props();
 
 	/************** Translations **************/
-	const lang = $page.data.lang;
-	const selectAllLabel = lang == 'fr-ca' ? 'Tout sélectionner' : 'Select all';
-	const deleteLabel = lang == 'fr-ca' ? 'Supprimer la ressource' : 'Delete resource';
+	const lang = page.data.lang;
+	const selectAllLabel = lang === 'fr-ca' ? 'Tout sélectionner' : 'Select all';
+	const deleteLabel = lang === 'fr-ca' ? 'Supprimer la ressource' : 'Delete resource';
 
 	// Convert table label keys to an array to ensure that all data rows have the same order
 	// and to simplify sorting
@@ -74,18 +74,30 @@
 		selectAll();
 	}
 
-	// Allow parent component to get the list of checked rows
-	export function getSelectedIds() {
+	/**
+	 * Gets the set of checked rows.
+	 * 
+	 * @returns The set of selected IDs.
+	 */
+	export function getSelectedIds(): string[] {
 		return selectedIds;
 	}
 
-	export function setSelectedIds(ids) {
-		selectedIds = new Set(ids);
+	/**
+	 * Sets the set of checked rows.
+	 * 
+	 * @param ids - The IDs to set as selected.
+	 */
+	export function setSelectedIds(ids: string[]): void {
+		selectedIds = Array.from(ids);
 	}
 
-	// Allow the parent component to update the table content, for example,
-	// if a row is removed by deleting a resource in the list.
-	export function updateTableContent(newTableContent) {
+	/**
+	 * Updates the table content while maintaining the current sort order.
+	 * 
+	 * @param newTableContent - The new table content to set.
+	 */
+	export function updateTableContent(newTableContent: TableContent): void {
 		// When updating the table, make sure the correct sort order is maintained
 		if (sortDirection === 1) {
 			sortedTableContent = newTableContent.toSorted((a, b) =>
@@ -103,35 +115,48 @@
 		currentPage = 1;
 	}
 
-	function selectAll() {
-		const newSet = new Set(selectedIds);
+	/**
+	 * Selects all visible rows.
+	 */
+	function selectAll(): void {
+		const newSet = [...selectedIds];
 		visibleRows.forEach((row) => {
 			if (!row.disableCheckbox) {
-				newSet.add(row.id);
+				newSet.push(row.id);
 			}
 		});
 		selectedIds = newSet;
 	}
 
-	function deselectAll() {
-		const newSet = new Set(selectedIds);
-		visibleRows.forEach((row) => newSet.delete(row.id));
+	/**
+	 * Deselects all visible rows.
+	 */
+	function deselectAll(): void {
+		let newSet = [...selectedIds];
+		visibleRows.forEach((row) => {
+			newSet = newSet.filter(id => id !== row.id);
+		});
 		selectedIds = newSet;
 	}
 
-	function handleSortButtonClick(sortLable: string) {
-		if (sortLable == sortColumn) {
+	/**
+	 * Handles the sort button click event.
+	 * 
+	 * @param sortLable - The label of the column to sort by.
+	 */
+	function handleSortButtonClick(sortLable: string): void {
+		if (sortLable === sortColumn) {
 			sortDirection = (sortDirection + 1) % 3;
 		} else {
 			sortColumn = sortLable;
 			sortDirection = 1;
 		}
 
-		if (sortDirection == 1) {
+		if (sortDirection === 1) {
 			sortedTableContent = tableContent.toSorted((a, b) =>
 				a[sortColumn].localeCompare(b[sortColumn])
 			);
-		} else if (sortDirection == 2) {
+		} else if (sortDirection === 2) {
 			sortedTableContent = tableContent
 				.toSorted((a, b) => a[sortColumn].localeCompare(b[sortColumn]))
 				.reverse();
@@ -140,29 +165,45 @@
 		}
 	}
 
-	// Update the list of checked rows
-	function handleCheckboxOnChange(event, rowId) {
-		if (event.target.checked) {
-			selectedIds = new Set(selectedIds).add(rowId);
+	/**
+	 * Handles checkbox change event for a row.
+	 * 
+	 * @param event - The change event from the checkbox.
+	 * @param rowId - The ID of the row whose checkbox changed.
+	 */
+	function handleCheckboxOnChange(event: Event, rowId: string): void {
+		if ((event.target as HTMLInputElement).checked) {
+			selectedIds = [...selectedIds, rowId];
 		} else {
-			const newSet = new Set(selectedIds);
-			newSet.delete(rowId);
+			let newSet = [...selectedIds];
+			newSet = newSet.filter(id => id !== rowId);
 			selectedIds = newSet;
 		}
 	}
 
-	// Update the list of checked rows so that all items are checked, or unchecked
-	function handleSelectAllChange(event) {
-		if (event.target.checked) {
+	/**
+	 * Handles the select all checkbox change event.
+	 * 
+	 * @param event - The change event from the select all checkbox.
+	 */
+	function handleSelectAllChange(event: Event): void {
+		if ((event.target as HTMLInputElement).checked) {
 			selectAll();
 		} else {
 			deselectAll();
 		}
 	}
 
-	// Deleting the actual resource should be handeled by the parent class where
-	// the row data is set, so, this method only dispatches a deleteResource event
-	function handleDeleteRowClick(event, rowId) {
+	/**
+	 * Handles the delete row button click event.
+	 * 
+	 * Deleting the actual resource should be handeled by the parent class where
+	 * the row data is set, so, this method only dispatches a deleteResource event
+	 * 
+	 * @param event - The click event from the delete button.
+	 * @param rowId - The ID of the row to delete.
+	 */
+	function handleDeleteRowClick(event: Event, rowId: string): void {
 		deleteResource(rowId);
 	}
 </script>
@@ -182,7 +223,7 @@
 								type="checkbox"
 								id="checkAll"
 								name="checkAll"
-								checked={visibleRows.every((row) => selectedIds.has(row.id) || row.disableCheckbox)}
+								checked={visibleRows.every((row) => selectedIds.includes(row.id) || row.disableCheckbox)}
 								class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
                   border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
 								onchange={(event) => handleSelectAllChange(event)}
@@ -197,13 +238,13 @@
 
 				{#each tableLabelsArray as labelTranslation, i}
 					<!-------------- Column Titles -------------->
-					<th class={[i == 0 && tableLabelsArray.length > 1 && 'w-1/2']}>
+					<th class={[i === 0 && tableLabelsArray.length > 1 && 'w-1/2']}>
 						<div class="flex flex-row justify-between font-custom-style-header-1">
 							{tableLabels[labelTranslation]}
 							<button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
-								{#if sortDirection == 1 && labelTranslation == sortColumn}
+								{#if sortDirection === 1 && labelTranslation === sortColumn}
 									<SortUp classes={'inline w-4 h-4 text-custom-16'} />
-								{:else if sortDirection == 2 && labelTranslation == sortColumn}
+								{:else if sortDirection === 2 && labelTranslation === sortColumn}
 									<SortDown classes={'inline w-4 h-4 text-custom-16'} />
 								{:else}
 									<SortInactive classes={'inline w-4 h-4'} />
@@ -245,7 +286,7 @@
 									type="checkbox"
 									id={'check-' + row?.id}
 									name={'check-' + row?.id}
-									checked={selectedIds.has(row.id) && !row.disableCheckbox}
+									checked={selectedIds.includes(row.id) && !row.disableCheckbox}
 									disabled={row.disableCheckbox}
 									class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
                     border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer
@@ -298,7 +339,7 @@
 	</table>
 </div>
 
-<style>
+<style lang="postcss">
 	th,
 	td {
 		@apply border;

@@ -2,15 +2,15 @@ import type { PageLoad } from './$types';
 import enLabels from '$lib/components/favourites/i18n/en/translations.json';
 import frLabels from '$lib/components/favourites/i18n/fr/translations.json';
 
-export const load: PageLoad = ({ params, data, url }) => {
-	let lang = params.lang;
-	let t = lang == 'fr-ca' ? frLabels : enLabels;
+export const load: PageLoad = ({ params, data }) => {
+	let lang = params.lang as 'fr-ca' | 'en-ca';
+	let t = lang === 'fr-ca' ? frLabels : enLabels;
 
 	return {
 		lang: lang,
 		t: t,
-		t_title_1: data.t_title_1,
-		t_title_2: data.t_title_2,
+		tTitle1: data.tTitle1,
+		tTitle2: data.tTitle2,
 		results: data.results,
 		userData: data.userData,
 		canonicalUrl: data.canonicalUrl,

@@ -1,19 +1,22 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Menubutton from './menubutton.svelte';
 	import Navitem from './navitem.svelte';
 	import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
 	import Chevronleft from '../icons/chevronleft.svelte';
 
-	const userId = $page.data.userData?.uuid;
-	const navItems = $page.data.navitems;
+	const userId = page.data.userData?.uuid;
+	const navItems = page.data.navitems;
 	const orientation = 'vertical';
 
 	let active = $state(false);
 	let mainMenuVisible = $state(false);
-	let activeMenuContent = $state(null);
+	let activeMenuContent = $state<any>(null);
 
-	function resetNav() {
+	/**
+	 * Resets the navigation state.
+	 */
+	function resetNav(): void {
 		if (active === true) {
 			active = false;
 			mainMenuVisible = false;
@@ -22,9 +25,14 @@
 		}
 	}
 
-	function toggleMenuView(event: CustomEvent) {
+	/**
+	 * Toggles the menu view based on the clicked menu item.
+	 * 
+	 * @param event - The click event.
+	 */
+	function toggleMenuView(event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }): void {
 		mainMenuVisible = !mainMenuVisible;
-		activeMenuContent = event?.menu;
+		activeMenuContent = (event as any).menu;
 
 		if (activeMenuContent?.href) {
 			resetNav();
@@ -40,7 +48,7 @@
 <div class={['nav-items-container bg-custom-23', (!active || !mainMenuVisible) && 'hidden']}>
 	<div class="rounded-[0.3125rem] bg-custom-1 divide-y divide-custom-16">
 		{#each Object.entries(navItems) as [key, data]}
-			{#if key != 'lang' && (key != 'collections' || userId)}
+			{#if key !== 'lang' && (key !== 'collections' || userId)}
 				<div class="nav-item">
 					<Navitem linkData={data} {orientation} dropDownClick={toggleMenuView} />
 				</div>
@@ -98,7 +106,7 @@
 
 <div class={[active && 'mask']}></div>
 
-<style>
+<style lang="postcss">
 	/* Hide scroll bar for navbar options*/
 	.nav-items-container {
 		@apply absolute;

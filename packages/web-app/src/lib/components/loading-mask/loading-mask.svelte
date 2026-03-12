@@ -14,7 +14,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.loader {
 		background: linear-gradient(0deg, #f6f6f6 0%, #535aa4 100%);
 		@apply rounded-[50%];

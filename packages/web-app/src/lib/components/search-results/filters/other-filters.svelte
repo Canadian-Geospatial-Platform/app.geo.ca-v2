@@ -1,24 +1,29 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-	import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
+	import type { Filter, FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
 
 	/************* Filter Data ***************/
-	const filters = $page.data.filters.filters;
-	const others = filters.find((x: Filter) => x.section === 'others');
-	let checkedStates = $state({});
+	const filters: Filter[] = page.data.filters.filters;
+	const others = filters.find((filter: Filter) => filter.section === 'others');
+	let checkedStates: Record<string, boolean | string> = $state({});
 
-	// Reset filters based on current URL search params
-	export function resetFilters() {
-		let filterList = others.filterList.map((x) => x.value);
+	/**
+	 * Resets the Other filters to match the URL parameters.
+	 */
+	export function resetFilters(): void {
+		let filterList = others?.filterList.map((filter: FilterItem) => filter.value);
 
-		filterList.forEach((filterName) => {
-			let filterKey = $page.url.searchParams.get(filterName);
+		if (filterList) filterList.forEach((filterName: string) => {
+			let filterKey = page.url.searchParams.get(filterName);
 			checkedStates[filterName] = filterKey || false;
 		});
 	}
 
-	export function clearAllFilters() {
+	/**
+	 * Clears all Other filters.
+	 */
+	export function clearAllFilters(): void {
 		checkedStates = {};
 	}
 </script>
@@ -27,13 +32,13 @@
 	{others?.label}
 </h3>
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
-	{#each others.filterList as filterListItem}
+	{#each others?.filterList as filterListItem}
 		<CheckboxCustomized
-			checkboxId={others.section + '-' + filterListItem.value}
-			checkboxName={others.section + '-' + filterListItem.value}
+			checkboxId={others?.section + '-' + filterListItem.value}
+			checkboxName={others?.section + '-' + filterListItem.value}
 			checkboxLabel={filterListItem.label}
-			checked={checkedStates[filterListItem.value] || false}
-			checkedStateChange={(event) => (checkedStates[filterListItem.value] = event.target.checked)}
+			checked={!!checkedStates[filterListItem.value] || false}
+			checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}
 		/>
 	{/each}
 </div>
