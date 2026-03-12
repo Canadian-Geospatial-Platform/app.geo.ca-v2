@@ -29,7 +29,7 @@ export function setPosition(
 			 *  translate value, and readded at the end of the calcPosition method.
 			 ************************************************************************/
 			if (
-				window.getComputedStyle(node, null).display != 'none' &&
+				window.getComputedStyle(node, null).display !== 'none' &&
 				!node.classList.contains('shifted')
 			) {
 				calcPosition();

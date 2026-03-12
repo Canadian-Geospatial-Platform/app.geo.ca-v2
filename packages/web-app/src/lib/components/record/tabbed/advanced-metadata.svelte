@@ -43,7 +43,7 @@
 	const data = page.data;
 	const lang = data.lang;
 	const langShort = lang.slice(0, 2);
-	const langIndex = langShort == 'fr' ? 1 : 0;
+	const langIndex = langShort === 'fr' ? 1 : 0;
 	const items = data.item_v2;
 
 	const url = page.url;

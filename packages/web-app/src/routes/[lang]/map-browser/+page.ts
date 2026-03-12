@@ -13,16 +13,17 @@ import { formatNumber } from '$lib/utils/format-number';
 
 export const load: PageLoad = ({ params, data, url }) => {
 	let searchMode = data.searchMode ? (data.searchMode as 'classic' | 'semantic') : 'semantic';
+	// TODO: improve language handling
 	let lang = params.lang as 'en-ca' | 'fr-ca';
-	let t = lang == 'fr-ca' ? frLabels : enLabels;
-	let filters = lang == 'fr-ca' ? frFilters : enFilters;
-	let categories = lang == 'fr-ca' ? frCategories : enCategories;
+	let t = lang === 'fr-ca' ? frLabels : enLabels;
+	let filters = lang === 'fr-ca' ? frFilters : enFilters;
+	let categories = lang === 'fr-ca' ? frCategories : enCategories;
 
 	let sortOptions;
-	if (searchMode == 'semantic') {
-		sortOptions = lang == 'fr-ca' ? frSortOptionsSemantic : enSortOptionsSemantic;
+	if (searchMode === 'semantic') {
+		sortOptions = lang === 'fr-ca' ? frSortOptionsSemantic : enSortOptionsSemantic;
 	} else {
-		sortOptions = lang == 'fr-ca' ? frSortOptions : enSortOptions;
+		sortOptions = lang === 'fr-ca' ? frSortOptions : enSortOptions;
 	}
 
 	let totalResults = data.totalHits ? data.totalHits : 0;
@@ -35,8 +36,8 @@ export const load: PageLoad = ({ params, data, url }) => {
 		start: data.start,
 		end: data.end,
 		t: t,
-		t_title_1: {
-			text: lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+		tTitle1: {
+			text: lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
 			href: url.href
 		},
 		total: totalResults,
@@ -77,14 +78,14 @@ function parsePageMessage(lang: string, url: URL, totalResults: number): string 
 	const totalPages = formatNumber(Math.ceil(totalResults / countPerPage));
 	const formattedNumberOfResults = formatNumber(totalResults);
 
-	if (lang == 'fr-ca') {
+	if (lang === 'fr-ca') {
 		datasetsText = totalResults === 1 ? 'Ensemble de données' : 'Ensembles de données';
-		pageOfText = 'Page ' + pageNumber + ' sur ' + totalPages;
-		message = formattedNumberOfResults + ' ' + datasetsText + ', ' + pageOfText;
+		pageOfText = `Page ${pageNumber} sur ${totalPages}`;
+		message = `${formattedNumberOfResults} ${datasetsText}, ${pageOfText}`;
 	} else {
 		datasetsText = totalResults === 1 ? 'Dataset' : 'Datasets';
-		pageOfText = 'Page ' + pageNumber + ' of ' + totalPages;
-		message = formattedNumberOfResults + ' ' + datasetsText + ', ' + pageOfText;
+		pageOfText = `Page ${pageNumber} of ${totalPages}`;
+		message = `${formattedNumberOfResults} ${datasetsText}, ${pageOfText}`;
 	}
 
 	return message;
@@ -106,46 +107,19 @@ function parseResultMessage(lang: string, url: URL, totalResults: number): strin
 
 	const formattedNumberOfResults = formatNumber(totalResults);
 
-	if (lang == 'fr-ca') {
+	if (lang === 'fr-ca') {
 		datasetsText = totalResults === 1 ? 'ensemble de données' : 'ensembles de données';
 		if (searchTerm) {
-			message =
-				'Nous avons trouvé ' +
-				formattedNumberOfResults +
-				' ' +
-				datasetsText +
-				' pour le mot-clé « ' +
-				searchTerm +
-				' ». Vous pouvez continuer à explorer les résultats de recherche dans la liste ci-dessous.';
+			message = `Nous avons trouvé ${formattedNumberOfResults} ${datasetsText} pour le mot-clé « ${searchTerm} ». Vous pouvez continuer à explorer les résultats de recherche dans la liste ci-dessous.`;
 		} else {
-			message =
-				'Nous avons trouvé ' +
-				formattedNumberOfResults +
-				' ' +
-				datasetsText +
-				'. Vous pouvez affiner votre ' +
-				'recherche en entrant un terme de recherche ci-dessous ou en cliquant sur le bouton des ' +
-				'filtres pour certaines options avancées.';
+			message = `Nous avons trouvé ${formattedNumberOfResults} ${datasetsText}. Vous pouvez affiner votre recherche en entrant un terme de recherche ci-dessous ou en cliquant sur le bouton des filtres pour certaines options avancées.`;
 		}
 	} else {
 		datasetsText = totalResults === 1 ? 'dataset' : 'datasets';
 		if (searchTerm) {
-			message =
-				'We have found ' +
-				formattedNumberOfResults +
-				' ' +
-				datasetsText +
-				' for the keyword "' +
-				searchTerm +
-				'". You can continue exploring the search results in the list below.';
+			message = `We have found ${formattedNumberOfResults} ${datasetsText} for the keyword "${searchTerm}". You can continue exploring the search results in the list below.`;
 		} else {
-			message =
-				'We have found ' +
-				formattedNumberOfResults +
-				' ' +
-				datasetsText +
-				'. You can refine your ' +
-				'search by entering a search term below, or clicking on the Filters button for some advanced options.';
+			message = `We have found ${formattedNumberOfResults} ${datasetsText}. You can refine your search by entering a search term below, or clicking on the Filters button for some advanced options.`;
 		}
 	}
 

@@ -10,9 +10,10 @@ const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 
 /**
  * Gets the ARN of an existing DynamoDB table if it exists.
- * @param {string} tableName The name of the DynamoDB table.
- * @param {string} region The AWS region where the table is located.
- * @returns {Promise<string | undefined>} The ARN of the existing DynamoDB table, or undefined if the table does not exist.
+ *
+ * @param tableName The name of the DynamoDB table.
+ * @param region The AWS region where the table is located.
+ * @returns The ARN of the existing DynamoDB table, or undefined if the table does not exist.
  */
 async function getExistingUserTableArn(
   tableName: string,
@@ -39,7 +40,13 @@ export default {
       region: "ca-central-1",
     };
   },
-  async stacks(app) {
+
+  /**
+   * Defines the stacks for the application.
+   *
+   * @param app The SST app instance.
+   */
+  async stacks(app): Promise<void> {
     const tableName = `${app.stage}-app-geo-ca-v2-users`;
     const existingUserTableArn = await getExistingUserTableArn(
       tableName,
@@ -50,8 +57,7 @@ export default {
       const OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
       /*** User Table ***/
 
-      // Check if an existing user table exists. If it does, use it instead of
-      // creating a new one.
+      // Check if an existing user table exists. If it does, use it instead of creating a new one.
       const USER_TABLE = existingUserTableArn
         ? dynamodb.Table.fromTableArn(stack, "users", existingUserTableArn)
         : new Table(stack, "users", {

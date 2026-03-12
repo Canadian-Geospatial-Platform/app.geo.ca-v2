@@ -3,7 +3,7 @@
 	import { page } from '$app/state';
 
 	const lang = page.data.lang;
-	const message = lang == 'fr-ca' ? 'Vous quittez geo.ca' : 'Leaving geo.ca';
+	const message = lang === 'fr-ca' ? 'Vous quittez geo.ca' : 'Leaving geo.ca';
 
 	let dots = '';
 	let interval;

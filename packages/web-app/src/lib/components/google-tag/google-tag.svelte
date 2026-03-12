@@ -1,29 +1,29 @@
 <svelte:head>
 	<!-- Google Tag Manager -->
-	{#if import.meta.env.VITE_STAGE == 'staging'}
+	{#if import.meta.env.VITE_STAGE === 'staging'}
 		<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || [];
-				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-				var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s),
-					dl = l != 'dataLayer' ? '&l=' + l : '';
-				j.async = true;
-				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-				f.parentNode.insertBefore(j, f);
+			(function (window, document, scriptTagName, dataLayerName, gtmId) {
+				window[dataLayerName] = window[dataLayerName] || [];
+				window[dataLayerName].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+				var firstScript = document.getElementsByTagName(scriptTagName)[0],
+					newScript = document.createElement(scriptTagName),
+					dataLayerParam = dataLayerName !== 'dataLayer' ? '&l=' + dataLayerName : '';
+				newScript.async = true;
+				newScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId + dataLayerParam;
+				firstScript.parentNode.insertBefore(newScript, firstScript);
 			})(window, document, 'script', 'dataLayer', 'GTM-MK9H4CK');
 		</script>
-	{:else if import.meta.env.VITE_STAGE == 'production'}
+	{:else if import.meta.env.VITE_STAGE === 'production'}
 		<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || [];
-				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-				var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s),
-					dl = l != 'dataLayer' ? '&l=' + l : '';
-				j.async = true;
-				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-				f.parentNode.insertBefore(j, f);
+			(function (window, document, scriptTagName, dataLayerName, gtmId) {
+				window[dataLayerName] = window[dataLayerName] || [];
+				window[dataLayerName].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+				var firstScript = document.getElementsByTagName(scriptTagName)[0],
+					newScript = document.createElement(scriptTagName),
+					dataLayerParam = dataLayerName !== 'dataLayer' ? '&l=' + dataLayerName : '';
+				newScript.async = true;
+				newScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId + dataLayerParam;
+				firstScript.parentNode.insertBefore(newScript, firstScript);
 			})(window, document, 'script', 'dataLayer', 'GTM-KG9WWH6');
 		</script>
 	{/if}
@@ -31,7 +31,7 @@
 </svelte:head>
 
 <!-- Google Tag Manager (noscript) -->
-{#if import.meta.env.VITE_STAGE == 'staging'}
+{#if import.meta.env.VITE_STAGE === 'staging'}
 	<noscript
 		><iframe
 			title="Google Tag"
@@ -41,7 +41,7 @@
 			style="display:none;visibility:hidden"
 		></iframe></noscript
 	>
-{:else if import.meta.env.VITE_STAGE == 'production'}
+{:else if import.meta.env.VITE_STAGE === 'production'}
 	<noscript
 		><iframe
 			title="Google Tag"

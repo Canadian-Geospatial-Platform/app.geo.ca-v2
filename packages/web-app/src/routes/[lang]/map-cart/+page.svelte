@@ -9,7 +9,7 @@
 	import MapCart from '$lib/components/mapcart/mapcart.svelte';
 
 	const lang = page.data.lang;
-	const title = lang == 'fr-ca' ? 'app.geo.ca - Panier de cartes' : 'app.geo.ca - Map Cart';
+	const title = lang === 'fr-ca' ? 'app.geo.ca - Panier de cartes' : 'app.geo.ca - Map Cart';
 
 	const canonicalUrl = page.data.canonicalUrl;
 	const alternateUrl = page.data.alternateUrl;

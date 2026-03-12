@@ -9,9 +9,9 @@
 	let checkedStates: Record<string, boolean> = $state({});
 
 	// Labels
-	const federal = page.data.lang == 'fr-ca' ? 'Organisations - Fédérales' : 'Organizations - Federal';
+	const federal = page.data.lang === 'fr-ca' ? 'Organisations - Fédérales' : 'Organizations - Federal';
 	const provincial =
-		page.data.lang == 'fr-ca'
+		page.data.lang === 'fr-ca'
 			? 'Organisations - Provinciales/Territoriales'
 			: 'Organizations - Provincial/Territorial';
 
@@ -42,7 +42,7 @@
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
 	{#each organizations.filterList as filterListItem}
-		{#if filterListItem.subCategory == 'fed'}
+		{#if filterListItem.subCategory === 'fed'}
 			<div class="break-inside-avoid">
 				<CheckboxCustomized
 					checkboxId={organizations.section + '-' + filterListItem.value}
@@ -63,7 +63,7 @@
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
 	{#each organizations.filterList as filterListItem}
-		{#if filterListItem.subCategory == 'prov'}
+		{#if filterListItem.subCategory === 'prov'}
 			<div class="break-inside-avoid">
 				<CheckboxCustomized
 					checkboxId={organizations.section + '-' + filterListItem.value}

@@ -23,14 +23,14 @@
 	const cardData = $derived(
 		similarRecords.map((record: SimilarityRecord) => {
 			const title =
-				lang == 'fr-ca' ? record.features_properties_title_fr : record.features_properties_title_en;
+				lang === 'fr-ca' ? record.features_properties_title_fr : record.features_properties_title_en;
 			const id: string = record.features_properties_id;
 
 			// Todo: Change description when it becomes available from the similarity query.
 			// For now, we can use a POST query to get the description for each record. This is slow,
 			// so it will be temporary and removed once the similarity descriptions are available
 			const description = similarDescriptions?.[id] ?? '';
-			// const description = lang == "fr-ca" ? record.features_properties_description_fr : record.features_properties_description_en;
+			// const description = lang === "fr-ca" ? record.features_properties_description_fr : record.features_properties_description_en;
 
 			const url = urlPrefix + record.features_properties_id;
 

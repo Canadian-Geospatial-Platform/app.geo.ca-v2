@@ -59,7 +59,7 @@
 	 * @returns The found category or null if not found.
 	 */
 	function findCategory(categoryName: string | null): FilterItem | null {
-		return categories.find((category: FilterItem) => category.value == categoryName) ?? null;
+		return categories.find((category: FilterItem) => category.value === categoryName) ?? null;
 	}
 
 	/**
@@ -85,7 +85,7 @@
 	/************* Subscriptions ***************/
 	tempCategoryOfInterest.subscribe((value: string | null) => {
 		let category = findCategory(value);
-		if (selected != category) {
+		if (selected !== category) {
 			changeSelection(category);
 		}
 		categoryStoreVal = value;

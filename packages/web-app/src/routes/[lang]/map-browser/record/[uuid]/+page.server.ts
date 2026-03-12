@@ -75,7 +75,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 		};
 	}
 
-	let t = params.lang == 'en-ca' ? enLabels : frLabels;
+	let t = params.lang === 'en-ca' ? enLabels : frLabels;
 
 	const related = await fetchRelated(params.uuid);
 
@@ -116,7 +116,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	// If coordinates are a string, convert them to an array (or nested arrays) instead
 	let coords = item_v2.coordinates ?? [];
 
-	if (typeof item_v2.coordinates == 'string') {
+	if (typeof item_v2.coordinates === 'string') {
 		coords = JSON.parse(coords);
 		item_v2.coordinates = coords;
 	}
@@ -147,7 +147,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	// Sometimes the categories are in one single camel case string like this:
 	// "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
 	// a comma-separated or semi-colon-separated list. We can do this with regular expressions.
-	if (item_v2.topicCategory && typeof item_v2.topicCategory == 'string') {
+	if (item_v2.topicCategory && typeof item_v2.topicCategory === 'string') {
 		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]/).map((item: string) => {
 			// Insert space before a capital letter, but only if it's preceded
 			// by a lowercase letter i.e. this ensures there is no space added
@@ -157,22 +157,22 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 	}
 
 	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
-	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
 	const metaDescription =
-		params.lang == 'fr-ca'
+		params.lang === 'fr-ca'
 			? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
 			: 'The metadata page and map for the GeoCore record ' + params.uuid;
 
 	item_v2.title = item_v2['title_' + lang];
 	return {
-		t_title_1: {
+		tTitle1: {
 			text:
-				params.lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+				params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
 			href: url.origin + '/' + params.lang + '/map-browser'
 		},
-		t_title_2: {
-			text: params.lang == 'en-ca' ? 'Metadata' : 'Métadonnées',
+		tTitle2: {
+			text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
 			href: url.href
 		},
 		lang: params.lang,

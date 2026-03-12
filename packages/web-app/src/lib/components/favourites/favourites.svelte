@@ -41,7 +41,7 @@
 		: 'Search for additional resources';
 	const viewOnMapLabel = translations?.viewOnMap ? translations.viewOnMap : 'View on map';
 
-	const langShort = lang == 'fr-ca' ? 'fr' : 'en';
+	const langShort = lang === 'fr-ca' ? 'fr' : 'en';
 	const titleKey: 'title_en' | 'title_fr' = `title_${langShort}` as 'title_en' | 'title_fr';
 
 	/************* Resource Table ***************/
@@ -73,7 +73,7 @@
 	 */
 	function handleDeleteResource(id: string): void {
 		// Before deleting, ask the user's permission
-		const resource = tableDataArray.find((tableData: FavouritesRow) => tableData.id == id);
+		const resource = tableDataArray.find((tableData: FavouritesRow) => tableData.id === id);
 		const resourceName = resource?.name;
 		const permissionText =
 			lang === 'fr-ca'
@@ -85,9 +85,9 @@
 			selectedSet.delete(id);
 
 			// Update resource lists
-			favouriteRecordList = favouriteRecordList.filter((listItem) => listItem != id);
-			tableDataArray = tableDataArray.filter((row) => row.id != id);
-			records = records.filter((record) => record.id != id);
+			favouriteRecordList = favouriteRecordList.filter((listItem) => listItem !== id);
+			tableDataArray = tableDataArray.filter((row) => row.id !== id);
+			records = records.filter((record) => record.id !== id);
 
 			// Update the table and button label
 			sortableTable?.updateTableContent(tableDataArray);

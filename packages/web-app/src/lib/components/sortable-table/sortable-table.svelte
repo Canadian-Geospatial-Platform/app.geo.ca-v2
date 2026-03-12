@@ -47,8 +47,8 @@
 
 	/************** Translations **************/
 	const lang = page.data.lang;
-	const selectAllLabel = lang == 'fr-ca' ? 'Tout sélectionner' : 'Select all';
-	const deleteLabel = lang == 'fr-ca' ? 'Supprimer la ressource' : 'Delete resource';
+	const selectAllLabel = lang === 'fr-ca' ? 'Tout sélectionner' : 'Select all';
+	const deleteLabel = lang === 'fr-ca' ? 'Supprimer la ressource' : 'Delete resource';
 
 	// Convert table label keys to an array to ensure that all data rows have the same order
 	// and to simplify sorting
@@ -145,18 +145,18 @@
 	 * @param sortLable - The label of the column to sort by.
 	 */
 	function handleSortButtonClick(sortLable: string): void {
-		if (sortLable == sortColumn) {
+		if (sortLable === sortColumn) {
 			sortDirection = (sortDirection + 1) % 3;
 		} else {
 			sortColumn = sortLable;
 			sortDirection = 1;
 		}
 
-		if (sortDirection == 1) {
+		if (sortDirection === 1) {
 			sortedTableContent = tableContent.toSorted((a, b) =>
 				a[sortColumn].localeCompare(b[sortColumn])
 			);
-		} else if (sortDirection == 2) {
+		} else if (sortDirection === 2) {
 			sortedTableContent = tableContent
 				.toSorted((a, b) => a[sortColumn].localeCompare(b[sortColumn]))
 				.reverse();
@@ -238,13 +238,13 @@
 
 				{#each tableLabelsArray as labelTranslation, i}
 					<!-------------- Column Titles -------------->
-					<th class={[i == 0 && tableLabelsArray.length > 1 && 'w-1/2']}>
+					<th class={[i === 0 && tableLabelsArray.length > 1 && 'w-1/2']}>
 						<div class="flex flex-row justify-between font-custom-style-header-1">
 							{tableLabels[labelTranslation]}
 							<button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
-								{#if sortDirection == 1 && labelTranslation == sortColumn}
+								{#if sortDirection === 1 && labelTranslation === sortColumn}
 									<SortUp classes={'inline w-4 h-4 text-custom-16'} />
-								{:else if sortDirection == 2 && labelTranslation == sortColumn}
+								{:else if sortDirection === 2 && labelTranslation === sortColumn}
 									<SortDown classes={'inline w-4 h-4 text-custom-16'} />
 								{:else}
 									<SortInactive classes={'inline w-4 h-4'} />

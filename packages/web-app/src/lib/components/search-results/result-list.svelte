@@ -133,7 +133,7 @@
 		// Get an array of just the format of each record option
 		const formatArray = options.map((option: DistributionOption) => {
 			const description = option.description;
-			const descriptionString = lang == 'fr' ? description.fr : description.en;
+			const descriptionString = lang === 'fr' ? description.fr : description.en;
 			const descriptionArray = descriptionString?.split(';');
 
 			// The description string is always in this format 'type;format;language',
@@ -149,7 +149,7 @@
 		// first instance of the value being searched. If it doesn't match the current index,
 		// then it must be a duplicate.
 		const filteredFormats = formatArray.filter((format: string | undefined, index: number, self: (string | undefined)[]) => {
-			return format && format !== 'null' && format != 'undefined' && self.indexOf(format) === index;
+			return format && format !== 'null' && format !== 'undefined' && self.indexOf(format) === index;
 		}).filter((format) => format !== undefined);
 
 		return filteredFormats;
@@ -204,7 +204,7 @@
 
 	/****************** Map ******************/
 	let mapType: MapTypes = 'resultList';
-	let lang = page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	let lang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
 </script>
 
 <!-- When the window is resized, we can close each accordion to reset the map variables. -->
@@ -246,11 +246,11 @@
 									href={hrefPrefix + result.id}
 									class="underline hover:no-underline font-custom-style-header-4"
 								>
-									{lang == 'fr' ? result.title_fr : result.title_en}
+									{lang === 'fr' ? result.title_fr : result.title_en}
 								</a>
 								<div class="line-clamp-2 pt-1">
 									<!-- Remove new line characters -->
-									{lang == 'fr'
+									{lang === 'fr'
 										? result.description_fr.replaceAll('\\n', '')
 										: result.description_en.replaceAll('\\n', '')}
 								</div>
@@ -284,7 +284,7 @@
 							<div class="mb-5">
 								<p>
 									<span class="font-semibold">{organizationText}: </span>
-									{lang == 'fr'
+									{lang === 'fr'
 										? result.contact[0]?.organisation?.fr?.replaceAll(';', '; ')
 										: result.contact[0]?.organisation?.en?.replaceAll(';', '; ')}
 								</p>

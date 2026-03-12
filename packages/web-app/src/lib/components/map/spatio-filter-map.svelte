@@ -31,7 +31,7 @@
 
 	const mapId = 'map-spatio-filter';
 	const interactionType = dynamic ? 'dynamic' : 'static';
-	const mapLang = page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	const mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
 
 	const basemapId = 'transport';
 	const shaded = true;
@@ -86,34 +86,37 @@
 
 	/**
 	 * Sets the vertices of the bounding box polygon on the map.
-	 * 
+	 *
 	 * This allows for the bbox vertices to be updated programatically, but only after the map has been initialized
-	 * 
+	 *
 	 * @param coords - An array of coordinates representing the vertices of the bounding box polygon.
 	 * @returns void
-	*/
+	 */
 	export function setVertices(coords: number[][]): void {
 		setVerticesFromCoords(coords);
 	}
 
-
 	/**
 	 * Enforces rectangular shape by adjusting adjacent vertices when one vertex is moved.
-	 * 
+	 *
 	 * The geoview modify interaction typically updates only one vertex in a polygon.
 	 * To ensure the bounding box remains a rectangle, the vertices adjacent to the one
 	 * being modified, need to be updated too. This method determines what the coordinates
 	 * should be to maintain a rectangular shape.
-	 * 
+	 *
 	 * @param coords - The current coordinates of the polygon vertices.
 	 * @param movedIndex - The index of the vertex that was moved.
 	 * @param newCoord - The new coordinate of the moved vertex.
 	 * @returns The modified coordinates maintaining a rectangular shape.
 	 */
-	function enforceRectangle(coords: number[][], movedIndex: number, newCoord: number[]): number[][] {
+	function enforceRectangle(
+		coords: number[][],
+		movedIndex: number,
+		newCoord: number[]
+	): number[][] {
 		// Only modify the polygon if it has four vertices. We check for five
 		// since the first and last coordinates will be same to close the polygon.
-		if (coords.length != 5) {
+		if (coords.length !== 5) {
 			return coords;
 		}
 
@@ -191,7 +194,7 @@
 
 				const buttonGroupName = 'buttonGroup';
 				const buttonTooltip =
-					page.data.lang == 'fr-ca'
+					page.data.lang === 'fr-ca'
 						? "Définir le cadre de délimitation sur l'étendue visible"
 						: 'Set bounding box to visible extent';
 
@@ -290,97 +293,103 @@
 				/**
 				 * Event handler for the modify interaction events.
 				 * It captures the starting and ending of the modification,
-				*/
-				modifyInteraction.onModifyStarted((sender: any, payload: { features: { item: (arg0: number) => any; }; }): void => {
-					// Get coordinates of the bounding box
-					const feature = payload.features.item(0);
-					if (feature) {
-						const geometry = feature.getGeometry();
-						if (geometry && geometry.getType() === 'Polygon') {
-							bboxCoordinates = geometry.getCoordinates()[0];
+				 */
+				modifyInteraction.onModifyStarted(
+					(sender: any, payload: { features: { item: (arg0: number) => any } }): void => {
+						// Get coordinates of the bounding box
+						const feature = payload.features.item(0);
+						if (feature) {
+							const geometry = feature.getGeometry();
+							if (geometry && geometry.getType() === 'Polygon') {
+								bboxCoordinates = geometry.getCoordinates()[0];
+							}
 						}
 					}
-				});
+				);
 
-				modifyInteraction.onModifyEnded((sender: any, payload: { features: { item: (arg0: number) => any; }; }) => {
-					// Set the final coordinates of the bounding box.
-					// Skipping this step causes the modify vertices and bbox vertices to
-					// be mismatched.
-					const feature = payload.features.item(0);
-					if (feature) {
-						const geometry = feature.getGeometry();
-						if (geometry && geometry.getType() === 'Polygon') {
-							geometry.setCoordinates([bboxCoordinates]);
+				modifyInteraction.onModifyEnded(
+					(sender: any, payload: { features: { item: (arg0: number) => any } }) => {
+						// Set the final coordinates of the bounding box.
+						// Skipping this step causes the modify vertices and bbox vertices to
+						// be mismatched.
+						const feature = payload.features.item(0);
+						if (feature) {
+							const geometry = feature.getGeometry();
+							if (geometry && geometry.getType() === 'Polygon') {
+								geometry.setCoordinates([bboxCoordinates]);
+							}
 						}
+
+						// Reset the current modified index
+						modifiedIndex = -1;
+
+						// Send the new bbox coordinates back to the parent component. Convert the coordinates to degrees first.
+						const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
+						bboxModify(lonLatCoords);
 					}
+				);
 
-					// Reset the current modified index
-					modifiedIndex = -1;
+				modifyInteraction.onModifyDragged(
+					(sender: any, payload: { features: { item: (arg0: number) => any } }) => {
+						// Prevents redundant and recursive calls from the enforceRectangle() function.
+						if (isUpdating) {
+							return;
+						}
 
-					// Send the new bbox coordinates back to the parent component. Convert the coordinates to degrees first.
-					const lonLatCoords = layerGeometry.getFeatureCoords(bboxId, lonLatProjection)[0];
-					bboxModify(lonLatCoords);
-				});
+						// Get the feature with the dragged vertex
+						let feature = payload.features.item(0);
 
-				modifyInteraction.onModifyDragged((sender: any, payload: { features: { item: (arg0: number) => any; }; }) => {
-					// Prevents redundant and recursive calls from the enforceRectangle() function.
-					if (isUpdating) {
-						return;
-					}
+						if (feature) {
+							let geometry = feature.getGeometry();
 
-					// Get the feature with the dragged vertex
-					let feature = payload.features.item(0);
+							if (geometry && geometry.getType() === 'Polygon') {
+								const newCoordinates = geometry.getCoordinates()[0];
 
-					if (feature) {
-						let geometry = feature.getGeometry();
-
-						if (geometry && geometry.getType() === 'Polygon') {
-							const newCoordinates = geometry.getCoordinates()[0];
-
-							// Get the index of the vertex being dragged by cycling through
-							// newCoordinates array and finding the vertex that doesn't match
-							// the original coordinate set.
-							if (modifiedIndex === -1) {
-								for (let i = 0; i < newCoordinates.length - 1; i++) {
-									if (
-										bboxCoordinates[i][0] !== newCoordinates[i][0] ||
-										bboxCoordinates[i][1] !== newCoordinates[i][1]
-									) {
-										modifiedIndex = i;
-										break;
+								// Get the index of the vertex being dragged by cycling through
+								// newCoordinates array and finding the vertex that doesn't match
+								// the original coordinate set.
+								if (modifiedIndex === -1) {
+									for (let i = 0; i < newCoordinates.length - 1; i++) {
+										if (
+											bboxCoordinates[i][0] !== newCoordinates[i][0] ||
+											bboxCoordinates[i][1] !== newCoordinates[i][1]
+										) {
+											modifiedIndex = i;
+											break;
+										}
 									}
 								}
-							}
 
-							// If the bounding box has been modified from it's previous state,
-							// update it's vertices to ensure that it remains a rectangle.
-							// Update the isUpdating flag to prevent redundant modifications.
-							if (
-								modifiedIndex !== -1 &&
-								(bboxCoordinates[modifiedIndex][0] !== newCoordinates[modifiedIndex][0] ||
-									bboxCoordinates[modifiedIndex][1] !== newCoordinates[modifiedIndex][1])
-							) {
-								// Block additional updates
-								isUpdating = true;
+								// If the bounding box has been modified from it's previous state,
+								// update it's vertices to ensure that it remains a rectangle.
+								// Update the isUpdating flag to prevent redundant modifications.
+								if (
+									modifiedIndex !== -1 &&
+									(bboxCoordinates[modifiedIndex][0] !== newCoordinates[modifiedIndex][0] ||
+										bboxCoordinates[modifiedIndex][1] !== newCoordinates[modifiedIndex][1])
+								) {
+									// Block additional updates
+									isUpdating = true;
 
-								// Get the updated coordinates of the new bbox
-								const newCoords = enforceRectangle(
-									bboxCoordinates,
-									modifiedIndex,
-									newCoordinates[modifiedIndex]
-								);
+									// Get the updated coordinates of the new bbox
+									const newCoords = enforceRectangle(
+										bboxCoordinates,
+										modifiedIndex,
+										newCoordinates[modifiedIndex]
+									);
 
-								// Assign the new coordinates to the map feature and update the bboxCoordinates variable.
-								geometry.setCoordinates([newCoords]);
-								feature.setGeometry(geometry);
-								bboxCoordinates = newCoords;
+									// Assign the new coordinates to the map feature and update the bboxCoordinates variable.
+									geometry.setCoordinates([newCoords]);
+									feature.setGeometry(geometry);
+									bboxCoordinates = newCoords;
 
-								// Allow additional updates
-								isUpdating = false;
+									// Allow additional updates
+									isUpdating = false;
+								}
 							}
 						}
 					}
-				});
+				);
 			});
 		} catch (error) {
 			console.error(error);

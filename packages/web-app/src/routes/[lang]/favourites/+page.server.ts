@@ -10,10 +10,10 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 	let sanitizedResults;
 
 	const canonicalUrl = url.origin + '/' + params.lang + '/favourites';
-	const alternateLang = params.lang == 'fr-ca' ? 'en-ca' : 'fr-ca';
+	const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
 	const alternateUrl = url.href.replace(params.lang, alternateLang);
 	const metaDescription =
-		params.lang == 'fr-ca'
+		params.lang === 'fr-ca'
 			? 'Consultez vos ressources sauvegardées et créez une carte personnalisée.'
 			: 'Browse your saved resources and create a custom map.';
 
@@ -37,13 +37,13 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
 
 	return {
 		lang: params.lang,
-		t_title_1: {
+		tTitle1: {
 			text:
-				params.lang == 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
-			href: url.origin + '/' + params.lang + '/map-browser'
+				params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+			href: `${url.origin}/${params.lang}/map-browser`
 		},
-		t_title_2: {
-			text: params.lang == 'en-ca' ? 'Favourites' : 'Favoris',
+		tTitle2: {
+			text: params.lang === 'en-ca' ? 'Favourites' : 'Favoris',
 			href: url.href
 		},
 		results: sanitizedResults,

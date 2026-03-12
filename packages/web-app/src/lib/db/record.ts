@@ -1,6 +1,7 @@
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import type { GeospatialRecord } from './db-types';
 
+// TODO: Move constants like bucket name and prefix to a config file or environment variables
 // This should point to the bucket containing geojson from the newest geocore transformation lambda with the improved schema.
 const PREFIX = 'geocore/';
 const BUCKET_NAME = process.env.BUCKET_NAME || '';

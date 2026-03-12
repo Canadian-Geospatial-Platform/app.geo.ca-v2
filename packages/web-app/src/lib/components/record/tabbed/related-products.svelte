@@ -49,6 +49,7 @@
 	};
 
 	/****************** Pagination ******************/
+	// TODO: move to constants file if used in other places
 	const itemsPerPage = 10;
 	const total = $derived(relatedRecords.length ?? 0);
 	let currentPage = $state(1);
@@ -63,7 +64,7 @@
 	}
 </script>
 
-{#if tableDataArray.length == 0}
+{#if tableDataArray.length === 0}
 	<div>
 		{relatedProductsNotAvailable}
 	</div>

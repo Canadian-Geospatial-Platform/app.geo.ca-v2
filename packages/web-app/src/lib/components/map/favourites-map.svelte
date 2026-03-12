@@ -16,7 +16,7 @@
 	let { layerIds }: Props = $props();
 
 	let mapId = 'map-favourites-resources';
-	let mapLang = page.data.lang == 'fr-ca' ? 'fr' : 'en';
+	let mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
 
 	/***************** Map config *****************/
 	const interaction = 'dynamic';
