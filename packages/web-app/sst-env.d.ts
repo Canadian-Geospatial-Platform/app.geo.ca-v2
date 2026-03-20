@@ -5,18 +5,18 @@
 import 'sst';
 export {};
 declare module 'sst' {
-	export interface Resource {
-		DataLake: {
-			name: string;
-			type: 'sst.aws.Bucket';
-		};
-		Users: {
-			name: string;
-			type: 'sst.aws.Dynamo';
-		};
-		WebApp: {
-			type: 'sst.aws.SvelteKit';
-			url: string;
-		};
-	}
+  export interface Resource {
+    DataLake: {
+      name: string;
+      type: 'sst.aws.Bucket';
+    };
+    Users: {
+      name: string;
+      type: 'sst.aws.Dynamo';
+    };
+    WebApp: {
+      type: 'sst.aws.SvelteKit';
+      url: string;
+    };
+  }
 }

@@ -12,47 +12,47 @@ import frSortOptionsSemantic from '$lib/components/search-results/i18n/fr/sort-o
 import { formatNumber } from '$lib/utils/format-number';
 
 export const load: PageLoad = ({ params, data, url }) => {
-	let searchMode = data.searchMode ? (data.searchMode as 'classic' | 'semantic') : 'semantic';
-	// TODO: improve language handling
-	let lang = params.lang as 'en-ca' | 'fr-ca';
-	let t = lang === 'fr-ca' ? frLabels : enLabels;
-	let filters = lang === 'fr-ca' ? frFilters : enFilters;
-	let categories = lang === 'fr-ca' ? frCategories : enCategories;
+  let searchMode = data.searchMode ? (data.searchMode as 'classic' | 'semantic') : 'semantic';
+  // TODO: improve language handling
+  let lang = params.lang as 'en-ca' | 'fr-ca';
+  let t = lang === 'fr-ca' ? frLabels : enLabels;
+  let filters = lang === 'fr-ca' ? frFilters : enFilters;
+  let categories = lang === 'fr-ca' ? frCategories : enCategories;
 
-	let sortOptions;
-	if (searchMode === 'semantic') {
-		sortOptions = lang === 'fr-ca' ? frSortOptionsSemantic : enSortOptionsSemantic;
-	} else {
-		sortOptions = lang === 'fr-ca' ? frSortOptions : enSortOptions;
-	}
+  let sortOptions;
+  if (searchMode === 'semantic') {
+    sortOptions = lang === 'fr-ca' ? frSortOptionsSemantic : enSortOptionsSemantic;
+  } else {
+    sortOptions = lang === 'fr-ca' ? frSortOptions : enSortOptions;
+  }
 
-	let totalResults = data.totalHits ? data.totalHits : 0;
-	let numPageText = parsePageMessage(lang, url, totalResults);
-	let resultMessage = parseResultMessage(lang, url, totalResults);
-	return {
-		results: data.results,
-		lang: lang,
-		userData: data.userData,
-		start: data.start,
-		end: data.end,
-		t: t,
-		tTitle1: {
-			text: lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
-			href: url.href
-		},
-		total: totalResults,
-		filters: filters,
-		categories: categories,
-		sortOptions: sortOptions,
-		analytics: data.analytics,
-		numPageText: numPageText,
-		resultMessage: resultMessage,
-		searchMode: searchMode,
-		canonicalUrl: data.canonicalUrl,
-		alternateUrl: data.alternateUrl,
-		alternateLang: data.alternateLang,
-		metaDescription: data.metaDescription
-	};
+  let totalResults = data.totalHits ? data.totalHits : 0;
+  let numPageText = parsePageMessage(lang, url, totalResults);
+  let resultMessage = parseResultMessage(lang, url, totalResults);
+  return {
+    results: data.results,
+    lang: lang,
+    userData: data.userData,
+    start: data.start,
+    end: data.end,
+    t: t,
+    tTitle1: {
+      text: lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+      href: url.href,
+    },
+    total: totalResults,
+    filters: filters,
+    categories: categories,
+    sortOptions: sortOptions,
+    analytics: data.analytics,
+    numPageText: numPageText,
+    resultMessage: resultMessage,
+    searchMode: searchMode,
+    canonicalUrl: data.canonicalUrl,
+    alternateUrl: data.alternateUrl,
+    alternateLang: data.alternateLang,
+    metaDescription: data.metaDescription,
+  };
 };
 
 /**
@@ -64,31 +64,31 @@ export const load: PageLoad = ({ params, data, url }) => {
  * @returns The page message.
  */
 function parsePageMessage(lang: string, url: URL, totalResults: number): string {
-	let message;
-	let pageOfText;
-	let datasetsText;
-	const searchParams = url.searchParams;
-	const pageNumberParam = parseInt(searchParams.get('page-number') || '0');
-	const perPageParam = parseInt(searchParams.get('results-per-page') || '10');
+  let message;
+  let pageOfText;
+  let datasetsText;
+  const searchParams = url.searchParams;
+  const pageNumberParam = parseInt(searchParams.get('page-number') || '0');
+  const perPageParam = parseInt(searchParams.get('results-per-page') || '10');
 
-	// + 1 because the geocore page number starts at 0, but we want it to start
-	// at 1 to match the pagination element
-	const countPerPage = !isNaN(perPageParam) ? perPageParam : 10;
-	const pageNumber = formatNumber(!isNaN(pageNumberParam) ? pageNumberParam + 1 : 1);
-	const totalPages = formatNumber(Math.ceil(totalResults / countPerPage));
-	const formattedNumberOfResults = formatNumber(totalResults);
+  // + 1 because the geocore page number starts at 0, but we want it to start
+  // at 1 to match the pagination element
+  const countPerPage = !isNaN(perPageParam) ? perPageParam : 10;
+  const pageNumber = formatNumber(!isNaN(pageNumberParam) ? pageNumberParam + 1 : 1);
+  const totalPages = formatNumber(Math.ceil(totalResults / countPerPage));
+  const formattedNumberOfResults = formatNumber(totalResults);
 
-	if (lang === 'fr-ca') {
-		datasetsText = totalResults === 1 ? 'Ensemble de données' : 'Ensembles de données';
-		pageOfText = `Page ${pageNumber} sur ${totalPages}`;
-		message = `${formattedNumberOfResults} ${datasetsText}, ${pageOfText}`;
-	} else {
-		datasetsText = totalResults === 1 ? 'Dataset' : 'Datasets';
-		pageOfText = `Page ${pageNumber} of ${totalPages}`;
-		message = `${formattedNumberOfResults} ${datasetsText}, ${pageOfText}`;
-	}
+  if (lang === 'fr-ca') {
+    datasetsText = totalResults === 1 ? 'Ensemble de données' : 'Ensembles de données';
+    pageOfText = `Page ${pageNumber} sur ${totalPages}`;
+    message = `${formattedNumberOfResults} ${datasetsText}, ${pageOfText}`;
+  } else {
+    datasetsText = totalResults === 1 ? 'Dataset' : 'Datasets';
+    pageOfText = `Page ${pageNumber} of ${totalPages}`;
+    message = `${formattedNumberOfResults} ${datasetsText}, ${pageOfText}`;
+  }
 
-	return message;
+  return message;
 }
 
 /**
@@ -100,28 +100,28 @@ function parsePageMessage(lang: string, url: URL, totalResults: number): string 
  * @returns The result message.
  */
 function parseResultMessage(lang: string, url: URL, totalResults: number): string {
-	let message;
-	let datasetsText;
-	const searchParams = url.searchParams;
-	const searchTerm = searchParams.get('search-terms');
+  let message;
+  let datasetsText;
+  const searchParams = url.searchParams;
+  const searchTerm = searchParams.get('search-terms');
 
-	const formattedNumberOfResults = formatNumber(totalResults);
+  const formattedNumberOfResults = formatNumber(totalResults);
 
-	if (lang === 'fr-ca') {
-		datasetsText = totalResults === 1 ? 'ensemble de données' : 'ensembles de données';
-		if (searchTerm) {
-			message = `Nous avons trouvé ${formattedNumberOfResults} ${datasetsText} pour le mot-clé « ${searchTerm} ». Vous pouvez continuer à explorer les résultats de recherche dans la liste ci-dessous.`;
-		} else {
-			message = `Nous avons trouvé ${formattedNumberOfResults} ${datasetsText}. Vous pouvez affiner votre recherche en entrant un terme de recherche ci-dessous ou en cliquant sur le bouton des filtres pour certaines options avancées.`;
-		}
-	} else {
-		datasetsText = totalResults === 1 ? 'dataset' : 'datasets';
-		if (searchTerm) {
-			message = `We have found ${formattedNumberOfResults} ${datasetsText} for the keyword "${searchTerm}". You can continue exploring the search results in the list below.`;
-		} else {
-			message = `We have found ${formattedNumberOfResults} ${datasetsText}. You can refine your search by entering a search term below, or clicking on the Filters button for some advanced options.`;
-		}
-	}
+  if (lang === 'fr-ca') {
+    datasetsText = totalResults === 1 ? 'ensemble de données' : 'ensembles de données';
+    if (searchTerm) {
+      message = `Nous avons trouvé ${formattedNumberOfResults} ${datasetsText} pour le mot-clé « ${searchTerm} ». Vous pouvez continuer à explorer les résultats de recherche dans la liste ci-dessous.`;
+    } else {
+      message = `Nous avons trouvé ${formattedNumberOfResults} ${datasetsText}. Vous pouvez affiner votre recherche en entrant un terme de recherche ci-dessous ou en cliquant sur le bouton des filtres pour certaines options avancées.`;
+    }
+  } else {
+    datasetsText = totalResults === 1 ? 'dataset' : 'datasets';
+    if (searchTerm) {
+      message = `We have found ${formattedNumberOfResults} ${datasetsText} for the keyword "${searchTerm}". You can continue exploring the search results in the list below.`;
+    } else {
+      message = `We have found ${formattedNumberOfResults} ${datasetsText}. You can refine your search by entering a search term below, or clicking on the Filters button for some advanced options.`;
+    }
+  }
 
-	return message;
+  return message;
 }

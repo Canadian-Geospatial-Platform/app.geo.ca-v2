@@ -16,11 +16,11 @@ export const LOCALSTORAGE_UPDATED = 'localstorage_updated';
  * @param value - The value to set for the given key (arrays will be joined with commas).
  */
 export function updateLocalStorage(key: string, value: unknown): void {
-	const stringValue = Array.isArray(value) ? value.join(',') : String(value);
-	localStorage.setItem(key, stringValue);
-	window.dispatchEvent(
-		new CustomEvent(LOCALSTORAGE_UPDATED, {
-			detail: { key, value }
-		})
-	);
+  const stringValue = Array.isArray(value) ? value.join(',') : String(value);
+  localStorage.setItem(key, stringValue);
+  window.dispatchEvent(
+    new CustomEvent(LOCALSTORAGE_UPDATED, {
+      detail: { key, value },
+    })
+  );
 }

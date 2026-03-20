@@ -3,110 +3,110 @@
 @tailwind utilities;
 
 .content-width {
-	@apply w-full;
-	@apply md:w-[43.75rem];
-	@apply lg:w-[60rem];
-	@apply xl:w-[77.5rem];
-	@apply mx-auto;
+  @apply w-full;
+  @apply md:w-[43.75rem];
+  @apply lg:w-[60rem];
+  @apply xl:w-[77.5rem];
+  @apply mx-auto;
 }
 
 .button-1 {
-	@apply text-white;
-	@apply bg-custom-8;
-	@apply p-2.5;
-	@apply rounded-lg;
-	@apply drop-shadow-lg;
-	@apply border-2;
-	@apply border-transparent;
-	@apply hover:border-white;
+  @apply text-white;
+  @apply bg-custom-8;
+  @apply p-2.5;
+  @apply rounded-lg;
+  @apply drop-shadow-lg;
+  @apply border-2;
+  @apply border-transparent;
+  @apply hover:border-white;
 }
 
 .button-2 {
-	@apply disabled:bg-gray-100;
-	@apply disabled:outline-gray-400;
-	@apply disabled:text-gray-500;
-	@apply outline-1;
-	@apply hover:disabled:bg-gray-500;
-	@apply hover:disabled:text-gray-100;
-	@apply text-custom-8;
-	@apply hover:text-custom-1;
-	@apply bg-custom-1;
-	@apply hover:bg-custom-8;
-	@apply outline;
-	@apply outline-custom-8;
-	@apply p-2.5;
-	@apply rounded-lg;
-	@apply drop-shadow-lg;
-	@apply border-2;
-	@apply hover:border-white;
+  @apply disabled:bg-gray-100;
+  @apply disabled:outline-gray-400;
+  @apply disabled:text-gray-500;
+  @apply outline-1;
+  @apply hover:disabled:bg-gray-500;
+  @apply hover:disabled:text-gray-100;
+  @apply text-custom-8;
+  @apply hover:text-custom-1;
+  @apply bg-custom-1;
+  @apply hover:bg-custom-8;
+  @apply outline;
+  @apply outline-custom-8;
+  @apply p-2.5;
+  @apply rounded-lg;
+  @apply drop-shadow-lg;
+  @apply border-2;
+  @apply hover:border-white;
 }
 
 .button-3 {
-	@apply bg-custom-1;
-	@apply hover:bg-custom-16;
-	@apply border-custom-16;
-	@apply border-2;
-	@apply rounded;
-	@apply px-6;
-	@apply py-2;
-	@apply font-custom-style-body-7;
-	@apply hover:text-custom-1;
+  @apply bg-custom-1;
+  @apply hover:bg-custom-16;
+  @apply border-custom-16;
+  @apply border-2;
+  @apply rounded;
+  @apply px-6;
+  @apply py-2;
+  @apply font-custom-style-body-7;
+  @apply hover:text-custom-1;
 }
 
 .button-3-disabled {
-	@apply bg-custom-1;
-	@apply border-custom-17;
-	@apply border-2;
-	@apply rounded;
-	@apply px-6;
-	@apply py-2;
-	@apply font-custom-style-body-7;
-	@apply text-custom-17;
+  @apply bg-custom-1;
+  @apply border-custom-17;
+  @apply border-2;
+  @apply rounded;
+  @apply px-6;
+  @apply py-2;
+  @apply font-custom-style-body-7;
+  @apply text-custom-17;
 }
 
 .button-4 {
-	@apply bg-custom-1;
-	@apply border-custom-22;
-	@apply border-2;
-	@apply rounded;
-	@apply pl-[0.875rem];
-	@apply py-[0.563rem];
-	@apply font-custom-style-body-1;
+  @apply bg-custom-1;
+  @apply border-custom-22;
+  @apply border-2;
+  @apply rounded;
+  @apply pl-[0.875rem];
+  @apply py-[0.563rem];
+  @apply font-custom-style-body-1;
 }
 
 .button-5 {
-	@apply bg-custom-16;
-	@apply border-custom-16;
-	@apply border-2;
-	@apply rounded;
-	@apply px-6;
-	@apply py-2;
-	@apply font-custom-style-button-3;
-	@apply hover:bg-custom-23;
-	@apply hover:border-custom-23;
+  @apply bg-custom-16;
+  @apply border-custom-16;
+  @apply border-2;
+  @apply rounded;
+  @apply px-6;
+  @apply py-2;
+  @apply font-custom-style-button-3;
+  @apply hover:bg-custom-23;
+  @apply hover:border-custom-23;
 }
 
 .select-button {
-	@apply text-custom-8;
-	@apply bg-custom-1;
-	@apply outline;
-	@apply outline-custom-8;
-	@apply p-2.5;
-	@apply rounded-lg;
-	@apply drop-shadow-lg;
-	@apply border-2;
-	@apply hover:border-white;
+  @apply text-custom-8;
+  @apply bg-custom-1;
+  @apply outline;
+  @apply outline-custom-8;
+  @apply p-2.5;
+  @apply rounded-lg;
+  @apply drop-shadow-lg;
+  @apply border-2;
+  @apply hover:border-white;
 }
 
 .select-button-2 {
-	@apply bg-custom-1;
-	@apply border-custom-16;
-	@apply border-2;
-	@apply rounded;
-	@apply pl-4;
-	@apply md:pl-6;
-	@apply py-2;
-	@apply font-custom-style-body-7;
+  @apply bg-custom-1;
+  @apply border-custom-16;
+  @apply border-2;
+  @apply rounded;
+  @apply pl-4;
+  @apply md:pl-6;
+  @apply py-2;
+  @apply font-custom-style-body-7;
 }
 
 /* input {
@@ -120,208 +120,208 @@
 
 /* footer fonts */
 .font-custom-style-footer-1 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-1;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-1;
 }
 
 .font-custom-style-footer-2 {
-	@apply font-open-sans;
-	@apply font-normal;
-	@apply text-[16px];
-	@apply text-custom-1;
+  @apply font-open-sans;
+  @apply font-normal;
+  @apply text-[16px];
+  @apply text-custom-1;
 }
 
 .font-custom-style-header-1 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-15;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-15;
 }
 
 .font-custom-style-header-2 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-16;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-16;
 }
 
 .font-custom-style-header-3 {
-	@apply font-open-sans;
-	@apply font-bold;
-	@apply text-custom-16;
+  @apply font-open-sans;
+  @apply font-bold;
+  @apply text-custom-16;
 }
 
 .font-custom-style-header-4 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[18px];
-	@apply text-custom-16;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[18px];
+  @apply text-custom-16;
 }
 
 .font-custom-style-body-1 {
-	@apply font-open-sans;
-	@apply font-normal;
-	@apply text-[16px];
-	@apply text-custom-7;
+  @apply font-open-sans;
+  @apply font-normal;
+  @apply text-[16px];
+  @apply text-custom-7;
 }
 
 .font-custom-style-body-2 {
-	@apply font-noto-sans;
-	@apply font-medium;
-	@apply text-[16px];
-	@apply text-custom-16;
-	@apply underline;
-	@apply hover:no-underline;
+  @apply font-noto-sans;
+  @apply font-medium;
+  @apply text-[16px];
+  @apply text-custom-16;
+  @apply underline;
+  @apply hover:no-underline;
 }
 
 .font-custom-style-body-3 {
-	@apply font-noto-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-16;
+  @apply font-noto-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-16;
 }
 
 .font-custom-style-body-4 {
-	@apply font-lato;
-	@apply font-normal;
-	@apply text-[16px];
-	@apply text-custom-7;
+  @apply font-lato;
+  @apply font-normal;
+  @apply text-[16px];
+  @apply text-custom-7;
 }
 
 .font-custom-style-body-5 {
-	@apply font-noto-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-1;
+  @apply font-noto-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-1;
 }
 
 .font-custom-style-body-6 {
-	@apply font-open-sans;
-	@apply font-normal;
-	@apply text-[20px];
-	@apply text-custom-7;
+  @apply font-open-sans;
+  @apply font-normal;
+  @apply text-[20px];
+  @apply text-custom-7;
 }
 
 .font-custom-style-body-7 {
-	/* Set the font explicitly for firefox with a fall back to system-ui */
-	font-family:
-		Noto Sans,
-		system-ui;
-	@apply font-medium;
-	@apply text-[16px];
-	@apply text-custom-16;
+  /* Set the font explicitly for firefox with a fall back to system-ui */
+  font-family:
+    Noto Sans,
+    system-ui;
+  @apply font-medium;
+  @apply text-[16px];
+  @apply text-custom-16;
 }
 
 .font-custom-style-body-8 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-20;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-20;
 }
 
 .font-custom-style-body-9 {
-	@apply font-lato;
-	@apply font-normal;
-	@apply text-[16px];
-	@apply text-custom-21;
+  @apply font-lato;
+  @apply font-normal;
+  @apply text-[16px];
+  @apply text-custom-21;
 }
 
 .font-custom-style-button-1 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[18px];
-	@apply text-custom-1;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[18px];
+  @apply text-custom-1;
 }
 
 .font-custom-style-button-2 {
-	@apply font-noto-sans;
-	@apply font-semibold;
-	@apply text-[14px];
-	@apply text-custom-1;
+  @apply font-noto-sans;
+  @apply font-semibold;
+  @apply text-[14px];
+  @apply text-custom-1;
 }
 
 .font-custom-style-button-3 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-1;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-1;
 }
 
 .font-custom-style-h1 {
-	@apply font-open-sans;
-	@apply font-bold;
-	@apply text-[36px];
-	@apply text-custom-7;
+  @apply font-open-sans;
+  @apply font-bold;
+  @apply text-[36px];
+  @apply text-custom-7;
 }
 
 .font-custom-style-h1-2 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[28px];
-	@apply text-custom-7;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[28px];
+  @apply text-custom-7;
 }
 
 .font-custom-style-h2 {
-	@apply font-open-sans;
-	@apply font-bold;
-	@apply text-[28px];
-	@apply text-custom-15;
-	@apply leading-tight;
+  @apply font-open-sans;
+  @apply font-bold;
+  @apply text-[28px];
+  @apply text-custom-15;
+  @apply leading-tight;
 }
 
 .font-custom-style-h2-2 {
-	@apply font-lato;
-	@apply font-bold;
-	@apply text-[18px];
-	@apply text-custom-16;
-	@apply leading-tight;
+  @apply font-lato;
+  @apply font-bold;
+  @apply text-[18px];
+  @apply text-custom-16;
+  @apply leading-tight;
 }
 
 .font-custom-style-h3 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-7;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-7;
 }
 
 .font-custom-style-h3-2 {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply text-custom-21;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-21;
 }
 
 .font-custom-style-placeholder {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-[16px];
-	@apply placeholder-custom-7/[.17];
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply placeholder-custom-7/[.17];
 }
 
 .font-custom-style-h1-carousel {
-	@apply font-open-sans;
-	@apply font-semibold;
-	@apply text-lg;
-	@apply text-custom-16;
-	@apply leading-tight;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-lg;
+  @apply text-custom-16;
+  @apply leading-tight;
 }
 
 .font-custom-style-body-carousel {
-	@apply font-open-sans;
-	@apply font-normal;
-	@apply text-base;
-	@apply text-custom-7;
+  @apply font-open-sans;
+  @apply font-normal;
+  @apply text-base;
+  @apply text-custom-7;
 }
 
 .share-icons {
-	@apply m-1;
-	@apply md:m-2;
-	@apply h-10;
-	@apply md:h-12;
-	@apply w-10;
-	@apply md:w-12;
+  @apply m-1;
+  @apply md:m-2;
+  @apply h-10;
+  @apply md:h-12;
+  @apply w-10;
+  @apply md:w-12;
 }
 
 /***********************************************
@@ -335,5 +335,5 @@
 *   does not overlap the full screen elements.
 ************************************************/
 div[role='presentation'] {
-	z-index: 11100;
+  z-index: 11100;
 }

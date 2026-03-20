@@ -14,25 +14,24 @@ const docClient = DynamoDBDocumentClient.from(client);
  * @returns A promise that resolves to the user data.
  */
 const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
-	let token: TokenResponse = await getToken(cookies);
-	if (!token.ok) return { Item: { uuid: null, favourites: [] } };
-	const command = new GetCommand({
-		TableName: process.env.USER_TABLE_NAME,
-		Key: {
-			uuid: token.value!.username
-		}
-	});
+  let token: TokenResponse = await getToken(cookies);
+  if (!token.ok) return { Item: { uuid: null, favourites: [] } };
+  const command = new GetCommand({
+    TableName: process.env.USER_TABLE_NAME,
+    Key: {
+      uuid: token.value!.username,
+    },
+  });
 
-	let response: UserInfo = { Item: { uuid: null, favourites: [] } };
-	try {
-		response = (await docClient.send(command)) as unknown as UserInfo;
-	} catch (error) {
-		console.error('Error fetching user data.');
-		console.error(error);
-	}
-	if (response?.Item === undefined || response.Item === null)
-		response = { Item: { uuid: token.value!.username, favourites: [] } };
-	return response;
+  let response: UserInfo = { Item: { uuid: null, favourites: [] } };
+  try {
+    response = (await docClient.send(command)) as unknown as UserInfo;
+  } catch (error) {
+    console.error('Error fetching user data.');
+    console.error(error);
+  }
+  if (response?.Item === undefined || response.Item === null) response = { Item: { uuid: token.value!.username, favourites: [] } };
+  return response;
 };
 
 /**
@@ -42,20 +41,17 @@ const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
  * @param cookies - The cookies object containing user session data.
  * @returns A promise that resolves to the result of the operation.
  */
-const putUserData = async (
-	data: Partial<UserData>,
-	cookies: Cookies
-): Promise<Record<'ok', boolean>> => {
-	let token: TokenResponse = await getToken(cookies);
-	if (!token.ok) return { ok: false };
-	data.uuid = token.value!.username;
-	await docClient.send(
-		new PutCommand({
-			TableName: process.env.USER_TABLE_NAME,
-			Item: data
-		})
-	);
-	return { ok: true };
+const putUserData = async (data: Partial<UserData>, cookies: Cookies): Promise<Record<'ok', boolean>> => {
+  let token: TokenResponse = await getToken(cookies);
+  if (!token.ok) return { ok: false };
+  data.uuid = token.value!.username;
+  await docClient.send(
+    new PutCommand({
+      TableName: process.env.USER_TABLE_NAME,
+      Item: data,
+    })
+  );
+  return { ok: true };
 };
 
 export { getUserData, putUserData };

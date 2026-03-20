@@ -10,15 +10,15 @@ const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
  * @returns A promise that resolves to the record response.
  */
 export async function POST({ request }): Promise<Response> {
-	const { ids, lang } = await request.json();
+  const { ids, lang } = await request.json();
 
-	if (!Array.isArray(ids)) {
-		return json({ error: 'Invalid IDs' }, { status: 400 });
-	}
+  if (!Array.isArray(ids)) {
+    return json({ error: 'Invalid IDs' }, { status: 400 });
+  }
 
-	const records: GeospatialRecord[] = await getRecordsByIds(ids, lang);
+  const records: GeospatialRecord[] = await getRecordsByIds(ids, lang);
 
-	return json(records);
+  return json(records);
 }
 
 /**
@@ -29,13 +29,13 @@ export async function POST({ request }): Promise<Response> {
  * @returns A promise that resolves to the fetch response.
  */
 function getRecord(id: string, lang: string): Promise<Response> {
-	const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
-	const params = {
-		id: id,
-		lang: lang.split('-')[0]
-	};
-	url.search = new URLSearchParams(params).toString();
-	return fetch(url);
+  const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
+  const params = {
+    id: id,
+    lang: lang.split('-')[0],
+  };
+  url.search = new URLSearchParams(params).toString();
+  return fetch(url);
 }
 
 /**
@@ -46,23 +46,23 @@ function getRecord(id: string, lang: string): Promise<Response> {
  * @returns A promise that resolves to an array of records.
  */
 async function getRecordsByIds(idIterator: string[], lang: string): Promise<GeospatialRecord[]> {
-	let promises = [];
+  let promises = [];
 
-	for (const id of idIterator) {
-		promises.push(getRecord(id, lang));
-	}
+  for (const id of idIterator) {
+    promises.push(getRecord(id, lang));
+  }
 
-	const results = await Promise.all(promises);
+  const results = await Promise.all(promises);
 
-	let ret = await Promise.all(
-		results.map(async (result: Response) => {
-			try {
-				const contents = await result.json();
-				if (contents?.body?.Items[0]) return contents.body.Items[0];
-			} catch (error) {
-				console.log(error);
-			}
-		})
-	);
-	return ret;
+  let ret = await Promise.all(
+    results.map(async (result: Response) => {
+      try {
+        const contents = await result.json();
+        if (contents?.body?.Items[0]) return contents.body.Items[0];
+      } catch (error) {
+        console.log(error);
+      }
+    })
+  );
+  return ret;
 }

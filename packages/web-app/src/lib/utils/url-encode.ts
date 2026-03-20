@@ -5,12 +5,12 @@
  * @returns The URL-encoded string.
  */
 export function urlEncode(data: Record<string, any>): string {
-	const formBody: string[] = [];
-	for (const property in data) {
-		const encodedKey = encodeURIComponent(property);
-		const encodedValue = encodeURIComponent(data[property]);
-		formBody.push(encodedKey + '=' + encodedValue);
-	}
-	const formBodyString = formBody.join('&');
-	return formBodyString;
+  const formBody: string[] = [];
+  for (const property in data) {
+    const encodedKey = encodeURIComponent(property);
+    const encodedValue = encodeURIComponent(data[property]);
+    formBody.push(encodedKey + '=' + encodedValue);
+  }
+  const formBodyString = formBody.join('&');
+  return formBodyString;
 }

@@ -6,212 +6,205 @@ import { formatNumber } from '$lib/utils/format-number';
 import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '$lib/db/db-types';
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-	// The "sst/node/config" package dynamically binds resources at runtime.
-	// Importing it at the top level would cause build-time errors because SST resources
-	// are not available during the build process. To avoid this, we import it inside
-	// the `load()` function so it's only accessed when the server is running.
-	const config = await import('sst/node/config');
-	const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
+  // The "sst/node/config" package dynamically binds resources at runtime.
+  // Importing it at the top level would cause build-time errors because SST resources
+  // are not available during the build process. To avoid this, we import it inside
+  // the `load()` function so it's only accessed when the server is running.
+  const config = await import('sst/node/config');
+  const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
-	const lang = params.lang === 'en-ca' ? 'en' : 'fr';
+  const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
-	let record;
-	let response = await generateUrl(
-		fetch,
-		params.uuid,
-		lang,
-		cookies.get('id_token') || '',
-		request.headers.get('x-forwarded-for') || ''
-	);
-	try {
-		record = await response.json();
-	} catch (error) {
-		console.error(error);
-	}
+  let record;
+  let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
+  try {
+    record = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
 
-	/**
-	 * Extracts similarity records from a GeospatialRecord item.
-	 *
-	 * @param item - The record item.
-	 * @returns An array of similarity records.
-	 */
-	function extractSimilar(item: GeospatialRecord): SimilarityRecord[] {
-		return Array.isArray(item?.similarity) ? item.similarity : [];
-	}
+  /**
+   * Extracts similarity records from a GeospatialRecord item.
+   *
+   * @param item - The record item.
+   * @returns An array of similarity records.
+   */
+  function extractSimilar(item: GeospatialRecord): SimilarityRecord[] {
+    return Array.isArray(item?.similarity) ? item.similarity : [];
+  }
 
-	const fetchRelated = async (id: string): Promise<GeospatialRecord[]> => {
-		try {
-			const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
-			const parsedCollectionsResponse = await collectionsResponse.json();
-			const related = [];
+  const fetchRelated = async (id: string): Promise<GeospatialRecord[]> => {
+    try {
+      const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
+      const parsedCollectionsResponse = await collectionsResponse.json();
+      const related = [];
 
-			if (parsedCollectionsResponse.parent) {
-				related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
-			}
-			if (parsedCollectionsResponse.sibling_count > 0) {
-				parsedCollectionsResponse.sibling.forEach((sibling: GeospatialRecord) => {
-					related.push({ ...sibling, ...{ type: 'member' } });
-				});
-			}
-			if (parsedCollectionsResponse.child_count > 0) {
-				parsedCollectionsResponse.child.forEach((child: GeospatialRecord) => {
-					related.push({ ...child, ...{ type: 'member' } });
-				});
-			}
+      if (parsedCollectionsResponse.parent) {
+        related.push({ ...parsedCollectionsResponse.parent, ...{ type: 'parent' } });
+      }
+      if (parsedCollectionsResponse.sibling_count > 0) {
+        parsedCollectionsResponse.sibling.forEach((sibling: GeospatialRecord) => {
+          related.push({ ...sibling, ...{ type: 'member' } });
+        });
+      }
+      if (parsedCollectionsResponse.child_count > 0) {
+        parsedCollectionsResponse.child.forEach((child: GeospatialRecord) => {
+          related.push({ ...child, ...{ type: 'member' } });
+        });
+      }
 
-			return related;
-		} catch (e) {
-			console.error('Error fetching related items:', e);
-			return []; // Return empty array if fetch fails
-		}
-	};
+      return related;
+    } catch (e) {
+      console.error('Error fetching related items:', e);
+      return []; // Return empty array if fetch fails
+    }
+  };
 
-	// Extract analytics from record.hits
-	let analyticRes = {};
-	if (record?.hits) {
-		analyticRes = {
-			'30': formatNumber(record.hits.last_30_days),
-			all: formatNumber(record.hits.all_time)
-		};
-	}
+  // Extract analytics from record.hits
+  let analyticRes = {};
+  if (record?.hits) {
+    analyticRes = {
+      '30': formatNumber(record.hits.last_30_days),
+      all: formatNumber(record.hits.all_time),
+    };
+  }
 
-	let t = params.lang === 'en-ca' ? enLabels : frLabels;
+  let t = params.lang === 'en-ca' ? enLabels : frLabels;
 
-	const related = await fetchRelated(params.uuid);
+  const related = await fetchRelated(params.uuid);
 
-	let item_v2 = record.body.Items[0];
+  let item_v2 = record.body.Items[0];
 
-	if (item_v2?.keywords) {
-		item_v2.keywords = item_v2.keywords.split(',');
-	}
+  if (item_v2?.keywords) {
+    item_v2.keywords = item_v2.keywords.split(',');
+  }
 
-	if (item_v2?.description) {
-		item_v2.description = parseText(item_v2.description);
-	}
+  if (item_v2?.description) {
+    item_v2.description = parseText(item_v2.description);
+  }
 
-	// For the english version of the role, the value 'pointOfContact' is really common.
-	// We can replace it with the more readable 'point of contact'.
-	if (item_v2?.contact?.[0]?.role) {
-		item_v2.contact[0].role = item_v2.contact[0].role.replace('pointOfContact', 'point of contact');
-	}
+  // For the english version of the role, the value 'pointOfContact' is really common.
+  // We can replace it with the more readable 'point of contact'.
+  if (item_v2?.contact?.[0]?.role) {
+    item_v2.contact[0].role = item_v2.contact[0].role.replace('pointOfContact', 'point of contact');
+  }
 
-	// Sometimes, the organisation list in the distributor array has duplicate entries,
-	// those will be filtered out here.
-	if (item_v2.distributor) {
-		item_v2.distributor.forEach((dist: ContactInfo | null, index: number) => {
-			if (dist && dist.organisation) {
-				// Filter for unique values with a new Set object
-				const orgString = dist.organisation[lang as 'en' | 'fr'];
-				const orgs = [...new Set(orgString?.split('; ') || [])];
-				// convert back to string
-				dist.organisation[lang as 'en' | 'fr'] = orgs.length > 0 ? orgs.join('; ') : '';
-			} else {
-				item_v2.distributor[index] = { organisation: { en: '', fr: '' } } as ContactInfo;
-			}
-		});
-	} else {
-		item_v2.distributor = [{ organisation: { en: '', fr: '' } } as ContactInfo];
-	}
+  // Sometimes, the organisation list in the distributor array has duplicate entries,
+  // those will be filtered out here.
+  if (item_v2.distributor) {
+    item_v2.distributor.forEach((dist: ContactInfo | null, index: number) => {
+      if (dist && dist.organisation) {
+        // Filter for unique values with a new Set object
+        const orgString = dist.organisation[lang as 'en' | 'fr'];
+        const orgs = [...new Set(orgString?.split('; ') || [])];
+        // convert back to string
+        dist.organisation[lang as 'en' | 'fr'] = orgs.length > 0 ? orgs.join('; ') : '';
+      } else {
+        item_v2.distributor[index] = { organisation: { en: '', fr: '' } } as ContactInfo;
+      }
+    });
+  } else {
+    item_v2.distributor = [{ organisation: { en: '', fr: '' } } as ContactInfo];
+  }
 
-	// If coordinates are a string, convert them to an array (or nested arrays) instead
-	let coords = item_v2.coordinates ?? [];
+  // If coordinates are a string, convert them to an array (or nested arrays) instead
+  let coords = item_v2.coordinates ?? [];
 
-	if (typeof item_v2.coordinates === 'string') {
-		coords = JSON.parse(coords);
-		item_v2.coordinates = coords;
-	}
+  if (typeof item_v2.coordinates === 'string') {
+    coords = JSON.parse(coords);
+    item_v2.coordinates = coords;
+  }
 
-	// We can also add a bounding box key to get the north, east, west, and south
-	// values for the advanced metadata. But first, we need to get the values from
-	// the coordinates
-	let west = Infinity;
-	let east = -Infinity;
-	let south = Infinity;
-	let north = -Infinity;
+  // We can also add a bounding box key to get the north, east, west, and south
+  // values for the advanced metadata. But first, we need to get the values from
+  // the coordinates
+  let west = Infinity;
+  let east = -Infinity;
+  let south = Infinity;
+  let north = -Infinity;
 
-	coords.flat().forEach(([x, y]: [number, number]) => {
-		if (x < west) west = x; // West
-		if (x > east) east = x; // East
-		if (y < south) south = y; // South
-		if (y > north) north = y; // North
-	});
+  coords.flat().forEach(([x, y]: [number, number]) => {
+    if (x < west) west = x; // West
+    if (x > east) east = x; // East
+    if (y < south) south = y; // South
+    if (y > north) north = y; // North
+  });
 
-	item_v2.bbox = {
-		north: north,
-		east: east,
-		south: south,
-		west: west
-	};
+  item_v2.bbox = {
+    north: north,
+    east: east,
+    south: south,
+    west: west,
+  };
 
-	// Parse the topicCategory items into an array.
-	// Sometimes the categories are in one single camel case string like this:
-	// "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
-	// a comma-separated or semi-colon-separated list. We can do this with regular expressions.
-	if (item_v2.topicCategory && typeof item_v2.topicCategory === 'string') {
-		item_v2.topicCategory = item_v2.topicCategory.split(/[;,]/).map((item: string) => {
-			// Insert space before a capital letter, but only if it's preceded
-			// by a lowercase letter i.e. this ensures there is no space added
-			// for acronyms so, for example, NRCan does not become N R Can.
-			return item.replace(/([a-z])([A-Z])/g, '$1 $2');
-		});
-	}
+  // Parse the topicCategory items into an array.
+  // Sometimes the categories are in one single camel case string like this:
+  // "climatologyMeteorologyAtmosphere" we'll also consider cases where there is
+  // a comma-separated or semi-colon-separated list. We can do this with regular expressions.
+  if (item_v2.topicCategory && typeof item_v2.topicCategory === 'string') {
+    item_v2.topicCategory = item_v2.topicCategory.split(/[;,]/).map((item: string) => {
+      // Insert space before a capital letter, but only if it's preceded
+      // by a lowercase letter i.e. this ensures there is no space added
+      // for acronyms so, for example, NRCan does not become N R Can.
+      return item.replace(/([a-z])([A-Z])/g, '$1 $2');
+    });
+  }
 
-	const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
-	const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
-	const alternateUrl = url.href.replace(params.lang, alternateLang);
-	const metaDescription =
-		params.lang === 'fr-ca'
-			? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
-			: 'The metadata page and map for the GeoCore record ' + params.uuid;
+  const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
+  const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
+  const alternateUrl = url.href.replace(params.lang, alternateLang);
+  const metaDescription =
+    params.lang === 'fr-ca'
+      ? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
+      : 'The metadata page and map for the GeoCore record ' + params.uuid;
 
-	item_v2.title = item_v2['title_' + lang];
-	return {
-		tTitle1: {
-			text:
-				params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
-			href: url.origin + '/' + params.lang + '/map-browser'
-		},
-		tTitle2: {
-			text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
-			href: url.href
-		},
-		lang: params.lang,
-		uuid: params.uuid,
-		similar: extractSimilar(item_v2),
-		related: related,
-		analyticRes: analyticRes,
-		t: t,
-		item_v2: item_v2,
-		canonicalUrl: canonicalUrl,
-		alternateUrl: alternateUrl,
-		alternateLang: alternateLang,
-		metaDescription: metaDescription
-	};
+  item_v2.title = item_v2['title_' + lang];
+  return {
+    tTitle1: {
+      text: params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+      href: url.origin + '/' + params.lang + '/map-browser',
+    },
+    tTitle2: {
+      text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
+      href: url.href,
+    },
+    lang: params.lang,
+    uuid: params.uuid,
+    similar: extractSimilar(item_v2),
+    related: related,
+    analyticRes: analyticRes,
+    t: t,
+    item_v2: item_v2,
+    canonicalUrl: canonicalUrl,
+    alternateUrl: alternateUrl,
+    alternateLang: alternateLang,
+    metaDescription: metaDescription,
+  };
 
-	/**
-	 * Generates a fetch request to get a record from the GeoCore API.
-	 *
-	 * @param fetch - The fetch function.
-	 * @param uuid - The UUID of the record.
-	 * @param lang - The language code.
-	 * @param token - The authentication token.
-	 * @param ip - The IP address.
-	 * @returns A promise that resolves to the fetch response.
-	 */
-	function generateUrl(
-		fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
-		uuid: string,
-		lang: string,
-		token: string,
-		ip: string
-	): Promise<Response> {
-		let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
+  /**
+   * Generates a fetch request to get a record from the GeoCore API.
+   *
+   * @param fetch - The fetch function.
+   * @param uuid - The UUID of the record.
+   * @param lang - The language code.
+   * @param token - The authentication token.
+   * @param ip - The IP address.
+   * @returns A promise that resolves to the fetch response.
+   */
+  function generateUrl(
+    fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
+    uuid: string,
+    lang: string,
+    token: string,
+    ip: string
+  ): Promise<Response> {
+    let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
 
-		return fetch(url, {
-			headers: {
-				Authentication: 'Bearer ' + token,
-				'x-forwarded-for': ip
-			}
-		});
-	}
+    return fetch(url, {
+      headers: {
+        Authentication: 'Bearer ' + token,
+        'x-forwarded-for': ip,
+      },
+    });
+  }
 };
