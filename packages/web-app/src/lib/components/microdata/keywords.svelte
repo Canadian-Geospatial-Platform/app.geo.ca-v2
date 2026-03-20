@@ -1,7 +1,7 @@
 <script lang="ts">
-	const { item } = $props();
+  const { item } = $props();
 </script>
 
 {#each item.keywords as k}
-	<span property="keywords">{k}</span>
+  <span property="keywords">{k}</span>
 {/each}

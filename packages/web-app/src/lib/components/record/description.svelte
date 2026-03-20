@@ -1,99 +1,84 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import { onMount } from 'svelte';
-	import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
-	import Heart from '$lib/components/icons/heart.svelte';
-	import HeartFilled from '$lib/components/icons/heart-filled.svelte';
+  import { page } from '$app/state';
+  import { onMount } from 'svelte';
+  import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
+  import Heart from '$lib/components/icons/heart.svelte';
+  import HeartFilled from '$lib/components/icons/heart-filled.svelte';
 
-	const data = page.data;
-	const translations = data.t;
-	const items = data.item_v2;
-	const properties = items;
+  const data = page.data;
+  const translations = data.t;
+  const items = data.item_v2;
+  const properties = items;
 
-	const title = properties.title;
-	const description = properties.description;
-	const addToFavourites = translations?.addToFavourites
-		? translations.addToFavourites
-		: 'Add to Favourites';
-	const removeFromFavourites = translations?.removeFromFavourites
-		? translations.removeFromFavourites
-		: 'Remove from Favourites';
+  const title = properties.title;
+  const description = properties.description;
+  const addToFavourites = translations?.addToFavourites ? translations.addToFavourites : 'Add to Favourites';
+  const removeFromFavourites = translations?.removeFromFavourites ? translations.removeFromFavourites : 'Remove from Favourites';
 
-	/****************** Favourites Resources ******************/
-	let favouriteRecordList = $state<string[]>(
-		data?.userData?.favourites ? [...data?.userData?.favourites] : []
-	);
+  /****************** Favourites Resources ******************/
+  let favouriteRecordList = $state<string[]>(data?.userData?.favourites ? [...data.userDatas.favourites] : []);
 
-	/**
-	 * Handles the favourite click event.
-	 * 
-	 * @param recordId - The ID of the record to toggle in favourites.
-	 * @returns A promise that resolves when the operation is complete.
-	 */
-	async function handleFavouriteClick(recordId: string): Promise<void> {
-		if (!favouriteRecordList.includes(recordId)) {
-			// Add to list of ids
-			favouriteRecordList.push(recordId);
+  /**
+   * Handles the favourite click event.
+   *
+   * @param recordId - The ID of the record to toggle in favourites.
+   * @returns A promise that resolves when the operation is complete.
+   */
+  async function handleFavouriteClick(recordId: string): Promise<void> {
+    if (!favouriteRecordList.includes(recordId)) {
+      // Add to list of ids
+      favouriteRecordList.push(recordId);
+    } else {
+      // Remove from list of ids
+      let index = favouriteRecordList.indexOf(recordId);
+      if (index > -1) {
+        favouriteRecordList.splice(index, 1);
+      }
+    }
 
-			if (data.signedIn) {
-				// TODO: Add item to the favourites when login system has been approved
-			}
-		} else {
-			// Remove from list of ids
-			let index = favouriteRecordList.indexOf(recordId);
-			if (index > -1) {
-				favouriteRecordList.splice(index, 1);
-			}
+    // Update localStorage and dispatch localstorage_updated event
+    updateLocalStorage('FavouritesResources', favouriteRecordList);
+  }
 
-			if (data.signedIn) {
-				// TODO: Remove item from the favourites when login system has been approved
-			}
-		}
+  // Local storage is only accessible from the client side, so we need to get
+  // the FavouritesResources array inside onMount.
+  onMount((): void => {
+    let stored = localStorage.getItem('FavouritesResources');
 
-		// Update localStorage and dispatch localstorage_updated event
-		updateLocalStorage('FavouritesResources', favouriteRecordList);
-	}
-
-	// Local storage is only accessible from the client side, so we need to get
-	// the FavouritesResources array inside onMount.
-	onMount((): void => {
-		if (!data.signedIn) {
-			let stored = localStorage.getItem('FavouritesResources');
-
-			if (stored) {
-				favouriteRecordList = stored.split(',');
-			}
-		}
-	});
+    if (stored) {
+      favouriteRecordList = stored.split(',');
+    }
+  });
 </script>
 
 <div>
-	<h1 class="font-custom-style-h1 mb-8 mt-12 mx-5 md:mx-0 leading-tight">
-		{title}
-	</h1>
-	<p class="font-custom-style-body-1 mx-5 md:mx-0">
-		{@html description}
-	</p>
+  <h1 class="font-custom-style-h1 mb-8 mt-12 mx-5 md:mx-0 leading-tight">
+    {title}
+  </h1>
+  <p class="font-custom-style-body-1 mx-5 md:mx-0">
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+    {@html description}
+  </p>
 
-	{#if favouriteRecordList.includes(properties.id)}
-		<button
-			class="text-custom-1 font-custom-style-body-5 bg-custom-16 border-custom-16 border-2
+  {#if favouriteRecordList.includes(properties.id)}
+    <button
+      class="text-custom-1 font-custom-style-body-5 bg-custom-16 border-custom-16 border-2
         rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mx-5 md:mx-0 mt-5 py-1 px-6 w-fit
         hover:border-custom-23 hover:bg-custom-23"
-			onclick={() => handleFavouriteClick(properties.id)}
-		>
-			<HeartFilled classes="h-6 inline my-2 mr-1" />
-			{removeFromFavourites}
-		</button>
-	{:else}
-		<button
-			class="text-custom-16 font-custom-style-body-3 border-custom-16 border-2
+      onclick={() => handleFavouriteClick(properties.id)}
+    >
+      <HeartFilled classes="h-6 inline my-2 mr-1" />
+      {removeFromFavourites}
+    </button>
+  {:else}
+    <button
+      class="text-custom-16 font-custom-style-body-3 border-custom-16 border-2
         rounded-md shadow-[0_0.1875rem_0.375rem_#00000029] mx-5 md:mx-0 mt-5 py-1 px-6 w-fit
         hover:text-custom-1 hover:border-custom-23 hover:bg-custom-23"
-			onclick={() => handleFavouriteClick(properties.id)}
-		>
-			<Heart classes="h-6 inline my-2 mr-1" />
-			{addToFavourites}
-		</button>
-	{/if}
+      onclick={() => handleFavouriteClick(properties.id)}
+    >
+      <Heart classes="h-6 inline my-2 mr-1" />
+      {addToFavourites}
+    </button>
+  {/if}
 </div>

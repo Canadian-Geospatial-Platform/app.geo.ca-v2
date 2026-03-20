@@ -1,7 +1,8 @@
+import type { Cookies } from '@sveltejs/kit';
 // import { CognitoJwtVerifier } from 'aws-jwt-verify';
 
-const COGNITO_USERPOOL_ID = process.env.COGNITO_USERPOOL_ID;
-const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
+// const COGNITO_USERPOOL_ID = process.env.COGNITO_USERPOOL_ID;
+// const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
 
 // const verifier = CognitoJwtVerifier.create({
 // 	userPoolId: COGNITO_USERPOOL_ID,
@@ -25,8 +26,12 @@ const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
 // 	}
 // };
 
-const getToken = async (cookies) => {
-	return { ok: false };
-};
-
-export { getToken };
+/**
+ * Fetches the token from the cookies.
+ *
+ * @param cookies - The cookies object containing user session data.
+ * @returns A promise that resolves to an object indicating the success of the operation and the token value if successful.
+ */
+export async function getToken(cookies: Cookies): Promise<{ ok: boolean }> {
+  return { ok: false };
+}

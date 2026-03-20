@@ -8,10 +8,10 @@ import type { GeospatialRecord } from '$lib/db/db-types';
  * @returns The sanitized array of results.
  */
 function sanitize(results: GeospatialRecord[], lang: string): GeospatialRecord[] {
-	let truthyResults = results.filter((result) => result);
-	let fixedCoordsResults = fixCoordinatesType(truthyResults);
-	let normalizedLanguagedResults = normalizeLanguage(fixedCoordsResults, lang);
-	return normalizedLanguagedResults;
+  let truthyResults = results.filter((result) => result);
+  let fixedCoordsResults = fixCoordinatesType(truthyResults);
+  let normalizedLanguagedResults = normalizeLanguage(fixedCoordsResults, lang);
+  return normalizedLanguagedResults;
 }
 
 /**
@@ -21,11 +21,11 @@ function sanitize(results: GeospatialRecord[], lang: string): GeospatialRecord[]
  * @returns The array of results with fixed coordinate types.
  */
 function fixCoordinatesType(results: GeospatialRecord[]): GeospatialRecord[] {
-	results.forEach((result) => {
-		result.coordinates = JSON.parse(result.coordinates);
-	});
+  results.forEach((result) => {
+    result.coordinates = JSON.parse(result.coordinates);
+  });
 
-	return results;
+  return results;
 }
 
 /**
@@ -36,23 +36,23 @@ function fixCoordinatesType(results: GeospatialRecord[]): GeospatialRecord[] {
  * @returns The array of records with normalized language fields.
  */
 function normalizeLanguage(records: GeospatialRecord[], lang: string): GeospatialRecord[] {
-	for (const record of records) {
-		try {
-			let title = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
-			if (title) {
-				record.title = title;
-			}
+  for (const record of records) {
+    try {
+      let title = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
+      if (title) {
+        record.title = title;
+      }
 
-			// TODO: Should this be description? Why is description being set to the title?
-			let description = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
-			if (description) {
-				record.description = description;
-			}
-		} catch (error: any) {
-			console.warn('error normalizing data: \n', record, '\n', error);
-		}
-	}
-	return records;
+      // TODO: Should this be description? Why is description being set to the title?
+      let description = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
+      if (description) {
+        record.description = description;
+      }
+    } catch (error: any) {
+      console.warn('error normalizing data: \n', record, '\n', error);
+    }
+  }
+  return records;
 }
 
 export { sanitize };
