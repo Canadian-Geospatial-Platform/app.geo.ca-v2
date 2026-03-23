@@ -20,172 +20,166 @@
 ------------------------------------------------------------------>
 
 <script lang="ts">
-	import { page } from '$app/state';
-	import Chevrondown from '$lib/components/icons/chevrondown.svelte';
-	import Chevronup from '$lib/components/icons/chevronup.svelte';
-	import Close from '$lib/components/icons/close.svelte';
-	import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
+  import { page } from '$app/state';
+  import Chevrondown from '$lib/components/icons/chevrondown.svelte';
+  import Chevronup from '$lib/components/icons/chevronup.svelte';
+  import Close from '$lib/components/icons/close.svelte';
+  import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
 
-	interface Props {
-		optionsData: Array<SelectOption>;
-		// The default selection object
-		selected: SelectOption | undefined;
-		removableSelection?: boolean;
-		defaultLabel?: string;
-		selectType?: string;
-		selectedChange: (selected: SelectOption | null) => void;
-	}
+  interface Props {
+    optionsData: Array<SelectOption>;
+    // The default selection object
+    selected: SelectOption | undefined;
+    removableSelection?: boolean;
+    defaultLabel?: string;
+    selectType?: string;
+    selectedChange: (selected: SelectOption | null) => void;
+  }
 
-	let {
-		optionsData,
-		selected = $bindable(),
-		removableSelection = false,
-		defaultLabel = '',
-		selectType = 'default',
-		selectedChange
-	}: Props = $props();
+  let {
+    optionsData,
+    selected = $bindable(),
+    removableSelection = false,
+    defaultLabel = '',
+    selectType = 'default',
+    selectedChange,
+  }: Props = $props();
 
-	const lang = page.data.lang;
-	let clearAriaLabel = lang === 'fr-ca' ? 'Effacer la sélection' : 'Clear selection';
+  const lang = page.data.lang;
+  let clearAriaLabel = lang === 'fr-ca' ? 'Effacer la sélection' : 'Clear selection';
 
-	let expanded = $state(false);
-	let selectEl = $state<HTMLSelectElement>();
+  let expanded = $state(false);
+  let selectEl = $state<HTMLSelectElement>();
 
-	/**
-	 * Handles the selection change event.
-	 * 
-	 * @param event - The change event.
-	 */
-	function handleSelectionChange(event: Event): void {
-		let value = (event.target as HTMLSelectElement)?.value;
+  /**
+   * Handles the selection change event.
+   *
+   * @param event - The change event.
+   */
+  function handleSelectionChange(event: Event): void {
+    let value = (event.target as HTMLSelectElement)?.value;
 
-		if (value !== selected?.value) {
-			selected = optionsData.find((x) => x.value === value);
-			selectedChange(selected || null);
-		}
-	}
+    if (value !== selected?.value) {
+      selected = optionsData.find((x) => x.value === value);
+      selectedChange(selected || null);
+    }
+  }
 
-	/**
-	 * Handles the select element click event.
-	 */
-	function handleSelectClick(): void {
-		expanded = !expanded;
-	}
+  /**
+   * Handles the select element click event.
+   */
+  function handleSelectClick(): void {
+    expanded = !expanded;
+  }
 
-	/**
-	 * Handles the keydown event on the select element.
-	 * 
-	 * @param event - The keyboard event.
-	 */
-	function handleSearchEnterKeyDown(event: KeyboardEvent): void {
-		let key = event.key;
-		if (key === 'Enter' || (key === ' ' && !expanded)) {
-			expanded = !expanded;
-		}
-	}
+  /**
+   * Handles the keydown event on the select element.
+   *
+   * @param event - The keyboard event.
+   */
+  function handleSearchEnterKeyDown(event: KeyboardEvent): void {
+    let key = event.key;
+    if (key === 'Enter' || (key === ' ' && !expanded)) {
+      expanded = !expanded;
+    }
+  }
 
-	/**
-	 * Handles the blur event on the select element.
-	 */
-	function handleBlur(): void {
-		expanded = false;
-	}
+  /**
+   * Handles the blur event on the select element.
+   */
+  function handleBlur(): void {
+    expanded = false;
+  }
 
-	/**
-	 * Handles the remove selection button click event.
-	 */
-	function handleRemoveSelect(): void {
-		// Change focus to select element instead of the remove button
-		// since the remove button will be removed from the DOM when no
-		// option is selected
-		if (selectEl instanceof HTMLSelectElement) {
-			selectEl.focus();
-		}
+  /**
+   * Handles the remove selection button click event.
+   */
+  function handleRemoveSelect(): void {
+    // Change focus to select element instead of the remove button
+    // since the remove button will be removed from the DOM when no
+    // option is selected
+    if (selectEl instanceof HTMLSelectElement) {
+      selectEl.focus();
+    }
 
-		// remove the selection
-		expanded = false;
-		selected = undefined;
-		selectedChange(selected || null);
-	}
+    // remove the selection
+    expanded = false;
+    selected = undefined;
+    selectedChange(selected || null);
+  }
 </script>
 
-<div
-	class={[
-		'relative',
-		selectType === 'resultList' && 'resultList',
-		selectType === 'default' && 'default'
-	]}
->
-	<select
-		class={[
-			'pr-16 md:pr-12 appearance-none cursor-pointer',
-			selectType === 'tabCard' && 'tabCard',
-			selectType === 'categoryFilter' && 'categoryFilter',
-			(selectType === 'resultList' || selectType === 'default') && 'select-button-2',
-			(selectType === 'categoryFilter' || selectType === 'tabCard') && 'button-4'
-		]}
-		onchange={handleSelectionChange}
-		onclick={handleSelectClick}
-		onkeydown={handleSearchEnterKeyDown}
-		onblur={handleBlur}
-		bind:this={selectEl}
-	>
-		{#if defaultLabel}
-			{#if !selected}
-				<option value="" disabled={!removableSelection} selected>{defaultLabel}</option>
-			{:else}
-				<option value="" disabled={!removableSelection}>{defaultLabel}</option>
-			{/if}
-		{/if}
+<div class={['relative', selectType === 'resultList' && 'resultList', selectType === 'default' && 'default']}>
+  <select
+    class={[
+      'pr-16 md:pr-12 appearance-none cursor-pointer',
+      selectType === 'tabCard' && 'tabCard',
+      selectType === 'categoryFilter' && 'categoryFilter',
+      (selectType === 'resultList' || selectType === 'default') && 'select-button-2',
+      (selectType === 'categoryFilter' || selectType === 'tabCard') && 'button-4',
+    ]}
+    onchange={handleSelectionChange}
+    onclick={handleSelectClick}
+    onkeydown={handleSearchEnterKeyDown}
+    onblur={handleBlur}
+    bind:this={selectEl}
+  >
+    {#if defaultLabel}
+      {#if !selected}
+        <option value="" disabled={!removableSelection} selected>{defaultLabel}</option>
+      {:else}
+        <option value="" disabled={!removableSelection}>{defaultLabel}</option>
+      {/if}
+    {/if}
 
-		{#each optionsData as option}
-			{#if selected && selected.value === option.value}
-				<option value={option.value} selected>{option.label}</option>
-			{:else}
-				<option value={option.value}>{option.label}</option>
-			{/if}
-		{/each}
-	</select>
-	{#if selected && removableSelection}
-		<button
-			type="button"
-			aria-label={clearAriaLabel}
-			class="clear-btn absolute top-1/4 right-10 md:right-14 text-gray-400 rounded-full p-1.5"
-			onclick={handleRemoveSelect}
-		>
-			<Close classes="w-2.5 h-2.5" />
-		</button>
-	{/if}
-	{#if expanded}
-		<Chevronup classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none" />
-	{:else}
-		<Chevrondown classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none" />
-	{/if}
+    {#each optionsData as option}
+      {#if selected && selected.value === option.value}
+        <option value={option.value} selected>{option.label}</option>
+      {:else}
+        <option value={option.value}>{option.label}</option>
+      {/if}
+    {/each}
+  </select>
+  {#if selected && removableSelection}
+    <button
+      type="button"
+      aria-label={clearAriaLabel}
+      class="clear-btn absolute top-1/4 right-10 md:right-14 text-gray-400 rounded-full p-1.5"
+      onclick={handleRemoveSelect}
+    >
+      <Close classes="w-2.5 h-2.5" />
+    </button>
+  {/if}
+  {#if expanded}
+    <Chevronup classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none" />
+  {:else}
+    <Chevrondown classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none" />
+  {/if}
 </div>
 
 <style lang="postcss">
-	.resultList,
-	.default {
-		@apply text-custom-16;
-	}
+  .resultList,
+  .default {
+    @apply text-custom-16;
+  }
 
-	.tabCard,
-	.categoryFilter {
-		/* Set the font explicitly for firefox with a fall back to system-ui */
-		font-family:
-			Open Sans,
-			system-ui;
-		@apply w-full;
-	}
+  .tabCard,
+  .categoryFilter {
+    /* Set the font explicitly for firefox with a fall back to system-ui */
+    font-family:
+      Open Sans,
+      system-ui;
+    @apply w-full;
+  }
 
-	.clear-btn:hover,
-	.clear-btn:focus {
-		@apply text-custom-1;
-		@apply bg-custom-22;
-	}
+  .clear-btn:hover,
+  .clear-btn:focus {
+    @apply text-custom-1;
+    @apply bg-custom-22;
+  }
 
-	option {
-		/* Ensures <option> inherits from <select> specifically for firefox */
-		font-family: inherit;
-	}
+  option {
+    /* Ensures <option> inherits from <select> specifically for firefox */
+    font-family: inherit;
+  }
 </style>

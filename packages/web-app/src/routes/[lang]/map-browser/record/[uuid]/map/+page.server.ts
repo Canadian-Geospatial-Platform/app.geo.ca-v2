@@ -2,33 +2,32 @@ import type { PageServerLoad } from './$types';
 import { getRecord } from '$lib/db/record';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
-	let record;
-	let features;
-	let properties;
-	try {
-		record = await getRecord(params.uuid);
-		features = record?.features[0];
-		properties = features?.properties;
-	} catch (e) {
-		console.warn('error fetching record for microdata:\n', e);
-	}
+  let record;
+  let features;
+  let properties;
+  try {
+    record = await getRecord(params.uuid);
+    features = record?.features[0];
+    properties = features?.properties;
+  } catch (e) {
+    console.warn('error fetching record for microdata:\n', e);
+  }
 
-	return {
-		tTitle1: {
-			text:
-				params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
-			href: url.origin + '/' + params.lang + '/map-browser'
-		},
-		tTitle2: {
-			text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
-			href: url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid
-		},
-		tTitle3: {
-			text: properties.title,
-			href: url.href
-		},
-		lang: params.lang,
-		uuid: params.uuid,
-		coordinates: features.geometry.coordinates
-	};
+  return {
+    tTitle1: {
+      text: params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+      href: `${url.origin}/${params.lang}/map-browser`,
+    },
+    tTitle2: {
+      text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
+      href: `${url.origin}/${params.lang}/map-browser/record/${params.uuid}`,
+    },
+    tTitle3: {
+      text: properties.title,
+      href: url.href,
+    },
+    lang: params.lang,
+    uuid: params.uuid,
+    coordinates: features.geometry.coordinates,
+  };
 };

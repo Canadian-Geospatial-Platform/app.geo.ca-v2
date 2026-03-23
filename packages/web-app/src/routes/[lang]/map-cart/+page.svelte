@@ -1,41 +1,43 @@
 <script context="module" lang="ts">
-	declare const cgpv: any;
+  // TODO: Find a way to import the cgpv types from geoview here so we don't have to use 'any'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  declare const cgpv: any;
 </script>
 
 <script lang="ts">
-	import { navigating, page } from '$app/state';
-	import { onMount, tick } from 'svelte';
-	import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
-	import MapCart from '$lib/components/mapcart/mapcart.svelte';
+  import { navigating, page } from '$app/state';
+  import { onMount, tick } from 'svelte';
+  import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
+  import MapCart from '$lib/components/mapcart/mapcart.svelte';
 
-	const lang = page.data.lang;
-	const title = lang === 'fr-ca' ? 'app.geo.ca - Panier de cartes' : 'app.geo.ca - Map Cart';
+  const lang = page.data.lang;
+  const title = lang === 'fr-ca' ? 'app.geo.ca - Panier de cartes' : 'app.geo.ca - Map Cart';
 
-	const canonicalUrl = page.data.canonicalUrl;
-	const alternateUrl = page.data.alternateUrl;
-	const alternateLang = page.data.alternateLang;
-	const metaDescription = page.data.metaDescription;
+  const canonicalUrl = page.data.canonicalUrl;
+  const alternateUrl = page.data.alternateUrl;
+  const alternateLang = page.data.alternateLang;
+  const metaDescription = page.data.metaDescription;
 
-	onMount(async () => {
-		try {
-			await tick();
-			cgpv.init();
-		} catch (e) {
-			console.warn('Error initialising cgpv.', e);
-		}
-	});
+  onMount(async () => {
+    try {
+      await tick();
+      cgpv.init();
+    } catch (e) {
+      console.warn('Error initialising cgpv.', e);
+    }
+  });
 </script>
 
 <svelte:head>
-	<title>{title}</title>
-	<meta name="description" content={metaDescription} />
-	<link rel="canonical" href={canonicalUrl} />
-	<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
-	<script src="https://viewer-visualiseur.services.geo.ca/apps/GeoView/2.1.2/cgpv-main.js"></script>
+  <title>{title}</title>
+  <meta name="description" content={metaDescription} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+  <script src="https://viewer-visualiseur.services.geo.ca/apps/GeoView/2.1.2/cgpv-main.js"></script>
 </svelte:head>
 
 {#if navigating.type !== null}
-	<LoadingMask classes="fixed left-0 top-0 items-center" />
+  <LoadingMask classes="fixed left-0 top-0 items-center" />
 {/if}
 
 <MapCart />

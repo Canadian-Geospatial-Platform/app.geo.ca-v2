@@ -8,11 +8,11 @@
  * @returns The formatted number as a string.
  */
 export const formatNumber = function (num: string | number): string {
-	if (typeof num === 'number') {
-		num = num.toLocaleString();
-	} else if (typeof num === 'string') {
-		num = Number.parseFloat(num).toLocaleString();
-	}
+  if (typeof num === 'number') {
+    num = num.toLocaleString();
+  } else if (typeof num === 'string') {
+    num = Number.parseFloat(num).toLocaleString();
+  }
 
-	return num;
+  return num;
 };

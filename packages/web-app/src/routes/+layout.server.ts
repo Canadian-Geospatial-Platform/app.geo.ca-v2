@@ -11,15 +11,13 @@ import enShareTranslations from '$lib/components/share/i18n/en/translations.json
 import frShareTranslations from '$lib/components/share/i18n/fr/translations.json';
 
 export const load: LayoutServerLoad = async ({ cookies, params }) => {
-	// TODO: improve language handling
-	return {
-		lang: params.lang as 'en-ca' | 'fr-ca',
-		signedIn: cookies.get('id_token') ? true : false,
-		FEATURE_SIGN_IN: process.env.FEATURE_SIGN_IN === 'true' ? true : false,
-		footerLinks: params.lang === 'fr-ca' ? frFooterLinks : enFooterLinks,
-		legalData: params.lang === 'fr-ca' ? frLegal : enLegal,
-		navitems: params.lang === 'fr-ca' ? frNavitems : enNavitems,
-		headerTranslations: params.lang === 'fr-ca' ? frHeaderTranslations : enHeaderTranslations,
-		shareTranslations: params.lang === 'fr-ca' ? frShareTranslations : enShareTranslations
-	};
+  // TODO: improve language handling
+  return {
+    lang: params.lang as 'en-ca' | 'fr-ca',
+    footerLinks: params.lang === 'fr-ca' ? frFooterLinks : enFooterLinks,
+    legalData: params.lang === 'fr-ca' ? frLegal : enLegal,
+    navitems: params.lang === 'fr-ca' ? frNavitems : enNavitems,
+    headerTranslations: params.lang === 'fr-ca' ? frHeaderTranslations : enHeaderTranslations,
+    shareTranslations: params.lang === 'fr-ca' ? frShareTranslations : enShareTranslations,
+  };
 };

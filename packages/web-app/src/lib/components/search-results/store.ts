@@ -10,5 +10,5 @@ export const tempCategoryOfInterest: Writable<CategoryOfInterest | null> = writa
  * @param category - The interest category.
  */
 export function updateTempCategoryOfInterest(category: CategoryOfInterest | null): void {
-	tempCategoryOfInterest.set(category);
+  tempCategoryOfInterest.set(category);
 }

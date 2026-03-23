@@ -11,27 +11,24 @@ import type { ActionReturn } from 'svelte/action';
  * @param  callback - The function to call when a click occurs outside.
  * @returns  An object with a destroy method to clean up the event listener.
  */
-export function clickOutside(
-	node: HTMLButtonElement | HTMLFormElement,
-	callback?: () => void
-): ActionReturn {
-	let handleClick: (event: MouseEvent) => void;
+export function clickOutside(node: HTMLButtonElement | HTMLFormElement, callback?: () => void): ActionReturn {
+  let handleClick: (event: MouseEvent) => void;
 
-	// Since Svelte does not execute onMount during server side rendering,
-	// it's safe to include DOM operations here (i.e. referencing the window)
-	onMount(() => {
-		handleClick = (event: MouseEvent): void => {
-			if (node && !node.contains(event.target as Node) && !event.defaultPrevented) {
-				callback?.();
-			}
-		};
+  // Since Svelte does not execute onMount during server side rendering,
+  // it's safe to include DOM operations here (i.e. referencing the window)
+  onMount(() => {
+    handleClick = (event: MouseEvent): void => {
+      if (node && !node.contains(event.target as Node) && !event.defaultPrevented) {
+        callback?.();
+      }
+    };
 
-		window.addEventListener('click', handleClick, true);
-	});
+    window.addEventListener('click', handleClick, true);
+  });
 
-	return {
-		destroy() {
-			window.removeEventListener('click', handleClick, true);
-		}
-	};
+  return {
+    destroy() {
+      window.removeEventListener('click', handleClick, true);
+    },
+  };
 }

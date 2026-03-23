@@ -5,7 +5,6 @@ import { DynamoDBClient, DescribeTableCommand } from "@aws-sdk/client-dynamodb";
 
 const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca";
 const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca";
-const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
 const OIDC_CUSTOM_DOMAIN = process.env.OIDC_CUSTOM_DOMAIN;
 
 /**
@@ -54,7 +53,6 @@ export default {
     );
 
     app.stack(function Site({ stack }) {
-      const OIDC_CLIENT_SECRET = new Config.Secret(stack, "OIDC_CLIENT_SECRET");
       /*** User Table ***/
 
       // Check if an existing user table exists. If it does, use it instead of creating a new one.
@@ -66,9 +64,6 @@ export default {
           });
 
       /*** Other Resources ***/
-      const FEATURE_SIGN_IN = new Config.Parameter(stack, "FEATURE_SIGN_IN", {
-        value: "false",
-      });
 
       // Wrap the user table in SST’s Config.Parameter so that it can be referenced in SST functions
       // This is necessary when an existing table is imported using the Table.fromTableArn method
@@ -78,7 +73,7 @@ export default {
 
       const site = new SvelteKitSite(stack, "site", {
         path: "packages/web-app/",
-        bind: [userTableConfig, FEATURE_SIGN_IN, OIDC_CLIENT_SECRET],
+        bind: [userTableConfig],
         environment: {
           GEOCORE_API_DOMAIN,
           SEMANTIC_SEARCH_URL,

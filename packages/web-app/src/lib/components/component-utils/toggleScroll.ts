@@ -15,33 +15,33 @@
  * @param active - Whether to disable (true) or enable (false) scrolling.
  */
 export function toggleScroll(active: boolean): void {
-	// Check if 'document' is defined to avoid error during server side rendering
-	if (typeof document !== 'undefined') {
-		const body = document.body;
+  // Check if 'document' is defined to avoid error during server side rendering
+  if (typeof document !== 'undefined') {
+    const body = document.body;
 
-		if (active) {
-			// Store the current scroll position
-			const scrollY = window.scrollY;
-			body.style.setProperty('--scroll-y', `${scrollY}px`);
+    if (active) {
+      // Store the current scroll position
+      const scrollY = window.scrollY;
+      body.style.setProperty('--scroll-y', `${scrollY}px`);
 
-			// Store the current scrollbar width
-			const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-			body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+      // Store the current scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
 
-			// Set styles
-			body.style.top = `-${scrollY}px`;
-			body.style.overflow = 'hidden';
-			body.style.width = `calc(100vw - ${scrollbarWidth}px)`;
-		} else {
-			// Get the stored scroll value. For the scrollTo method, convert it to a number
-			const scrollY = parseInt(body.style.getPropertyValue('--scroll-y') || '0', 10);
+      // Set styles
+      body.style.top = `-${scrollY}px`;
+      body.style.overflow = 'hidden';
+      body.style.width = `calc(100vw - ${scrollbarWidth}px)`;
+    } else {
+      // Get the stored scroll value. For the scrollTo method, convert it to a number
+      const scrollY = parseInt(body.style.getPropertyValue('--scroll-y') || '0', 10);
 
-			// Revert styles
-			body.style.top = '';
-			body.style.overflow = '';
-			body.style.width = '';
+      // Revert styles
+      body.style.top = '';
+      body.style.overflow = '';
+      body.style.width = '';
 
-			window.scrollTo(0, scrollY);
-		}
-	}
+      window.scrollTo(0, scrollY);
+    }
+  }
 }
