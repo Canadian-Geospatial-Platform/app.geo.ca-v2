@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
   let userData;
   let sanitizedResults;
 
-  const canonicalUrl = url.origin + '/' + params.lang + '/favourites';
+  const canonicalUrl = `${url.origin}/${params.lang}/favourites`;
   const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
   const alternateUrl = url.href.replace(params.lang, alternateLang);
   const metaDescription =

@@ -73,7 +73,7 @@
    * @returns The initial value for the input field.
    */
   function init(key: string): string | null {
-    let searchKey = key.replace(dateId + '-', '');
+    let searchKey = key.replace(`${dateId}-`, '');
     let date = page.url.searchParams.get(searchKey);
     return date;
   }

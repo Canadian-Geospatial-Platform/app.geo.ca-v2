@@ -79,8 +79,7 @@
     try {
       const useLimitationsUrl = legalConstraints.match(urlRegEx)[0];
       const useLimitationsLabel = legalConstraints.split(' (')[0];
-      useLimitations =
-        '<a href="' + useLimitationsUrl + '" class="underline hover:no-underline text-custom-16">' + useLimitationsLabel + '</a>';
+      useLimitations = `<a href="${useLimitationsUrl}" class="underline hover:no-underline text-custom-16">${useLimitationsLabel}</a>`;
     } catch {
       useLimitations = legalConstraints;
     }

@@ -46,7 +46,7 @@
    * Handles the click event for the download metadata button. Opens the Geocore metadata download URL in a new window.
    */
   function handleDownloadButtonClick(): void {
-    let downloadUrl = 'https://geocore.metadata.geo.ca/' + uuid + '.geojson';
+    let downloadUrl = `https://geocore.metadata.geo.ca/${uuid}.geojson`;
     window.open(downloadUrl);
   }
 
@@ -54,9 +54,7 @@
    * Handles the click event for the view ISO1915 button. Opens the ISO1915 metadata view URL in a new window.
    */
   function handleViewISO1915ButtonClick(): void {
-    let downloadUrl =
-      'https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&version=2.0.2&request=GetRecordById&outputSchema=csw:IsoRecord&ElementSetName=full&id=' +
-      uuid;
+    let downloadUrl = `https://csw.open.canada.ca/geonetwork/srv/csw?service=CSW&version=2.0.2&request=GetRecordById&outputSchema=csw:IsoRecord&ElementSetName=full&id=${uuid}`;
     window.open(downloadUrl);
   }
 </script>

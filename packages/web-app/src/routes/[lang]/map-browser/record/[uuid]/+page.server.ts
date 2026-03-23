@@ -150,19 +150,19 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     });
   }
 
-  const canonicalUrl = url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid;
+  const canonicalUrl = `${url.origin}/${params.lang}/map-browser/record/${params.uuid}`;
   const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
   const alternateUrl = url.href.replace(params.lang, alternateLang);
   const metaDescription =
     params.lang === 'fr-ca'
-      ? "La page de métadonnées et la carte de l'enregistrement GeoCore " + params.uuid
-      : 'The metadata page and map for the GeoCore record ' + params.uuid;
+      ? `La page de métadonnées et la carte de l'enregistrement GeoCore ${params.uuid}`
+      : `The metadata page and map for the GeoCore record ${params.uuid}`;
 
-  item_v2.title = item_v2['title_' + lang];
+  item_v2.title = item_v2[`title_${lang}`];
   return {
     tTitle1: {
       text: params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
-      href: url.origin + '/' + params.lang + '/map-browser',
+      href: `${url.origin}/${params.lang}/map-browser`,
     },
     tTitle2: {
       text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
@@ -202,7 +202,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 
     return fetch(url, {
       headers: {
-        Authentication: 'Bearer ' + token,
+        Authentication: `Bearer ${token}`,
         'x-forwarded-for': ip,
       },
     });

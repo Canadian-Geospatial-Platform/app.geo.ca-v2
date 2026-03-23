@@ -47,7 +47,7 @@
   <span property="description">{catalogDescription}</span>
   <span property="datePublished">
     <span property="dateModified"></span>
-    <span property="inLanguage">{lang + '-CA'}</span>
+    <span property="inLanguage">{`${lang}-CA`}</span>
     <span property="publisher" typeof="Organization">
       <Organisations {item} {lang} />
     </span>

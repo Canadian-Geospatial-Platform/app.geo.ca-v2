@@ -100,7 +100,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     console.warn(e);
   }
 
-  const canonicalUrl = url.origin + '/' + params.lang + '/map-browser';
+  const canonicalUrl = `${url.origin}/${params.lang}/map-browser`;
   const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
   const alternateUrl = url.href.replace(params.lang, alternateLang);
   const metaDescription =
@@ -155,7 +155,7 @@ function generateUrl(
 
   return fetch(url, {
     headers: {
-      Authentication: 'Bearer ' + token,
+      Authentication: `Bearer ${token}`,
       'x-forwarded-for': ip,
     },
   });
@@ -190,7 +190,7 @@ function generateSemanticUrl(
   url.search = new URLSearchParams(params as unknown as Record<string, string>).toString().replaceAll('%2B', '+');
   return fetch(url, {
     headers: {
-      Authentication: 'Bearer ' + token,
+      Authentication: `Bearer ${token}`,
       'x-forwarded-for': ip,
     },
   });
@@ -269,7 +269,7 @@ function mapSemanticSearchResults(searchParams: URLSearchParams, lang: string): 
   let north = searchParams.get('north') ?? 90;
   let east = searchParams.get('east') ?? 180;
   let south = searchParams.get('south') ?? -90;
-  let bbox = searchParams.get('bbox') ? west + ',' + south + ',' + east + ',' + north : '';
+  let bbox = searchParams.get('bbox') ? `${west},${south},${east},${north}` : '';
   let searchTerms = searchParams.get('search-terms');
   let mappedParams: SemanticSearchParams = {
     // Revisit which search method is better after user testing
@@ -310,7 +310,7 @@ function getKeyword(searchParams: URLSearchParams): string {
   let keywords = '';
 
   if (searchTerms && category) {
-    keywords = searchTerms + '+' + category;
+    keywords = `${searchTerms}+${category}`;
   } else if (searchTerms) {
     keywords = searchTerms;
   } else if (category) {

@@ -7,9 +7,9 @@
         window[dataLayerName].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
         var firstScript = document.getElementsByTagName(scriptTagName)[0],
           newScript = document.createElement(scriptTagName),
-          dataLayerParam = dataLayerName !== 'dataLayer' ? '&l=' + dataLayerName : '';
+          dataLayerParam = dataLayerName !== 'dataLayer' ? `&l=${dataLayerName}` : '';
         newScript.async = true;
-        newScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId + dataLayerParam;
+        newScript.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}${dataLayerParam}`;
         firstScript.parentNode.insertBefore(newScript, firstScript);
       })(window, document, 'script', 'dataLayer', 'GTM-MK9H4CK');
     </script>
@@ -20,9 +20,9 @@
         window[dataLayerName].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
         var firstScript = document.getElementsByTagName(scriptTagName)[0],
           newScript = document.createElement(scriptTagName),
-          dataLayerParam = dataLayerName !== 'dataLayer' ? '&l=' + dataLayerName : '';
+          dataLayerParam = dataLayerName !== 'dataLayer' ? `&l=${dataLayerName}` : '';
         newScript.async = true;
-        newScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + gtmId + dataLayerParam;
+        newScript.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}${dataLayerParam}`;
         firstScript.parentNode.insertBefore(newScript, firstScript);
       })(window, document, 'script', 'dataLayer', 'GTM-KG9WWH6');
     </script>
