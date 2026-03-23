@@ -142,7 +142,7 @@
 
     // Issue POST request for record details
     if (favouriteRecordList.length > 0) {
-      const response = await fetch('/' + lang + '/favourites', {
+      const response = await fetch(`/${lang}/favourites`, {
         method: 'POST',
         body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
         headers: { 'Content-Type': 'application/json' },
@@ -219,8 +219,8 @@
                 <div class="flex pointer-events-auto hover:cursor-pointer w-16 ml-4">
                   <input
                     type="checkbox"
-                    id={'check-' + item.id}
-                    name={'check-' + item.id}
+                    id={`check-${item.id}`}
+                    name={`check-${item.id}`}
                     class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
                       border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
                     checked={selectedIds.includes(item.id)}
@@ -298,7 +298,7 @@
           {resourceListEmpty}
         </p>
 
-        <a class="block m-auto w-fit mt-5" href={page.url.origin + '/' + lang + '/map-browser'}>
+        <a class="block m-auto w-fit mt-5" href={`${page.url.origin}/${lang}/map-browser`}>
           <div class="button-3 w-fit shadow-[0_0.1875rem_0.375rem_#00000029]">
             {findAResource}
           </div>

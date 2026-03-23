@@ -74,7 +74,7 @@ export function setPosition(node: HTMLElement): { destroy: () => void } {
 
     // Transform node position if needed.
     if (transformed) {
-      node.style.transform = 'translate(' + transformX + 'px, ' + transformY + 'px)';
+      node.style.transform = `translate(${transformX}px, ${transformY}px)`;
     }
   }
 

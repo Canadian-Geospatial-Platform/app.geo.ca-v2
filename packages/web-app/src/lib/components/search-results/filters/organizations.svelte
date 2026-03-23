@@ -42,8 +42,8 @@
     {#if filterListItem.subCategory === 'fed'}
       <div class="break-inside-avoid">
         <CheckboxCustomized
-          checkboxId={organizations.section + '-' + filterListItem.value}
-          checkboxName={organizations.section + '-' + filterListItem.value}
+          checkboxId={`${organizations.section}-${filterListItem.value}`}
+          checkboxName={`${organizations.section}-${filterListItem.value}`}
           checkboxLabel={filterListItem.label}
           checked={checkedStates[filterListItem.value] || false}
           checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}
@@ -62,8 +62,8 @@
     {#if filterListItem.subCategory === 'prov'}
       <div class="break-inside-avoid">
         <CheckboxCustomized
-          checkboxId={organizations.section + '-' + filterListItem.value}
-          checkboxName={organizations.section + '-' + filterListItem.value}
+          checkboxId={`${organizations.section}-${filterListItem.value}`}
+          checkboxName={`${organizations.section}-${filterListItem.value}`}
           checkboxLabel={filterListItem.label}
           checked={checkedStates[filterListItem.value] || false}
           checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}

@@ -58,7 +58,7 @@
     {mapText}
   </h2>
   {#if coordinates && showMap}
-    <div style="min-height: 300px; border: gray 1px solid;">
+    <div style="min-height: 300px;">
       <Map {coordinates} id={uuid} dynamic={true} mapType="record" footer={true} timeSlider={useTimeSlider} chart={addChart} />
     </div>
   {:else if coordinates}

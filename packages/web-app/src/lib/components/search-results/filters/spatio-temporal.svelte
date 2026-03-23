@@ -93,8 +93,8 @@
 <div class="space-y-[1.125rem]">
   {#each filterList as filterListItem}
     <CheckboxCustomized
-      checkboxId={section + '-' + filterListItem.value}
-      checkboxName={section + '-' + filterListItem.value}
+      checkboxId={`${section}-${filterListItem.value}`}
+      checkboxName={`${section}-${filterListItem.value}`}
       checkboxLabel={filterListItem.label}
       checked={!!checkedStates[filterListItem.value] || false}
       checkedStateChange={handleCheckboxClick}

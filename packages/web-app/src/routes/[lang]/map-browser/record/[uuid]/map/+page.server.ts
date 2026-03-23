@@ -16,11 +16,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
   return {
     tTitle1: {
       text: params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
-      href: url.origin + '/' + params.lang + '/map-browser',
+      href: `${url.origin}/${params.lang}/map-browser`,
     },
     tTitle2: {
       text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
-      href: url.origin + '/' + params.lang + '/map-browser/record/' + params.uuid,
+      href: `${url.origin}/${params.lang}/map-browser/record/${params.uuid}`,
     },
     tTitle3: {
       text: properties.title,

@@ -45,7 +45,7 @@ export function setPosition(node: HTMLElement, isHorizontal: boolean): { destroy
       nodeBounding = node.getBoundingClientRect();
       nodeWidth = nodeBounding.width;
       transformX = 0 - nodeWidth / 2;
-      node.style.transform = 'translate(' + transformX + 'px, 0px)';
+      node.style.transform = `translate(${transformX}px, 0px)`;
 
       // Get the new bounding rectangle after transform
       nodeBounding = node.getBoundingClientRect();
@@ -60,7 +60,7 @@ export function setPosition(node: HTMLElement, isHorizontal: boolean): { destroy
 
       // Transform node position if needed.
       if (transformed) {
-        node.style.transform = 'translate(' + transformX + 'px, 0px)';
+        node.style.transform = `translate(${transformX}px, 0px)`;
       }
 
       // Add 'shifted' class to avoid infinate loop

@@ -35,8 +35,8 @@
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
   {#each themes.filterList as filterListItem}
     <CheckboxCustomized
-      checkboxId={themes.section + '-' + filterListItem.value}
-      checkboxName={themes.section + '-' + filterListItem.value}
+      checkboxId={`${themes.section}-${filterListItem.value}`}
+      checkboxName={`${themes.section}-${filterListItem.value}`}
       checkboxLabel={filterListItem.label}
       checked={!!checkedStates[filterListItem.value] || false}
       checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}

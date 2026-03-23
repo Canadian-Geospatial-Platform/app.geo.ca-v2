@@ -105,7 +105,7 @@
    * @returns The new URL.
    */
   function toggleLanguage(lang: string): string {
-    let currentUrl = page.url.origin + page.url.pathname;
+    let currentUrl = `${page.url.origin}${page.url.pathname}`;
     let url = lang === 'fr-ca' ? currentUrl.replace('en-ca', 'fr-ca') : currentUrl.replace('fr-ca', 'en-ca');
     return url;
   }

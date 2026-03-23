@@ -10,7 +10,7 @@
 
   // Cycle dots every 300ms
   interval = setInterval(() => {
-    dots = dots.length < 3 ? dots + '.' : '';
+    dots = dots.length < 3 ? `${dots}.` : '';
   }, 300);
 
   onDestroy(() => clearInterval(interval));
