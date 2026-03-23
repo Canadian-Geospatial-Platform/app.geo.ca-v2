@@ -229,7 +229,7 @@
       // Add bounding box when no map is available
       if (!geoviewLayerConfig) {
         let bbox = getBbox(coordinates);
-        console.log('bbox: ', bbox);
+
         // Sometimes, the map's vector layer hasn't finished loading when we try
         // to add the bbox polygon. We need to wait for the layer, so we can wrap
         // the following code in a handler to catch the mapLayersLoaded event before
@@ -246,7 +246,6 @@
 
           // Zoom to the extent of the coordinates.
           const extent = getExtentFromCoordinates(coordinates);
-          console.log('extent: ', extent);
           cgpv.api.getMapViewer(mapId).zoomToLonLatExtentOrCoordinate(extent);
         });
       }

@@ -36,8 +36,8 @@
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
   {#each eoCollections.filterList as filterListItem}
     <CheckboxCustomized
-      checkboxId={eoCollections.section + '-' + filterListItem.value}
-      checkboxName={eoCollections.section + '-' + filterListItem.value}
+      checkboxId={`${eoCollections.section}-${filterListItem.value}`}
+      checkboxName={`${eoCollections.section}-${filterListItem.value}`}
       checkboxLabel={filterListItem.label}
       checked={checkedStates[filterListItem.value] || false}
       checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}

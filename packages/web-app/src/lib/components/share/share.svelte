@@ -17,7 +17,7 @@
    */
   function handleFacebookLink(): void {
     let facebookLink = 'https://www.facebook.com/sharer/sharer.php';
-    let fbShareLink = facebookLink + '?u=' + encodedPath;
+    let fbShareLink = `${facebookLink}?u=${encodedPath}`;
     window.open(fbShareLink);
   }
 
@@ -26,7 +26,7 @@
    */
   function handleXLink(): void {
     let xLink = 'https://x.com/intent/post';
-    let xShareLink = xLink + '?url=' + encodedPath;
+    let xShareLink = `${xLink}?url=${encodedPath}`;
     window.open(xShareLink);
   }
 
@@ -35,7 +35,7 @@
    */
   function handleLinkedInLink(): void {
     let linkedInLink = 'https://linkedin.com/shareArticle';
-    let linkedInShareLink = linkedInLink + '?url=' + encodedPath + '&mini=true';
+    let linkedInShareLink = `${linkedInLink}?url=${encodedPath}&mini=true`;
     window.open(linkedInShareLink);
   }
 

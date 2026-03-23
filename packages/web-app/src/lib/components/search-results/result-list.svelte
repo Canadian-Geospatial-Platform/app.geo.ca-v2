@@ -95,7 +95,7 @@
   let results: SearchResult[] = $derived(page.data.results ?? []);
   let total = $derived(page.data.total ?? 0);
 
-  let hrefPrefix = page.url.origin + page.url.pathname + '/record/';
+  let hrefPrefix = `${page.url.origin}${page.url.pathname}/record/`;
 
   /**
    * Changes the current page of the search results.
@@ -221,7 +221,7 @@
             <div class="sm:grid grid-cols-10">
               <!------------- Record info ------------->
               <div class="col-span-9 sm:pr-2">
-                <a href={hrefPrefix + result.id} class="underline hover:no-underline font-custom-style-header-4">
+                <a href={`${hrefPrefix}${result.id}`} class="underline hover:no-underline font-custom-style-header-4">
                   {lang === 'fr' ? result.title_fr : result.title_en}
                 </a>
                 <div class="line-clamp-2 pt-1">

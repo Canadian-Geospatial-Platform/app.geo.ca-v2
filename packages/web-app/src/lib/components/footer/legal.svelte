@@ -26,7 +26,7 @@
       <p>{ccmeo}</p>
       <p>{nrcan}</p>
       <p>{goc}</p>
-      <p><a href={'mailto:' + email}>{email}</a></p>
+      <p><a href={`mailto:${email}`}>{email}</a></p>
     </div>
     <div class="legal-col md:text-right">
       <img class="w-28 md:ml-auto mb-5" src={logoUrl} alt={logoAlt} />

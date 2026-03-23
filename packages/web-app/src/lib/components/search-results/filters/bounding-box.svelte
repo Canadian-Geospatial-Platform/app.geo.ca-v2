@@ -101,7 +101,7 @@
 
     labels.forEach(({ id }) => {
       if (inputs) {
-        const key = id.replace(coordinatesId + '-', '');
+        const key = id.replace(`${coordinatesId}-`, '');
         const value = coords[key as directions];
         inputs[id].value = value && typeof value === 'string' && !isNaN(Number.parseFloat(value)) ? value : '';
       }
@@ -192,7 +192,7 @@
    * @returns The initial value for the input field.
    */
   function init(key: string): number {
-    let searchKey = key.replace(coordinatesId + '-', '');
+    let searchKey = key.replace(`${coordinatesId}-`, '');
     let coord: number | null = Number(page.url.searchParams.get(searchKey));
 
     // Use defaults if no coordinate is available.
@@ -241,16 +241,16 @@
       if (Number.isNaN(number)) {
         message = validatorRequired;
       } else if (!Number.isNaN(min) && number < min) {
-        message = validatorTooSmall + min;
+        message = `${validatorTooSmall}${min}`;
       } else if (!Number.isNaN(max) && number > max) {
-        message = validatorTooBig + max;
-      } else if (input.id === coordinatesId + '-north') {
-        const southValue = Number.parseFloat(inputs[coordinatesId + '-south']?.value || '');
+        message = `${validatorTooBig}${max}`;
+      } else if (input.id === `${coordinatesId}-north`) {
+        const southValue = Number.parseFloat(inputs[`${coordinatesId}-south`]?.value || '');
         if (!Number.isNaN(southValue) && number < southValue) {
           message = validatorNorthGreater;
         }
-      } else if (input.id === coordinatesId + '-south') {
-        const northValue = Number.parseFloat(inputs[coordinatesId + '-north']?.value || '');
+      } else if (input.id === `${coordinatesId}-south`) {
+        const northValue = Number.parseFloat(inputs[`${coordinatesId}-north`]?.value || '');
         if (!Number.isNaN(northValue) && number > northValue) {
           message = validatorNorthGreater;
         }
@@ -296,7 +296,7 @@
         step="any"
         {id}
         name={id}
-        min={'-' + max}
+        min={`-${max}`}
         {max}
         placeholder={placeHolder}
         disabled={!active}

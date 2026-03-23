@@ -10,7 +10,7 @@
   const data = page.data;
   const lang = data.lang;
   const recordId = data.item_v2.id;
-  const urlPrefix = page.url.origin + '/' + lang + '/map-browser/record/';
+  const urlPrefix = `${page.url.origin}/${lang}/map-browser/record/`;
   const similarRecords = data.similar || [];
   const similarDescriptions: Record<string, string> = $state({});
 
@@ -29,7 +29,7 @@
       const description = similarDescriptions?.[id] ?? '';
       // const description = lang === "fr-ca" ? record.features_properties_description_fr : record.features_properties_description_en;
 
-      const url = urlPrefix + record.features_properties_id;
+      const url = `${urlPrefix}${record.features_properties_id}`;
 
       return {
         title: title,
@@ -44,7 +44,7 @@
   // the 'similarity' list in the record data
   onMount(async (): Promise<void> => {
     // Get record data for each of the similar records
-    const response = await fetch('/' + lang + '/map-browser/record/' + recordId, {
+    const response = await fetch(`/${lang}/map-browser/record/${recordId}`, {
       method: 'POST',
       body: JSON.stringify({ ids: similarRecordIs, lang: lang }),
       headers: { 'Content-Type': 'application/json' },

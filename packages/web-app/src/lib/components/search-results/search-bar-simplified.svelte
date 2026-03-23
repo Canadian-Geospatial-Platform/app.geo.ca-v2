@@ -45,7 +45,7 @@
    * @param keyword - The keyword to search for.
    */
   function applyKeywordSearch(keyword: string): void {
-    let url = new URL(page.url.origin + '/' + page.data.lang + '/map-browser');
+    let url = new URL(`${page.url.origin}/${page.data.lang}/map-browser`);
     let query = new URLSearchParams(url.searchParams.toString());
 
     if (keyword) {
