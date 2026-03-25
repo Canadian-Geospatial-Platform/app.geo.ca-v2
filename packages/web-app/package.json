@@ -12,15 +12,15 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@sveltejs/kit": "^2.55.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@typescript-eslint/eslint-plugin": "^8.57.2",
     "@typescript-eslint/parser": "^8.57.2",
     "autoprefixer": "^10.4.27",
-    "eslint": "^9.11.1",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-svelte": "^2.44.1",
+    "eslint-plugin-svelte": "^3.16.0",
     "globals": "^17.4.0",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
