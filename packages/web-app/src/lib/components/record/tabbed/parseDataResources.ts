@@ -24,7 +24,7 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string): 
   };
 
   const translationLang: keyof Translation = lang === 'fr' ? 'fr' : 'en';
-  let dataResources: Array<any> = [];
+  const dataResources: Array<any> = [];
   let description;
   let name;
   let type;
@@ -33,7 +33,7 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string): 
   let language;
   let url;
 
-  for (let resource of dataResourcesRaw) {
+  for (const resource of dataResourcesRaw) {
     // Some entries have the string 'null' (i.e. not the value null)
     // for all values in the resource object. In these cases, we can skip the resource.
     if (!resource.url) {

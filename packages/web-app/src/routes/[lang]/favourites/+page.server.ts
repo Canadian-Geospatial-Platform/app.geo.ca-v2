@@ -86,7 +86,7 @@ async function getRecords(
   lang: string,
   fetch: (url: string | URL, options?: RequestInit) => Promise<Response>
 ): Promise<GeospatialRecord[]> {
-  let promises = [];
+  const promises = [];
 
   for (const id of idIterator) {
     promises.push(getRecord(id, lang, fetch));
@@ -95,7 +95,7 @@ async function getRecords(
   const results = await Promise.all(promises);
   const values = [...results];
 
-  let ret = await Promise.all(
+  const ret = await Promise.all(
     values.map(async (v) => {
       try {
         const contents = await v.json();

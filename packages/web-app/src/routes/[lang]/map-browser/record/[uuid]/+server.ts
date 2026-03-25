@@ -46,7 +46,7 @@ function getRecord(id: string, lang: string): Promise<Response> {
  * @returns A promise that resolves to an array of records.
  */
 async function getRecordsByIds(idIterator: string[], lang: string): Promise<GeospatialRecord[]> {
-  let promises = [];
+  const promises = [];
 
   for (const id of idIterator) {
     promises.push(getRecord(id, lang));
@@ -54,7 +54,7 @@ async function getRecordsByIds(idIterator: string[], lang: string): Promise<Geos
 
   const results = await Promise.all(promises);
 
-  let ret = await Promise.all(
+  const ret = await Promise.all(
     results.map(async (result: Response) => {
       try {
         const contents = await result.json();

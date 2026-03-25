@@ -94,7 +94,7 @@
       optionsData={categories}
       removableSelection={true}
       defaultLabel={categorySelectDefaultText}
-      selectType={'categoryFilter'}
+      selectType="categoryFilter"
       bind:selected
       selectedChange={handleCategoryOfInterestChange}
     />

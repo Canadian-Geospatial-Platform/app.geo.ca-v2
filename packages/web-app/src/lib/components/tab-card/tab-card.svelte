@@ -73,7 +73,7 @@
       {selectCategory}
     </h2>
     <div class="mx-5 mt-2.5 sm:w-fit">
-      <SelectCustomized optionsData={tabContentArray} selectType={'tabCard'} bind:selected={activeTab} selectedChange={handleTabClick} />
+      <SelectCustomized optionsData={tabContentArray} selectType="tabCard" bind:selected={activeTab} selectedChange={handleTabClick} />
     </div>
   </div>
   {#each tabContentArray as tabContent}

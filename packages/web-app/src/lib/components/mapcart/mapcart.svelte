@@ -260,7 +260,7 @@
                       hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
                     onclick={() => handleDeleteResource(item.id)}
                   >
-                    <GarbageCan classes={'h-4 inline mb-1'} />
+                    <GarbageCan classes="h-4 inline mb-1" />
                     {remove}
                   </button>
                 </div>
@@ -284,7 +284,7 @@
                 shadow-[0_0.1875rem_0.375rem_#00000029]"
               onclick={handleRemoveAllClick}
             >
-              <GarbageCan classes={'h-4 inline mb-1'} />
+              <GarbageCan classes="h-4 inline mb-1" />
               {removeAll}
             </button>
           </div>

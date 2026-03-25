@@ -15,7 +15,7 @@ const s3Client = new S3Client({ region: 'ca-central-1' });
  * @throws {Error} If the record cannot be retrieved.
  */
 const getRecord = async (uuid: string): Promise<GeospatialRecord> => {
-  let key = `${PREFIX}${uuid}.geojson`;
+  const key = `${PREFIX}${uuid}.geojson`;
   try {
     const response = await s3Client.send(
       new GetObjectCommand({

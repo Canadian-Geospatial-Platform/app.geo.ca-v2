@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
   let record;
-  let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
+  const response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
   try {
     record = await response.json();
   } catch (error) {
@@ -69,11 +69,11 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     };
   }
 
-  let t = params.lang === 'en-ca' ? enLabels : frLabels;
+  const t = params.lang === 'en-ca' ? enLabels : frLabels;
 
   const related = await fetchRelated(params.uuid);
 
-  let item_v2 = record.body.Items[0];
+  const item_v2 = record.body.Items[0];
 
   if (item_v2?.keywords) {
     item_v2.keywords = item_v2.keywords.split(',');
@@ -198,7 +198,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     token: string,
     ip: string
   ): Promise<Response> {
-    let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
+    const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
 
     return fetch(url, {
       headers: {

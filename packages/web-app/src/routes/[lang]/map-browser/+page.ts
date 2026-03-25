@@ -12,12 +12,12 @@ import frSortOptionsSemantic from '$lib/components/search-results/i18n/fr/sort-o
 import { formatNumber } from '$lib/utils/format-number';
 
 export const load: PageLoad = ({ params, data, url }) => {
-  let searchMode = data.searchMode ? (data.searchMode as 'classic' | 'semantic') : 'semantic';
+  const searchMode = data.searchMode ? (data.searchMode as 'classic' | 'semantic') : 'semantic';
   // TODO: improve language handling
-  let lang = params.lang as 'en-ca' | 'fr-ca';
-  let t = lang === 'fr-ca' ? frLabels : enLabels;
-  let filters = lang === 'fr-ca' ? frFilters : enFilters;
-  let categories = lang === 'fr-ca' ? frCategories : enCategories;
+  const lang = params.lang as 'en-ca' | 'fr-ca';
+  const t = lang === 'fr-ca' ? frLabels : enLabels;
+  const filters = lang === 'fr-ca' ? frFilters : enFilters;
+  const categories = lang === 'fr-ca' ? frCategories : enCategories;
 
   let sortOptions;
   if (searchMode === 'semantic') {
@@ -26,9 +26,9 @@ export const load: PageLoad = ({ params, data, url }) => {
     sortOptions = lang === 'fr-ca' ? frSortOptions : enSortOptions;
   }
 
-  let totalResults = data.totalHits ? data.totalHits : 0;
-  let numPageText = parsePageMessage(lang, url, totalResults);
-  let resultMessage = parseResultMessage(lang, url, totalResults);
+  const totalResults = data.totalHits ? data.totalHits : 0;
+  const numPageText = parsePageMessage(lang, url, totalResults);
+  const resultMessage = parseResultMessage(lang, url, totalResults);
   return {
     results: data.results,
     lang: lang,
