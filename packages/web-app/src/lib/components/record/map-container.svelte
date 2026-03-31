@@ -11,8 +11,9 @@
 
   const data = page.data;
   const uuid = data.uuid || '';
-  const items = data.item_v2;
-  const coordinates = items.coordinates[0];
+  const items = data.item_v2!;
+  // Use normalized coordinates from page data (not item_v2.coordinates which is a string)
+  const coordinates = data.coordinates;
 
   /***************** Time Slider *************************/
   // Note: Geoview checks for a valid time dimension for each map layer before adding the

@@ -4,8 +4,8 @@
   import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters.filters;
-  const sourceSystems: Filter | undefined = filters.find((filter: Filter) => filter.section === 'source_system');
+  const filters = page.data.filters!.filters;
+  const sourceSystems: Filter = filters.find((filter: Filter) => filter.section === 'source_system')!;
   let checkedStates: Record<string, boolean | string> = $state({});
 
   /**
@@ -13,12 +13,10 @@
    */
   export function resetFilters(): void {
     let sourceSystemKey = page.url.searchParams.get('source_system');
-    if (sourceSystems) {
-      sourceSystems.filterList.forEach((filterListItem) => {
-        const key = filterListItem.value;
-        checkedStates[key] = sourceSystemKey?.includes(key) || false;
-      });
-    }
+    sourceSystems.filterList.forEach((filterListItem) => {
+      const key = filterListItem.value;
+      checkedStates[key] = sourceSystemKey?.includes(key) || false;
+    });
   }
 
   /**
@@ -30,13 +28,13 @@
 </script>
 
 <h3 class="font-custom-style-h3">
-  {sourceSystems?.label}
+  {sourceSystems.label}
 </h3>
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
-  {#each sourceSystems?.filterList as filterListItem (`${sourceSystems?.section}-${filterListItem.value}`)}
+  {#each sourceSystems.filterList as filterListItem (`${sourceSystems.section}-${filterListItem.value}`)}
     <CheckboxCustomized
-      checkboxId={`${sourceSystems?.section}-${filterListItem.value}`}
-      checkboxName={`${sourceSystems?.section}-${filterListItem.value}`}
+      checkboxId={`${sourceSystems.section}-${filterListItem.value}`}
+      checkboxName={`${sourceSystems.section}-${filterListItem.value}`}
       checkboxLabel={filterListItem.label}
       checked={!!checkedStates[filterListItem.value] || false}
       checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}

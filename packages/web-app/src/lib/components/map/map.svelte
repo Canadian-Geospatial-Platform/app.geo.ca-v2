@@ -12,7 +12,7 @@
   import type { GeoviewConfig, MapTypes } from '$lib/components/map/map-types';
 
   interface Props {
-    coordinates: number[][];
+    coordinates: number[][] | null | undefined;
     id: string;
     dynamic?: boolean;
     width?: string;
@@ -87,7 +87,7 @@
    * @param coordinates - The coordinates to extract the bounding box from.
    * @returns The bounding box coordinates.
    */
-  function getBbox(coordinates: number[][]): number[][] {
+  function getBbox(coordinates: number[][] | null | undefined): number[][] {
     // This is the bounding coordinates of Canada
     const defaultValue = [
       [-140.99778, 41.6751050889],
@@ -96,7 +96,7 @@
       [-52.6480987209, 41.6751050889],
     ];
 
-    if (!coordinates) {
+    if (!coordinates || coordinates.length === 0) {
       console.warn('invalid coordinates, returing default value: \n', coordinates);
       return defaultValue;
     }
@@ -244,8 +244,8 @@
             },
           });
 
-          // Zoom to the extent of the coordinates.
-          const extent = getExtentFromCoordinates(coordinates);
+          // Zoom to the extent of the rendered polygon ring.
+          const extent = getExtentFromCoordinates(bbox);
           cgpv.api.getMapViewer(mapId).zoomToLonLatExtentOrCoordinate(extent);
         });
       }

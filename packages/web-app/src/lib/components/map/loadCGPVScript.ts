@@ -1,11 +1,17 @@
 import { tick } from 'svelte';
 
+declare global {
+  interface Window {
+    cgpv?: unknown;
+  }
+}
+
 /**
  * Ensures the cgpv-script is fully loaded before attempting to use geoview API.
  * @returns {Promise<void>}
  */
 export async function loadCGPVScript(): Promise<void> {
-  if (typeof (window as any).cgpv !== 'undefined') return;
+  if (typeof window.cgpv !== 'undefined') return;
 
   if (!document.getElementById('cgpv-script')) {
     const script = document.createElement('script');

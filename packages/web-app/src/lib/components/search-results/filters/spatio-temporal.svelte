@@ -13,8 +13,8 @@
   let { temporalActive = $bindable(false), spatialActive = $bindable(false) }: Props = $props();
 
   /************* Filter Data ***************/
-  const filters = page.data.filters.filters;
-  const spatioTemporalFilters = filters.find((filter: Filter) => filter.section === 'spatio-temporal');
+  const filters = page.data.filters!.filters;
+  const spatioTemporalFilters = filters.find((filter: Filter) => filter.section === 'spatio-temporal')!;
   const section = spatioTemporalFilters.section;
   const label = spatioTemporalFilters.label;
   const filterList = spatioTemporalFilters.filterList;

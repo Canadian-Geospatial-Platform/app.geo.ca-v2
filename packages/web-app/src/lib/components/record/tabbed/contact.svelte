@@ -27,21 +27,22 @@
   /******************* Data *******************/
   const data = page.data;
   const lang = data.lang;
-  const langShort = lang.slice(0, 2);
-  const items = data.item_v2;
-  let contact = null;
+  const langShort = lang.slice(0, 2) as 'en' | 'fr';
+  const items = data.item_v2!;
+  let contact: ContactInfo | null = null;
 
   if (Array.isArray(items.cited)) {
-    contact = items.cited.find((contactItem: ContactInfo) => contactItem !== null) || null;
+    contact = items.cited.find((contactItem) => contactItem !== null) || null;
   }
 
   if (!contact && Array.isArray(items.contact)) {
-    contact = items.contact.find((contactItem: ContactInfo) => contactItem !== null) || null;
+    contact = items.contact.find((contactItem) => contactItem !== null) || null;
   }
 
   // It is common for the contact data to be the string 'null' instead of just the value null,
   // so we should check for that
-  const organization = contact?.organisation ? contact.organisation[langShort] : 'N/A';
+  const organizationValue = contact?.organisation?.[langShort];
+  const organization = organizationValue && organizationValue !== 'null' ? organizationValue : 'N/A';
 
   // For the address, we only need one copy of N/A, so we'll add it later
   const address = contact?.address && contact.address[langShort] !== 'null' ? contact.address[langShort] : '';
@@ -53,15 +54,17 @@
 
   const individualName = contact?.individual && contact.individual !== 'null' ? contact.individual : 'N/A';
   const role = contact?.role && contact.role !== 'null' ? contact['role'] : 'N/A';
-  const telephone = contact?.telephone && contact.telephone[langShort] !== 'null' ? contact['telephone'][langShort] : 'N/A';
-  const fax = contact?.fax && contact.fax !== 'null' ? contact['fax'] : 'N/A';
+  const telephoneValue = contact?.telephone?.[langShort];
+  const telephone = telephoneValue && telephoneValue !== 'null' ? telephoneValue : 'N/A';
+  const faxValue = contact?.fax;
+  const fax = faxValue && faxValue !== 'null' ? faxValue : 'N/A';
 
-  const description = contact?.onlineResource?.onlineresource_description ? contact['onlineResource']['onlineresource_description'] : 'N/A';
+  const description = contact?.onlineresource?.onlineresource_description || contact?.onlineResource?.onlineResource_Description || 'N/A';
 
   const email = contact?.email ? contact['email'][langShort] : null;
   const emailLink = email ? `<a href="mailto:${email}" class="underline hover:no-underline text-custom-16">${email}</a>` : 'N/A';
 
-  const website = contact?.onlineResource?.url && contact['onlineResource']['url'] !== null ? contact['onlineResource']['url'] : null;
+  const website = contact?.onlineresource?.onlineresource || contact?.onlineResource?.onlineResource || null;
   const websiteLink = website ? `<a href="${website}" class="underline hover:no-underline text-custom-16">${website}</a>` : 'N/A';
 
   // Table Array

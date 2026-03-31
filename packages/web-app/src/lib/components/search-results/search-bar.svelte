@@ -1,7 +1,6 @@
 <script lang="ts">
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
-  import { resolve } from '$app/paths';
   import { goto } from '$app/navigation';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
   import Card from '$lib/components/card/card.svelte';
@@ -85,7 +84,10 @@
       replaceState: true,
       keepfocus: true,
     };
-    goto(resolve(`/?${query.toString()}`), opts);
+    // We need to preserve the current localized search-results route.
+    // Using resolve('/?...') here sends the user to the site root instead of updating the current search page.
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
+    goto(`${page.url.pathname}?${query.toString()}`, opts);
   }
 </script>
 

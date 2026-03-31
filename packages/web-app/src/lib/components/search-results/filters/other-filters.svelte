@@ -4,15 +4,15 @@
   import type { Filter, FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
-  const filters: Filter[] = page.data.filters.filters;
-  const others = filters.find((filter: Filter) => filter.section === 'others');
+  const filters: Filter[] = page.data.filters!.filters;
+  const others = filters.find((filter: Filter) => filter.section === 'others')!;
   let checkedStates: Record<string, boolean | string> = $state({});
 
   /**
    * Resets the Other filters to match the URL parameters.
    */
   export function resetFilters(): void {
-    let filterList = others?.filterList.map((filter: FilterItem) => filter.value);
+    let filterList = others.filterList.map((filter: FilterItem) => filter.value);
 
     if (filterList)
       filterList.forEach((filterName: string) => {
@@ -30,13 +30,13 @@
 </script>
 
 <h3 class="font-custom-style-h3">
-  {others?.label}
+  {others.label}
 </h3>
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
-  {#each others?.filterList as filterListItem (`${others?.section}-${filterListItem.value}`)}
+  {#each others.filterList as filterListItem (`${others.section}-${filterListItem.value}`)}
     <CheckboxCustomized
-      checkboxId={`${others?.section}-${filterListItem.value}`}
-      checkboxName={`${others?.section}-${filterListItem.value}`}
+      checkboxId={`${others.section}-${filterListItem.value}`}
+      checkboxName={`${others.section}-${filterListItem.value}`}
       checkboxLabel={filterListItem.label}
       checked={!!checkedStates[filterListItem.value] || false}
       checkedStateChange={(event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement).checked)}

@@ -34,7 +34,7 @@
   const lang = data.lang;
   const langShort = lang.slice(0, 2);
   const langIndex = langShort === 'fr' ? 1 : 0;
-  const items = data.item_v2;
+  const items = data.item_v2!;
 
   const url = page.url;
   const mapBrowserUrl = `${url.origin}/${lang}/map-browser`;
@@ -42,7 +42,7 @@
 
   const status = items.status.split('; ')[langIndex];
   const maintenance = items.maintenance.split('; ')[langIndex];
-  const id = data.uuid;
+  const id = data.uuid || 'N/A';
 
   // Each topic category should be a link back to the search page
   const topicCategoryArray = items.topicCategory.map((category: string) => {
@@ -52,10 +52,10 @@
   const topicCategory = topicCategoryArray.join(', ');
 
   const type = items.type.split('; ')[langIndex];
-  const north = items.bbox.north || 'N/A';
-  const east = items.bbox.east || 'N/A';
-  const south = items.bbox.south || 'N/A';
-  const west = items.bbox.west || 'N/A';
+  const north = items.bbox?.north?.toString() || 'N/A';
+  const east = items.bbox?.east?.toString() || 'N/A';
+  const south = items.bbox?.south?.toString() || 'N/A';
+  const west = items.bbox?.west?.toString() || 'N/A';
   const spatialRepresentation = items?.spatialRepresentation ? items?.spatialRepresentation.split('; ')[langIndex] : 'N/A';
   const projection = items.refSys || 'N/A';
 

@@ -4,8 +4,8 @@
   import type { Filter, FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters.filters;
-  const themes = filters.find((filter: Filter) => filter.section === 'theme');
+  const filters = page.data.filters!.filters;
+  const themes = filters.find((filter: Filter) => filter.section === 'theme')!;
   let checkedStates: Record<string, boolean> = $state({});
 
   /**
@@ -13,12 +13,10 @@
    */
   export function resetFilters(): void {
     let themeKey = page.url.searchParams.get('theme');
-    if (themes) {
-      themes.filterList.forEach((filterListItem: FilterItem) => {
-        const key = filterListItem.value;
-        checkedStates[key] = themeKey?.includes(key) || false;
-      });
-    }
+    themes.filterList.forEach((filterListItem: FilterItem) => {
+      const key = filterListItem.value;
+      checkedStates[key] = themeKey?.includes(key) || false;
+    });
   }
 
   /**

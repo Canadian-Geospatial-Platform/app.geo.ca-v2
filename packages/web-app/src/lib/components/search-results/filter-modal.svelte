@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
   import { updateTempCategoryOfInterest } from '$lib/components/search-results/store';
@@ -37,7 +38,7 @@
     sourceSystem: { [key: string]: boolean };
   }
 
-  let { active = $bindable(false), numFilters = $bindable(0) }: Props = $props();
+  let { active = $bindable(false), numFilters = $bindable() }: Props = $props();
 
   const translations = page.data.t;
 
@@ -72,7 +73,10 @@
 
   let searchParams = $derived(page.url.searchParams);
   $effect(() => {
-    setFilterCountFromUrl(searchParams);
+    const nextFilterCount = getFilterCountFromUrl(searchParams);
+    if (numFilters !== nextFilterCount) {
+      numFilters = nextFilterCount;
+    }
   });
 
   /************* Handlers ***************/
@@ -98,7 +102,7 @@
    *
    * @param event - The form submission event.
    */
-  function handleSubmit(event: Event): void {
+  async function handleSubmit(event: Event): Promise<void> {
     event.preventDefault();
     const formEl = event.target;
     if (!(formEl instanceof HTMLFormElement)) return;
@@ -139,10 +143,11 @@
       }
     }
 
-    numFilters = countFilters(filters);
-
     const query = buildFilterParams(filters);
-    goto(`?${query.toString()}`, { replaceState: true, keepFocus: true });
+    // We need to keep the user on the current localized map-browser route.
+    // Using resolve('/?...') navigates to the site root and drops the search page context.
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
+    await goto(`${page.url.pathname}?${query.toString()}`, { replaceState: true, keepFocus: true });
 
     closeModal();
   }
@@ -176,7 +181,7 @@
    *
    * @param searchParams - The URL search parameters.
    */
-  function setFilterCountFromUrl(searchParams: URLSearchParams): void {
+  function getFilterCountFromUrl(searchParams: URLSearchParams): number {
     const filterLists = {
       bboxList: getList(bboxKey, false, searchParams),
       categoryList: getList(categoriesKey, false, searchParams),
@@ -190,7 +195,7 @@
       sourceSystemList: getList(sourceSystemKey, true, searchParams),
     };
 
-    numFilters = countFilters(filterLists);
+    return countFilters(filterLists);
   }
 
   /**
@@ -266,7 +271,7 @@
     const eoCollections = filters.eoCollection;
     const sourceSystem = filters.sourceSystem;
 
-    const query = new URLSearchParams(page.url.searchParams.toString());
+    const query = new SvelteURLSearchParams(page.url.searchParams.toString());
 
     // BBOX
     if (bbox) {

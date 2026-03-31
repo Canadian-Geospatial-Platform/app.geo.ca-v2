@@ -10,10 +10,8 @@
     url: string;
   };
 
-  type RelatedRecord = {
-    id: string;
-    description_en: string;
-    description_fr: string;
+  type RelatedProductsTableLabels = {
+    name: string;
     type: string;
   };
 
@@ -35,8 +33,8 @@
 
   const url = page.url;
 
-  const relatedRecords: RelatedRecord[] | undefined = data.related || [];
-  let tableDataArray: Array<RelatedProductsRow> = relatedRecords.map((relatedRecord: RelatedRecord) => {
+  const relatedRecords = data.related ?? [];
+  let tableDataArray: Array<RelatedProductsRow> = relatedRecords.map((relatedRecord) => {
     const recordUrl = `${url.origin}/${lang}/map-browser/record/${relatedRecord.id}`;
     const row = {
       id: relatedRecord.id,
@@ -47,12 +45,10 @@
     return row;
   });
 
-  // Translation of table column labels
-  const tableLabels: RelatedProductsRow = {
-    id: `tableLabels-${relatedRecords.map((record) => record.id).join('-')}`,
+  // Only data fields should be table columns; id/url are internal row metadata.
+  const tableLabels: RelatedProductsTableLabels = {
     name: nameText,
     type: typeText,
-    url: '',
   };
 
   /****************** Pagination ******************/

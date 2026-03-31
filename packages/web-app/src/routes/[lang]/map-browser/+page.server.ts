@@ -4,7 +4,21 @@ import { getUserData } from '$lib/db/user';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results';
 import { formatNumber } from '$lib/utils/format-number';
-import type { UserInfo } from '$lib/db/db-types';
+import type { GeospatialRecord, UserInfo } from '$lib/db/db-types';
+
+interface ParsedResponse {
+  Items?: GeospatialRecord[];
+  response?: {
+    items?: Parameters<typeof sanitizeSemantic>[0];
+    total_hits?: number;
+  };
+}
+
+interface AnalyticsItem {
+  total?: string;
+  organization?: string;
+  [key: string]: string | undefined;
+}
 
 interface SearchParams {
   north?: number | string;
@@ -73,15 +87,15 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     );
   }
   const analytics = await getAnalytics(fetch);
-  let parsedResponse = [];
+  let parsedResponse: ParsedResponse = {};
   let userData: UserInfo = { Item: { uuid: '', favourites: [] } };
-  let sanitizedResults: string | any[] = [];
+  let sanitizedResults: ReturnType<typeof sanitize> | ReturnType<typeof sanitizeSemantic> = [];
   try {
-    parsedResponse = await response.json();
+    parsedResponse = (await response.json()) as ParsedResponse;
     if (searchMode === 'classic') {
-      sanitizedResults = sanitize(parsedResponse.Items, params.lang);
+      sanitizedResults = sanitize(parsedResponse.Items ?? [], params.lang);
     } else {
-      sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items);
+      sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items ?? []);
     }
   } catch (e) {
     console.error(e);
@@ -89,7 +103,8 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 
   let totalHits;
   if (searchMode === 'classic') {
-    totalHits = parseInt(sanitizedResults?.[0]?.total ? sanitizedResults[0].total : 0);
+    const firstResult = sanitizedResults[0] as (GeospatialRecord & { total?: string }) | undefined;
+    totalHits = parseInt(firstResult?.total ?? '0', 10);
   } else {
     totalHits = parsedResponse?.response?.total_hits ?? 0;
   }
@@ -203,12 +218,13 @@ function generateSemanticUrl(
  * @returns The analytics results.
  * @async
  */
-async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<any> {
+async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<AnalyticsItem> {
   const analytics = await fetch(`${GEOCORE_API_DOMAIN}/analytics/11`);
-  let parsedAnalytics = [];
+  let parsedAnalytics: { Items: AnalyticsItem[] } = { Items: [] };
 
   try {
-    parsedAnalytics = await analytics.json();
+    const payload = (await analytics.json()) as { Items?: AnalyticsItem[] };
+    parsedAnalytics = { Items: payload.Items ?? [] };
   } catch (e) {
     console.error(e);
   }

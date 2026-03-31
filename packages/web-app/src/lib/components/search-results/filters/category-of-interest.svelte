@@ -8,7 +8,7 @@
   // Note: the list of categories are based on the Topic Categories from ISO 19115-1
   // https://icsm-au.github.io/metadata-working-group/defs/TopicCategory
   const categoriesKey = 'category-of-interest';
-  const categories = page.data.categories;
+  const categories = page.data.categories ?? [];
   let selected: SelectOption | undefined = undefined;
   let categoryStoreVal: string | null = null;
 

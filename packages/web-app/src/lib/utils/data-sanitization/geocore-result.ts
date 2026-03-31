@@ -48,7 +48,7 @@ function normalizeLanguage(records: GeospatialRecord[], lang: string): Geospatia
       if (description) {
         record.description = description;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.warn('error normalizing data: \n', record, '\n', error);
     }
   }

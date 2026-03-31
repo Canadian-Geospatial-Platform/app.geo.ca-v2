@@ -3,6 +3,7 @@ import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { parseText } from '$lib/utils/parse-text';
 import { formatNumber } from '$lib/utils/format-number';
+import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
 import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '$lib/db/db-types';
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
@@ -10,7 +11,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   // Importing it at the top level would cause build-time errors because SST resources
   // are not available during the build process. To avoid this, we import it inside
   // the `load()` function so it's only accessed when the server is running.
-  const config = await import('sst/node/config');
+  await import('sst/node/config');
   const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
   const lang = params.lang === 'en-ca' ? 'en' : 'fr';
@@ -112,8 +113,10 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 
   if (typeof item_v2.coordinates === 'string') {
     coords = JSON.parse(coords);
-    item_v2.coordinates = coords;
   }
+
+  // Normalize to number[][] for use with map component (keep original as string per GeospatialRecord)
+  const normalizedCoordinates = normalizeCoordinates(coords, false) || [];
 
   // We can also add a bounding box key to get the north, east, west, and south
   // values for the advanced metadata. But first, we need to get the values from
@@ -123,11 +126,15 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   let south = Infinity;
   let north = -Infinity;
 
-  coords.flat().forEach(([x, y]: [number, number]) => {
-    if (x < west) west = x; // West
-    if (x > east) east = x; // East
-    if (y < south) south = y; // South
-    if (y > north) north = y; // North
+  // Use normalized coordinates for bbox calculation (filter to ensure pairs)
+  normalizedCoordinates.forEach((coord) => {
+    if (Array.isArray(coord) && coord.length === 2) {
+      const [x, y] = coord as [number, number];
+      if (x < west) west = x; // West
+      if (x > east) east = x; // East
+      if (y < south) south = y; // South
+      if (y > north) north = y; // North
+    }
   });
 
   item_v2.bbox = {
@@ -179,6 +186,8 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     alternateUrl: alternateUrl,
     alternateLang: alternateLang,
     metaDescription: metaDescription,
+    // Pass normalized coordinates separately for map display
+    coordinates: normalizedCoordinates,
   };
 
   /**

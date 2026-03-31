@@ -27,8 +27,8 @@
   /******************* Data *******************/
   const data = page.data;
   const lang = data.lang;
-  const langShort = lang.slice(0, 2);
-  const items = data.item_v2;
+  const langShort: 'en' | 'fr' = lang === 'fr-ca' ? 'fr' : 'en';
+  const items = data.item_v2!;
   const dataResourcesRaw = items.options;
 
   const dataResourcesList = parseDataResources(dataResourcesRaw, langShort);

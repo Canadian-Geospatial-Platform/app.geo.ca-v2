@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
   import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
   import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
@@ -33,6 +34,8 @@
   const formatText = translations?.formatParams ? translations['format'] : 'Format';
   const organizationText = translations?.organization ? translations['organization'] : 'Organization';
   const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
+  const removeFromFavouritesTitle = translations?.removeFromFavourites || 'Remove from Favourites';
+  const addToFavouritesTitle = translations?.addToFavourites || 'Add to Favourites';
 
   /************* Accordion Components ***************/
   let data = $derived(page.data);
@@ -61,7 +64,7 @@
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
   let currentPage: number = $state(Number(page.url.searchParams.get('page-number') ?? '0') + 1);
 
-  const sortBySelectData = page.data.sortOptions;
+  const sortBySelectData: SelectOption[] = page.data.sortOptions ?? [];
   const searchMode = page.data.searchMode ?? 'semantic';
 
   let sortOrder;
@@ -72,7 +75,7 @@
   }
 
   let defaultOption = sortBySelectData.find((sortData: { value: string }) => sortData.value === sortOrder);
-  let selected = $state(defaultOption ?? sortBySelectData[0]);
+  let selected = $state<SelectOption | undefined>(defaultOption ?? sortBySelectData[0]);
 
   /**
    * Changes the sort order of the search results.
@@ -83,16 +86,19 @@
     if (newSelected) {
       selected = newSelected;
       currentPage = 1;
-      page.url.searchParams.set('sort', selected.value);
-      page.url.searchParams.set('page-number', '0');
-      goto(page.url, { invalidateAll: true });
+      const query = new SvelteURLSearchParams(page.url.searchParams.toString());
+      query.set('sort', selected.value);
+      query.set('page-number', '0');
+      // Sorting must keep the user on the current localized search-results route.
+      // eslint-disable-next-line svelte/no-navigation-without-resolve
+      goto(`${page.url.pathname}?${query.toString()}`, { invalidateAll: true });
     }
   }
 
   /****************** Pagination ******************/
   let itemsPerPage = 10;
   let pageMessage = $derived(page.data.numPageText);
-  let results: SearchResult[] = $derived(page.data.results ?? []);
+  let results: SearchResult[] = $derived((page.data.results ?? []) as SearchResult[]);
   let total = $derived(page.data.total ?? 0);
 
   let hrefPrefix = `${page.url.origin}${page.url.pathname}/record/`;
@@ -110,9 +116,12 @@
     });
 
     currentPage = newPage;
-    page.url.searchParams.set('page-number', `${currentPage - 1}`);
-    page.url.searchParams.set('results-per-page', `${itemsPerPage}`);
-    goto(page.url, { invalidateAll: true });
+    const query = new SvelteURLSearchParams(page.url.searchParams.toString());
+    query.set('page-number', `${currentPage - 1}`);
+    query.set('results-per-page', `${itemsPerPage}`);
+    // Pagination must keep the user on the current localized search-results route.
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
+    goto(`${page.url.pathname}?${query.toString()}`, { invalidateAll: true });
   }
 
   /**
@@ -214,13 +223,19 @@
       </div>
     </div>
     <!-- List -->
-    {#each results as result, index}
+    {#each results as result, index (result.id)}
       <div class="bg-custom-1 px-5 py-4">
         <Accordion bind:this={accordionComponents[index]}>
           {#snippet accordionTitle()}
             <div class="sm:grid grid-cols-10">
               <!------------- Record info ------------->
               <div class="col-span-9 sm:pr-2">
+                <!-- 
+                  Dynamic route cannot be resolved at compile-time by typed-routes.
+                  Route is constructed at runtime: current page path + result ID.
+                  Suppressing no-navigation-without-resolve as this is a safe, data-driven link.
+                -->
+                <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
                 <a href={`${hrefPrefix}${result.id}`} class="underline hover:no-underline font-custom-style-header-4">
                   {lang === 'fr' ? result.title_fr : result.title_en}
                 </a>
@@ -235,7 +250,7 @@
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23"
-                  title={translations.removeFromFavourites}
+                  title={removeFromFavouritesTitle}
                   onclick={() => handleFavouriteClick(result.id)}
                 >
                   <HeartFilled classes="h-9" />
@@ -244,7 +259,7 @@
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23"
-                  title={translations.addToFavourites}
+                  title={addToFavouritesTitle}
                   onclick={() => handleFavouriteClick(result.id)}
                 >
                   <Heart classes="h-9 hover:fill-custom-23" />
@@ -264,7 +279,7 @@
                 </p>
                 <p class="mt-2">
                   <span class="font-semibold">{formatText}: </span>
-                  {#each getFormats(result) as format}
+                  {#each getFormats(result) as format (format)}
                     <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
                   {/each}
                 </p>

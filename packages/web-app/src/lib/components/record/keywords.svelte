@@ -6,7 +6,7 @@
   const keywordsText = translations?.keywords ? translations['keywords'] : 'Related keywords';
 
   const data = page.data;
-  const items = data.item_v2;
+  const items = data.item_v2!;
   const keywords = items['keywords'];
 </script>
 

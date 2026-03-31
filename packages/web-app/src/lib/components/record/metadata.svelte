@@ -26,7 +26,7 @@
   const data = page.data;
   const lang = data.lang;
   const langPrefix = lang.split('-')[0] as 'en' | 'fr';
-  const properties = data.item_v2;
+  const properties = data.item_v2!;
 
   // Top Section
   const dateCreated = properties.created || 'N/A';
@@ -52,8 +52,10 @@
 
   // Sources
   const title = properties.title;
-  const distributors: ContactInfo[] = properties.distributor || [];
-  const distributorOrgArray = distributors.map((distributor: ContactInfo) => distributor?.organisation[langPrefix]);
+  const distributors: ContactInfo[] = (properties.distributor || []).filter(
+    (distributor): distributor is ContactInfo => distributor !== null
+  );
+  const distributorOrgArray = distributors.map((distributor: ContactInfo) => distributor.organisation[langPrefix]);
 
   const onlineResourceArray = distributors
     ? distributors.map((distributor: ContactInfo) => {
@@ -77,7 +79,7 @@
   if (legalConstraints) {
     const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
     try {
-      const useLimitationsUrl = legalConstraints.match(urlRegEx)[0];
+      const useLimitationsUrl = legalConstraints.match(urlRegEx)?.[0] || '';
       const useLimitationsLabel = legalConstraints.split(' (')[0];
       useLimitations = `<a href="${useLimitationsUrl}" class="underline hover:no-underline text-custom-16">${useLimitationsLabel}</a>`;
     } catch {

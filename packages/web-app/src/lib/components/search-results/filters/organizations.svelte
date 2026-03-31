@@ -4,8 +4,8 @@
   import type { Filter, FilterItem } from './filter-types';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters.filters;
-  const organizations = filters.find((filter: Filter) => filter.section === 'org');
+  const filters = page.data.filters!.filters;
+  const organizations = filters.find((filter: Filter) => filter.section === 'org')!;
   let checkedStates: Record<string, boolean> = $state({});
 
   // Labels
@@ -17,12 +17,10 @@
    */
   export function resetFilters(): void {
     let orgKey = page.url.searchParams.get('org');
-    if (organizations) {
-      organizations.filterList.forEach((filterListItem: FilterItem) => {
-        const key = filterListItem.value;
-        checkedStates[key] = orgKey?.includes(key) || false;
-      });
-    }
+    organizations.filterList.forEach((filterListItem: FilterItem) => {
+      const key = filterListItem.value;
+      checkedStates[key] = orgKey?.includes(key) || false;
+    });
   }
 
   /**

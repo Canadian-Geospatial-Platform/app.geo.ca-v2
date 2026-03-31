@@ -1,3 +1,5 @@
+import type { DistributionOption } from '$lib/db/db-types';
+
 /**
  * Parses raw data resources from a metadata record into a structured array.
  *
@@ -5,7 +7,16 @@
  * @param lang - Language code ('en' or 'fr').
  * @returns Parsed data resources array.
  */
-export function parseDataResources(dataResourcesRaw: Array<any>, lang: string): Array<any> {
+export type ParsedDataResource = {
+  id: string;
+  name: string;
+  type: string;
+  format: string;
+  languages: string;
+  url: string;
+};
+
+export function parseDataResources(dataResourcesRaw: DistributionOption[], lang: 'en' | 'fr'): ParsedDataResource[] {
   type Translation = {
     en: string;
     fr: string;
@@ -24,14 +35,7 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string): 
   };
 
   const translationLang: keyof Translation = lang === 'fr' ? 'fr' : 'en';
-  const dataResources: Array<any> = [];
-  let description;
-  let name;
-  let type;
-  let format;
-  let languageRaw;
-  let language;
-  let url;
+  const dataResources: ParsedDataResource[] = [];
 
   for (const resource of dataResourcesRaw) {
     // Some entries have the string 'null' (i.e. not the value null)
@@ -40,16 +44,20 @@ export function parseDataResources(dataResourcesRaw: Array<any>, lang: string): 
       continue;
     }
 
-    description = resource['description'][lang].split(';');
-    name = resource['name'][lang];
-    url = resource['url'];
+    const description = (resource.description?.[lang] ?? '').split(';');
+    const name = resource.name?.[lang] ?? '';
+    const url = resource.url;
 
-    type = description[0];
-    format = description[1];
-    languageRaw = description[2].replaceAll(',', ', ');
-    language = languageRaw.replaceAll(/eng|fra|zxx/gi, (x: keyof LanguageReplacements) => languageReplacements[x][translationLang]);
+    const type = description[0] ?? '';
+    const format = description[1] ?? '';
+    const languageRaw = (description[2] ?? '').replaceAll(',', ', ');
+    const language = languageRaw.replaceAll(/eng|fra|zxx/gi, (x: string) => {
+      const key = x.toLowerCase() as keyof LanguageReplacements;
+      return languageReplacements[key]?.[translationLang] ?? x;
+    });
 
     dataResources.push({
+      id: url,
       name: name,
       type: type,
       format: format,

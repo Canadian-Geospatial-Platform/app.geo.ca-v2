@@ -4,7 +4,9 @@
   filters, and sends the user back to the search page when the search button is clicked.
 ----------------------------------->
 <script lang="ts">
+  import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
+  import { resolve } from '$app/paths';
   import { goto } from '$app/navigation';
   import Search from '$lib/components/icons/search.svelte';
 
@@ -45,8 +47,7 @@
    * @param keyword - The keyword to search for.
    */
   function applyKeywordSearch(keyword: string): void {
-    let url = new URL(`${page.url.origin}/${page.data.lang}/map-browser`);
-    let query = new URLSearchParams(url.searchParams.toString());
+    let query = new SvelteURLSearchParams(page.url.searchParams.toString());
 
     if (keyword) {
       query.set('search-terms', keyword);
@@ -59,7 +60,9 @@
       replaceState: true,
       keepfocus: true,
     };
-    goto(`${url}?${query.toString()}`, opts);
+    // This component is used outside the search page, so it must navigate to map-browser explicitly.
+    // Navigating to '/?...' hits root redirect and can drop query params.
+    goto(resolve(`/${page.data.lang}/map-browser?${query.toString()}`), opts);
   }
 </script>
 

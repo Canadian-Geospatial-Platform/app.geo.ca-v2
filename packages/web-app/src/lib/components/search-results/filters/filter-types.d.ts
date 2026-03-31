@@ -1,5 +1,3 @@
-import type * as Kit from '@sveltejs/kit';
-
 export type FilterItem = {
   label: string;
   value: string;
