@@ -8,7 +8,7 @@
 </script>
 
 <nav class="flex justify-end space-x-8 items-end">
-  {#each Object.entries(navItems) as [colId, data]}
+  {#each Object.entries(navItems) as [colId, data] (colId)}
     {#if colId !== 'collections' || userId}
       <Navitem linkData={data} {orientation} dropDownClick={() => {}} />
     {/if}

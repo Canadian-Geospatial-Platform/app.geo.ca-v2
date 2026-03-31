@@ -33,7 +33,7 @@
   {themes?.label}
 </h3>
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
-  {#each themes.filterList as filterListItem}
+  {#each themes.filterList as filterListItem (`${themes.section}-${filterListItem.value}`)}
     <CheckboxCustomized
       checkboxId={`${themes.section}-${filterListItem.value}`}
       checkboxName={`${themes.section}-${filterListItem.value}`}

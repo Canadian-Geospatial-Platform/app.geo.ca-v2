@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { SvelteSet } from 'svelte/reactivity';
   import { page } from '$app/state';
   import SortDown from '$lib/components/icons/sort-down.svelte';
   import SortInactive from '$lib/components/icons/sort-inactive.svelte';
@@ -8,7 +9,7 @@
 
   // Every item in the array should have the same set of keys,
   // since the keys will become the column titles of the table
-  type TableContent = Array<Record<string, string> & { id: string; url?: string; disableCheckbox?: boolean }>;
+  type TableContent = Array<Record<string, string> & { url?: string; disableCheckbox?: boolean }>;
   type sortDirectionState = 0 | 1 | 2;
 
   interface Props {
@@ -81,7 +82,7 @@
       const needsUpdate = allIdsToSelect.some((id) => !currentSet.has(id));
 
       if (needsUpdate) {
-        const idSet = new Set(selectedIds);
+        const idSet = new SvelteSet(selectedIds);
         allIdsToSelect.forEach((id) => idSet.add(id));
         selectedIds = Array.from(idSet);
       }
@@ -129,7 +130,7 @@
    * Selects all visible rows.
    */
   function selectAll(): void {
-    const idSet = new Set(selectedIds);
+    const idSet = new SvelteSet(selectedIds);
     visibleRows.forEach((row) => {
       if (!row.disableCheckbox) {
         idSet.add(row.id);
@@ -178,7 +179,7 @@
    * @param rowId - The ID of the row whose checkbox changed.
    */
   function handleCheckboxOnChange(event: Event, rowId: string): void {
-    const idSet = new Set(selectedIds);
+    const idSet = new SvelteSet(selectedIds);
     if ((event.target as HTMLInputElement).checked) {
       idSet.add(rowId);
     } else {
@@ -242,9 +243,9 @@
           </th>
         {/if}
 
-        {#each tableLabelsArray as labelTranslation, i}
+        {#each tableLabelsArray as labelTranslation, index (`${index}-${labelTranslation}`)}
           <!-------------- Column Titles -------------->
-          <th class={[i === 0 && tableLabelsArray.length > 1 && 'w-1/2']}>
+          <th class={[index === 0 && tableLabelsArray.length > 1 && 'w-1/2']}>
             <div class="flex flex-row justify-between font-custom-style-header-1">
               {tableLabels[labelTranslation]}
               <button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
@@ -271,7 +272,7 @@
       </tr>
     </thead>
     <tbody>
-      {#each visibleRows as row}
+      {#each visibleRows as row, index (`${index}-${row.id}`)}
         <tr
           class={[
             clickableRows &&
@@ -307,19 +308,21 @@
             </td>
           {/if}
           {#if clickableRows && row?.url}
-            {#each tableLabelsArray as label}
+            {#each tableLabelsArray as label, index (`${index}-${label}`)}
               <!-------------- Clickable Row -------------->
               <td class="font-custom-style-body-4">
                 <a href={row.url} rel="external" class="block w-full h-full p-2.5">
+                  <!-- These are our labels, so no danger of injection -->
                   <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                   {@html row[label]}
                 </a>
               </td>
             {/each}
           {:else}
-            {#each tableLabelsArray as label}
+            {#each tableLabelsArray as label, index (`${index}-${label}`)}
               <!-------------- Non-Clickable Row -------------->
               <td class="font-custom-style-body-4 p-2.5">
+                <!-- These are our labels, so no danger of injection -->
                 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                 {@html row[label]}
               </td>

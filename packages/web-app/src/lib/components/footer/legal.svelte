@@ -30,11 +30,11 @@
     </div>
     <div class="legal-col md:text-right">
       <img class="w-28 md:ml-auto mb-5" src={logoUrl} alt={logoAlt} />
-      <p><a href={licenceUrl}>{license}</a></p>
+      <p><a href={licenceUrl} rel="external">{license}</a></p>
       <p>{copyright}</p>
       <p>
         {cdgi}
-        <a href={cdgiLink}>
+        <a href={cdgiLink} rel="external">
           {cdgiLinkText}
         </a>
         {cdgiAcronym}

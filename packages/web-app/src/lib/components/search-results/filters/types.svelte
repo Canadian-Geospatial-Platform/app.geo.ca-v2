@@ -33,7 +33,7 @@
   {types?.label}
 </h3>
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
-  {#each types.filterList as filterListItem}
+  {#each types.filterList as filterListItem (`${types.section}-${filterListItem.value}`)}
     <CheckboxCustomized
       checkboxId={`${types.section}-${filterListItem.value}`}
       checkboxName={`${types.section}-${filterListItem.value}`}

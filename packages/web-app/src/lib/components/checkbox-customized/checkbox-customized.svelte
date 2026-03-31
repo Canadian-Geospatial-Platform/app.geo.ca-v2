@@ -45,7 +45,8 @@
   />
   <label for={checkboxId}>
     {#if linkedLabel}
-      <a class="inline" href={link}>
+      <!-- This link can be external or internal, so we use fully constructed URL for relative paths -->
+      <a class="inline" href={link} rel="external">
         {checkboxLabel}
       </a>
     {:else}

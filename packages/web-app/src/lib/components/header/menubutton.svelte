@@ -7,6 +7,8 @@
     mainMenuVisible: boolean;
   }
 
+  // active and mainMenuVisible are both needed in the parent component (navbarvertical) and this component, so we bind them here to share the state between the two components.
+  // eslint-disable-next-line no-useless-assignment
   let { active = $bindable(), mainMenuVisible = $bindable() }: Props = $props();
 
   const translations = page.data.headerTranslations;

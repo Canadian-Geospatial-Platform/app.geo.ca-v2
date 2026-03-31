@@ -52,7 +52,7 @@
     </h2>
     <div class="flex mr-6 space-x-3 self-end">
       <!-------------- Tabs for large screens -------------->
-      {#each tabContentArray as tab}
+      {#each tabContentArray as tab (`tab-${tab.value}`)}
         <button
           class={[
             'hidden lg:flex items-center min-h-9 px-5 font-custom-style-body-3',
@@ -76,7 +76,7 @@
       <SelectCustomized optionsData={tabContentArray} selectType="tabCard" bind:selected={activeTab} selectedChange={handleTabClick} />
     </div>
   </div>
-  {#each tabContentArray as tabContent}
+  {#each tabContentArray as tabContent (`tab-${tabContent.value}`)}
     {#if activeTabId === tabContent.value}
       <Card type="tabbed">
         <div class="lg:hidden">

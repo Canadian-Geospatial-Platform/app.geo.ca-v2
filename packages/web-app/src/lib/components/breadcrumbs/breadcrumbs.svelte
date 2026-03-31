@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { resolve } from '$app/paths';
 
   // Assign a default lang to prevent 'undefined' in the url when lang is not set
   const lang = page.data.lang ?? 'en-ca';
@@ -22,13 +23,13 @@
 </script>
 
 <p class="flex flex-wrap px-5 md:px-0 gap-3">
-  {#each breadcrumbs as breadcrumb, i}
+  {#each breadcrumbs as breadcrumb, i (breadcrumb.href)}
     <!--
       A link isn't needed for the current page, but the search
       page link should always available from +error.svelte.
     -->
     {#if i < breadcrumbs.length - 1 || page.error}
-      <span><a href={breadcrumb.href}>{breadcrumb.text}</a></span>
+      <span><a href={resolve(breadcrumb.href)}>{breadcrumb.text}</a></span>
       /
     {:else}
       <span>{breadcrumb.text}</span>

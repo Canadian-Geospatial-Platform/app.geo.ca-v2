@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { page } from '$app/state';
   import { fly } from 'svelte/transition';
+  import { page } from '$app/state';
   import Chevronleft from '$lib/components/icons/chevronleft.svelte';
   import Chevronright from '$lib/components/icons/chevronright.svelte';
 
@@ -141,21 +141,21 @@
 
     <!-- Select Index Buttons -->
     <div class="grow flex justify-center text-center">
-      {#each cardData as card, j}
-        {#if j === activeIndex}
+      {#each cardData as card, index (`${index}-${card.title}`)}
+        {#if index === activeIndex}
           <button
             name={`Button-${card.title}`}
             class="card-index text-lg hover:text-xl text-custom-20"
-            onclick={() => handleIndexButtonClick(j)}
-            aria-label={similarRecordLabelPrefix + (j + 1)}
+            onclick={() => handleIndexButtonClick(index)}
+            aria-label={similarRecordLabelPrefix + (index + 1)}
           >
             &#x2B24;
           </button>
         {:else}
           <button
             class="card-index text-[10px] sm:text-[12px] hover:text-base text-custom-24 hover:text-custom-20"
-            onclick={() => handleIndexButtonClick(j)}
-            aria-label={similarRecordLabelPrefix + (j + 1)}
+            onclick={() => handleIndexButtonClick(index)}
+            aria-label={similarRecordLabelPrefix + (index + 1)}
           >
             &#x2B24;
           </button>

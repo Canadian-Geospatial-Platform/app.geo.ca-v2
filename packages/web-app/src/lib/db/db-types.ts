@@ -151,7 +151,6 @@ export interface UserInfo {
 export type FavouritesRow = {
   id: string;
   name: string;
-  url: string;
 };
 
 // GeospatialRecord with additional fields added by the API endpoint

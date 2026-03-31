@@ -2,6 +2,6 @@
   const { item } = $props();
 </script>
 
-{#each item.keywords as k}
-  <span property="keywords">{k}</span>
+{#each item.keywords as keyword, index (index)}
+  <span property="keywords">{keyword}</span>
 {/each}

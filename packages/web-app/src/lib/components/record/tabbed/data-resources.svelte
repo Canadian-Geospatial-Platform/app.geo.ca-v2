@@ -67,11 +67,11 @@
 
   <!-- Small - medium screen table -->
   <div class="block md:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
-    {#each dataResourcesList as dataResource}
+    {#each dataResourcesList as dataResource, index (`${index}-${dataResource.name}`)}
       <div class="py-5">
         <!-- Resource Name -->
         <h2 class="font-custom-style-h2-2 pb-2 hover:underline">
-          <a href={dataResource.url}>
+          <a href={dataResource.url} rel="external">
             {dataResource.name}
           </a>
         </h2>

@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
+  import { resolve } from '$app/paths';
   import { goto } from '$app/navigation';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
   import Card from '$lib/components/card/card.svelte';
@@ -71,7 +73,7 @@
    * @param keyword - The keyword to search for.
    */
   function applyKeywordSearch(keyword: string): void {
-    let query = new URLSearchParams(page.url.searchParams.toString());
+    let query = new SvelteURLSearchParams(page.url.searchParams.toString());
     if (keyword) {
       query.set('search-terms', keyword);
     } else {
@@ -83,7 +85,7 @@
       replaceState: true,
       keepfocus: true,
     };
-    goto(`?${query.toString()}`, opts);
+    goto(resolve(`/?${query.toString()}`), opts);
   }
 </script>
 

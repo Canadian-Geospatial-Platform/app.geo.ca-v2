@@ -6,17 +6,16 @@
 
 <div class="bg-custom-14">
   <div class="content-width grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-2 py-2 md:py-12 md:px-0">
-    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-    {#each Object.entries(linksData) as [colIndex, data]}
+    {#each Object.entries(linksData) as [colIndex, data] (colIndex)}
       <div class="p-3 font-custom-style-footer-1">
         {#if data?.title}
           <h3>{data['title']}</h3>
         {/if}
         {#if data?.links}
           <ul class="list-disc list-outside py-2 ml-[1.125rem]">
-            {#each data['links'] as link}
+            {#each data['links'] as link, index (`${index}-${link['href']}`)}
               <li class="py-2 font-custom-style-footer-2 hover:underline">
-                <a href={link['href']}>{link['title']}</a>
+                <a href={link['href']} rel="external">{link['title']}</a>
               </li>
             {/each}
           </ul>

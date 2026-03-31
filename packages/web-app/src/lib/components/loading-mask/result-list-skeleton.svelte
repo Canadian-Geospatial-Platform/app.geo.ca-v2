@@ -15,7 +15,7 @@
     <div class="h-11 w-full max-w-40 md:ml-auto div-fill"></div>
   </div>
   <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-  {#each Array(numRecords) as _}
+  {#each Array(numRecords) as _, index (index)}
     <!-- accordion placeholder -->
     <div class="px-5 py-4 bg-custom-1 rounded-sm">
       <div>

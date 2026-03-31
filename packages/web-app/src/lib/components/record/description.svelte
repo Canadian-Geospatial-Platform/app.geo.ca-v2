@@ -56,6 +56,7 @@
     {title}
   </h1>
   <p class="font-custom-style-body-1 mx-5 md:mx-0">
+    <!-- These are our descriptions, no injection risk -->
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html description}
   </p>

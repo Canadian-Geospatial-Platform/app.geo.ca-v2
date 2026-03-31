@@ -92,7 +92,7 @@
   </h2>
   <Card>
     <div class="card-div flex flex-col lg:flex-row lg:space-x-3 justify-between">
-      {#each topSection as [topItemLabel, topItemVal]}
+      {#each topSection as [topItemLabel, topItemVal] (`${topItemLabel}-${topItemVal}`)}
         <div class="top-table flex flex-col min-w-[15%]">
           <h3 class="pb-1 w-full font-semibold">{topItemLabel}</h3>
           <p class="w-full text-left">{topItemVal}</p>
@@ -107,7 +107,7 @@
 		            Distributor organization. url link to resource (if it exists).
 		    -->
       <div class="space-y-4">
-        {#each distributorOrgArray as distributor, i}
+        {#each distributorOrgArray as distributor, index (`${index}-${distributor}`)}
           <p>
             {#if distributor}
               {distributor}.
@@ -118,11 +118,10 @@
             {#if title}
               <span class="italic">{title}.</span>
             {/if}
-            {#if distributor}
-              {distributor}.
-            {/if}
-            {#if onlineResourceArray?.[i]}
-              <a href={onlineResourceArray[i]} class="underline hover:no-underline text-custom-16">{onlineResourceArray[i]}</a>
+            {#if onlineResourceArray?.[index]}
+              <a href={onlineResourceArray[index]} class="underline hover:no-underline text-custom-16" rel="external"
+                >{onlineResourceArray[index]}</a
+              >
             {/if}
           </p>
         {/each}

@@ -38,7 +38,7 @@
   {federal}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
-  {#each organizations.filterList as filterListItem}
+  {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}
     {#if filterListItem.subCategory === 'fed'}
       <div class="break-inside-avoid">
         <CheckboxCustomized
@@ -58,7 +58,7 @@
   {provincial}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
-  {#each organizations.filterList as filterListItem}
+  {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}
     {#if filterListItem.subCategory === 'prov'}
       <div class="break-inside-avoid">
         <CheckboxCustomized
