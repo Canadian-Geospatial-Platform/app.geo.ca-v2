@@ -273,6 +273,11 @@
         /*********** Modify Interaction ***********/
 
         const modifyStyle = { strokeWidth: 6 };
+        /**
+         * Disables insertion of new vertices while modifying the bbox polygon.
+         *
+         * @returns Always false to prevent adding vertices.
+         */
         const insertVertexCondition = () => false;
         const pixelTolerance = 15;
         const modifyInteraction = map.initModifyInteractions(groupKey, modifyStyle, insertVertexCondition, pixelTolerance);

@@ -7,6 +7,12 @@ type FeatureLike = {
   geometry?: { coordinates?: unknown };
 };
 
+/**
+ * Safely returns the first feature object from an unknown features payload.
+ *
+ * @param features - Potential array of feature-like objects.
+ * @returns The first feature when available and object-shaped, otherwise null.
+ */
 function getFirstFeature(features: unknown): FeatureLike | null {
   if (!Array.isArray(features) || features.length === 0) {
     return null;

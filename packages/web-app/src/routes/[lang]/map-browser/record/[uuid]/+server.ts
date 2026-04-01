@@ -1,15 +1,16 @@
 import type { GeospatialRecord } from '$lib/db/db-types.js';
 import { json } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
 /**
  * Handles POST requests to fetch records by IDs.
  *
- * @param request - The request object.
+ * @param event - The request event object.
  * @returns A promise that resolves to the record response.
  */
-export async function POST({ request }): Promise<Response> {
+export async function POST({ request }: RequestEvent): Promise<Response> {
   const { ids, lang } = await request.json();
 
   if (!Array.isArray(ids)) {
@@ -46,7 +47,7 @@ function getRecord(id: string, lang: string): Promise<Response> {
  * @returns A promise that resolves to an array of records.
  */
 async function getRecordsByIds(idIterator: string[], lang: string): Promise<GeospatialRecord[]> {
-  const promises = [];
+  const promises: Promise<Response>[] = [];
 
   for (const id of idIterator) {
     promises.push(getRecord(id, lang));
@@ -58,11 +59,12 @@ async function getRecordsByIds(idIterator: string[], lang: string): Promise<Geos
     results.map(async (result: Response) => {
       try {
         const contents = await result.json();
-        if (contents?.body?.Items[0]) return contents.body.Items[0];
+        if (contents?.body?.Items[0]) return contents.body.Items[0] as GeospatialRecord;
       } catch (error) {
         console.log(error);
       }
+      return null;
     })
   );
-  return ret;
+  return ret.filter((item): item is GeospatialRecord => item !== null);
 }

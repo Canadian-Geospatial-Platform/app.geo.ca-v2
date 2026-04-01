@@ -5,6 +5,28 @@ import { parseText } from '$lib/utils/parse-text';
 import { formatNumber } from '$lib/utils/format-number';
 import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
 import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '$lib/db/db-types';
+import { error } from '@sveltejs/kit';
+
+type MutableGeospatialRecord = Omit<GeospatialRecord, 'keywords' | 'topicCategory'> & {
+  keywords: string | string[];
+  topicCategory: string | string[];
+  bbox?: { north: number; east: number; south: number; west: number };
+};
+
+type RecordHits = {
+  last_30_days?: number;
+  all_time?: number;
+};
+
+type RecordApiResponse = {
+  body?: { Items?: GeospatialRecord[] };
+  hits?: RecordHits;
+};
+
+type AnalyticsSummary = {
+  '30'?: string;
+  all?: string;
+};
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
   // The "sst/node/config" package dynamically binds resources at runtime.
@@ -16,7 +38,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 
   const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
-  let record;
+  let record: RecordApiResponse | null = null;
   const response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
   try {
     record = await response.json();
@@ -30,10 +52,16 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
    * @param item - The record item.
    * @returns An array of similarity records.
    */
-  function extractSimilar(item: GeospatialRecord): SimilarityRecord[] {
+  function extractSimilar(item: { similarity?: SimilarityRecord[] }): SimilarityRecord[] {
     return Array.isArray(item?.similarity) ? item.similarity : [];
   }
 
+  /**
+   * Fetches parent, sibling, and child records related to a collection record.
+   *
+   * @param id - The record ID used to query related collection items.
+   * @returns A promise that resolves to related records with their relationship type.
+   */
   const fetchRelated = async (id: string): Promise<GeospatialRecord[]> => {
     try {
       const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
@@ -62,11 +90,11 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   };
 
   // Extract analytics from record.hits
-  let analyticRes = {};
+  let analyticRes: AnalyticsSummary = {};
   if (record?.hits) {
     analyticRes = {
-      '30': formatNumber(record.hits.last_30_days),
-      all: formatNumber(record.hits.all_time),
+      '30': formatNumber(record.hits.last_30_days ?? 0),
+      all: formatNumber(record.hits.all_time ?? 0),
     };
   }
 
@@ -74,9 +102,12 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 
   const related = await fetchRelated(params.uuid);
 
-  const item_v2 = record.body.Items[0];
+  const item_v2 = record?.body?.Items?.[0] as MutableGeospatialRecord | undefined;
+  if (!item_v2) {
+    throw error(404, 'Record not found');
+  }
 
-  if (item_v2?.keywords) {
+  if (typeof item_v2?.keywords === 'string') {
     item_v2.keywords = item_v2.keywords.split(',');
   }
 
@@ -109,10 +140,15 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   }
 
   // If coordinates are a string, convert them to an array (or nested arrays) instead
-  let coords = item_v2.coordinates ?? [];
+  let coords: unknown = item_v2.coordinates ?? [];
 
   if (typeof item_v2.coordinates === 'string') {
-    coords = JSON.parse(coords);
+    try {
+      coords = JSON.parse(item_v2.coordinates);
+    } catch (parseError) {
+      console.error('Invalid coordinates JSON:', parseError);
+      coords = [];
+    }
   }
 
   // Normalize to number[][] for use with map component (keep original as string per GeospatialRecord)
