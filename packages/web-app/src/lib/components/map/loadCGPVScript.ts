@@ -18,7 +18,7 @@ export async function loadCGPVScript(): Promise<void> {
     script.id = 'cgpv-script';
     // Link for current dev build: https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js
     // Link for release builds: https://viewer-visualiseur.services.geo.ca/apps/GeoView/X.X.X/cgpv-main.js
-    script.src = 'https://canadian-geospatial-platform.github.io/geoview/public/cgpv-main.js';
+    script.src = 'https://viewer-visualiseur.services.geo.ca/apps/GeoView/2.2.0/cgpv-main.js';
     script.async = true;
 
     const loadPromise = new Promise<void>((resolve, reject) => {

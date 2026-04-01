@@ -74,8 +74,12 @@
   onMount((): (() => void) => {
     checkScreenSize();
 
-    // Update map visibility on window resize
+    /**
+     * Recomputes map visibility after viewport resize.
+     */
     const resizeListener = () => checkScreenSize();
+
+    // Update map visibility on window resize
     window.addEventListener('resize', resizeListener);
 
     // Remove the event listener when the component is destroyed

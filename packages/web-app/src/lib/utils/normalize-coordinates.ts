@@ -1,5 +1,8 @@
 /**
  * Type guard to check if a value is a coordinate pair [number, number].
+ *
+ * @param value - The value to check.
+ * @returns True if the value is a coordinate pair, false otherwise.
  */
 function isCoordinatePair(value: unknown): value is [number, number] {
   return Array.isArray(value) && value.length === 2 && typeof value[0] === 'number' && typeof value[1] === 'number';

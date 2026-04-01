@@ -26,6 +26,7 @@
   /************* User Data ***************/
   const userId = page.data.userData?.uuid;
 
+  // TODO: Centralize translations
   /************* Translations ***************/
   const translations = page.data.t;
 
@@ -119,6 +120,7 @@
     const query = new SvelteURLSearchParams(page.url.searchParams.toString());
     query.set('page-number', `${currentPage - 1}`);
     query.set('results-per-page', `${itemsPerPage}`);
+
     // Pagination must keep the user on the current localized search-results route.
     // eslint-disable-next-line svelte/no-navigation-without-resolve
     goto(`${page.url.pathname}?${query.toString()}`, { invalidateAll: true });

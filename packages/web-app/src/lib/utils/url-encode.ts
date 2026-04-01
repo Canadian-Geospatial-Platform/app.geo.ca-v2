@@ -1,11 +1,14 @@
 /**
+ * Primitive values accepted by the URL encoder.
+ */
+type UrlEncodable = string | number | boolean | null | undefined;
+
+/**
  * URL-encodes an object of key-value pairs.
  *
  * @param data - The data object to be URL-encoded.
  * @returns The URL-encoded string.
  */
-type UrlEncodable = string | number | boolean | null | undefined;
-
 export function urlEncode(data: Record<string, UrlEncodable>): string {
   const formBody: string[] = [];
   for (const property in data) {

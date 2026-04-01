@@ -180,6 +180,7 @@
    * Sets the filter count based on the URL parameters.
    *
    * @param searchParams - The URL search parameters.
+   * @returns The count of active filters.
    */
   function getFilterCountFromUrl(searchParams: URLSearchParams): number {
     const filterLists = {

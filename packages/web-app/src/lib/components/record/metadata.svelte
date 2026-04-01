@@ -104,10 +104,11 @@
     <div class="card-div">
       <h3 class="font-semibold">{sourcesText}</h3>
       <!--
-		        Citation entries should be in this format:
-		            Publisher organization. (published date). <i>Name of resource</i>.
-		            Distributor organization. url link to resource (if it exists).
-		    -->
+        Citation entries should be in this format:
+        Publisher organization. (published date). <i>Name of resource</i>.
+        Distributor organization. url link to resource (if it exists).
+        TODO: Publisher and distributor were both using distributor. Removed second instance, add publisher back in when it is available.
+      -->
       <div class="space-y-4">
         {#each distributorOrgArray as distributor, index (`${index}-${distributor}`)}
           <p>

@@ -1,11 +1,7 @@
 import type { DistributionOption } from '$lib/db/db-types';
 
 /**
- * Parses raw data resources from a metadata record into a structured array.
- *
- * @param dataResourcesRaw - Raw data resources array from the metadata record.
- * @param lang - Language code ('en' or 'fr').
- * @returns Parsed data resources array.
+ * Parsed representation of a distribution option row.
  */
 export type ParsedDataResource = {
   id: string;
@@ -16,6 +12,13 @@ export type ParsedDataResource = {
   url: string;
 };
 
+/**
+ * Parses raw data resources from a metadata record into a structured array.
+ *
+ * @param dataResourcesRaw - Raw data resources array from the metadata record.
+ * @param lang - Language code ('en' or 'fr').
+ * @returns Parsed data resources array.
+ */
 export function parseDataResources(dataResourcesRaw: DistributionOption[], lang: 'en' | 'fr'): ParsedDataResource[] {
   type Translation = {
     en: string;
