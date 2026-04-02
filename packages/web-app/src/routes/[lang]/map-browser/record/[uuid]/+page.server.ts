@@ -14,15 +14,32 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
   const lang = params.lang === 'en-ca' ? 'en' : 'fr';
+  
+  const serverEndpoint = new URL(
+    `/${params.lang}/map-browser/record/${params.uuid}`,
+    url.origin
+  );
+  
+  serverEndpoint.searchParams.set('id', params.uuid);
+  serverEndpoint.searchParams.set('lang', lang);
+  
+  const ip =
+  request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? '';
 
-  let record;
-  let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
+  let record: any;
   try {
+    const response = await fetch(serverEndpoint.toString(), {
+      method: 'GET',
+      headers: {
+        'x-forwarded-for': ip
+      }
+    });
+  
     record = await response.json();
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching record from internal endpoint:', error);
+    record = { body: { Items: [] } };
   }
-
   /**
    * Extracts similarity records from a GeospatialRecord item.
    *
@@ -73,7 +90,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 
   const related = await fetchRelated(params.uuid);
 
-  let item_v2 = record.body.Items[0];
+  let item_v2 = record[0];
 
   if (item_v2?.keywords) {
     item_v2.keywords = item_v2.keywords.split(',');

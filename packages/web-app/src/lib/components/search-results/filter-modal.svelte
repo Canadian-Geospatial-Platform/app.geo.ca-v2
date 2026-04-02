@@ -267,6 +267,20 @@
     const sourceSystem = filters.sourceSystem;
 
     const query = new URLSearchParams(page.url.searchParams.toString());
+    
+    const typeLogic = typeCompontent?.getLogic();
+    if (typeLogic === 'any' || typeLogic === 'all') {
+    	query.set('type_logic', typeLogic);
+    } else {
+    	query.delete('type_logic');
+    }
+    
+    const themeLogic = themeCompontent?.getLogic();
+    if (themeLogic === 'any' || themeLogic === 'all') {
+    	query.set('theme_logic', themeLogic);
+    } else {
+    	query.delete('theme_logic');
+    }
 
     // BBOX
     if (bbox) {

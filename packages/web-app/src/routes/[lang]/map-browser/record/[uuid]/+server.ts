@@ -4,22 +4,29 @@ import { json } from '@sveltejs/kit';
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
 /**
- * Handles POST requests to fetch records by IDs.
+ * Handles GET requests to fetch records by IDs.
  *
  * @param request - The request object.
  * @returns A promise that resolves to the record response.
  */
-export async function POST({ request }): Promise<Response> {
-  const { ids, lang } = await request.json();
+export async function GET({ url, request, fetch }): Promise<Response> {
+  const idsParam = url.searchParams.get('id'); 
+  const lang = url.searchParams.get('lang') ?? 'en';
 
-  if (!Array.isArray(ids)) {
-    return json({ error: 'Invalid IDs' }, { status: 400 });
+  if (!idsParam) {
+    return json({ error: 'Missing IDs' }, { status: 400 });
   }
 
-  const records: GeospatialRecord[] = await getRecordsByIds(ids, lang);
+  const ids = idsParam.split(',');
+
+  const ip =
+    request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? '';
+
+  const records: GeospatialRecord[] = await getRecordsByIds(ids, lang, fetch, ip);
 
   return json(records);
 }
+
 
 /**
  * Gets a record from the GeoCore API.
@@ -28,14 +35,28 @@ export async function POST({ request }): Promise<Response> {
  * @param lang - The language code.
  * @returns A promise that resolves to the fetch response.
  */
-function getRecord(id: string, lang: string): Promise<Response> {
+async function getRecord(
+  id: string,
+  lang: string,
+  fetch: typeof globalThis.fetch,
+  ip: string
+): Promise<Response> {
   const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
+
   const params = {
-    id: id,
+    id,
     lang: lang.split('-')[0],
   };
+
   url.search = new URLSearchParams(params).toString();
-  return fetch(url);
+
+  const response = await fetch(url, {
+    headers: {
+      'x-forwarded-for': ip,
+    },
+  });
+
+  return response;
 }
 
 /**
@@ -45,11 +66,16 @@ function getRecord(id: string, lang: string): Promise<Response> {
  * @param lang - The language code.
  * @returns A promise that resolves to an array of records.
  */
-async function getRecordsByIds(idIterator: string[], lang: string): Promise<GeospatialRecord[]> {
+async function getRecordsByIds(
+  idIterator: string[], 
+  lang: string,
+  fetch: typeof globalThis.fetch,
+  ip: string
+): Promise<GeospatialRecord[]> {
   let promises = [];
 
   for (const id of idIterator) {
-    promises.push(getRecord(id, lang));
+    promises.push(getRecord(id, lang, fetch, ip));
   }
 
   const results = await Promise.all(promises);
