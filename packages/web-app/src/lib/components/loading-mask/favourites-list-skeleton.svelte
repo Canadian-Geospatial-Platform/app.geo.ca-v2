@@ -42,7 +42,7 @@
 
     <tbody>
       <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-      {#each Array(numRecords) as _}
+      {#each Array(numRecords) as _, index (index)}
         <tr>
           <!-- checkbox column placeholder-->
           <td>

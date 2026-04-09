@@ -26,7 +26,7 @@
   const data = page.data;
   const lang = data.lang;
   const langPrefix = lang.split('-')[0] as 'en' | 'fr';
-  const properties = data.item_v2;
+  const properties = data.item_v2!;
 
   // Top Section
   const dateCreated = properties.created || 'N/A';
@@ -52,8 +52,10 @@
 
   // Sources
   const title = properties.title;
-  const distributors: ContactInfo[] = properties.distributor || [];
-  const distributorOrgArray = distributors.map((distributor: ContactInfo) => distributor?.organisation[langPrefix]);
+  const distributors: ContactInfo[] = (properties.distributor || []).filter(
+    (distributor): distributor is ContactInfo => distributor !== null
+  );
+  const distributorOrgArray = distributors.map((distributor: ContactInfo) => distributor.organisation[langPrefix]);
 
   const onlineResourceArray = distributors
     ? distributors.map((distributor: ContactInfo) => {
@@ -77,7 +79,7 @@
   if (legalConstraints) {
     const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
     try {
-      const useLimitationsUrl = legalConstraints.match(urlRegEx)[0];
+      const useLimitationsUrl = legalConstraints.match(urlRegEx)?.[0] || '';
       const useLimitationsLabel = legalConstraints.split(' (')[0];
       useLimitations = `<a href="${useLimitationsUrl}" class="underline hover:no-underline text-custom-16">${useLimitationsLabel}</a>`;
     } catch {
@@ -92,7 +94,7 @@
   </h2>
   <Card>
     <div class="card-div flex flex-col lg:flex-row lg:space-x-3 justify-between">
-      {#each topSection as [topItemLabel, topItemVal]}
+      {#each topSection as [topItemLabel, topItemVal] (`${topItemLabel}-${topItemVal}`)}
         <div class="top-table flex flex-col min-w-[15%]">
           <h3 class="pb-1 w-full font-semibold">{topItemLabel}</h3>
           <p class="w-full text-left">{topItemVal}</p>
@@ -102,12 +104,13 @@
     <div class="card-div">
       <h3 class="font-semibold">{sourcesText}</h3>
       <!--
-		        Citation entries should be in this format:
-		            Publisher organization. (published date). <i>Name of resource</i>.
-		            Distributor organization. url link to resource (if it exists).
-		    -->
+        Citation entries should be in this format:
+        Publisher organization. (published date). <i>Name of resource</i>.
+        Distributor organization. url link to resource (if it exists).
+        TODO: Publisher and distributor were both using distributor. Removed second instance, add publisher back in when it is available.
+      -->
       <div class="space-y-4">
-        {#each distributorOrgArray as distributor, i}
+        {#each distributorOrgArray as distributor, index (`${index}-${distributor}`)}
           <p>
             {#if distributor}
               {distributor}.
@@ -118,11 +121,10 @@
             {#if title}
               <span class="italic">{title}.</span>
             {/if}
-            {#if distributor}
-              {distributor}.
-            {/if}
-            {#if onlineResourceArray?.[i]}
-              <a href={onlineResourceArray[i]} class="underline hover:no-underline text-custom-16">{onlineResourceArray[i]}</a>
+            {#if onlineResourceArray?.[index]}
+              <a href={onlineResourceArray[index]} class="underline hover:no-underline text-custom-16" rel="external"
+                >{onlineResourceArray[index]}</a
+              >
             {/if}
           </p>
         {/each}

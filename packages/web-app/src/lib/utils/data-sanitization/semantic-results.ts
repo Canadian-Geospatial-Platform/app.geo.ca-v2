@@ -27,12 +27,12 @@ export function sanitizeSemantic(results: SemanticResult[]): SemanticResultWithC
   }
 
   // Keep only valid results
-  let truthyResults = results.filter((result) => result);
+  const truthyResults = results.filter((result) => result);
 
   // For each result, get the properties and coordinates
-  let features = truthyResults.map((truthyResult: SemanticResult) => {
-    let properties = truthyResult.features[0].properties;
-    let coords = truthyResult.features[0].geometry.coordinates;
+  const features = truthyResults.map((truthyResult: SemanticResult) => {
+    const properties = truthyResult.features[0].properties;
+    const coords = truthyResult.features[0].geometry.coordinates;
     return {
       ...properties,
       coordinates: coords,

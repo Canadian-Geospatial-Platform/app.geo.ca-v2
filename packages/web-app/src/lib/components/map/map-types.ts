@@ -25,7 +25,7 @@ export type GeoviewConfig = {
   };
   theme?: string;
   components: string[];
-  corePackages?: any[];
+  corePackages?: unknown[];
   appBar?: {
     tabs: {
       core: string[];

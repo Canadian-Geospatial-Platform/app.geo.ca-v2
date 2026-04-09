@@ -47,7 +47,7 @@ export const parseText = function (text: string): string {
 
   const textWithPlaceholders = text.replaceAll(markdownLinkRegEx, (x, text, url) => {
     // Store the html version of the link in the links array
-    let link = `<a href="${url}" class="underline hover:no-underline decoration-from-font text-custom-16">${text}</a>`;
+    const link = `<a href="${url}" class="underline hover:no-underline decoration-from-font text-custom-16">${text}</a>`;
     links.push(link);
 
     // Replace with the placeholder text for now

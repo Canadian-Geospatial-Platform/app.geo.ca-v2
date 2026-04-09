@@ -1,14 +1,40 @@
 import type { PageServerLoad } from './$types';
 import { getRecord } from '$lib/db/record';
+import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
 
-export const load: PageServerLoad = async ({ fetch, params, url }) => {
-  let record;
-  let features;
-  let properties;
+type FeatureLike = {
+  properties?: { title?: string };
+  geometry?: { coordinates?: unknown };
+};
+
+/**
+ * Safely returns the first feature object from an unknown features payload.
+ *
+ * @param features - Potential array of feature-like objects.
+ * @returns The first feature when available and object-shaped, otherwise null.
+ */
+function getFirstFeature(features: unknown): FeatureLike | null {
+  if (!Array.isArray(features) || features.length === 0) {
+    return null;
+  }
+
+  const first = features[0];
+  if (!first || typeof first !== 'object') {
+    return null;
+  }
+
+  return first as FeatureLike;
+}
+
+export const load: PageServerLoad = async ({ params, url }) => {
+  let title = '';
+  let coordinates: number[][] | null = null;
   try {
-    record = await getRecord(params.uuid);
-    features = record?.features[0];
-    properties = features?.properties;
+    const record = await getRecord(params.uuid);
+    const feature = getFirstFeature(record?.features);
+
+    title = feature?.properties?.title ?? '';
+    coordinates = normalizeCoordinates(feature?.geometry?.coordinates, true) || null;
   } catch (e) {
     console.warn('error fetching record for microdata:\n', e);
   }
@@ -23,11 +49,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
       href: `${url.origin}/${params.lang}/map-browser/record/${params.uuid}`,
     },
     tTitle3: {
-      text: properties.title,
+      text: title,
       href: url.href,
     },
     lang: params.lang,
     uuid: params.uuid,
-    coordinates: features.geometry.coordinates,
+    coordinates,
   };
 };

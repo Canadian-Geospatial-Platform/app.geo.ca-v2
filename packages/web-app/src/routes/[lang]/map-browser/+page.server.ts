@@ -4,7 +4,21 @@ import { getUserData } from '$lib/db/user';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results';
 import { formatNumber } from '$lib/utils/format-number';
-import type { UserInfo } from '$lib/db/db-types';
+import type { GeospatialRecord, UserInfo } from '$lib/db/db-types';
+
+interface ParsedResponse {
+  Items?: GeospatialRecord[];
+  response?: {
+    items?: Parameters<typeof sanitizeSemantic>[0];
+    total_hits?: number;
+  };
+}
+
+interface AnalyticsItem {
+  total?: string;
+  organization?: string;
+  [key: string]: string | undefined;
+}
 
 interface SearchParams {
   north?: number | string;
@@ -53,7 +67,7 @@ const SEMANTIC_SEARCH_URL = process.env.SEMANTIC_SEARCH_URL;
 const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-  let searchMode = url.searchParams.get('searchMethod') === 'classic' ? 'classic' : 'semantic';
+  const searchMode = url.searchParams.get('searchMethod') === 'classic' ? 'classic' : 'semantic';
   let response;
   if (searchMode === 'classic') {
     response = await generateUrl(
@@ -72,16 +86,16 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
       request.headers.get('x-forwarded-for') || ''
     );
   }
-  let analytics = await getAnalytics(fetch);
-  let parsedResponse = [];
+  const analytics = await getAnalytics(fetch);
+  let parsedResponse: ParsedResponse = {};
   let userData: UserInfo = { Item: { uuid: '', favourites: [] } };
-  let sanitizedResults: string | any[] = [];
+  let sanitizedResults: ReturnType<typeof sanitize> | ReturnType<typeof sanitizeSemantic> = [];
   try {
-    parsedResponse = await response.json();
+    parsedResponse = (await response.json()) as ParsedResponse;
     if (searchMode === 'classic') {
-      sanitizedResults = sanitize(parsedResponse.Items, params.lang);
+      sanitizedResults = sanitize(parsedResponse.Items ?? [], params.lang);
     } else {
-      sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items);
+      sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items ?? []);
     }
   } catch (e) {
     console.error(e);
@@ -89,7 +103,8 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 
   let totalHits;
   if (searchMode === 'classic') {
-    totalHits = parseInt(sanitizedResults?.[0]?.total ? sanitizedResults[0].total : 0);
+    const firstResult = sanitizedResults[0] as (GeospatialRecord & { total?: string }) | undefined;
+    totalHits = parseInt(firstResult?.total ?? '0', 10);
   } else {
     totalHits = parsedResponse?.response?.total_hits ?? 0;
   }
@@ -142,7 +157,7 @@ function generateUrl(
   token: string,
   ip: string
 ): Promise<Response> {
-  let url = new URL(`${GEOCORE_API_DOMAIN}/geo`);
+  const url = new URL(`${GEOCORE_API_DOMAIN}/geo`);
   const params = mapSearchParams(searchParams, lang);
   // URLSearchParams automatically encodes special characters to the html counterpart.
   // However, the geocore get requests require the '+' to be unencoded, so
@@ -181,7 +196,7 @@ function generateSemanticUrl(
   // Testing staging version of semantic search instead of the prod version.
   // Commenting out prod url out for now in case we decide to switch back.
   // let url = new URL(SEMANTIC_SEARCH_URL);
-  let url = new URL(`${SEMANTIC_SEARCH_URL}/search-opensearch`);
+  const url = new URL(`${SEMANTIC_SEARCH_URL}/search-opensearch`);
 
   const params = mapSemanticSearchResults(searchParams, lang);
   // URLSearchParams automatically encodes special characters to the html counterpart.
@@ -203,20 +218,21 @@ function generateSemanticUrl(
  * @returns The analytics results.
  * @async
  */
-async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<any> {
-  let analytics = await fetch(`${GEOCORE_API_DOMAIN}/analytics/11`);
-  let parsedAnalytics = [];
+async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<AnalyticsItem> {
+  const analytics = await fetch(`${GEOCORE_API_DOMAIN}/analytics/11`);
+  let parsedAnalytics: { Items: AnalyticsItem[] } = { Items: [] };
 
   try {
-    parsedAnalytics = await analytics.json();
+    const payload = (await analytics.json()) as { Items?: AnalyticsItem[] };
+    parsedAnalytics = { Items: payload.Items ?? [] };
   } catch (e) {
     console.error(e);
   }
 
   for (let i = 0; i < parsedAnalytics.Items.length; i++) {
-    let item = parsedAnalytics.Items[i];
-    let total = item?.total;
-    let organization = item?.organization;
+    const item = parsedAnalytics.Items[i];
+    const total = item?.total;
+    const organization = item?.organization;
 
     parsedAnalytics.Items[i].total = total ? formatNumber(total) : 'N/A';
     parsedAnalytics.Items[i].organization = organization ? formatNumber(organization) : 'N/A';
@@ -233,7 +249,7 @@ async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) =>
  * @returns The mapped search parameters.
  */
 function mapSearchParams(searchParams: URLSearchParams, lang: string): SearchParams {
-  let mappedParams: SearchParams = {
+  const mappedParams: SearchParams = {
     north: searchParams.get('north') ?? 90,
     east: searchParams.get('east') ?? 180,
     south: searchParams.get('south') ?? -90,
@@ -265,13 +281,13 @@ function mapSearchParams(searchParams: URLSearchParams, lang: string): SearchPar
  * @returns The mapped search parameters.
  */
 function mapSemanticSearchResults(searchParams: URLSearchParams, lang: string): SemanticSearchParams {
-  let west = searchParams.get('west') ?? -180;
-  let north = searchParams.get('north') ?? 90;
-  let east = searchParams.get('east') ?? 180;
-  let south = searchParams.get('south') ?? -90;
-  let bbox = searchParams.get('bbox') ? `${west},${south},${east},${north}` : '';
-  let searchTerms = searchParams.get('search-terms');
-  let mappedParams: SemanticSearchParams = {
+  const west = searchParams.get('west') ?? -180;
+  const north = searchParams.get('north') ?? 90;
+  const east = searchParams.get('east') ?? 180;
+  const south = searchParams.get('south') ?? -90;
+  const bbox = searchParams.get('bbox') ? `${west},${south},${east},${north}` : '';
+  const searchTerms = searchParams.get('search-terms');
+  const mappedParams: SemanticSearchParams = {
     // Revisit which search method is better after user testing
     method: 'SemanticSearch', // 'HybridSearch',
     q: searchTerms ? searchTerms.replaceAll('"', '') : '',

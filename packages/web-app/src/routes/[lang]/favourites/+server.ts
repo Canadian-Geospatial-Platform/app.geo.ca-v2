@@ -26,7 +26,7 @@ export async function POST({ request }: { request: Request }): Promise<Response>
   // Update the record data with the following:
   //   (1) a list of resource formats
   //   (2) a boolean including if the resource has a map layer
-  for (let record of records) {
+  for (const record of records) {
     if (!record) continue;
 
     const formats = getFormats(record, lang);
@@ -155,7 +155,7 @@ async function checkForMapLayers(ids: string[], lang: string): Promise<string[]>
  * @returns A promise that resolves to an array of records.
  */
 async function getRecordsByIds(idIterator: Iterable<string>, lang: string, ip: string): Promise<GeospatialRecord[]> {
-  let promises = [];
+  const promises = [];
 
   for (const id of idIterator) {
     promises.push(getRecord(id, lang, ip));

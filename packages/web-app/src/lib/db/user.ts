@@ -14,7 +14,7 @@ const docClient = DynamoDBDocumentClient.from(client);
  * @returns A promise that resolves to the user data.
  */
 const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
-  let token: TokenResponse = await getToken(cookies);
+  const token: TokenResponse = await getToken(cookies);
   if (!token.ok) return { Item: { uuid: null, favourites: [] } };
   const command = new GetCommand({
     TableName: process.env.USER_TABLE_NAME,
@@ -42,7 +42,7 @@ const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
  * @returns A promise that resolves to the result of the operation.
  */
 const putUserData = async (data: Partial<UserData>, cookies: Cookies): Promise<Record<'ok', boolean>> => {
-  let token: TokenResponse = await getToken(cookies);
+  const token: TokenResponse = await getToken(cookies);
   if (!token.ok) return { ok: false };
   data.uuid = token.value!.username;
   await docClient.send(

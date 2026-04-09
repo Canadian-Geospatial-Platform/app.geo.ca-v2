@@ -3,20 +3,43 @@ import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { parseText } from '$lib/utils/parse-text';
 import { formatNumber } from '$lib/utils/format-number';
+import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
 import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '$lib/db/db-types';
+import { error } from '@sveltejs/kit';
+
+type MutableGeospatialRecord = Omit<GeospatialRecord, 'keywords' | 'topicCategory'> & {
+  keywords: string | string[];
+  topicCategory: string | string[];
+  bbox?: { north: number; east: number; south: number; west: number };
+};
+
+type RecordHits = {
+  last_30_days?: number;
+  all_time?: number;
+};
+
+type RecordApiResponse = {
+  body?: { Items?: GeospatialRecord[] };
+  hits?: RecordHits;
+};
+
+type AnalyticsSummary = {
+  '30'?: string;
+  all?: string;
+};
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
   // The "sst/node/config" package dynamically binds resources at runtime.
   // Importing it at the top level would cause build-time errors because SST resources
   // are not available during the build process. To avoid this, we import it inside
   // the `load()` function so it's only accessed when the server is running.
-  const config = await import('sst/node/config');
+  await import('sst/node/config');
   const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 
   const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
-  let record;
-  let response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
+  let record: RecordApiResponse | null = null;
+  const response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
   try {
     record = await response.json();
   } catch (error) {
@@ -29,10 +52,16 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
    * @param item - The record item.
    * @returns An array of similarity records.
    */
-  function extractSimilar(item: GeospatialRecord): SimilarityRecord[] {
+  function extractSimilar(item: { similarity?: SimilarityRecord[] }): SimilarityRecord[] {
     return Array.isArray(item?.similarity) ? item.similarity : [];
   }
 
+  /**
+   * Fetches parent, sibling, and child records related to a collection record.
+   *
+   * @param id - The record ID used to query related collection items.
+   * @returns A promise that resolves to related records with their relationship type.
+   */
   const fetchRelated = async (id: string): Promise<GeospatialRecord[]> => {
     try {
       const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
@@ -61,21 +90,24 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   };
 
   // Extract analytics from record.hits
-  let analyticRes = {};
+  let analyticRes: AnalyticsSummary = {};
   if (record?.hits) {
     analyticRes = {
-      '30': formatNumber(record.hits.last_30_days),
-      all: formatNumber(record.hits.all_time),
+      '30': formatNumber(record.hits.last_30_days ?? 0),
+      all: formatNumber(record.hits.all_time ?? 0),
     };
   }
 
-  let t = params.lang === 'en-ca' ? enLabels : frLabels;
+  const t = params.lang === 'en-ca' ? enLabels : frLabels;
 
   const related = await fetchRelated(params.uuid);
 
-  let item_v2 = record.body.Items[0];
+  const item_v2 = record?.body?.Items?.[0] as MutableGeospatialRecord | undefined;
+  if (!item_v2) {
+    throw error(404, 'Record not found');
+  }
 
-  if (item_v2?.keywords) {
+  if (typeof item_v2?.keywords === 'string') {
     item_v2.keywords = item_v2.keywords.split(',');
   }
 
@@ -108,12 +140,19 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   }
 
   // If coordinates are a string, convert them to an array (or nested arrays) instead
-  let coords = item_v2.coordinates ?? [];
+  let coords: unknown = item_v2.coordinates ?? [];
 
   if (typeof item_v2.coordinates === 'string') {
-    coords = JSON.parse(coords);
-    item_v2.coordinates = coords;
+    try {
+      coords = JSON.parse(item_v2.coordinates);
+    } catch (parseError) {
+      console.error('Invalid coordinates JSON:', parseError);
+      coords = [];
+    }
   }
+
+  // Normalize to number[][] for use with map component (keep original as string per GeospatialRecord)
+  const normalizedCoordinates = normalizeCoordinates(coords, false) || [];
 
   // We can also add a bounding box key to get the north, east, west, and south
   // values for the advanced metadata. But first, we need to get the values from
@@ -123,11 +162,15 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   let south = Infinity;
   let north = -Infinity;
 
-  coords.flat().forEach(([x, y]: [number, number]) => {
-    if (x < west) west = x; // West
-    if (x > east) east = x; // East
-    if (y < south) south = y; // South
-    if (y > north) north = y; // North
+  // Use normalized coordinates for bbox calculation (filter to ensure pairs)
+  normalizedCoordinates.forEach((coord) => {
+    if (Array.isArray(coord) && coord.length === 2) {
+      const [x, y] = coord as [number, number];
+      if (x < west) west = x; // West
+      if (x > east) east = x; // East
+      if (y < south) south = y; // South
+      if (y > north) north = y; // North
+    }
   });
 
   item_v2.bbox = {
@@ -179,6 +222,8 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     alternateUrl: alternateUrl,
     alternateLang: alternateLang,
     metaDescription: metaDescription,
+    // Pass normalized coordinates separately for map display
+    coordinates: normalizedCoordinates,
   };
 
   /**
@@ -198,7 +243,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     token: string,
     ip: string
   ): Promise<Response> {
-    let url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
+    const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
 
     return fetch(url, {
       headers: {

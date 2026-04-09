@@ -74,8 +74,12 @@
   onMount((): (() => void) => {
     checkScreenSize();
 
-    // Update map visibility on window resize
+    /**
+     * Recomputes map visibility after viewport resize.
+     */
     const resizeListener = () => checkScreenSize();
+
+    // Update map visibility on window resize
     window.addEventListener('resize', resizeListener);
 
     // Remove the event listener when the component is destroyed
@@ -281,7 +285,7 @@
 {/if}
 <p class="mb-3">{spatialInstructions}</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-[36rem]">
-  {#each labels as { label, id, max, placeHolder }}
+  {#each labels as { label, id, max, placeHolder } (id)}
     <div class="flex flex-col">
       <label for={id}>
         {label} ({degrees})

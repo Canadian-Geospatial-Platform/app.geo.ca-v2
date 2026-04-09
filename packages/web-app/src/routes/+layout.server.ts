@@ -10,7 +10,7 @@ import frHeaderTranslations from '$lib/components/header/i18n/fr/translations.js
 import enShareTranslations from '$lib/components/share/i18n/en/translations.json';
 import frShareTranslations from '$lib/components/share/i18n/fr/translations.json';
 
-export const load: LayoutServerLoad = async ({ cookies, params }) => {
+export const load: LayoutServerLoad = async ({ params }) => {
   // TODO: improve language handling
   return {
     lang: params.lang as 'en-ca' | 'fr-ca',

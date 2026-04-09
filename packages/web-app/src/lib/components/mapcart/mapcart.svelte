@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/state';
   import { onMount } from 'svelte';
+  import { SvelteSet } from 'svelte/reactivity';
+  import { page } from '$app/state';
+  import { resolve } from '$app/paths';
   import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
   import Card from '$lib/components/card/card.svelte';
   import NoMap from '$lib/components/icons/no-map.svelte';
@@ -80,7 +82,7 @@
         : `Are you sure you want to delete the following resource? \n\n${resourceName} (${id})`;
 
     if (confirm(permissionText) === true) {
-      let selectedSet = new Set(sortableTable?.getSelectedIds());
+      let selectedSet = new SvelteSet(sortableTable?.getSelectedIds());
       selectedSet.delete(id);
 
       // Update resource lists
@@ -249,7 +251,7 @@
                 <!-- Resource -->
                 <div class="flex-1">
                   <!-- Resource data-->
-                  <a href={item.url} class="font-custom-style-h2-2 block">
+                  <a href={resolve(`/${lang}/map-browser/record/${item.id}`)} class="font-custom-style-h2-2 block">
                     {item.name}
                   </a>
                   <p class="font-custom-style-body-9">{item.id}</p>
@@ -260,7 +262,7 @@
                       hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
                     onclick={() => handleDeleteResource(item.id)}
                   >
-                    <GarbageCan classes={'h-4 inline mb-1'} />
+                    <GarbageCan classes="h-4 inline mb-1" />
                     {remove}
                   </button>
                 </div>
@@ -284,7 +286,7 @@
                 shadow-[0_0.1875rem_0.375rem_#00000029]"
               onclick={handleRemoveAllClick}
             >
-              <GarbageCan classes={'h-4 inline mb-1'} />
+              <GarbageCan classes="h-4 inline mb-1" />
               {removeAll}
             </button>
           </div>
@@ -304,7 +306,7 @@
           {resourceListEmpty}
         </p>
 
-        <a class="block m-auto w-fit mt-5" href={`${page.url.origin}/${lang}/map-browser`}>
+        <a class="block m-auto w-fit mt-5" href={resolve(`/${lang}/map-browser`)}>
           <div class="button-3 w-fit shadow-[0_0.1875rem_0.375rem_#00000029]">
             {findAResource}
           </div>

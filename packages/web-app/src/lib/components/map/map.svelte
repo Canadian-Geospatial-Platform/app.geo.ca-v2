@@ -9,10 +9,11 @@
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
+  import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
   import type { GeoviewConfig, MapTypes } from '$lib/components/map/map-types';
 
   interface Props {
-    coordinates: number[][];
+    coordinates: number[][] | null | undefined;
     id: string;
     dynamic?: boolean;
     width?: string;
@@ -63,6 +64,11 @@
     ...(buildFooterBar() && { footerBar: buildFooterBar() }),
   }));
 
+  /**
+   * Builds optional footer bar tabs based on enabled map features.
+   *
+   * @returns Footer bar config when tabs are enabled, otherwise undefined.
+   */
   function buildFooterBar(): GeoviewConfig['footerBar'] | undefined {
     const coreTabs: string[] = [];
 
@@ -87,7 +93,7 @@
    * @param coordinates - The coordinates to extract the bounding box from.
    * @returns The bounding box coordinates.
    */
-  function getBbox(coordinates: number[][]): number[][] {
+  function getBbox(coordinates: number[][] | null | undefined): number[][] {
     // This is the bounding coordinates of Canada
     const defaultValue = [
       [-140.99778, 41.6751050889],
@@ -96,12 +102,14 @@
       [-52.6480987209, 41.6751050889],
     ];
 
-    if (!coordinates) {
+    const normalized = normalizeCoordinates(coordinates as unknown, false) || [];
+
+    if (normalized.length === 0) {
       console.warn('invalid coordinates, returing default value: \n', coordinates);
       return defaultValue;
     }
 
-    let bbox = coordinates;
+    let bbox = [...normalized];
 
     // If first and last points are the same, remove the redundant one
     if (bbox[0][0] === bbox[bbox.length - 1][0] && bbox[0][1] === bbox[bbox.length - 1][1]) {
@@ -115,7 +123,7 @@
       // To do this, we can sort the vertices based on the latitude,
       // to determine the top and bottom vertices, then find which which
       // longitude is larger to determine the east and west vertices.
-      const sortByLatitude = bbox.sort((a, b) => a[1] - b[1]);
+      const sortByLatitude = [...bbox].sort((a, b) => a[1] - b[1]);
       const bottomPoints = [sortByLatitude[0], sortByLatitude[1]];
       const topPoints = [sortByLatitude[2], sortByLatitude[3]];
 
@@ -244,8 +252,8 @@
             },
           });
 
-          // Zoom to the extent of the coordinates.
-          const extent = getExtentFromCoordinates(coordinates);
+          // Zoom to the extent of the rendered polygon ring.
+          const extent = getExtentFromCoordinates(bbox);
           cgpv.api.getMapViewer(mapId).zoomToLonLatExtentOrCoordinate(extent);
         });
       }

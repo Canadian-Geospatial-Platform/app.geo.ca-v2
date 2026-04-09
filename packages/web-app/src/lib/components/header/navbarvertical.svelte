@@ -50,7 +50,7 @@
 </nav>
 <div class={['nav-items-container bg-custom-23', (!active || !mainMenuVisible) && 'hidden']}>
   <div class="rounded-[0.3125rem] bg-custom-1 divide-y divide-custom-16">
-    {#each Object.entries(navItems) as [key, data]}
+    {#each Object.entries(navItems) as [key, data] (key)}
       {#if key !== 'lang' && (key !== 'collections' || userId)}
         <div class="nav-item">
           <Navitem linkData={data} {orientation} dropDownClick={toggleMenuView} />
@@ -80,14 +80,14 @@
       {activeMenuContent.title}
     </button>
     {#if activeMenuContent.options}
-      {#each activeMenuContent.options as option}
+      {#each activeMenuContent.options as option, index (`${index}-${option?.colTitle}`)}
         {#if option?.colTitle}
           <div class="font-open-sans text-custom-1 text-base font-semibold mt-[1.0625rem] mb-[0.8125rem]">
             {option.colTitle}
           </div>
         {/if}
         <div class={['rounded-b-[0.3125rem] bg-custom-1 divide-y divide-custom-16', option?.colTitle && 'rounded-section-link-list']}>
-          {#each option['links'] as link}
+          {#each option['links'] as link, linkIndex (`${linkIndex}-${link?.href}`)}
             <div class="nav-item">
               <Navitem linkData={link} {orientation} dropDownClick={toggleMenuView} />
             </div>

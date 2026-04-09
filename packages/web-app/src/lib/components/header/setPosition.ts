@@ -17,7 +17,7 @@ export function setPosition(node: HTMLElement, isHorizontal: boolean): { destroy
     let nodeWidth: number;
     let transformX: number;
     let transformed: boolean;
-    let observer = new MutationObserver(function (): void {
+    const observer = new MutationObserver(function (): void {
       /***********************************************************************
        *  Note: The 'shifted' class will act as a flag to indicate if the
        *  node has already been shifted or not to prevent an infinate loop.

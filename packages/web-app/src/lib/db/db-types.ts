@@ -112,23 +112,23 @@ export interface GeospatialRecord {
   graphicOverview: GraphicOverview[];
   contact: ContactInfo[];
   distributor: (ContactInfo | null)[];
-  credits: any[]; // Can include null values
+  credits: unknown[]; // Can include null values
   cited: (ContactInfo | null)[];
   plugins: string; // JSON-encoded array
   options: DistributionOption[];
   similarity: SimilarityRecord[];
   sourceSystemName: string | null;
   eoCollection: string | null;
-  eoFilters: any[]; // Can include null values
+  eoFilters: unknown[]; // Can include null values
   formats?: string[]; // Optional, added post-fetch
   hasMapLayer?: boolean; // Optional, added post-fetch
-  features?: any; // Optional, added for collection-type records
+  features?: Record<string, unknown>; // Optional, added for collection-type records
 }
 
 // JWT Token payload
 export interface TokenPayload {
   username: string;
-  [key: string]: any; // Allow other JWT claims
+  [key: string]: unknown; // Allow other JWT claims
 }
 
 // JWT Token result
@@ -151,7 +151,6 @@ export interface UserInfo {
 export type FavouritesRow = {
   id: string;
   name: string;
-  url: string;
 };
 
 // GeospatialRecord with additional fields added by the API endpoint

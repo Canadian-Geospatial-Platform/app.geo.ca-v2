@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-  <title>{page.data.item_v2.title}</title>
+  <title>{page.data.item_v2?.title}</title>
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />

@@ -15,27 +15,22 @@ const s3Client = new S3Client({ region: 'ca-central-1' });
  * @throws {Error} If the record cannot be retrieved.
  */
 const getRecord = async (uuid: string): Promise<GeospatialRecord> => {
-  let key = `${PREFIX}${uuid}.geojson`;
-  try {
-    const response = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: BUCKET_NAME,
-        Key: key,
-      })
-    );
+  const key = `${PREFIX}${uuid}.geojson`;
+  const response = await s3Client.send(
+    new GetObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: key,
+    })
+  );
 
-    if (!response.Body) {
-      throw new Error('No body in S3 response');
-    }
-
-    // Convert the stream to a string
-    const bodyString = await response.Body.transformToString();
-
-    // Parse and return the JSON
-    return JSON.parse(bodyString) as GeospatialRecord;
-  } catch (err) {
-    // Handle the error or throw
-    throw err;
+  if (!response.Body) {
+    throw new Error('No body in S3 response');
   }
+
+  // Convert the stream to a string
+  const bodyString = await response.Body.transformToString();
+
+  // Parse and return the JSON
+  return JSON.parse(bodyString) as GeospatialRecord;
 };
 export { getRecord };

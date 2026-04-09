@@ -151,18 +151,18 @@
       </div>
     </button>
   {:else if linkData?.title && linkData?.title === 'English'}
-    <a class="nav-link" href={toggleLanguage('en-ca')} data-sveltekit-reload>
+    <a class="nav-link" href={toggleLanguage('en-ca')} data-sveltekit-reload rel="external">
       <Globe classes="h-[1.25rem] w-[1.25rem] mr-1" />
       {linkData.title}
     </a>
   {:else if linkData?.title && linkData?.title === 'Français'}
-    <a class="nav-link" href={toggleLanguage('fr-ca')} data-sveltekit-reload>
+    <a class="nav-link" href={toggleLanguage('fr-ca')} data-sveltekit-reload rel="external">
       <Globe classes="h-[1.25rem] w-[1.25rem] mr-1" />
       {linkData.title}
     </a>
   {:else if linkData?.title && linkData?.title === homeText}
     {#if orientation === 'vertical'}
-      <a class="nav-link" href={linkData['href']}>
+      <a class="nav-link" href={linkData['href']} rel="external">
         {linkData.title}
       </a>
     {/if}
@@ -171,6 +171,7 @@
       <a
         class="nav-link"
         href={linkData['href']}
+        rel="external"
         onclick={() => {
           if (orientation === 'vertical') {
             dispatchDropDownClick();

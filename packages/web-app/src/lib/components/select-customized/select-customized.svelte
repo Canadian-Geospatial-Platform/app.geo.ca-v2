@@ -132,7 +132,7 @@
       {/if}
     {/if}
 
-    {#each optionsData as option}
+    {#each optionsData as option (option.value)}
       {#if selected && selected.value === option.value}
         <option value={option.value} selected>{option.label}</option>
       {:else}

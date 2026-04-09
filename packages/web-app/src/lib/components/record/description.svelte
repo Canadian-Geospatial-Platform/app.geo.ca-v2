@@ -7,7 +7,7 @@
 
   const data = page.data;
   const translations = data.t;
-  const items = data.item_v2;
+  const items = data.item_v2!;
   const properties = items;
 
   const title = properties.title;
@@ -16,7 +16,7 @@
   const removeFromFavourites = translations?.removeFromFavourites ? translations.removeFromFavourites : 'Remove from Favourites';
 
   /****************** Favourites Resources ******************/
-  let favouriteRecordList = $state<string[]>(data?.userData?.favourites ? [...data.userDatas.favourites] : []);
+  let favouriteRecordList = $state<string[]>(data?.userData?.favourites ? [...data.userData.favourites] : []);
 
   /**
    * Handles the favourite click event.
@@ -56,6 +56,7 @@
     {title}
   </h1>
   <p class="font-custom-style-body-1 mx-5 md:mx-0">
+    <!-- These are our descriptions, no injection risk -->
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html description}
   </p>

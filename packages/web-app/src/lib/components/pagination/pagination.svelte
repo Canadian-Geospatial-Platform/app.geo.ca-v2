@@ -104,7 +104,7 @@
   >
     <Chevronleft classes="h-6" />
   </button>
-  {#each pageButtons as page}
+  {#each pageButtons as page (page)}
     <button
       class={[
         'font-custom-style-button-1 h-7 min-w-7 px-1 mx-1',

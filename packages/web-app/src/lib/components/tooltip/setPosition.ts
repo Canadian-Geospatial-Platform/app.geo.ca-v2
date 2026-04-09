@@ -7,7 +7,7 @@
  * @returns An object with a destroy method to remove event listeners.
  */
 export function setPosition(node: HTMLElement): { destroy: () => void } {
-  let parentNode: Node | null = node.parentNode;
+  const parentNode: Node | null = node.parentNode;
 
   let nodeBounding: DOMRect;
   let nodeLeft: number;

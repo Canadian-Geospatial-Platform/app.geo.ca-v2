@@ -10,23 +10,23 @@
   class={['hidden', active && orientation === 'horizontal' && 'horizontal', active && orientation === 'vertical' && 'vertical']}
   use:setPosition={orientation === 'horizontal'}
 >
-  {#each options as option}
+  {#each options as option, index (index)}
     <div class={['bg-custom-1 p-4', orientation === 'horizontal' && 'option-horizontal', orientation === 'vertical' && 'option-vertical']}>
       {#if option?.colTitle}
         <div class="font-custom-style-header-1">
           {option['colTitle']}
         </div>
       {/if}
-      {#each option['links'] as link}
+      {#each option['links'] as link, linkIndex (`${linkIndex}-${link.tipId}`)}
         <div class="block px-3 py-2 font-custom-style-header-2">
           {#if link?.info && link?.tipId}
-            <a class="hover:underline" href={link['href']} aria-describedby={link['tipId']}>
+            <a class="hover:underline" href={link['href']} aria-describedby={link['tipId']} rel="external">
               {link['title']}
               <Info classes="inline h-3 w-3 text-custom-8" />
               <Tooltip describedById={link['tipId']} tooltipText={link['info']} />
             </a>
           {:else}
-            <a class="hover:underline" href={link['href']}>
+            <a class="hover:underline" href={link['href']} rel="external">
               {link['title']}
             </a>
           {/if}

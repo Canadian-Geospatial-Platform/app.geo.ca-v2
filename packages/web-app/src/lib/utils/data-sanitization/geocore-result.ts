@@ -8,9 +8,9 @@ import type { GeospatialRecord } from '$lib/db/db-types';
  * @returns The sanitized array of results.
  */
 function sanitize(results: GeospatialRecord[], lang: string): GeospatialRecord[] {
-  let truthyResults = results.filter((result) => result);
-  let fixedCoordsResults = fixCoordinatesType(truthyResults);
-  let normalizedLanguagedResults = normalizeLanguage(fixedCoordsResults, lang);
+  const truthyResults = results.filter((result) => result);
+  const fixedCoordsResults = fixCoordinatesType(truthyResults);
+  const normalizedLanguagedResults = normalizeLanguage(fixedCoordsResults, lang);
   return normalizedLanguagedResults;
 }
 
@@ -38,17 +38,17 @@ function fixCoordinatesType(results: GeospatialRecord[]): GeospatialRecord[] {
 function normalizeLanguage(records: GeospatialRecord[], lang: string): GeospatialRecord[] {
   for (const record of records) {
     try {
-      let title = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
+      const title = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
       if (title) {
         record.title = title;
       }
 
       // TODO: Should this be description? Why is description being set to the title?
-      let description = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
+      const description = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
       if (description) {
         record.description = description;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.warn('error normalizing data: \n', record, '\n', error);
     }
   }

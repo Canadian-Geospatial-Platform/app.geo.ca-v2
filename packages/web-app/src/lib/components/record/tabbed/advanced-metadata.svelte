@@ -3,7 +3,6 @@
   import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 
   type AdvMetadataRow = {
-    id: string;
     label: string;
     description: string;
   };
@@ -35,7 +34,7 @@
   const lang = data.lang;
   const langShort = lang.slice(0, 2);
   const langIndex = langShort === 'fr' ? 1 : 0;
-  const items = data.item_v2;
+  const items = data.item_v2!;
 
   const url = page.url;
   const mapBrowserUrl = `${url.origin}/${lang}/map-browser`;
@@ -43,7 +42,7 @@
 
   const status = items.status.split('; ')[langIndex];
   const maintenance = items.maintenance.split('; ')[langIndex];
-  const id = data.uuid;
+  const id = data.uuid || 'N/A';
 
   // Each topic category should be a link back to the search page
   const topicCategoryArray = items.topicCategory.map((category: string) => {
@@ -53,10 +52,10 @@
   const topicCategory = topicCategoryArray.join(', ');
 
   const type = items.type.split('; ')[langIndex];
-  const north = items.bbox.north || 'N/A';
-  const east = items.bbox.east || 'N/A';
-  const south = items.bbox.south || 'N/A';
-  const west = items.bbox.west || 'N/A';
+  const north = items.bbox?.north?.toString() || 'N/A';
+  const east = items.bbox?.east?.toString() || 'N/A';
+  const south = items.bbox?.south?.toString() || 'N/A';
+  const west = items.bbox?.west?.toString() || 'N/A';
   const spatialRepresentation = items?.spatialRepresentation ? items?.spatialRepresentation.split('; ')[langIndex] : 'N/A';
   const projection = items.refSys || 'N/A';
 
@@ -66,24 +65,24 @@
 
   // Table Array
   const tableDataArray: Array<AdvMetadataRow> = [
-    { id: `status-${id}`, label: statusText.toUpperCase(), description: status },
-    { id: `maintenance-${id}`, label: maintenanceText.toUpperCase(), description: maintenance },
-    { id: `id-${id}`, label: idText.toUpperCase(), description: id },
-    { id: `topicCategory-${id}`, label: topicCategoryText.toUpperCase(), description: topicCategory },
-    { id: `type-${id}`, label: typeText.toUpperCase(), description: type },
-    { id: `north-${id}`, label: northText.toUpperCase(), description: north },
-    { id: `east-${id}`, label: eastText.toUpperCase(), description: east },
-    { id: `south-${id}`, label: southText.toUpperCase(), description: south },
-    { id: `west-${id}`, label: westText.toUpperCase(), description: west },
-    { id: `spatialRepresentation-${id}`, label: spatialRepresentationText.toUpperCase(), description: spatialRepresentation },
-    { id: `projection-${id}`, label: projectionText.toUpperCase(), description: projection },
-    { id: `dateCreated-${id}`, label: dateCreatedText.toUpperCase(), description: dateCreated },
-    { id: `datePublished-${id}`, label: datePublishedText.toUpperCase(), description: datePublished },
-    { id: `temporalCoverage-${id}`, label: temporalCoverageText.toUpperCase(), description: temporalCoverage },
+    { label: statusText.toUpperCase(), description: status },
+    { label: maintenanceText.toUpperCase(), description: maintenance },
+    { label: idText.toUpperCase(), description: id },
+    { label: topicCategoryText.toUpperCase(), description: topicCategory },
+    { label: typeText.toUpperCase(), description: type },
+    { label: northText.toUpperCase(), description: north },
+    { label: eastText.toUpperCase(), description: east },
+    { label: southText.toUpperCase(), description: south },
+    { label: westText.toUpperCase(), description: west },
+    { label: spatialRepresentationText.toUpperCase(), description: spatialRepresentation },
+    { label: projectionText.toUpperCase(), description: projection },
+    { label: dateCreatedText.toUpperCase(), description: dateCreated },
+    { label: datePublishedText.toUpperCase(), description: datePublished },
+    { label: temporalCoverageText.toUpperCase(), description: temporalCoverage },
   ];
 
   // Translation of table column labels
-  const tableLabels: AdvMetadataRow = { id: `tableLabels-${id}`, label: labelText, description: descriptionText };
+  const tableLabels: AdvMetadataRow = { label: labelText, description: descriptionText };
 </script>
 
 <SortableTable tableContent={tableDataArray} {tableLabels} clickableRows={false} />

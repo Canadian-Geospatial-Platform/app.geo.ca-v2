@@ -2,9 +2,9 @@
   const { item, lang } = $props();
 </script>
 
-{#each item.distributor as x}
+{#each item.distributor as distributor, index (index)}
   <span itemscope itemtype="http://schema.org/Organization">
-    <span property="name">{x?.organisation?.[lang]}</span>
-    <span property="email">{x?.email?.[lang]}</span>
+    <span property="name">{distributor?.organisation?.[lang]}</span>
+    <span property="email">{distributor?.email?.[lang]}</span>
   </span>
 {/each}

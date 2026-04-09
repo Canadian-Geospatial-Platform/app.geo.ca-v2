@@ -2,12 +2,12 @@ import type { Actions, PageServerLoad } from './$types';
 import { getUserData } from '$lib/db/user';
 import { removeFromFavourites } from '$lib/actions';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result';
-import type { GeospatialRecord } from '$lib/db/db-types';
+import type { GeospatialRecord, UserInfo } from '$lib/db/db-types';
 
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-  let response: any[] = [];
-  let userData;
-  let sanitizedResults;
+  let response: GeospatialRecord[] = [];
+  let userData: UserInfo | undefined;
+  let sanitizedResults: GeospatialRecord[] = [];
 
   const canonicalUrl = `${url.origin}/${params.lang}/favourites`;
   const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
@@ -86,7 +86,7 @@ async function getRecords(
   lang: string,
   fetch: (url: string | URL, options?: RequestInit) => Promise<Response>
 ): Promise<GeospatialRecord[]> {
-  let promises = [];
+  const promises = [];
 
   for (const id of idIterator) {
     promises.push(getRecord(id, lang, fetch));
@@ -95,17 +95,18 @@ async function getRecords(
   const results = await Promise.all(promises);
   const values = [...results];
 
-  let ret = await Promise.all(
-    values.map(async (v) => {
+  const ret = await Promise.all(
+    values.map(async (value) => {
       try {
-        const contents = await v.json();
-        if (contents.Items[0]) return contents.Items[0];
+        const contents = (await value.json()) as { Items?: GeospatialRecord[] };
+        if (contents.Items?.[0]) return contents.Items[0];
       } catch (error) {
         console.log(error);
       }
     })
   );
-  return ret;
+
+  return ret.filter((item): item is GeospatialRecord => item !== undefined);
 }
 
 export const actions = {

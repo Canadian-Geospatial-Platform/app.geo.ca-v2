@@ -4,8 +4,8 @@
   import type { Filter, FilterItem } from './filter-types';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters.filters;
-  const organizations = filters.find((filter: Filter) => filter.section === 'org');
+  const filters = page.data.filters!.filters;
+  const organizations = filters.find((filter: Filter) => filter.section === 'org')!;
   let checkedStates: Record<string, boolean> = $state({});
 
   // Labels
@@ -17,12 +17,10 @@
    */
   export function resetFilters(): void {
     let orgKey = page.url.searchParams.get('org');
-    if (organizations) {
-      organizations.filterList.forEach((filterListItem: FilterItem) => {
-        const key = filterListItem.value;
-        checkedStates[key] = orgKey?.includes(key) || false;
-      });
-    }
+    organizations.filterList.forEach((filterListItem: FilterItem) => {
+      const key = filterListItem.value;
+      checkedStates[key] = orgKey?.includes(key) || false;
+    });
   }
 
   /**
@@ -38,7 +36,7 @@
   {federal}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
-  {#each organizations.filterList as filterListItem}
+  {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}
     {#if filterListItem.subCategory === 'fed'}
       <div class="break-inside-avoid">
         <CheckboxCustomized
@@ -58,7 +56,7 @@
   {provincial}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
-  {#each organizations.filterList as filterListItem}
+  {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}
     {#if filterListItem.subCategory === 'prov'}
       <div class="break-inside-avoid">
         <CheckboxCustomized
