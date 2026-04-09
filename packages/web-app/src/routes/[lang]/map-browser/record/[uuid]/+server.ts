@@ -6,7 +6,10 @@ const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
 /**
  * Handles GET requests to fetch records by IDs.
  *
- * @param request - The request object.
+ * @param url - The URL object for request params (e.g. `id` and `lang`).
+ * @param request - The Request object, which provides access to headers.
+ * @param fetch - The fetch function to perform server-side HTTP requests.
+ * 
  * @returns A promise that resolves to the record response.
  */
 export async function GET({ url, request, fetch }): Promise<Response> {
@@ -33,6 +36,8 @@ export async function GET({ url, request, fetch }): Promise<Response> {
  *
  * @param id - The record ID.
  * @param lang - The language code.
+ * @param fetch - The server-side fetch function to make HTTP requests.
+ * @param ip - The client IP address to forward via the 'x-forwarded-for'.
  * @returns A promise that resolves to the fetch response.
  */
 async function getRecord(
@@ -64,6 +69,8 @@ async function getRecord(
  *
  * @param idIterator - An array of record IDs.
  * @param lang - The language code.
+ * @param fetch - The server-side fetch function to make HTTP requests.
+ * @param ip - The client IP address to forward via the 'x-forwarded-for'.
  * @returns A promise that resolves to an array of records.
  */
 async function getRecordsByIds(
