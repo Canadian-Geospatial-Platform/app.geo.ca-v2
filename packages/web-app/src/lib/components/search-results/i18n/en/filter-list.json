@@ -202,10 +202,6 @@
           "value": "collection"
         },
         {
-          "label": "Community",
-          "value": "community"
-        },
-        {
           "label": "Dataset",
           "value": "dataset"
         },
