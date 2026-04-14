@@ -17,7 +17,7 @@
   let themeLogic = $state<'any' | 'all'>('any');
 
   /**
-   * Reset from URL (this is what restores state when reopening)
+   * Resets from URL (this is what restores state when reopening)
    */
   export function resetFilters(): void {
     const typeKey = page.url.searchParams.get('theme');
@@ -35,23 +35,23 @@
     }
   }
 
-  /** 
-   * Clear all Theme filters
+  /**
+   * Clears all Theme filters
    */
   export function clearAllFilters(): void {
     checkedStates = {};
     themeLogic = 'any';
   }
 
-  /** 
-   * Update local state
+  /**
+   * Updates local state
    */
   function onThemeLogicChange(value: 'any' | 'all'): void {
     themeLogic = value;
   }
 
-  /** 
-   * Expose to parent
+  /**
+   * Exposes to parent
    */
   export function getLogic(): 'any' | 'all' {
     return themeLogic;
@@ -78,13 +78,11 @@
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
   {#each themes?.filterList ?? [] as filterListItem, index (index)}
     <CheckboxCustomized
-      checkboxId={themes.section + '-' + filterListItem.value}
-      checkboxName={themes.section + '-' + filterListItem.value}
+      checkboxId={`${themes.section}-${filterListItem.value}`}
+      checkboxName={`${themes.section}-${filterListItem.value}`}
       checkboxLabel={filterListItem.label}
       checked={checkedStates[filterListItem.value] || false}
-      checkedStateChange={(event) =>
-        (checkedStates[filterListItem.value] = event.target.checked)
-      }
+      checkedStateChange={(event) => (checkedStates[filterListItem.value] = event.target.checked)}
     />
   {/each}
 </div>
@@ -92,10 +90,7 @@
 <style>
   @media (min-width: 64rem) {
     .custom-grid {
-      grid-template-columns: repeat(
-        auto-fit,
-        minmax(min(8.75rem, 100%), max-content)
-      );
+      grid-template-columns: repeat(auto-fit, minmax(min(8.75rem, 100%), max-content));
     }
   }
 </style>

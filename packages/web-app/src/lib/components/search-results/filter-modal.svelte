@@ -271,22 +271,21 @@
     const theme = filters.theme;
     const eoCollections = filters.eoCollection;
     const sourceSystem = filters.sourceSystem;
-
     const query = new SvelteURLSearchParams(page.url.searchParams.toString());
-    
+
     // AND-OR logic for type and theme
     const typeLogic = typeCompontent?.getLogic();
     if (typeLogic === 'any' || typeLogic === 'all') {
-    	query.set('type_logic', typeLogic);
+      query.set('type_logic', typeLogic);
     } else {
-    	query.delete('type_logic');
+      query.delete('type_logic');
     }
-    
+
     const themeLogic = themeCompontent?.getLogic();
     if (themeLogic === 'any' || themeLogic === 'all') {
       query.set('theme_logic', themeLogic);
     } else {
-    	query.delete('theme_logic');
+      query.delete('theme_logic');
     }
 
     // BBOX
