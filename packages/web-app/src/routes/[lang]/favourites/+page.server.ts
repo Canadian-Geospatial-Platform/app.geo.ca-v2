@@ -1,4 +1,5 @@
 import type { Actions, PageServerLoad } from './$types';
+import { GEOCORE_API_DOMAIN } from '$env/static/private';
 import { getUserData } from '$lib/db/user';
 import { removeFromFavourites } from '$lib/actions';
 import { sanitize } from '$lib/utils/data-sanitization/geocore-result';
@@ -63,7 +64,6 @@ export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
  * @returns A promise that resolves to the fetch response.
  */
 function getRecord(id: string, lang: string, fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<Response> {
-  const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
   const url = new URL(`${GEOCORE_API_DOMAIN}/id`);
   const params = {
     id: id,

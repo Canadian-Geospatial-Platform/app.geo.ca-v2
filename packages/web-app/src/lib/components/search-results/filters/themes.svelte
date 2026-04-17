@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/state';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-  import type { Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
+  import type { Filter, FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters.filters;
-  const themes = filters.find((filter: Filter) => filter.section === 'theme');
+  const filters = page.data.filters?.filters;
+  const themes = filters?.find((filter: Filter) => filter.section === 'theme');
   let checkedStates = $state<Record<string, boolean>>({});
 
   /************* Translations ***************/
@@ -67,7 +67,7 @@
     id="theme-logic"
     class="border rounded px-2 py-1 text-sm"
     bind:value={themeLogic}
-    onchange={(e) => onThemeLogicChange(e.target.value)}
+    onchange={(event: Event) => onThemeLogicChange((event.target as HTMLSelectElement)?.value as 'any' | 'all')}
   >
     <option value="any">{anyLabel}</option>
     <option value="all">{allLabel}</option>
@@ -78,11 +78,11 @@
 <div class="grid gap-x-4 gap-y-[1.125rem] grid-cols-1 custom-grid">
   {#each themes?.filterList ?? [] as filterListItem, index (index)}
     <CheckboxCustomized
-      checkboxId={`${themes.section}-${filterListItem.value}`}
-      checkboxName={`${themes.section}-${filterListItem.value}`}
+      checkboxId={`${themes?.section}-${filterListItem.value}`}
+      checkboxName={`${themes?.section}-${filterListItem.value}`}
       checkboxLabel={filterListItem.label}
       checked={checkedStates[filterListItem.value] || false}
-      checkedStateChange={(event) => (checkedStates[filterListItem.value] = event.target.checked)}
+      checkedStateChange={(event: Event) => (checkedStates[filterListItem.value] = (event.target as HTMLInputElement)?.checked)}
     />
   {/each}
 </div>

@@ -28,7 +28,7 @@ After following the setup, start a development server with these steps:
 
 - setup your aws credentials. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - Create a .env file for your stage. You can do this by copying the .env.dev but change ‘dev’ to the name of your stage.
-- Set secrets for OIDC_CLIENT_SECRET and GEOCORE_API_DOMAIN. Add this for each stage you want to deploy or work on locally. e.g. `npx sst secrets set GEOCORE_API_DOMAIN https://geocore.api.geo.ca --stage <your-stage-name>`
+- Set secrets for OIDC_CLIENT_SECRET and GEOCORE_API_DOMAIN. Add this for each stage you want to deploy or work on locally. e.g. `npx sst secret set GEOCORE_API_DOMAIN https://geocore.api.geo.ca --stage <your-stage-name>`
 - enshure your login and logout url's are configured correctly in aws cognito.
 
   - Allowed callback URLs
@@ -38,7 +38,7 @@ After following the setup, start a development server with these steps:
     - http://localhost:5173/en-ca/sign-in/logout
     - http://localhost:5173/fr-ca/sign-in/logout
 
-- For local development run `npm run dev`, open a new terminal, run `cd packages/web-app/ ` and `npm run dev`. Enter the name of your local stage if asked.
+- For local development run `npm run dev` from the repository root. SST v4 starts the multiplexer and frontend together.
 - For deployment, run `npx sst deploy --stage <yourStageName>`. You will need to deploy your environment in order to build any AWS resources like buckets and tables.
 - now run the steps under [## Importing Data](#importing-data).
 
@@ -46,7 +46,7 @@ After following the setup, start a development server with these steps:
 
 - setup your aws credentials for the desired environment. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 - Create a .env file for your stage. You can do this by copying the .env.dev but change ‘dev’ to the name of your stage.
-- Set secrets for OIDC_CLIENT_SECRET and GEOCORE_API_DOMAIN. Add this for each stage you want to deploy or work on locally. e.g. `npx sst secrets set GEOCORE_API_DOMAIN https://geocore.api.geo.ca --stage <your-stage-name>`
+- Set secrets for OIDC_CLIENT_SECRET and GEOCORE_API_DOMAIN. Add this for each stage you want to deploy or work on locally. e.g. `npx sst secret set GEOCORE_API_DOMAIN https://geocore.api.geo.ca --stage <your-stage-name>`
 - from `/` run `npm i`.
 - from `/packages/web-app/` run `npm i`. A nodejs version that matches the `.nvmrc` may be required.
 - enshure your login and logout url's are configured correctly in aws cognito.

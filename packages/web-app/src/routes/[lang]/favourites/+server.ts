@@ -1,7 +1,7 @@
 import type { DistributionOption, GeospatialRecord } from '$lib/db/db-types';
 import { json } from '@sveltejs/kit';
 
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
+import { GEOCORE_API_DOMAIN } from '$env/static/private';
 
 interface LayerResult {
   layers: Array<{ id: string }>;
