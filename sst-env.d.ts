@@ -6,17 +6,17 @@
 
 declare module "sst" {
   export interface Resource {
-    Users: {
-      name: string;
-      type: "sst.aws.Dynamo";
-    };
-    WebApp: {
-      type: "sst.aws.SvelteKit";
-      url: string;
-    };
+    "Users": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
+    "WebApp": {
+      "type": "sst.aws.SvelteKit"
+      "url": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />
 
-import "sst";
-export {};
+import "sst"
+export {}

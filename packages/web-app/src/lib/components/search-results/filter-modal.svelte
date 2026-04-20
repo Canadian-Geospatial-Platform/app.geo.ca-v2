@@ -389,7 +389,7 @@
   role="dialog"
   aria-modal="true"
   tabindex="0"
-  class={['fixed flex justify-center z-[10020] inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4', !active && 'hidden']}
+  class={['fixed flex justify-center z-10020 inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4', !active && 'hidden']}
   onkeydown={(event) => {
     if (event.key === 'Escape') closeModal();
   }}
@@ -420,7 +420,7 @@
         type="button"
         class="flex justify-center items-center border border-custom-16 rounded-[50%]
           h-9 w-9 md:h-[3.0625rem] md:w-[3.0625rem] hover:bg-custom-16 text-custom-16
-          hover:text-custom-1"
+          hover:text-custom-1 cursor-pointer"
         onclick={handleCloseButtonClick}
       >
         <Close classes="h-4 md:h-[1.3125rem]" />
@@ -433,7 +433,7 @@
       <button
         type="button"
         class="row-start-2 md:row-start-1 w-full md:w-auto justify-self-start button-3
-          h-12 md:h-auto"
+          h-12 md:h-auto cursor-pointer"
         onclick={handleClearAllClick}
       >
         {clearAllText}
@@ -441,7 +441,7 @@
       <button
         type="submit"
         class="w-full md:w-auto justify-self-end button-5 h-12 md:h-auto
-          shadow-[0rem_0.1875rem_0.375rem_#00000029]"
+          shadow-[0rem_0.1875rem_0.375rem_#00000029] cursor-pointer"
       >
         <Search classes="inline" height="1.125rem" />
         {searchText}
@@ -451,6 +451,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .hide-scroll {
     -ms-overflow-style: none; /* Edge */
     scrollbar-width: none; /* Firefox */

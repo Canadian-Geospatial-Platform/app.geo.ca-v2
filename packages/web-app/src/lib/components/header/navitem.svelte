@@ -194,13 +194,14 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .nav-link {
     @apply flex;
     @apply h-full;
     @apply items-center;
   }
   .active {
-    @apply shadow-[0_0.125rem_0.188rem_white,_0_0.188rem_white];
+    @apply shadow-[0_0.125rem_0.188rem_white,0_0.188rem_white];
     @apply border-b;
   }
 

@@ -91,6 +91,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .active {
     @apply border-b-0;
     @apply text-custom-7;

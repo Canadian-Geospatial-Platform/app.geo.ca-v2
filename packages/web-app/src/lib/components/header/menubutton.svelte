@@ -50,6 +50,7 @@
 </button>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .bar {
     @apply w-[1.125rem];
     @apply h-0.5;

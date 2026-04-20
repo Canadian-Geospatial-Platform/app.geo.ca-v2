@@ -65,7 +65,7 @@
   <span class="text-sm text-gray-600">{conditionLabel}</span>
   <select
     id="type-logic"
-    class="border rounded px-2 py-1 text-sm"
+    class="border rounded px-2 py-1 text-sm cursor-pointer"
     bind:value={typeLogic}
     onchange={(event: Event) => onTypeLogicChange((event.target as HTMLSelectElement)?.value as 'any' | 'all')}
   >

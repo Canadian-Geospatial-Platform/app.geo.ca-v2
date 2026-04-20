@@ -38,6 +38,7 @@
 </p>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   a {
     @apply hover:no-underline;
     @apply underline;

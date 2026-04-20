@@ -6,7 +6,7 @@
 </script>
 
 <!-- Note: the z-index needs to be 10000 because the loading mask on the geoview maps are 9999 -->
-<div class="z-[10000] relative flex flex-col top-0 right-0 w-full h-full min-h-80 bg-custom-5 space-y-7">
+<div class="z-10000 relative flex flex-col top-0 right-0 w-full h-full min-h-80 bg-custom-5 space-y-7">
   <!-- Header -->
   <div class="flex flex-col md:flex-row rounded-sm gap-4">
     <!-- record stats placeholder -->
@@ -39,6 +39,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .div-fill {
     @apply animate-pulse;
     @apply bg-custom-9;

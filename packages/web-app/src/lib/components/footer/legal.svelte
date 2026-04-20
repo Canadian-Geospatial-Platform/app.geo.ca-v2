@@ -44,6 +44,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .legal-col {
     @apply p-3;
   }
