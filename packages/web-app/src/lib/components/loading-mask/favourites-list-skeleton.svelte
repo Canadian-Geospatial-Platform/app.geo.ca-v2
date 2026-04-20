@@ -81,6 +81,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .div-fill {
     @apply animate-pulse;
     @apply bg-custom-9;

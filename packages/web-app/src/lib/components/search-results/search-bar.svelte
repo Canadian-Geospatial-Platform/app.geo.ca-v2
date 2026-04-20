@@ -96,7 +96,7 @@
   <div class="flex flex-row gap-y-5 flex-wrap md:flex-nowrap">
     <button
       class={`text-nowrap shadow-[0rem_0.1875rem_0.375rem_#00000029]
-        ${navigating.type !== null ? 'button-3-disabled' : 'button-3'}`}
+        ${navigating.type !== null ? 'button-3-disabled' : 'button-3'} cursor-pointer disabled:cursor-default`}
       onclick={handleFilterButtonClick}
       disabled={navigating.type !== null}
     >
@@ -127,7 +127,7 @@
       <button
         class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
           font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
-          hover:bg-custom-23
+          hover:bg-custom-23 cursor-pointer disabled:cursor-default
           ${navigating.type !== null ? 'bg-custom-17' : 'bg-custom-16'}`}
         onclick={handleSearchClick}
         disabled={navigating.type !== null}

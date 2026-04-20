@@ -133,6 +133,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../../app.css";
   button {
     @apply px-6;
     @apply py-2;

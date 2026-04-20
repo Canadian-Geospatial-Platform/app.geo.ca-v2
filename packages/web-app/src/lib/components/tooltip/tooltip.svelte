@@ -24,6 +24,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   [role='tooltip'] {
     @apply hidden;
     @apply absolute;

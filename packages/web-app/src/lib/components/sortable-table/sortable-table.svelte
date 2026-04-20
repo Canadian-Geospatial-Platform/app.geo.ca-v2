@@ -351,6 +351,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   th,
   td {
     @apply border;

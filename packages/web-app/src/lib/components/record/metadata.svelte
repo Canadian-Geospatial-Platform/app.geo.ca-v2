@@ -139,6 +139,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .card-div {
     @apply bg-custom-1;
     @apply p-5;

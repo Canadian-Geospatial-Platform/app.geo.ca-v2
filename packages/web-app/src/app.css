@@ -1,13 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/index.css';
+@config "../tailwind.config.js";
+@reference "tailwindcss/index.css";
 
 .content-width {
   @apply w-full;
-  @apply md:w-[43.75rem];
-  @apply lg:w-[60rem];
-  @apply xl:w-[77.5rem];
   @apply mx-auto;
+}
+
+@media (min-width: 48rem) {
+  .content-width {
+    @apply w-[43.75rem];
+  }
+}
+
+@media (min-width: 64rem) {
+  .content-width {
+    @apply w-[60rem];
+  }
+}
+
+@media (min-width: 80rem) {
+  .content-width {
+    @apply w-[77.5rem];
+  }
 }
 
 .button-1 {
@@ -49,7 +64,12 @@
   @apply rounded;
   @apply px-6;
   @apply py-2;
-  @apply font-custom-style-body-7;
+  font-family:
+    Noto Sans,
+    system-ui;
+  @apply font-medium;
+  @apply text-[16px];
+  @apply text-custom-16;
   @apply hover:text-custom-1;
 }
 
@@ -60,7 +80,12 @@
   @apply rounded;
   @apply px-6;
   @apply py-2;
-  @apply font-custom-style-body-7;
+  font-family:
+    Noto Sans,
+    system-ui;
+  @apply font-medium;
+  @apply text-[16px];
+  @apply text-custom-16;
   @apply text-custom-17;
 }
 
@@ -71,7 +96,10 @@
   @apply rounded;
   @apply pl-[0.875rem];
   @apply py-[0.563rem];
-  @apply font-custom-style-body-1;
+  @apply font-open-sans;
+  @apply font-normal;
+  @apply text-[16px];
+  @apply text-custom-7;
 }
 
 .button-5 {
@@ -81,7 +109,10 @@
   @apply rounded;
   @apply px-6;
   @apply py-2;
-  @apply font-custom-style-button-3;
+  @apply font-open-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+  @apply text-custom-1;
   @apply hover:bg-custom-23;
   @apply hover:border-custom-23;
 }
@@ -104,9 +135,19 @@
   @apply border-2;
   @apply rounded;
   @apply pl-4;
-  @apply md:pl-6;
   @apply py-2;
-  @apply font-custom-style-body-7;
+  font-family:
+    Noto Sans,
+    system-ui;
+  @apply font-medium;
+  @apply text-[16px];
+  @apply text-custom-16;
+}
+
+@media (min-width: 48rem) {
+  .select-button-2 {
+    @apply pl-6;
+  }
 }
 
 /* input {
@@ -317,11 +358,16 @@
 
 .share-icons {
   @apply m-1;
-  @apply md:m-2;
   @apply h-10;
-  @apply md:h-12;
   @apply w-10;
-  @apply md:w-12;
+}
+
+@media (min-width: 48rem) {
+  .share-icons {
+    @apply m-2;
+    @apply h-12;
+    @apply w-12;
+  }
 }
 
 /***********************************************

@@ -278,9 +278,9 @@
   <p class="mt-4 mb-2">{relationInstructions}</p>
   <div class="mb-4">
     <input type="radio" name="spatial-relation" id="intersects" value="intersects" bind:group={relationGroup} />
-    <label class="mr-3" for="intersects">{intersects}</label>
+    <label class="mr-3 cursor-pointer" for="intersects">{intersects}</label>
     <input type="radio" name="spatial-relation" id="within" value="within" bind:group={relationGroup} />
-    <label for="within">{within}</label>
+    <label class="cursor-pointer" for="within">{within}</label>
   </div>
 {/if}
 <p class="mb-3">{spatialInstructions}</p>
@@ -325,7 +325,9 @@
 {/if}
 
 <style lang="postcss">
+  @reference "../../../../app.css";
   input[type='radio'] {
+    @apply cursor-pointer;
     @apply appearance-none;
     @apply h-7;
     @apply w-7;

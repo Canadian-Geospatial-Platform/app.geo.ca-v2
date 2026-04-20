@@ -55,7 +55,7 @@
   <div
     onclick={handleButtonClick}
     onkeydown={handleKeydown}
-    class="grid grid-cols-12 w-full h-full text-left"
+    class="grid grid-cols-12 w-full h-full text-left cursor-pointer"
     role="button"
     aria-pressed={open ? 'true' : 'false'}
     aria-expanded={open ? 'true' : 'false'}
