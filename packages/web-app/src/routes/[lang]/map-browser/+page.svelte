@@ -19,7 +19,7 @@
 </svelte:head>
 
 <div class="flex flex-wrap lg:flex-nowrap items-start gap-4 py-4">
-  <div class="grow flex flex-col gap-4">
+  <div class="grow flex flex-col gap-4 w-full">
     <SearchResults />
   </div>
 </div>

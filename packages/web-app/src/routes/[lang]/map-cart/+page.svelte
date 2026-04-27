@@ -33,7 +33,7 @@
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
-  <script src="https://viewer-visualiseur.services.geo.ca/apps/GeoView/2.1.2/cgpv-main.js"></script>
+  <script src="https://viewer-visualiseur.services.geo.ca/apps/GeoView/2.2.1/cgpv-main.js"></script>
 </svelte:head>
 
 {#if navigating.type !== null}
