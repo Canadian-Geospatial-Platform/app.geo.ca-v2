@@ -2,7 +2,7 @@ import type { GeospatialRecord } from '$lib/db/db-types.js';
 import { json } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
+import { GEOCORE_API_DOMAIN } from '$env/static/private';
 
 /**
  * Handles POST requests to fetch records by IDs.

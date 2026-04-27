@@ -37,6 +37,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .horizontal {
     @apply flex;
     @apply absolute;

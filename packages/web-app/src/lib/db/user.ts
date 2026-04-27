@@ -3,6 +3,7 @@ import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dyn
 import { getToken } from '$lib/utils/parse-jwt';
 import type { UserInfo, UserData, TokenResponse } from './db-types';
 import type { Cookies } from '@sveltejs/kit';
+import { USER_TABLE_NAME } from '$env/static/private';
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
@@ -17,7 +18,7 @@ const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
   const token: TokenResponse = await getToken(cookies);
   if (!token.ok) return { Item: { uuid: null, favourites: [] } };
   const command = new GetCommand({
-    TableName: process.env.USER_TABLE_NAME,
+    TableName: USER_TABLE_NAME,
     Key: {
       uuid: token.value!.username,
     },
@@ -47,7 +48,7 @@ const putUserData = async (data: Partial<UserData>, cookies: Cookies): Promise<R
   data.uuid = token.value!.username;
   await docClient.send(
     new PutCommand({
-      TableName: process.env.USER_TABLE_NAME,
+      TableName: USER_TABLE_NAME,
       Item: data,
     })
   );

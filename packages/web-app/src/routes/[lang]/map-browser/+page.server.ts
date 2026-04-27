@@ -6,6 +6,8 @@ import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results'
 import { formatNumber } from '$lib/utils/format-number';
 import type { GeospatialRecord, UserInfo } from '$lib/db/db-types';
 
+import { SEMANTIC_SEARCH_URL, GEOCORE_API_DOMAIN } from '$env/static/private';
+
 interface ParsedResponse {
   Items?: GeospatialRecord[];
   response?: {
@@ -63,11 +65,8 @@ interface SemanticSearchParams {
   from: number;
 }
 
-const SEMANTIC_SEARCH_URL = process.env.SEMANTIC_SEARCH_URL;
-const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
-
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-  const searchMode = url.searchParams.get('searchMethod') === 'classic' ? 'classic' : 'semantic';
+  const searchMode = url.searchParams.get('searchMethod') === 'classic' || !SEMANTIC_SEARCH_URL ? 'classic' : 'semantic';
   let response;
   if (searchMode === 'classic') {
     response = await generateUrl(

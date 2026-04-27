@@ -144,7 +144,7 @@
     <button
       type="button"
       aria-label={clearAriaLabel}
-      class="clear-btn absolute top-1/4 right-10 md:right-14 text-gray-400 rounded-full p-1.5"
+      class="clear-btn absolute top-1/4 right-10 md:right-14 text-gray-400 rounded-full p-1.5 cursor-pointer"
       onclick={handleRemoveSelect}
     >
       <Close classes="w-2.5 h-2.5" />
@@ -158,6 +158,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .resultList,
   .default {
     @apply text-custom-16;

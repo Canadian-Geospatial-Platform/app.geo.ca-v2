@@ -7,7 +7,7 @@
 </script>
 
 <!-- Note: the z-index needs to be 10000 because the loading mask on the geoview maps are 9999 -->
-<div class="{classes} flex justify-center bg-custom-5 w-full h-full z-[10000]">
+<div class="{classes} flex justify-center bg-custom-5 w-full h-full z-10000">
   <!-- TODO: Change loading annimation to the same as canadian-geospatial-platform for consistency -->
   <div class="loader">
     <div class="inner-loader"></div>
@@ -15,6 +15,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .loader {
     background: linear-gradient(0deg, #f6f6f6 0%, #535aa4 100%);
     @apply rounded-[50%];

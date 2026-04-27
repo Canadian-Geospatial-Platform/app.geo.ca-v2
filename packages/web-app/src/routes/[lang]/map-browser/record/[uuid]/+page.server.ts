@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import { GEOCORE_API_DOMAIN } from '$env/static/private';
 import enLabels from '$lib/components/record/i18n/en/translations.json';
 import frLabels from '$lib/components/record/i18n/fr/translations.json';
 import { parseText } from '$lib/utils/parse-text';
@@ -29,13 +30,6 @@ type AnalyticsSummary = {
 };
 
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-  // The "sst/node/config" package dynamically binds resources at runtime.
-  // Importing it at the top level would cause build-time errors because SST resources
-  // are not available during the build process. To avoid this, we import it inside
-  // the `load()` function so it's only accessed when the server is running.
-  await import('sst/node/config');
-  const GEOCORE_API_DOMAIN = process.env.GEOCORE_API_DOMAIN;
-
   const lang = params.lang === 'en-ca' ? 'en' : 'fr';
 
   let record: RecordApiResponse | null = null;

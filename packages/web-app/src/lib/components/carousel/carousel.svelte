@@ -173,6 +173,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .carousel-card {
     @apply absolute;
     @apply inset-0;
@@ -207,8 +208,13 @@
     @apply inline-block;
     @apply align-middle;
     @apply p-1;
-    @apply sm:p-1.5;
     text-shadow: 0px 0.1875rem 0.375rem #00000030;
+  }
+
+  @media (min-width: 40rem) {
+    .card-index {
+      @apply p-1.5;
+    }
   }
 
   .change-index-button {

@@ -251,7 +251,7 @@
               {#if favouriteRecordList.includes(result.id)}
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
-                  mt-2 sm:mt-0 hover:text-custom-23"
+                  mt-2 sm:mt-0 hover:text-custom-23 cursor-pointer"
                   title={removeFromFavouritesTitle}
                   onclick={() => handleFavouriteClick(result.id)}
                 >
@@ -260,7 +260,7 @@
               {:else}
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
-                  mt-2 sm:mt-0 hover:text-custom-23"
+                  mt-2 sm:mt-0 hover:text-custom-23 cursor-pointer"
                   title={addToFavouritesTitle}
                   onclick={() => handleFavouriteClick(result.id)}
                 >

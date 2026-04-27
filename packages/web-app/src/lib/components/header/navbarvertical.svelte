@@ -101,22 +101,28 @@
 <div class={[active && 'mask']}></div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   /* Hide scroll bar for navbar options*/
   .nav-items-container {
     @apply absolute;
     @apply top-20;
     @apply z-20;
     width: calc(100% - 2.5rem);
-    @apply md:w-[43.75rem];
     @apply m-5;
     @apply left-0;
-    @apply md:left-auto;
-    @apply md:left-1/2;
-    @apply md:-translate-x-[23.125rem];
     @apply max-h-[90vh];
     @apply overflow-y-scroll;
     -ms-overflow-style: none; /* Edge */
     scrollbar-width: none; /* Firefox */
+  }
+
+  @media (min-width: 48rem) {
+    .nav-items-container {
+      @apply w-[43.75rem];
+      @apply left-auto;
+      @apply left-1/2;
+      @apply -translate-x-[23.125rem];
+    }
   }
 
   .nav-items-container::-webkit-scrollbar {

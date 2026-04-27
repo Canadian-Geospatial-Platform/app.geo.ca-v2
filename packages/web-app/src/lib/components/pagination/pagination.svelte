@@ -98,7 +98,7 @@
   ]}
 >
   <button
-    class="arrows mr-2 text-custom-16 disabled:text-custom-19"
+    class="arrows mr-2 text-custom-16 disabled:text-custom-19 cursor-pointer disabled:cursor-default"
     onclick={() => handlePageClick(currentPage - 1)}
     disabled={currentPage === 1 || totalItems === 0}
   >
@@ -107,7 +107,7 @@
   {#each pageButtons as page (page)}
     <button
       class={[
-        'font-custom-style-button-1 h-7 min-w-7 px-1 mx-1',
+        'font-custom-style-button-1 h-7 min-w-7 px-1 mx-1 cursor-pointer',
         page === currentPage && 'current-page',
         page !== currentPage && 'page-button',
       ]}
@@ -117,7 +117,7 @@
     </button>
   {/each}
   <button
-    class="arrows ml-2 text-custom-16 disabled:text-custom-19"
+    class="arrows ml-2 text-custom-16 disabled:text-custom-19 cursor-pointer disabled:cursor-default"
     onclick={() => handlePageClick(currentPage + 1)}
     disabled={currentPage === numPages || totalItems === 0}
   >
@@ -126,6 +126,7 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../../app.css";
   .arrows {
     @apply flex;
     @apply items-center;
@@ -155,12 +156,17 @@
 
   .pagination-width {
     @apply box-border;
-    @apply sm:box-content;
     @apply w-full;
-    @apply sm:w-fit;
     @apply py-2.5;
-    @apply sm:py-1.5;
     @apply px-5;
-    @apply sm:px-1.5;
+  }
+
+  @media (min-width: 40rem) {
+    .pagination-width {
+      @apply box-content;
+      @apply w-fit;
+      @apply py-1.5;
+      @apply px-1.5;
+    }
   }
 </style>
