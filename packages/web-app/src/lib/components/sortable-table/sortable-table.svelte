@@ -336,7 +336,7 @@
                 <button
                   id={`garbage-${row?.id}`}
                   class="p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
-                    hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029]"
+                    hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029] cursor-pointer"
                   onclick={(event) => handleDeleteRowClick(event, row.id)}
                 >
                   <GarbageCan classes="h-6" />

@@ -6,6 +6,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "HnapBucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
+    }
     "Users": {
       "name": string
       "type": "sst.aws.Dynamo"

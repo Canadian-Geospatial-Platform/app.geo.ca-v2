@@ -29,7 +29,8 @@
       page link should always available from +error.svelte.
     -->
     {#if i < breadcrumbs.length - 1 || page.error}
-      <span><a href={resolve(breadcrumb.href)}>{breadcrumb.text}</a></span>
+      <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+      <span><a href={breadcrumb.href.startsWith('http') ? breadcrumb.href : resolve(breadcrumb.href)}>{breadcrumb.text}</a></span>
       /
     {:else}
       <span>{breadcrumb.text}</span>

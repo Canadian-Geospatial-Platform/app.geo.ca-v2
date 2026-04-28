@@ -64,6 +64,7 @@
   @apply rounded;
   @apply px-6;
   @apply py-2;
+  @apply cursor-pointer;
   font-family:
     Noto Sans,
     system-ui;
@@ -109,6 +110,7 @@
   @apply rounded;
   @apply px-6;
   @apply py-2;
+  @apply cursor-pointer;
   @apply font-open-sans;
   @apply font-semibold;
   @apply text-[16px];
