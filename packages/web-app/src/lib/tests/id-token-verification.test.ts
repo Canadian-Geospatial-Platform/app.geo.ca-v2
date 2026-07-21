@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for ID token verification against OIDC metadata/JWKS, including success and rejection scenarios.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestSigningKey, signTestJwt, stubOidcDiscoveryAndJwksFetch } from '$lib/tests/auth-test-helpers';
 import { verifyIdToken } from '$lib/utils/auth/id-token.server';

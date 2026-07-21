@@ -26,6 +26,9 @@ type FavouritesLoadOutput = {
 
 /**
  * Loads shared data used by favourites pages.
+ *
+ * @param input - Page load inputs including fetch, URL, cookies, and language.
+ * @returns Shared favourites page data used by server and page loads.
  */
 export async function loadFavouritesPageData({ fetch, url, cookies, lang }: FavouritesLoadInput): Promise<FavouritesLoadOutput> {
   let response: GeospatialRecord[] = [];
@@ -71,6 +74,11 @@ export async function loadFavouritesPageData({ fetch, url, cookies, lang }: Favo
 
 /**
  * Gets a record from the GeoCore API.
+ *
+ * @param id - GeoCore record identifier.
+ * @param lang - Full application language code used to derive the GeoCore locale.
+ * @param fetch - Fetch implementation used to call the GeoCore API.
+ * @returns Promise resolving to the GeoCore response for a single record.
  */
 function getRecord(id: string, lang: string, fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<Response> {
   const url = new URL(`${GEOCORE_API_DOMAIN}/id`);
@@ -84,6 +92,11 @@ function getRecord(id: string, lang: string, fetch: (url: string | URL, options?
 
 /**
  * Gets multiple records from the GeoCore API.
+ *
+ * @param idIterator - Iterable collection of GeoCore record identifiers.
+ * @param lang - Full application language code used to derive the GeoCore locale.
+ * @param fetch - Fetch implementation used to call the GeoCore API.
+ * @returns Promise resolving to the list of successfully parsed GeoCore records.
  */
 async function getRecords(
   idIterator: Iterable<string>,

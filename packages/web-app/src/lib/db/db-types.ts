@@ -165,6 +165,8 @@ export interface TokenPayload {
 export interface TokenResponse {
   ok: boolean;
   value?: TokenPayload | null;
+  /** True when stale auth cookies were detected and cleared (e.g. id_token expired but refresh_token remained). */
+  staleCleared?: boolean;
 }
 
 /**
@@ -205,6 +207,8 @@ export interface MapConfigFavourite {
 export interface UserInfo {
   Item: UserData;
   status: UserDataLoadStatus;
+  /** True when the user had stale auth cookies that were cleared during this request (session expired). */
+  sessionExpired?: boolean;
 }
 
 /**

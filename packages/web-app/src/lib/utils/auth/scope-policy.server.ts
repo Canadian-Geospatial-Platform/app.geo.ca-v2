@@ -4,7 +4,7 @@ import type { TokenPayload } from '$lib/db/db-types';
 /**
  * Supported OIDC scopes that this relying party can safely request and validate.
  */
-export const SUPPORTED_REQUESTED_SCOPES = ['openid', 'profile', 'email', 'phone', 'language'] as const;
+export const SUPPORTED_REQUESTED_SCOPES = ['openid', 'profile', 'email', 'language'] as const;
 
 /**
  * Supported scope name derived from the allowlist above.
@@ -25,10 +25,6 @@ const SCOPED_CLAIM_RULES: Partial<Record<RequestedScope, readonly ScopedClaimRul
     { claim: 'email', expectedType: 'string' },
     { claim: 'email_verified', expectedType: 'boolean' },
   ],
-  phone: [
-    { claim: 'phone_number', expectedType: 'string' },
-    { claim: 'phone_number_verified', expectedType: 'boolean' },
-  ],
   language: [
     { claim: 'locale', expectedType: 'string' },
     { claim: 'lang', expectedType: 'string' },
@@ -41,10 +37,6 @@ const SCOPED_CLAIM_RULES: Partial<Record<RequestedScope, readonly ScopedClaimRul
     { claim: 'nickname', expectedType: 'string' },
     { claim: 'preferred_username', expectedType: 'string' },
     { claim: 'profile', expectedType: 'string' },
-    { claim: 'picture', expectedType: 'string' },
-    { claim: 'website', expectedType: 'string' },
-    { claim: 'gender', expectedType: 'string' },
-    { claim: 'birthdate', expectedType: 'string' },
     { claim: 'zoneinfo', expectedType: 'string' },
     { claim: 'locale', expectedType: 'string' },
     { claim: 'updated_at', expectedType: 'number' },

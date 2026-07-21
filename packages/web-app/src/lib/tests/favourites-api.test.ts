@@ -1,6 +1,7 @@
+/**
+ * Test coverage: Route tests for favourites API map configuration mutations, including create/delete behavior and persistence calls.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { PATCH } from '../../routes/[lang]/api/favourites/+server';
-import { getUserData, putUserData } from '$lib/db/user';
 import type { MapConfigFavourite } from '$lib/db/db-types';
 
 vi.mock('$lib/db/user', () => ({
@@ -8,9 +9,18 @@ vi.mock('$lib/db/user', () => ({
   putUserData: vi.fn(),
 }));
 
+import { PATCH } from '../../routes/[lang]/api/favourites/+server';
+import { getUserData, putUserData } from '$lib/db/user';
+
 const mockedGetUserData = vi.mocked(getUserData);
 const mockedPutUserData = vi.mocked(putUserData);
 
+/**
+ * Creates a PATCH request for the favourites API test route.
+ *
+ * @param payload - JSON payload sent to the route.
+ * @returns Request configured for PATCH with JSON body.
+ */
 function createPatchRequest(payload: Record<string, unknown>): Request {
   return new Request('http://localhost/en-ca/api/favourites', {
     method: 'PATCH',

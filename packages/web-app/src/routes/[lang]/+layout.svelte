@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { afterNavigate } from '$app/navigation';
   import { page, updated } from '$app/state';
   import { onMount } from 'svelte';
   import '../../app.css';
@@ -21,7 +22,20 @@
   // ensure it is only executed after the <html> element is present in the DOM.
   // Assigning the language using <svelte:head> instead sometimes caused errors
   onMount(() => {
+    let previousSignedIn = Boolean(page.data.signedIn);
     document.documentElement.lang = lang;
+
+    afterNavigate(() => {
+      const currentSignedIn = Boolean(page.data.signedIn);
+
+      // Ensure components switch to their correct signed-out rendering path.
+      if (previousSignedIn && !currentSignedIn) {
+        window.location.reload();
+        return;
+      }
+
+      previousSignedIn = currentSignedIn;
+    });
 
     const originalScrollIntoView = Element.prototype.scrollIntoView;
 
@@ -71,6 +85,15 @@
 <GoogleTag />
 <Header />
 <main class="flex flex-col content-width bg-custom-1 min-h-screen pt-8" data-sveltekit-reload={updated.current ? '' : 'off'}>
+  {#if page.data.sessionExpired}
+    <div
+      class="mb-4 rounded border border-yellow-600 bg-yellow-50 px-4 py-3 font-custom-style-body-1 text-yellow-900"
+      role="status"
+      aria-live="polite"
+    >
+      {lang === 'fr' ? 'Votre session a expiré. Vous avez été déconnecté.' : 'You have been signed out because your session expired.'}
+    </div>
+  {/if}
   <Breadcrumbs />
   <div>
     {@render children?.()}

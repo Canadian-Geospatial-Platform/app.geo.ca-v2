@@ -42,12 +42,35 @@ type NavItems = Record<string, NavItem>;
  * @param event - SvelteKit load event containing params and cookies.
  * @returns Layout data used by shared navigation, footer, and profile UI.
  */
-export const load: LayoutServerLoad = async ({ params, cookies, depends }) => {
+export const load: LayoutServerLoad = async ({ params, cookies, depends, url }) => {
   depends('app:favourites');
 
   const lang = getAppLanguage(params.lang);
   const userInfo = await getUserData(cookies);
   const signedIn = Boolean(userInfo.Item.uuid);
+  console.debug('[+layout.server] User state loaded', {
+    signedIn,
+    userStatus: userInfo.status,
+    uuid: userInfo.Item.uuid,
+  });
+
+  // When stale auth cookies were cleared this request, set a short-lived flash cookie so the
+  // "signed out" notification survives any subsequent redirect (e.g. from a protected route).
+  if (userInfo.sessionExpired) {
+    cookies.set('session_expired', '1', {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: url.protocol === 'https:',
+      maxAge: 60,
+    });
+  }
+
+  // Consume the flash cookie set by a previous request so the banner only shows once.
+  const sessionExpired = cookies.get('session_expired') === '1';
+  if (sessionExpired) {
+    cookies.delete('session_expired', { path: '/' });
+  }
   const userDataUnavailable = userInfo.status === 'unavailable';
   const navitems = structuredClone(pickByLanguage(lang, enNavitems, frNavitems)) as NavItems;
 
@@ -80,6 +103,7 @@ export const load: LayoutServerLoad = async ({ params, cookies, depends }) => {
   return {
     lang,
     signedIn,
+    sessionExpired,
     FEATURE_SIGN_IN: isOidcConfigured(),
     userData: userInfo.Item,
     userDataStatus: userInfo.status,

@@ -6,6 +6,8 @@ const AWS_REGION = "ca-central-1";
 const env = {
   oidcClientId: process.env.OIDC_CLIENT_ID ?? "",
   oidcCustomDomain: process.env.OIDC_CUSTOM_DOMAIN ?? "",
+  oidcTokenEndpoint: process.env.OIDC_TOKEN_ENDPOINT ?? "",
+  oidcJwtKid: process.env.OIDC_JWT_KID ?? "",
   oidcClientSecret: process.env.OIDC_CLIENT_SECRET ?? "",
   oidcPrivateKeySecretId: process.env.OIDC_PRIVATE_KEY_SECRET_ID ?? "",
   oidcRequestedScopes: process.env.OIDC_REQUESTED_SCOPES ?? "",
@@ -34,7 +36,10 @@ export default $config({
       await import("./config/secrets-manager-policy");
     const isProduction = $app.stage === "production";
     const isStaging = $app.stage === "staging";
-    const usePrivateKeyJwt = isStaging || isProduction;
+    const usePrivateKeyJwt =
+      isStaging ||
+      isProduction ||
+      (process.env.OIDC_USE_PRIVATE_KEY_JWT ?? "").toLowerCase() === "true";
     const oidcPrivateKeySecretResourceArn = toSecretsManagerResourceArn(
       env.oidcPrivateKeySecretId,
       AWS_REGION,
@@ -81,24 +86,17 @@ export default $config({
     const site = new sst.aws.SvelteKit("WebApp", {
       path: "packages/web-app",
       link: [users, hnapBucket],
+      permissions: oidcPrivateKeySecretResourceArn
+        ? [
+            {
+              actions: ["secretsmanager:GetSecretValue"],
+              resources: [oidcPrivateKeySecretResourceArn],
+            },
+          ]
+        : [],
       transform: {
         server: (args: any) => {
           args.logging = logRetention;
-          
-          if (oidcPrivateKeySecretResourceArn) {
-            // Add inline policy for Secrets Manager access
-            args.inlinePolicies = args.inlinePolicies || {};
-            args.inlinePolicies["SecretsManagerAccess"] = JSON.stringify({
-              Version: "2012-10-17",
-              Statement: [
-                {
-                  Effect: "Allow",
-                  Action: ["secretsmanager:GetSecretValue"],
-                  Resource: [oidcPrivateKeySecretResourceArn],
-                },
-              ],
-            });
-          }
         },
         imageOptimizer: (args: any) => {
           args.logging = logRetention;
@@ -109,6 +107,8 @@ export default $config({
         SEMANTIC_SEARCH_URL,
         OIDC_CLIENT_ID: env.oidcClientId,
         OIDC_CUSTOM_DOMAIN: env.oidcCustomDomain,
+        OIDC_TOKEN_ENDPOINT: env.oidcTokenEndpoint,
+        OIDC_JWT_KID: env.oidcJwtKid,
         OIDC_CLIENT_SECRET: env.oidcClientSecret,
         OIDC_PRIVATE_KEY_SECRET_ID: env.oidcPrivateKeySecretId,
         OIDC_REQUESTED_SCOPES: env.oidcRequestedScopes,

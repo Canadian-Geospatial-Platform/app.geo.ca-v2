@@ -138,17 +138,35 @@ aws secretsmanager put-secret-value `
   --region ca-central-1
 ```
 
+Optional JSON secret format (recommended when your provider requires `x5t#S256`):
+
+- The app supports storing key material as JSON with both private key and certificate.
+- When `certificate` is present, the app computes `x5t#S256` from the certificate and sends it in the client assertion JWT header.
+
+```json
+{
+  "privateKey": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----",
+  "certificate": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+}
+```
+
+If you store this JSON directly in Secrets Manager, keep embedded newlines escaped as `\\n`.
+
 4. **Configure your staging/production deployment**:
 
 - Create your stage env file (for example `.env.staging` or `.env.production`) with:
   ```
   OIDC_CLIENT_ID=<your-stage-client-id>
   OIDC_CUSTOM_DOMAIN=<your-stage-oidc-domain>
+  OIDC_TOKEN_ENDPOINT=<your-stage-token-endpoint-url>
+  OIDC_JWT_KID=<your-jwt-key-id>
   OIDC_PRIVATE_KEY_SECRET_ID=<stage>/oidc/private-key
   OIDC_USE_PRIVATE_KEY_JWT=true
   ```
 
   - `OIDC_CLIENT_SECRET` is optional when `private_key_jwt` is enabled and key material is configured.
+  - `OIDC_TOKEN_ENDPOINT` is optional; defaults to `<OIDC_CUSTOM_DOMAIN>/oauth2/token`. Set this when your provider requires a different token endpoint path (e.g., `/v1.0/endpoint/default/token`).
+  - `OIDC_JWT_KID` (Key ID) is optional; when provided, it's included in the JWT header to help the provider identify the signing key (e.g., `staging-nrcan-geoca-signer`).
   - `OIDC_PRIVATE_KEY_SECRET_ID` may be set as either a secret name/id (for example `<stage>/oidc/private-key`) or a full Secrets Manager ARN.
   - Staging/production deployments fail fast when private_key_jwt is enforced and `OIDC_PRIVATE_KEY_SECRET_ID` is missing or malformed.
   - The app only fetches the private key from Secrets Manager when `OIDC_USE_PRIVATE_KEY_JWT=true`.
@@ -255,6 +273,7 @@ Data persistence:
     - https://d28mialgy1tfmv.cloudfront.net/sign-in/receive
   - Example allowed sign-out URLs.
     - https://d28mialgy1tfmv.cloudfront.net/sign-in/logout
+  - Post logout redirect URLs must be exact allowlist matches (no extra query params).
   - Example back-channel logout URL.
     - https://d28mialgy1tfmv.cloudfront.net/sign-in/back-channel-logout
 

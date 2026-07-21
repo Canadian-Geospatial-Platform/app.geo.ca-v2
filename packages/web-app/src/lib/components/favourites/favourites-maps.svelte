@@ -251,11 +251,6 @@
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       {@html mapsDescription}
     </p>
-    <div class="mt-1 mb-6 rounded border border-custom-16/20 bg-custom-1 px-4 py-3 md:px-5">
-      <p class="font-custom-style-body-9 m-0 text-custom-18">
-        {mapsTipLabel}
-      </p>
-    </div>
 
     {#if statusType && statusMessage}
       <div
@@ -274,45 +269,54 @@
     </div>
     {#if savedMaps.length > 0}
       <Card>
-        <div class="divide-y divide-custom-17">
-          {#each savedMaps as mapItem (mapItem.id)}
-            <div class="py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 class="font-custom-style-h2-2">{mapItem.name}</h2>
-                <p class="font-custom-style-body-9">{formatCreatedAt(mapItem.createdAt)}</p>
-              </div>
+        <div>
+          <div class="divide-y divide-custom-17">
+            {#each savedMaps as mapItem (mapItem.id)}
+              <div class="py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 class="font-custom-style-h2-2">{mapItem.name}</h2>
+                  <p class="font-custom-style-body-9">{formatCreatedAt(mapItem.createdAt)}</p>
+                </div>
 
-              <div class="flex flex-wrap gap-2">
-                <button
-                  class="button-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
-                  onclick={() => {
-                    handleOpenSavedMapClick(mapItem);
-                  }}
-                >
-                  <MapIcon classes="h-5 inline mb-1" />
-                  {viewMapLabel}
-                </button>
-                <button
-                  class="button-3 shadow-[0_0.1875rem_0.375rem_#00000029]"
-                  onclick={() => {
-                    handleDownloadSavedMapClick(mapItem);
-                  }}
-                >
-                  <DownloadIcon classes="h-5 inline mb-1" />
-                  {downloadMapLabel}
-                </button>
-                <button
-                  class="button-3 shadow-[0_0.1875rem_0.375rem_#00000029]"
-                  onclick={() => {
-                    handleDeleteSavedMapClick(mapItem.id);
-                  }}
-                >
-                  <GarbageCan classes="h-4 inline mb-1" />
-                  {deleteMapLabel}
-                </button>
+                <div class="flex flex-wrap gap-2">
+                  <button
+                    class="button-5 shadow-[0_0.1875rem_0.375rem_#00000029]"
+                    onclick={() => {
+                      handleOpenSavedMapClick(mapItem);
+                    }}
+                  >
+                    <MapIcon classes="h-5 inline mb-1" />
+                    {viewMapLabel}
+                  </button>
+                  <button
+                    class="button-3 shadow-[0_0.1875rem_0.375rem_#00000029]"
+                    onclick={() => {
+                      handleDownloadSavedMapClick(mapItem);
+                    }}
+                  >
+                    <DownloadIcon classes="h-5 inline mb-1" />
+                    {downloadMapLabel}
+                  </button>
+                  <button
+                    class="button-3 shadow-[0_0.1875rem_0.375rem_#00000029]"
+                    onclick={() => {
+                      handleDeleteSavedMapClick(mapItem.id);
+                    }}
+                  >
+                    <GarbageCan classes="h-4 inline mb-1" />
+                    {deleteMapLabel}
+                  </button>
+                </div>
               </div>
-            </div>
-          {/each}
+            {/each}
+          </div>
+          <div class="mt-1 rounded border border-custom-16/20 bg-custom-1 px-4 py-3 md:px-5">
+            <p class="font-custom-style-body-9 m-0 text-custom-18">
+              <!-- Translation content is controlled in-repo; safe to render as HTML for inline icon/text formatting. -->
+              <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+              {@html mapsTipLabel}
+            </p>
+          </div>
         </div>
       </Card>
     {:else}

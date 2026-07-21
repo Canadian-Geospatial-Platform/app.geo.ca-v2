@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for Secrets Manager ARN normalization and policy-target helper behavior.
+ */
 import { describe, expect, it } from 'vitest';
 import { toSecretsManagerResourceArn } from '../../../../../config/secrets-manager-policy';
 

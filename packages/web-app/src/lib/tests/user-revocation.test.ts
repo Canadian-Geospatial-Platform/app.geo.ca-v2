@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for user auth revocation marker persistence and error handling behavior.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { docSendMock } = vi.hoisted(() => ({

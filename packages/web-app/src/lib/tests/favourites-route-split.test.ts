@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Route-load tests for split favourites pages, covering guest redirects, accessibility rules, and localized data flow.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { getAppLanguageMock, loadFavouritesPageDataMock } = vi.hoisted(() => ({
@@ -19,6 +22,12 @@ import { load as loadDatasets } from '../../routes/[lang]/favourites/datasets/+p
 import { load as loadMaps } from '../../routes/[lang]/favourites/maps/+page.server';
 import { load as loadView } from '../../routes/[lang]/favourites/view/+page.server';
 
+/**
+ * Builds mock page-load data for favourites route tests.
+ *
+ * @param uuid - User UUID or null for guest state.
+ * @returns Mock favourites page data.
+ */
 function createPageData(uuid: string | null) {
   return {
     tTitle1: { text: 'Catalog', href: '/en-ca/map-browser' },
@@ -32,6 +41,13 @@ function createPageData(uuid: string | null) {
   };
 }
 
+/**
+ * Creates a minimal page-server event for route load tests.
+ *
+ * @param url - Absolute request URL.
+ * @param lang - Route language parameter.
+ * @returns Mock event payload with fetch, cookies, params, and URL.
+ */
 function createEvent(url: string, lang: string = 'en-ca') {
   return {
     fetch: vi.fn(),

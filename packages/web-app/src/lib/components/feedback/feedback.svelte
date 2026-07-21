@@ -22,7 +22,9 @@
     {:else}
       <p>
         GEO.ca is committed to open dialogue and community building around location-based issues and topics that matter to you.
-        <br /><a class="underline hover:no-underline text-custom-16" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca">Please send us your feedback</a>
+        <br /><a class="underline hover:no-underline text-custom-16" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca"
+          >Please send us your feedback</a
+        >
       </p>
     {/if}
   </div>

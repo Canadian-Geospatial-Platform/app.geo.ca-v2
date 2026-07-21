@@ -1,11 +1,28 @@
 #!/usr/bin/env node
 
+/**
+ * Staging go/no-go preflight validator.
+ *
+ * Validates OIDC deployment prerequisites from a stage env file and optional AWS checks.
+ * Exits with status 1 when blocker checks fail, otherwise exits with status 0.
+ *
+ * Supported flags:
+ * --stage, --region, --base-url, --env-file, --skip-aws.
+ */
+
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const args = process.argv.slice(2);
 
+/**
+ * Gets a string argument value that follows a flag.
+ *
+ * @param {string} flag - CLI flag name to look up (for example --stage).
+ * @param {string} [fallback=''] - Fallback value when the flag is absent.
+ * @returns {string} Parsed argument value or fallback.
+ */
 function getArg(flag, fallback = '') {
   const index = args.indexOf(flag);
   if (index === -1) {
@@ -20,10 +37,24 @@ function getArg(flag, fallback = '') {
   return next;
 }
 
+/**
+ * Returns true when the specified flag exists in CLI args.
+ *
+ * @param {string} flag - CLI flag name to check.
+ * @returns {boolean} True when present.
+ */
 function hasFlag(flag) {
   return args.includes(flag);
 }
 
+/**
+ * Parses a dotenv-like file string into key/value pairs.
+ *
+ * Ignores blank lines and comments. Supports quoted values.
+ *
+ * @param {string} content - Raw dotenv file content.
+ * @returns {Record<string, string>} Parsed env key/value object.
+ */
 function parseDotEnvFile(content) {
   const parsed = {};
 
@@ -51,6 +82,14 @@ function parseDotEnvFile(content) {
   return parsed;
 }
 
+/**
+ * Performs lightweight validation on an AWS Secrets Manager secret identifier.
+ *
+ * Accepts full ARNs or simple secret names containing allowed characters.
+ *
+ * @param {string} secretId - Secret name or ARN.
+ * @returns {{ ok: true; type: 'arn' | 'name' } | { ok: false; reason: string }} Validation result.
+ */
 function checkSecretsManagerId(secretId) {
   if (!secretId) {
     return { ok: false, reason: 'empty' };
@@ -67,6 +106,12 @@ function checkSecretsManagerId(secretId) {
   return { ok: false, reason: 'invalid-characters' };
 }
 
+/**
+ * Runs an AWS CLI command synchronously and captures output.
+ *
+ * @param {string[]} argsToRun - Arguments passed to the aws executable.
+ * @returns {import('node:child_process').SpawnSyncReturns<string>} Child process result.
+ */
 function runAws(argsToRun) {
   return spawnSync('aws', argsToRun, { encoding: 'utf8' });
 }

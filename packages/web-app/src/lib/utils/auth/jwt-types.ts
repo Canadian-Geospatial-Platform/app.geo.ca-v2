@@ -14,6 +14,7 @@ export type JwtHeader = {
 export type OpenIdConfiguration = {
   issuer?: string;
   jwks_uri?: string;
+  end_session_endpoint?: string;
 };
 
 /**

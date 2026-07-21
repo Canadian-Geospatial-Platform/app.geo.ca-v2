@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Integration-style route tests for the back-channel logout endpoint, including token validation outcomes and HTTP response behavior.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { markUserAuthRevokedMock, verifyBackChannelLogoutTokenMock } = vi.hoisted(() => ({

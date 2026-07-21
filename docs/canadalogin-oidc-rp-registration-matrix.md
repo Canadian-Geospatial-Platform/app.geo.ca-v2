@@ -103,6 +103,7 @@ Current implementation uses private_key_jwt with RS256 and is documented for pub
 
 - Confirm BASE_URL is final and publicly reachable for that environment.
 - Confirm Redirect URL and Post Logout Redirect URL are whitelisted in CanadaLogin.
+- Confirm Post Logout Redirect URL entries match exactly (scheme, host, path) and do not rely on query parameters.
 - Confirm Back-channel logout URL is reachable by CanadaLogin.
 - Confirm OIDC_CLIENT_ID is correct for the environment.
 - Confirm OIDC_CUSTOM_DOMAIN targets the correct CanadaLogin environment.

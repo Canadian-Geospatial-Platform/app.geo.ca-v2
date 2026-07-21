@@ -132,7 +132,8 @@ function createUniqueMapName(baseName: string, existingMaps: MapConfigFavourite[
 /**
  * Adds a record id to the signed-in user's favourites.
  *
- * @param event - SvelteKit request event.
+ * @param cookies - SvelteKit cookie jar from the request context.
+ * @param request - Incoming request containing the JSON payload.
  * @returns JSON response with updated favourites state.
  */
 export const POST: RequestHandler = async ({ cookies, request }): Promise<Response> => {
@@ -156,7 +157,8 @@ export const POST: RequestHandler = async ({ cookies, request }): Promise<Respon
 /**
  * Removes a record id from the signed-in user's favourites.
  *
- * @param event - SvelteKit request event.
+ * @param cookies - SvelteKit cookie jar from the request context.
+ * @param request - Incoming request containing the JSON payload.
  * @returns JSON response with updated favourites state.
  */
 export const DELETE: RequestHandler = async ({ cookies, request }): Promise<Response> => {
@@ -180,7 +182,7 @@ export const DELETE: RequestHandler = async ({ cookies, request }): Promise<Resp
 /**
  * Clears all favourites for the signed-in user.
  *
- * @param event - SvelteKit request event.
+ * @param cookies - SvelteKit cookie jar from the request context.
  * @returns JSON response with emptied favourites state.
  */
 export const PUT: RequestHandler = async ({ cookies }): Promise<Response> => {
@@ -200,7 +202,8 @@ export const PUT: RequestHandler = async ({ cookies }): Promise<Response> => {
  *
  * Supports create and delete actions for saved map configurations.
  *
- * @param event - SvelteKit request event.
+ * @param cookies - SvelteKit cookie jar from the request context.
+ * @param request - Incoming request containing the JSON payload.
  * @returns JSON response with updated map config state.
  */
 export const PATCH: RequestHandler = async ({ cookies, request }): Promise<Response> => {

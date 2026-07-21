@@ -253,10 +253,10 @@
   }
 
   /**
-   * Builds the URL search parameters based on the filters.
+   * Validates that a bounding box contains numeric coordinates.
    *
-   * @param filters - The filters object.
-   * @returns The URL search parameters.
+   * @param bbox - Candidate bounding box.
+   * @returns True when all coordinates are numeric.
    */
   function isValidBbox(bbox: BBox | null | undefined): bbox is BBox {
     if (!bbox) return false;
@@ -267,6 +267,12 @@
     return !isNaN(north) && !isNaN(east) && !isNaN(south) && !isNaN(west);
   }
 
+  /**
+   * Builds URL search parameters from the current filter selections.
+   *
+   * @param filters - The selected filters.
+   * @returns URL search parameters used for navigation.
+   */
   function buildFilterParams(filters: Filters): URLSearchParams {
     const bbox: BBox | null | undefined = filters.bbox;
     const relation = filters.relation;

@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Route tests for the sign-in callback endpoint, including token exchange flow, nonce checks, and redirect behavior.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const {

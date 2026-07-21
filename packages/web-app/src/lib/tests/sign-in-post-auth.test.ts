@@ -1,12 +1,16 @@
+/**
+ * Test coverage: Unit tests for post-auth redirect and guest-favourites merge helpers used after sign-in/logout.
+ */
 import type { Cookies } from '@sveltejs/kit';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getUserData, putUserData } from '$lib/db/user';
-import { getPostAuthRedirect, getPostLogoutRedirectPath, mergeGuestFavourites } from '$lib/utils/auth/sign-in-post-auth.server';
 
 vi.mock('$lib/db/user', () => ({
   getUserData: vi.fn(),
   putUserData: vi.fn(),
 }));
+
+import { getUserData, putUserData } from '$lib/db/user';
+import { getPostAuthRedirect, getPostLogoutRedirectPath, mergeGuestFavourites } from '$lib/utils/auth/sign-in-post-auth.server';
 
 const mockedGetUserData = vi.mocked(getUserData);
 const mockedPutUserData = vi.mocked(putUserData);
@@ -16,6 +20,12 @@ type CookieHarness = {
   deletedNames: string[];
 };
 
+/**
+ * Creates a cookie test harness that records deleted cookie names.
+ *
+ * @param initialValues - Initial cookie values.
+ * @returns Cookie harness with cookies test double and deletion log.
+ */
 function createCookieHarness(initialValues: Record<string, string> = {}): CookieHarness {
   const values = new Map<string, string>(Object.entries(initialValues));
   const deletedNames: string[] = [];

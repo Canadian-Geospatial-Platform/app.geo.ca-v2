@@ -73,7 +73,9 @@ export async function verifyJwtSignatureWithJwks(
       };
     }
 
-    const jwk = jwks.keys?.find((key) => key.kid === header.kid && key.kty === 'RSA' && key.use !== 'enc');
+    const jwk = header.kid
+      ? jwks.keys?.find((key) => key.kid === header.kid && key.kty === 'RSA' && key.use !== 'enc')
+      : jwks.keys?.find((key) => key.kty === 'RSA' && key.use !== 'enc');
     if (!jwk) {
       console.error('[auth/jwks] signing_key_not_found', {
         ...telemetry,

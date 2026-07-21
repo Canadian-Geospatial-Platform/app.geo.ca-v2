@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for OIDC authorization-code token exchange, including request construction and error handling.
+ */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { createClientAssertionJwtMock, getOidcConfigMock } = vi.hoisted(() => ({
@@ -91,7 +94,9 @@ describe('exchangeCodeForTokens', () => {
     expect(createClientAssertionJwtMock).toHaveBeenCalledWith(
       'client-id-123',
       'https://auth.example.test/oauth2/token',
-      '-----BEGIN PRIVATE KEY-----test-----END PRIVATE KEY-----'
+      '-----BEGIN PRIVATE KEY-----test-----END PRIVATE KEY-----',
+      null,
+      null
     );
 
     const [, requestInit] = vi.mocked(globalThis.fetch).mock.calls[0] ?? [];

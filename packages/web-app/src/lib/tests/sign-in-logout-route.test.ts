@@ -1,8 +1,11 @@
+/**
+ * Test coverage: Route tests for sign-out/logout redirect behavior across localized and root logout endpoints.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { clearAuthCookiesMock, getOidcLogoutUrlMock } = vi.hoisted(() => ({
   clearAuthCookiesMock: vi.fn(),
-  getOidcLogoutUrlMock: vi.fn<(url: URL) => string | null>(),
+  getOidcLogoutUrlMock: vi.fn<(url: URL) => Promise<string | null>>(),
 }));
 
 vi.mock('$lib/utils/auth/auth-cookies', () => ({
@@ -17,6 +20,13 @@ import { load as loadLangLogout } from '../../routes/[lang]/sign-in/logout/+page
 import { load as loadRootLogout } from '../../routes/sign-in/logout/+page.server';
 import { load as loadOidcLogout } from '../../routes/[lang]/sign-in/oidc-logout/+page.server';
 
+/**
+ * Asserts that a route loader throws a redirect matching expectations.
+ *
+ * @param run - Loader invocation that should throw a redirect.
+ * @param expected - Expected redirect status and location.
+ * @returns Promise resolved when redirect assertion passes.
+ */
 async function expectRedirect(
   run: () => Promise<unknown> | unknown,
   expected: {
@@ -35,7 +45,7 @@ async function expectRedirect(
 describe('sign-out route redirects', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    getOidcLogoutUrlMock.mockReturnValue(null);
+    getOidcLogoutUrlMock.mockResolvedValue(null);
   });
 
   it('redirects /[lang]/sign-in/logout to language favourites when returnTo is favourites', async () => {
@@ -81,7 +91,7 @@ describe('sign-out route redirects', () => {
   });
 
   it('redirects to provider logout URL when available', async () => {
-    getOidcLogoutUrlMock.mockReturnValue('https://auth.example.test/logout');
+    getOidcLogoutUrlMock.mockResolvedValue('https://auth.example.test/logout');
 
     const event = {
       params: { lang: 'en-ca' },

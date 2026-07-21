@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for scope policy helpers that derive/normalize requested OIDC scopes.
+ */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   getAuthorizeScopeValue,
@@ -35,7 +38,7 @@ describe('scope-policy', () => {
   });
 
   it('accepts token payload when scoped claims are absent', () => {
-    const result = validateScopedIdTokenClaims({ sub: 'user-123' }, ['openid', 'email', 'phone', 'language', 'profile']);
+    const result = validateScopedIdTokenClaims({ sub: 'user-123' }, ['openid', 'email', 'language', 'profile']);
 
     expect(result).toEqual({ ok: true });
   });

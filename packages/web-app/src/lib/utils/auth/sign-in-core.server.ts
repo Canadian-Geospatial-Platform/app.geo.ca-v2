@@ -2,7 +2,7 @@ import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import type { Cookies } from '@sveltejs/kit';
 import { encodeBase64Url } from '$lib/utils/auth/base64url';
 import { createClientAssertionJwt } from '$lib/utils/auth/client-assertion.server';
-import { getOidcConfig } from '$lib/utils/auth/oidc.server';
+import { getOidcConfig, getOpenIdConfiguration } from '$lib/utils/auth/oidc.server';
 import { getAuthorizeScopeValue } from '$lib/utils/auth/scope-policy.server';
 
 /**
@@ -184,15 +184,17 @@ export function consumeOidcNonceCookie(cookies: Cookies): string | null {
  * @param requestUrl - Current request URL, used to derive the redirect URI.
  * @param codeVerifier - PKCE verifier used during the authorize request.
  * @param privateKeyPem - RSA private key in PEM format for private_key_jwt auth; null falls back to client_secret_post.
+ * @param x5tS256 - Optional base64url SHA-256 thumbprint of the client certificate for JWT header.
  * @returns Token payload from provider or null when exchange fails.
  */
 export async function exchangeCodeForTokens(
   code: string,
   requestUrl: URL,
   codeVerifier: string | null,
-  privateKeyPem: string | null = null
+  privateKeyPem: string | null = null,
+  x5tS256: string | null = null
 ): Promise<OAuthTokenResponse | null> {
-  const { clientId, clientSecret, customDomain } = getOidcConfig();
+  const { clientId, clientSecret, customDomain, tokenEndpoint, jwtKid } = getOidcConfig();
   const usePrivateKeyJwt = (process.env.OIDC_USE_PRIVATE_KEY_JWT ?? '').toLowerCase() === 'true';
   const isLocalhost = requestUrl.hostname === 'localhost' || requestUrl.hostname === '127.0.0.1';
   const telemetry = {
@@ -240,7 +242,7 @@ export async function exchangeCodeForTokens(
   }
 
   // Construct token endpoint URL and request body for exchanging code
-  const tokenUrl = `${customDomain}/oauth2/token`;
+  const tokenUrl = tokenEndpoint || `${customDomain}/oauth2/token`;
   const redirectUri = getRedirectUri(requestUrl);
 
   const bodyParams: Record<string, string> = {
@@ -253,7 +255,7 @@ export async function exchangeCodeForTokens(
 
   // Use private_key_jwt when available, otherwise fall back to client_secret_post
   if (privateKeyPem) {
-    const clientAssertion = createClientAssertionJwt(clientId, tokenUrl, privateKeyPem);
+    const clientAssertion = createClientAssertionJwt(clientId, tokenUrl, privateKeyPem, x5tS256, jwtKid || null);
     bodyParams.client_assertion_type = 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer';
     bodyParams.client_assertion = clientAssertion;
   } else {
@@ -273,9 +275,20 @@ export async function exchangeCodeForTokens(
     });
 
     if (!response.ok) {
+      let errorDetails: Record<string, unknown> = {};
+      try {
+        const errorBody = await response.json();
+        errorDetails = {
+          error: errorBody.error,
+          error_description: errorBody.error_description,
+        };
+      } catch {
+        // Could not parse error response
+      }
       console.error('[auth/token-exchange] token_request_failed', {
         ...telemetry,
         status: response.status,
+        ...errorDetails,
       });
       return null;
     }
@@ -304,8 +317,9 @@ export function setAuthCookies(cookies: Cookies, requestUrl: URL, tokenResponse:
   }
 
   const tokenMaxAge = tokenResponse.expires_in ?? ONE_HOUR_SECONDS;
-  cookies.set('id_token', tokenResponse.id_token, getCookieOptions(requestUrl, tokenMaxAge));
-  cookies.set('access_token', tokenResponse.access_token, getCookieOptions(requestUrl, tokenMaxAge));
+  const cookieOptions = getCookieOptions(requestUrl, tokenMaxAge);
+  cookies.set('id_token', tokenResponse.id_token, cookieOptions);
+  cookies.set('access_token', tokenResponse.access_token, cookieOptions);
   if (tokenResponse.refresh_token) {
     cookies.set('refresh_token', tokenResponse.refresh_token, getCookieOptions(requestUrl, THIRTY_DAYS_SECONDS));
   }
@@ -315,15 +329,22 @@ export function setAuthCookies(cookies: Cookies, requestUrl: URL, tokenResponse:
 /**
  * Builds the provider logout URL.
  *
+ * Uses the `end_session_endpoint` from the OIDC discovery document when available,
+ * falling back to `${customDomain}/oauth2/logout`. Uses the standard
+ * `post_logout_redirect_uri` parameter per the OIDC Session Management spec.
+ *
  * @param requestUrl - Current request URL.
  * @returns Provider logout URL or null when OIDC config is missing.
  */
-export function getOidcLogoutUrl(requestUrl: URL): string | null {
+export async function getOidcLogoutUrl(requestUrl: URL): Promise<string | null> {
   const { clientId, customDomain } = getOidcConfig();
   if (!clientId || !customDomain) {
     return null;
   }
 
-  const logoutUri = `${requestUrl.origin}/sign-in/logout${requestUrl.search}`;
-  return `${customDomain}/oauth2/logout?client_id=${encodeURIComponent(clientId)}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  const discovery = await getOpenIdConfiguration(customDomain);
+  const logoutEndpoint = discovery?.end_session_endpoint ?? `${customDomain}/oauth2/logout`;
+
+  const postLogoutRedirectUri = `${requestUrl.origin}/sign-in/logout`;
+  return `${logoutEndpoint}?client_id=${encodeURIComponent(clientId)}&post_logout_redirect_uri=${encodeURIComponent(postLogoutRedirectUri)}`;
 }

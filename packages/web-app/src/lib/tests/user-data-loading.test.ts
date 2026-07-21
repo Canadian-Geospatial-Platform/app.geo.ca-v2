@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for user-data loading from auth cookies and persistence layer, including anonymous/missing/unavailable states.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { docSendMock, getTokenMock, clearAuthCookiesMock } = vi.hoisted(() => ({
@@ -69,5 +72,41 @@ describe('getUserData', () => {
       status: 'missing',
       Item: { uuid: 'user-123', favourites: [], mapConfigs: [] },
     });
+  });
+
+  it('keeps user signed in when token iat equals authRevokedAt', async () => {
+    getTokenMock.mockResolvedValueOnce({ ok: true, value: { sub: 'user-123', iat: 1700000000 } });
+    docSendMock.mockResolvedValueOnce({
+      Item: {
+        uuid: 'user-123',
+        favourites: [],
+        mapConfigs: [],
+        authRevokedAt: 1700000000,
+      },
+    });
+
+    await expect(getUserData({} as never)).resolves.toMatchObject({
+      status: 'ok',
+      Item: { uuid: 'user-123', favourites: [], mapConfigs: [], authRevokedAt: 1700000000 },
+    });
+    expect(clearAuthCookiesMock).not.toHaveBeenCalled();
+  });
+
+  it('signs user out when token iat is older than authRevokedAt', async () => {
+    getTokenMock.mockResolvedValueOnce({ ok: true, value: { sub: 'user-123', iat: 1699999999 } });
+    docSendMock.mockResolvedValueOnce({
+      Item: {
+        uuid: 'user-123',
+        favourites: [],
+        mapConfigs: [],
+        authRevokedAt: 1700000000,
+      },
+    });
+
+    await expect(getUserData({} as never)).resolves.toMatchObject({
+      status: 'anonymous',
+      Item: { uuid: null, favourites: [], mapConfigs: [] },
+    });
+    expect(clearAuthCookiesMock).toHaveBeenCalledTimes(1);
   });
 });

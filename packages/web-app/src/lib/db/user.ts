@@ -105,7 +105,7 @@ const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
   const token: TokenResponse = await getToken(cookies);
   const userKey = getUserKey(token);
   if (!userKey) {
-    return { Item: { uuid: null, favourites: [], mapConfigs: [] }, status: 'anonymous' };
+    return { Item: { uuid: null, favourites: [], mapConfigs: [] }, status: 'anonymous', sessionExpired: token.staleCleared === true };
   }
 
   const unavailableUserData: UserInfo = { Item: { uuid: userKey, favourites: [], mapConfigs: [] }, status: 'unavailable' };
@@ -131,8 +131,9 @@ const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
       return unavailableUserData;
     }
 
-    console.error('Error fetching user data.');
-    console.error(error);
+    console.error('[auth/user] fetch_failed', {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return unavailableUserData;
   }
 
@@ -149,12 +150,13 @@ const getUserData = async (cookies: Cookies): Promise<UserInfo> => {
   }
 
   const tokenIssuedAt = getTokenIssuedAt(token);
-  // Back-channel revocation is stored server-side; reject tokens issued before that marker.
-  if (typeof response.Item.authRevokedAt === 'number' && (tokenIssuedAt === null || tokenIssuedAt <= response.Item.authRevokedAt)) {
+
+  // Reject only tokens strictly older than the revocation second. Equality can occur when
+  // logout and login are processed within the same second by the provider.
+  if (typeof response.Item.authRevokedAt === 'number' && (tokenIssuedAt === null || tokenIssuedAt < response.Item.authRevokedAt)) {
     clearAuthCookies(cookies);
     return { Item: { uuid: null, favourites: [], mapConfigs: [] }, status: 'anonymous' };
   }
-
   return { Item: response.Item, status: 'ok' };
 };
 
@@ -190,16 +192,21 @@ const putUserData = async (data: Partial<UserData>, cookies: Cookies): Promise<R
       return { ok: false };
     }
 
+    const itemSizeEstimateBytes = JSON.stringify(data).length;
+
     // Handle DynamoDB item size limit error
     if (error instanceof Error && error.message.includes('Item size has exceeded')) {
-      console.error('Item size limit exceeded. Current item size:', JSON.stringify(data).length, 'bytes');
+      console.error('[auth/user] put_failed_item_too_large', {
+        itemSizeEstimateBytes,
+        error: error.message,
+      });
       return { ok: false };
     }
 
-    console.error('Error storing user data.');
-    console.error('Error details:', error instanceof Error ? error.message : String(error));
-    console.error('Item size estimate (JSON):', JSON.stringify(data).length, 'bytes');
-    console.error(error);
+    console.error('[auth/user] put_failed', {
+      itemSizeEstimateBytes,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return { ok: false };
   }
 };
@@ -254,8 +261,10 @@ const markUserAuthRevoked = async (
       return 'error';
     }
 
-    console.error('Error storing auth revocation marker.');
-    console.error(error);
+    console.error('[auth/user] revoke_marker_store_failed', {
+      error: error instanceof Error ? error.message : String(error),
+      userKey,
+    });
     return 'error';
   }
 };

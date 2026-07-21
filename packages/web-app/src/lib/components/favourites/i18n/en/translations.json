@@ -7,7 +7,7 @@
   "datasetsLandingDescription": "Review and manage your saved dataset resources, then open selected items on the map.",
   "mapsLandingDescription": "Access your saved map configurations to open, download, upload, or delete them.",
   "landingTipLabel": "Tip: Use Datasets when you want to build a new map from resources, and Maps when you want to reopen a saved map setup.",
-  "mapsTipLabel": "Tip: To download a PDF, PNG, or JPEG version of your map, click View, wait for the map to load, and then click the export icon on the left side of the map.",
+  "mapsTipLabel": "Tip: To download a PDF, PNG, or JPEG version of your map, click View, wait for the map to load, and then click the export icon (<img src='/img/favourites/export.svg' alt='Export icon' class='inline-block h-4 w-4 align-text-bottom mx-1'/>) on the left side of the map.",
   "datasetsLinkLabel": "Go to datasets",
   "mapsLinkLabel": "Go to maps",
   "datasetsTab": "Datasets",

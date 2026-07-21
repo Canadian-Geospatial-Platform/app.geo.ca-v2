@@ -43,22 +43,23 @@ export function resolveInitialFavourites(
 ): { favourites: string[]; shouldSyncLocalStorage: boolean } {
   const normalizedServerFavourites = normalizeFavourites(serverFavourites);
   const normalizedStoredFavourites = normalizeFavourites(storedFavourites);
+  let favourites = normalizedServerFavourites;
+  let shouldSyncLocalStorage = false;
 
   if (signedIn) {
     if (normalizedServerFavourites.length > 0) {
-      return { favourites: normalizedServerFavourites, shouldSyncLocalStorage: true };
+      favourites = normalizedServerFavourites;
+      shouldSyncLocalStorage = true;
+    } else if (normalizedStoredFavourites.length > 0) {
+      favourites = normalizedStoredFavourites;
+      shouldSyncLocalStorage = false;
+    } else {
+      favourites = [];
+      shouldSyncLocalStorage = true;
     }
-
-    if (normalizedStoredFavourites.length > 0) {
-      return { favourites: normalizedStoredFavourites, shouldSyncLocalStorage: false };
-    }
-
-    return { favourites: [], shouldSyncLocalStorage: true };
+  } else if (normalizedStoredFavourites.length > 0) {
+    favourites = normalizedStoredFavourites;
   }
 
-  if (normalizedStoredFavourites.length > 0) {
-    return { favourites: normalizedStoredFavourites, shouldSyncLocalStorage: false };
-  }
-
-  return { favourites: normalizedServerFavourites, shouldSyncLocalStorage: false };
+  return { favourites, shouldSyncLocalStorage };
 }

@@ -58,7 +58,7 @@
   let loading: boolean = $state(true);
 
   let favouriteRecordList: string[] = $state(page.data?.userData?.favourites ? [...page.data.userData.favourites] : []);
-  const savedMapsCount = page.data?.userData?.mapConfigs?.length ?? 0;
+  let savedMapsCount = $derived(page.data?.userData?.mapConfigs?.length ?? 0);
   let records: FavouritesRecord[] = $state([]);
   let tableDataArray: FavouritesRow[] = $state([]);
 
@@ -121,9 +121,9 @@
 
   /**
    * Handle removing all resources from the favourites list.
-    *
-    * For signed-in users this also clears server-side favourites before
-    * resetting local table state and local-storage data.
+   *
+   * For signed-in users this also clears server-side favourites before
+   * resetting local table state and local-storage data.
    */
   async function handleRemoveAllClick(): Promise<void> {
     const permissionText = isFrench(lang)
@@ -157,8 +157,8 @@
 
   /**
    * Handle opening the map view.
-    *
-    * Encodes selected dataset ids in the query string and preserves source context.
+   *
+   * Encodes selected dataset ids in the query string and preserves source context.
    */
   function handleOpenMapClick(): void {
     if (!canOpenMap) {

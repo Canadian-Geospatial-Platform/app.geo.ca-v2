@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Route tests for the sign-in start endpoint, covering PKCE/nonce setup and provider redirect fallback behavior.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const {
@@ -27,6 +30,13 @@ vi.mock('$lib/utils/auth/sign-in-core.server', () => ({
 
 import { load } from '../../routes/[lang]/sign-in/send/+page.server';
 
+/**
+ * Asserts redirect details from a thrown SvelteKit redirect-like error.
+ *
+ * @param error - Caught thrown value from route loader.
+ * @param status - Expected redirect status code.
+ * @param location - Expected redirect location.
+ */
 function expectRedirect(error: unknown, status: number, location: string): void {
   const candidate = error as { status?: number; location?: string };
   expect(candidate.status).toBe(status);

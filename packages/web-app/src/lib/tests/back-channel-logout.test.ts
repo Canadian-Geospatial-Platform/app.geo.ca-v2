@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for back-channel logout token verification, covering signature/claim validation and failure paths.
+ */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestSigningKey, signTestJwt, stubOidcDiscoveryAndJwksFetch } from '$lib/tests/auth-test-helpers';
 import { verifyBackChannelLogoutToken } from '$lib/utils/auth/sign-in-back-channel.server';
@@ -142,5 +145,32 @@ describe('verifyBackChannelLogoutToken', () => {
     const token = signTestJwt(privateKeyPem, header, payload);
 
     await expect(verifyBackChannelLogoutToken(token)).resolves.toBeNull();
+  });
+
+  it('accepts a back-channel logout token without kid in the header', async () => {
+    const kid = 'logout-key-1';
+    const { jwk, privateKeyPem } = createTestSigningKey(kid);
+
+    stubOidcDiscoveryAndJwksFetch(issuer, jwksUri, jwk);
+
+    const now = Math.floor(Date.now() / 1000);
+    // Header without kid - should still be accepted
+    const header = { alg: 'RS256', typ: 'JWT' };
+    const payload = {
+      iss: issuer,
+      aud: clientId,
+      iat: now,
+      exp: now + 300,
+      jti: 'logout-token-without-kid',
+      sub: 'user-456',
+      events: {
+        'http://schemas.openid.net/event/backchannel-logout': {},
+      },
+    };
+    const token = signTestJwt(privateKeyPem, header, payload);
+
+    const result = await verifyBackChannelLogoutToken(token);
+    expect(result?.sub).toBe('user-456');
+    expect(result?.aud).toBe(clientId);
   });
 });

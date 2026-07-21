@@ -132,15 +132,8 @@ export function getPostLogoutRedirectPath(lang?: string, returnTo?: string | nul
   const fallbackLang = lang ?? 'en-ca';
   const fallbackPath = `/${fallbackLang}/map-browser`;
 
-  if (!returnTo) {
-    return fallbackPath;
-  }
-
-  if (lang) {
-    return returnTo === `/${lang}/favourites` ? returnTo : fallbackPath;
-  }
-
-  if (returnTo === '/en-ca/favourites' || returnTo === '/fr-ca/favourites') {
+  const allowedReturnToPaths = lang ? [`/${lang}/favourites`] : ['/en-ca/favourites', '/fr-ca/favourites'];
+  if (returnTo && allowedReturnToPaths.includes(returnTo)) {
     return returnTo;
   }
 

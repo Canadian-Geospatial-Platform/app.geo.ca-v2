@@ -45,7 +45,7 @@ export async function verifyBackChannelLogoutToken(logoutToken: string): Promise
     return null;
   }
 
-  if (header.alg !== 'RS256' || typeof header.kid !== 'string') {
+  if (header.alg !== 'RS256') {
     return null;
   }
 

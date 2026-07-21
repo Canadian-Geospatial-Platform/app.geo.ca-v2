@@ -1,3 +1,6 @@
+/**
+ * Test coverage: Unit tests for sign-in core helpers such as PKCE, nonce, cookie consumption, and authorize URL generation.
+ */
 import type { Cookies } from '@sveltejs/kit';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
@@ -14,6 +17,12 @@ type CookieHarness = {
   deletedNames: string[];
 };
 
+/**
+ * Creates a cookie test harness that records deleted cookie names.
+ *
+ * @param initialValues - Initial cookie values.
+ * @returns Cookie harness with cookies test double and deletion log.
+ */
 function createCookieHarness(initialValues: Record<string, string> = {}): CookieHarness {
   const values = new Map<string, string>(Object.entries(initialValues));
   const deletedNames: string[] = [];

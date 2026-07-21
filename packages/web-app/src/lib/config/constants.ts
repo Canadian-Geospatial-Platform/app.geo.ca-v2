@@ -5,4 +5,4 @@ export const AWS_REGION_FALLBACK = 'ca-central-1';
 export const GEOCORE_RECORD_PREFIX = 'geocore/';
 
 /** Pinned GeoView application version used to load the CGPV script. */
-export const GEOVIEW_APP_VERSION = '2.2.1';
+export const GEOVIEW_APP_VERSION = '2.3.0';
