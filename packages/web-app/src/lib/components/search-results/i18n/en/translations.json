@@ -40,5 +40,10 @@
   "validatorTooSmall": "Value must be greater than or equal to ",
   "west": "West",
   "windowTooSmall": "The map for this resource is unavailable at your current screen resolution. Please switch to a larger screen to view the map. We apologize for any inconvenience this may cause.",
-  "within": "Within"
+  "within": "Within",
+  "aiOverview": "AI Overview",
+  "showLess": "Show less",
+  "showMore": "Show more",
+  "noOverviewAvailable": "No overview available.",
+  "diveDeeperWithGeoChat": "Dive deeper with GeoChat"
 }

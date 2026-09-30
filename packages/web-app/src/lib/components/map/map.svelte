@@ -20,9 +20,11 @@
     height?: string;
     mapProjection?: number;
     mapType?: MapTypes;
+    mapVariant?: 'default' | 'geochat';
     footer?: boolean;
     timeSlider?: boolean;
     chart?: boolean;
+    mapFill?: boolean;
   }
 
   let {
@@ -31,9 +33,11 @@
     dynamic = false,
     mapProjection = 3978,
     mapType = null,
+    mapVariant = 'default',
     footer = false,
     timeSlider = false,
     chart = false,
+    mapFill = false,
   }: Props = $props();
 
   let mapId = $derived(`map-${mapType}-${id}`);
@@ -53,15 +57,37 @@
         labeled: true,
       },
     },
+
     theme: 'geo.ca',
-    components: ['north-arrow', 'overview-map'],
+
+    components: mapVariant === 'geochat' ? ['north-arrow'] : ['north-arrow', 'overview-map'],
+
+    navBar: mapVariant === 'geochat' ? ['zoom'] : ['zoom', 'rotation', 'fullscreen', 'home', 'basemap-select'],
+
     corePackages: [],
-    appBar: {
-      tabs: {
-        core: ['geolocator', 'legend', 'details', 'export'],
-      },
-    },
-    ...(buildFooterBar() && { footerBar: buildFooterBar() }),
+
+    appBar:
+      mapVariant === 'geochat'
+        ? {
+            tabs: {
+              core: ['geolocator', 'legend'],
+            },
+          }
+        : {
+            tabs: {
+              core: ['geolocator', 'legend', 'details', 'export'],
+            },
+          },
+
+    ...(mapVariant === 'geochat'
+      ? {
+          footerBar: {
+            tabs: {
+              core: [],
+            },
+          },
+        }
+      : buildFooterBar() && { footerBar: buildFooterBar() }),
   }));
 
   /**
@@ -231,6 +257,7 @@
       // Note: We can safely use document here since it is inside onMount.
       if (document.getElementById(mapId)) {
         // Build the map from the config
+
         await cgpv.api.createMapFromConfig(mapId, JSON.stringify(config));
       }
 
@@ -263,4 +290,12 @@
   });
 </script>
 
-<div id={mapId} class="bg-blue-500/5 w-full aspect-video" data-config={sConfig} data-lang={mapLang} style="border: gray 1px solid;"></div>
+<div
+  id={mapId}
+  class="bg-blue-500/5 w-full"
+  class:aspect-video={!mapFill}
+  class:h-full={mapFill}
+  data-config={sConfig}
+  data-lang={mapLang}
+  style="border: gray 1px solid;"
+></div>

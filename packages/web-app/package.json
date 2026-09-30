@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite dev --port 8080",
     "build": "vite build",
+    "build:wordpress": "vite build --config vite.wordpress.config.ts",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -20,12 +21,12 @@
     "@typescript-eslint/eslint-plugin": "^8.57.2",
     "@typescript-eslint/parser": "^8.57.2",
     "autoprefixer": "^10.4.27",
-    "eslint": "^10.1.0",
+    "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.16.0",
     "globals": "^17.4.0",
     "postcss": "^8.5.8",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.3",
     "prettier-plugin-svelte": "^3.5.1",
     "svelte": "^5.55.0",
     "svelte-check": "^4.4.5",
@@ -39,6 +40,7 @@
     "@aws-sdk/client-dynamodb": "^3.1017.0",
     "@aws-sdk/client-s3": "^3.1017.0",
     "@aws-sdk/lib-dynamodb": "^3.1017.0",
+    "marked": "^18.0.3",
     "svelte-kit-sst": "3.0.0"
   }
 }

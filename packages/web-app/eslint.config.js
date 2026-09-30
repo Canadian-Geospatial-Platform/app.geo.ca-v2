@@ -47,6 +47,11 @@ export default [
         ...globals.node,
       },
     },
+    rules: {
+      'svelte/no-at-html-tags': 'off',
+      'svelte/no-navigation-without-resolve': 'off'
+
+    },
   },
   prettier,
 ];

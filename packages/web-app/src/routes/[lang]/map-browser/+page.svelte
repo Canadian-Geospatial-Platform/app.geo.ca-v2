@@ -3,12 +3,18 @@
   import SearchResults from '$lib/components/search-results/search-results.svelte';
 
   const lang = page.data.lang;
-  const title = lang === 'fr-ca' ? 'app.geo.ca - Résultats de recherche' : 'app.geo.ca - Search Results';
+
+  const title =
+    lang === 'fr-ca'
+      ? 'app.geo.ca - Résultats de recherche'
+      : 'app.geo.ca - Search Results';
 
   const canonicalUrl = page.data.canonicalUrl;
   const alternateUrl = page.data.alternateUrl;
   const alternateLang = page.data.alternateLang;
   const metaDescription = page.data.metaDescription;
+
+  let overviewData = $derived(page.data.overviewData);
 </script>
 
 <svelte:head>
@@ -20,6 +26,6 @@
 
 <div class="flex flex-wrap lg:flex-nowrap items-start gap-4 py-4">
   <div class="grow flex flex-col gap-4 w-full">
-    <SearchResults />
+    <SearchResults {overviewData} />
   </div>
 </div>

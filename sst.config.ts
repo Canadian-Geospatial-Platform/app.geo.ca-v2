@@ -2,6 +2,10 @@
 
 const GEOCORE_API_DOMAIN = "https://geocore.api.geo.ca";
 const SEMANTIC_SEARCH_URL = "https://search-recherche.geocore.api.geo.ca";
+const OVERVIEW_API_URL =
+  "https://0y633i08af.execute-api.ca-central-1.amazonaws.com/staging/overview";
+
+console.log("OVERVIEW_API_URL:", OVERVIEW_API_URL);
 
 export default $config({
   app(input) {
@@ -60,6 +64,7 @@ export default $config({
         SEMANTIC_SEARCH_URL,
         USER_TABLE_NAME: users.name,
         BUCKET_NAME: hnapBucket.name,
+        OVERVIEW_API_URL,
       },
     });
 

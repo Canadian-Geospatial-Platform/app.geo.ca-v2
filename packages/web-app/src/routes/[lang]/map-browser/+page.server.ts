@@ -6,7 +6,7 @@ import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results'
 import { formatNumber } from '$lib/utils/format-number';
 import type { GeospatialRecord, UserInfo } from '$lib/db/db-types';
 
-import { SEMANTIC_SEARCH_URL, GEOCORE_API_DOMAIN } from '$env/static/private';
+import { SEMANTIC_SEARCH_URL, GEOCORE_API_DOMAIN, OVERVIEW_API_URL } from '$env/static/private';
 
 interface ParsedResponse {
   Items?: GeospatialRecord[];
@@ -65,27 +65,34 @@ interface SemanticSearchParams {
   from: number;
 }
 
-export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
+export const load: PageServerLoad = async ({ request, fetch, params, url, cookies, isDataRequest }) => {
   const searchMode = url.searchParams.get('searchMethod') === 'classic' || !SEMANTIC_SEARCH_URL ? 'classic' : 'semantic';
-  let response;
-  if (searchMode === 'classic') {
-    response = await generateUrl(
-      fetch,
-      url.searchParams,
-      params.lang,
-      cookies.get('id_token') || '',
-      request.headers.get('x-forwarded-for') || ''
-    );
-  } else {
-    response = await generateSemanticUrl(
-      fetch,
-      url.searchParams,
-      params.lang,
-      cookies.get('id_token') || '',
-      request.headers.get('x-forwarded-for') || ''
-    );
-  }
-  const analytics = await getAnalytics(fetch);
+
+  const keyword = url.searchParams.get('search-terms') || '';
+
+  // Load the Overview for the first page or a full page reload.
+  // During client-side pagination, preserve the existing Overview
+  // instead of making another API request.
+  const pageNumber = parseInt(url.searchParams.get('page-number') || '0', 10);
+  const shouldLoadOverview = !!keyword && (pageNumber === 0 || !isDataRequest);
+  const overviewPromise = shouldLoadOverview ? getOverview(fetch, keyword, params.lang) : null;
+
+  const responsePromise =
+    searchMode === 'classic'
+      ? generateUrl(fetch, url.searchParams, params.lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '')
+      : generateSemanticUrl(
+          fetch,
+          url.searchParams,
+          params.lang,
+          cookies.get('id_token') || '',
+          request.headers.get('x-forwarded-for') || ''
+        );
+
+  const analyticsPromise = getAnalytics(fetch);
+
+  const response = await responsePromise;
+  const analytics = await analyticsPromise;
+
   let parsedResponse: ParsedResponse = {};
   let userData: UserInfo = { Item: { uuid: '', favourites: [] } };
   let sanitizedResults: ReturnType<typeof sanitize> | ReturnType<typeof sanitizeSemantic> = [];
@@ -129,6 +136,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     start: getMin(url.searchParams),
     end: getMin(url.searchParams) + sanitizedResults?.length,
     analytics: analytics,
+    overviewData: overviewPromise,
     searchMode: searchMode,
     totalHits: totalHits,
     canonicalUrl: canonicalUrl,
@@ -238,6 +246,41 @@ async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) =>
   }
 
   return parsedAnalytics?.Items[0] ?? {};
+}
+
+/**
+ * Fetches overview summary data from the Overview API based on the user's search query.
+ *
+ * @param fetch - The fetch function.
+ * @param keyword - The user's search keyword/query.
+ * @returns The overview API response containing summary text and related records.
+ * @async
+ */
+async function getOverview(fetch: (url: string | URL, options?: RequestInit) => Promise<Response>, keyword: string, lang = 'en') {
+  try {
+    if (!keyword) {
+      //console.log('No keyword, skipping overview fetch');
+      return undefined;
+    }
+
+    const url = `${OVERVIEW_API_URL}?question=${encodeURIComponent(keyword)}&lang=${lang.split('-')[0]}`;
+    //console.log('fetching:', url);
+
+    const res = await fetch(url);
+    //console.log('status:', res.status);
+
+    const text = await res.text();
+    const parsed = JSON.parse(text);
+
+    if (parsed.body) {
+      return JSON.parse(parsed.body);
+    }
+
+    return parsed;
+  } catch (e) {
+    console.error('Overview API error:', e);
+    return undefined;
+  }
 }
 
 /**

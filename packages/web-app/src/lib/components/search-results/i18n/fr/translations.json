@@ -40,5 +40,10 @@
   "validatorTooSmall": "La valeur doit être supérieure ou égale à ",
   "west": "Ouest",
   "windowTooSmall": "La carte de cette ressource n'est pas disponible avec votre résolution d'écran actuelle. Veuillez passer à un écran plus grand pour afficher la carte. On s'excuse pour tout inconvénient que ça pourrait causer.",
-  "within": "À l’intérieur"
+  "within": "À l’intérieur",
+  "aiOverview": "Aperçu de l’IA",
+  "showLess": "Afficher moins",
+  "showMore": "Afficher plus",
+  "noOverviewAvailable": "Aucun aperçu disponible.",
+  "diveDeeperWithGeoChat": "Approfondir à l'aide du GéoAssistant"
 }

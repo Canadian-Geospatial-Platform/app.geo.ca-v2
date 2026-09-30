@@ -6,6 +6,7 @@ node_modules
 .svelte-kit
 .sst
 /package
+.idea/
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .direnv/

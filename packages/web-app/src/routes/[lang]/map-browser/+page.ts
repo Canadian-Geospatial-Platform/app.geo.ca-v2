@@ -52,6 +52,7 @@ export const load: PageLoad = ({ params, data, url }) => {
     alternateUrl: data.alternateUrl,
     alternateLang: data.alternateLang,
     metaDescription: data.metaDescription,
+    overviewData: data.overviewData,
   };
 };
 

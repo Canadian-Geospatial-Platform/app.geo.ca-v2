@@ -8,6 +8,7 @@
   import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
   import LeavingNotice from '$lib/components/leaving-notice/leaving-notice.svelte';
   import GoogleTag from '$lib/components/google-tag/google-tag.svelte';
+  import SvelteKitWidget from '$lib/geochat/widget/sveltekit-widget.svelte';
 
   interface Props {
     children?: import('svelte').Snippet;
@@ -52,13 +53,17 @@
       }
 
       const href = anchor.href;
-      const isExternal = href && !href.includes(page.url.host) && !href.includes('geo.ca') && !href.startsWith('mailto');
+
+      const isDownload = anchor.hasAttribute('data-download');
+
+      const isExternal = href && !isDownload && !href.includes(page.url.host) && !href.includes('geo.ca') && !href.startsWith('mailto');
 
       if (isExternal) {
         showLeavingSitePopup = true;
 
         // delay navigation to allow for users to read the message
         event.preventDefault();
+
         setTimeout(() => {
           showLeavingSitePopup = false;
           window.location.href = href;
@@ -71,7 +76,11 @@
 </script>
 
 <GoogleTag />
+
+<SvelteKitWidget />
+
 <Header />
+
 <main class="flex flex-col content-width bg-custom-1 min-h-screen pt-8" data-sveltekit-reload={updated.current ? '' : 'off'}>
   <Breadcrumbs />
   <div>

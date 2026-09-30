@@ -11,12 +11,15 @@
   const appGeoCaUrl = $derived(`/${lang}/map-browser`);
   const searchLabel = $derived(lang === 'fr-ca' ? 'Recherche' : 'Search');
 
+  const geoChatLabel = $derived(lang === 'fr-ca' ? 'GéoChat' : 'GeoChat');
+  const isGeoChat = $derived(page.url.pathname.endsWith('/geochat'));
+
   const title2 = $derived(page.data.tTitle2);
   const title3 = $derived(page.data.tTitle3);
 
   const breadcrumbs = $derived([
     { text: homeLabel, href: geoCaUrl },
-    { text: searchLabel, href: appGeoCaUrl },
+    isGeoChat ? { text: geoChatLabel } : { text: searchLabel, href: appGeoCaUrl },
     ...(title2 ? [title2] : []),
     ...(title3 ? [title3] : []),
   ]);
