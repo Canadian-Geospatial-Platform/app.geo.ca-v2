@@ -3,7 +3,8 @@
   import Organisations from './organisations.svelte';
   const { item, lang } = $props();
 
-  // todo: this component needs to be reworked to get the values from the item with the new schema and handle it correctly. The current HTML is just for reference.
+  // NOTE: This component still follows a reference markup path and should be
+  // updated when the new schema mapping is finalized for these fields.
   const catalogDescription = $derived(
     page.data.lang === 'en-ca'
       ? 'This catalog contains open datasets available on the Geo.ca platform.'

@@ -37,7 +37,7 @@
   }: Props = $props();
 
   let mapId = $derived(`map-${mapType}-${id}`);
-  let mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
+  let mapLang = page.data.lang.split('-')[0] as 'en' | 'fr';
 
   // TODO: extract to use one config for this and favourites map.
   let config: GeoviewConfig = $derived.by(() => ({

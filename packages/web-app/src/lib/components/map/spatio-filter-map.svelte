@@ -9,6 +9,7 @@
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
+  import { pickByLanguage } from '$lib/utils/language';
   import type { GeoviewConfig } from './map-types';
 
   // OpenLayers Feature type definition to avoid adding ol dependency
@@ -43,7 +44,7 @@
   /************ Map Config ************/
 
   const mapId = 'map-spatio-filter';
-  const mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
+  const mapLang = page.data.lang.split('-')[0] as 'en' | 'fr';
 
   const basemapId = 'transport';
   const shaded = true;
@@ -200,8 +201,11 @@
         /*********** Get Extent From View Custom Button ***********/
 
         const buttonGroupName = 'buttonGroup';
-        const buttonTooltip =
-          page.data.lang === 'fr-ca' ? "Définir le cadre de délimitation sur l'étendue visible" : 'Set bounding box to visible extent';
+        const buttonTooltip = pickByLanguage(
+          page.data.lang,
+          'Set bounding box to visible extent',
+          "Définir le cadre de délimitation sur l'étendue visible"
+        );
 
         const button = {
           tooltip: buttonTooltip,

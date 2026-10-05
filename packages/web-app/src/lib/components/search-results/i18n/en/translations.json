@@ -25,7 +25,6 @@
   "organization": "Organization",
   "relationInstructions": "Choose the type of spatial query to run. 'Intersects' returns any resource with a bounding box that is at least partially inside of the search area. 'Within' returns any resource with a bounding box completely inside of the search area.",
   "removeFromFavourites": "Remove from Favourites",
-  "saveSearchParams": "Save Search Parameters",
   "search": "Search",
   "searchDatasets": "Search datasets",
   "searchProducts": "Search Products",

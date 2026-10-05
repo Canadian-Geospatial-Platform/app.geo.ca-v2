@@ -2,9 +2,36 @@
 @config "../tailwind.config.js";
 @reference "tailwindcss/index.css";
 
+/* Layout primitives */
+
 .content-width {
   @apply w-full;
   @apply mx-auto;
+}
+
+.focus-visible-standard,
+.checkbox-standard {
+  @apply focus-visible:outline;
+  @apply focus-visible:outline-2;
+  @apply focus-visible:outline-offset-2;
+  @apply focus-visible:outline-custom-23;
+}
+
+/* Global focus-visible baseline */
+
+:where(
+  a[href],
+  button:not(:disabled),
+  input:not([type='hidden']):not(:disabled),
+  select:not(:disabled),
+  textarea:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [tabindex]:not([tabindex='-1'])
+):focus-visible {
+  @apply outline;
+  @apply outline-2;
+  @apply outline-offset-2;
+  @apply outline-custom-23;
 }
 
 @media (min-width: 48rem) {
@@ -25,139 +52,307 @@
   }
 }
 
-.button-1 {
-  @apply text-white;
-  @apply bg-custom-8;
-  @apply p-2.5;
-  @apply rounded-lg;
-  @apply drop-shadow-lg;
-  @apply border-2;
-  @apply border-transparent;
-  @apply hover:border-white;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-.button-2 {
-  @apply disabled:bg-gray-100;
-  @apply disabled:outline-gray-400;
-  @apply disabled:text-gray-500;
-  @apply outline-1;
-  @apply hover:disabled:bg-gray-500;
-  @apply hover:disabled:text-gray-100;
-  @apply text-custom-8;
-  @apply hover:text-custom-1;
-  @apply bg-custom-1;
-  @apply hover:bg-custom-8;
-  @apply outline;
-  @apply outline-custom-8;
-  @apply p-2.5;
-  @apply rounded-lg;
-  @apply drop-shadow-lg;
-  @apply border-2;
-  @apply hover:border-white;
+/* Shared icon sizing */
+
+.share-icons {
+  @apply m-1;
+  @apply h-10;
+  @apply w-10;
 }
 
-.button-3 {
-  @apply bg-custom-1;
-  @apply hover:bg-custom-16;
+@media (min-width: 48rem) {
+  .share-icons {
+    @apply m-2;
+    @apply h-12;
+    @apply w-12;
+  }
+}
+
+/*
+ * Button system taxonomy:
+ * - tone: button-tone-*
+ * - semantic variants: button-action-*, button-utility-*, button-search-*, button-menu, button-signin
+ * - modifiers: button-width-mobile-full, button-inline-desktop, button-action-remove, button-icon, button-favourite
+ * - non-button visual shells: surface-action-*
+ */
+.button-tone-dark,
+.button-menu,
+.button-action-dark,
+.button-search-dark,
+.button-utility-dark {
+  @apply bg-custom-16;
   @apply border-custom-16;
-  @apply border-2;
-  @apply rounded;
-  @apply px-6;
-  @apply py-2;
-  @apply cursor-pointer;
-  font-family:
-    Noto Sans,
-    system-ui;
-  @apply font-medium;
-  @apply text-[16px];
-  @apply text-custom-16;
+  @apply text-custom-1;
+  @apply hover:bg-custom-23;
+  @apply hover:border-custom-23;
   @apply hover:text-custom-1;
 }
 
-.button-3-disabled {
+.button-tone-light {
   @apply bg-custom-1;
-  @apply border-custom-17;
+  @apply text-custom-16;
+  @apply hover:bg-custom-23;
+  @apply hover:text-custom-1;
+}
+
+.button-action-light,
+.button-utility-light,
+.surface-action-light {
+  @apply bg-custom-1;
+  @apply border-custom-16;
+  @apply text-custom-16;
+  @apply hover:bg-custom-23;
+  @apply hover:border-custom-23;
+  @apply hover:text-custom-1;
+}
+
+.button-action-light,
+.button-action-dark,
+.button-search-dark,
+.button-utility-dark,
+.button-utility-light,
+.button-signin,
+.button-icon {
   @apply border-2;
+  @apply cursor-pointer;
+  @apply transition-transform;
+  @apply duration-100;
+  @apply ease-out;
+  @apply active:translate-y-px;
+}
+
+.button-action-light,
+.button-action-dark,
+.button-search-dark,
+.button-utility-dark,
+.button-utility-light,
+.surface-action-light {
+  @apply font-noto-sans;
+  @apply font-semibold;
+  @apply text-[16px];
+}
+
+.button-action-light,
+.button-action-dark,
+.surface-action-light {
   @apply rounded;
   @apply px-6;
   @apply py-2;
-  font-family:
-    Noto Sans,
-    system-ui;
-  @apply font-medium;
-  @apply text-[16px];
-  @apply text-custom-16;
-  @apply text-custom-17;
 }
 
-.button-4 {
-  @apply bg-custom-1;
-  @apply border-custom-22;
-  @apply border-2;
+/*
+ * Surface shadows are allowed on lighter surface contexts, not only on pure white fills.
+ * Keep them off clearly dark-emphasis controls unless a component intentionally opts in.
+ */
+.button-favourite,
+.button-cta-link-dark,
+.surface-shadow {
+  @apply shadow-[0rem_0.1875rem_0.375rem_#00000029];
+}
+
+.button-utility-dark,
+.button-utility-light {
   @apply rounded;
-  @apply pl-[0.875rem];
-  @apply py-[0.563rem];
+}
+
+.button-width-mobile-full {
+  @apply w-full;
+  @apply sm:w-fit;
+}
+
+.button-inline-desktop {
+  @apply sm:inline-block;
+}
+
+.button-action-remove {
+  @apply mt-4;
+  @apply p-2;
+  @apply hover:shadow-[0_0.1875rem_0.375rem_#00000029];
+}
+
+.button-icon-inline {
+  @apply inline;
+  @apply mb-1;
+}
+
+.button-icon {
+  @apply p-2;
+  @apply rounded;
+  @apply border-transparent;
+  @apply hover:border-custom-16;
+  @apply hover:shadow-[0_0.1875rem_0.375rem_#00000029];
+}
+
+.button-favourite {
+  @apply rounded-md;
+  @apply mx-5;
+  @apply md:mx-0;
+  @apply mt-5;
+  @apply py-1;
+  @apply px-6;
+  @apply w-fit;
+}
+
+.button-cta-link-dark {
+  @apply w-full;
+  @apply md:w-fit;
+  @apply md:min-w-48;
+}
+
+/* Disabled button states */
+.button-search-dark {
+  @apply disabled:cursor-default;
+}
+
+.button-action-light {
+  @apply disabled:bg-custom-1;
+  @apply disabled:border-custom-17;
+  @apply disabled:text-custom-17;
+  @apply disabled:hover:bg-custom-1;
+  @apply disabled:hover:border-custom-17;
+  @apply disabled:hover:text-custom-17;
+}
+
+.button-action-dark {
+  @apply disabled:cursor-not-allowed;
+  @apply disabled:bg-custom-17;
+  @apply disabled:border-custom-17;
+  @apply disabled:text-custom-1;
+  @apply disabled:opacity-80;
+  @apply disabled:hover:bg-custom-17;
+  @apply disabled:hover:border-custom-17;
+}
+
+/* Favourites page layout helpers */
+
+.page-title-favourites,
+.page-section-favourites {
+  @apply mx-5;
+  @apply md:mx-0;
+}
+
+.page-title-favourites {
+  @apply mt-12;
+  @apply mb-7;
+  @apply md:mr-auto;
+  @apply leading-tight;
+}
+
+.page-section-favourites {
+  @apply mb-5;
+}
+
+.mobile-list-card {
+  @apply rounded;
+  @apply bg-custom-1;
+  @apply px-5;
+  @apply drop-shadow-[0_0.1875rem_0.375rem_#00000029];
+  @apply divide-y;
+  @apply divide-custom-17;
+}
+
+.status-alert-error,
+.status-alert-danger,
+.status-alert-base,
+.info-tip-card {
+  @apply rounded;
+  @apply px-4;
+  @apply py-3;
+}
+
+.status-alert-error,
+.status-alert-danger {
+  @apply border;
+  @apply border-red-600;
+  @apply bg-red-50;
+  @apply text-red-900;
+}
+
+.status-alert-base {
+  @apply border;
+}
+
+.status-alert-success {
+  @apply border-green-600;
+  @apply bg-green-50;
+  @apply text-green-900;
+}
+
+.info-tip-card {
+  @apply mt-1;
+  @apply border;
+  @apply border-custom-16/20;
+  @apply bg-custom-1;
+  @apply md:px-5;
+}
+
+.page-copy-block {
   @apply font-open-sans;
   @apply font-normal;
   @apply text-[16px];
   @apply text-custom-7;
+  @apply mx-0;
+  @apply mb-6;
 }
 
-.button-5 {
-  @apply bg-custom-16;
-  @apply border-custom-16;
+.checkbox-standard {
+  @apply appearance-none;
+  @apply min-w-[1.6875rem];
+  @apply h-[1.6875rem];
   @apply border-2;
-  @apply rounded;
-  @apply px-6;
-  @apply py-2;
-  @apply cursor-pointer;
+  @apply border-custom-16;
+  @apply rounded-sm;
+  @apply bg-custom-1;
+  @apply checked:bg-custom-16;
+  @apply hover:bg-custom-23;
+  @apply hover:border-custom-23;
+  @apply hover:cursor-pointer;
+  @apply disabled:bg-gray-200;
+  @apply disabled:border-gray-400;
+  @apply disabled:hover:cursor-default;
+}
+
+.button-signin {
+  @apply rounded-lg;
+  @apply p-2.5;
+}
+
+/* Search shell primitives */
+
+.search-input-shell {
+  @apply h-12;
+  @apply px-5;
+  @apply rounded-s-[0.3125rem];
+  @apply bg-custom-1;
   @apply font-open-sans;
   @apply font-semibold;
   @apply text-[16px];
-  @apply text-custom-1;
-  @apply hover:bg-custom-23;
-  @apply hover:border-custom-23;
+  @apply placeholder-custom-7/[.17];
+  @apply border-y-2;
+  @apply border-l-2;
+  @apply shadow-[inset_0rem_0.1875rem_0.375rem_#00000029];
+  @apply focus-visible:outline-none;
+  @apply focus-visible:ring-1;
+  @apply focus-visible:ring-custom-23;
+  @apply focus-visible:ring-offset-0;
 }
 
-.select-button {
-  @apply text-custom-8;
-  @apply bg-custom-1;
-  @apply outline;
-  @apply outline-custom-8;
-  @apply p-2.5;
-  @apply rounded-lg;
-  @apply drop-shadow-lg;
-  @apply border-2;
-  @apply hover:border-white;
+.search-submit-shell {
+  @apply text-nowrap;
+  @apply h-12;
+  @apply px-5;
+  @apply rounded-e-[0.3125rem];
 }
-
-.select-button-2 {
-  @apply bg-custom-1;
-  @apply border-custom-16;
-  @apply border-2;
-  @apply rounded;
-  @apply pl-4;
-  @apply py-2;
-  font-family:
-    Noto Sans,
-    system-ui;
-  @apply font-medium;
-  @apply text-[16px];
-  @apply text-custom-16;
-}
-
-@media (min-width: 48rem) {
-  .select-button-2 {
-    @apply pl-6;
-  }
-}
-
-/* input {
-	@apply rounded-md;
-	@apply drop-shadow-lg;
-	@apply my-2;
-	@apply p-2;
-} */
 
 /* Custom font classes from the wire-frame */
 
@@ -233,30 +428,6 @@
   @apply text-custom-7;
 }
 
-.font-custom-style-body-5 {
-  @apply font-noto-sans;
-  @apply font-semibold;
-  @apply text-[16px];
-  @apply text-custom-1;
-}
-
-.font-custom-style-body-6 {
-  @apply font-open-sans;
-  @apply font-normal;
-  @apply text-[20px];
-  @apply text-custom-7;
-}
-
-.font-custom-style-body-7 {
-  /* Set the font explicitly for firefox with a fall back to system-ui */
-  font-family:
-    Noto Sans,
-    system-ui;
-  @apply font-medium;
-  @apply text-[16px];
-  @apply text-custom-16;
-}
-
 .font-custom-style-body-8 {
   @apply font-open-sans;
   @apply font-semibold;
@@ -282,13 +453,6 @@
   @apply font-noto-sans;
   @apply font-semibold;
   @apply text-[14px];
-  @apply text-custom-1;
-}
-
-.font-custom-style-button-3 {
-  @apply font-open-sans;
-  @apply font-semibold;
-  @apply text-[16px];
   @apply text-custom-1;
 }
 
@@ -336,13 +500,6 @@
   @apply text-custom-21;
 }
 
-.font-custom-style-placeholder {
-  @apply font-open-sans;
-  @apply font-semibold;
-  @apply text-[16px];
-  @apply placeholder-custom-7/[.17];
-}
-
 .font-custom-style-h1-carousel {
   @apply font-open-sans;
   @apply font-semibold;
@@ -358,29 +515,13 @@
   @apply text-custom-7;
 }
 
-.share-icons {
-  @apply m-1;
-  @apply h-10;
-  @apply w-10;
-}
-
-@media (min-width: 48rem) {
-  .share-icons {
-    @apply m-2;
-    @apply h-12;
-    @apply w-12;
-  }
-}
-
 /***********************************************
-* This ensures that any full screen feature is always above any
-* other feature on the page.
+* Keep full-screen features above all page chrome.
 *
-* Note: the number 11100 was chosen because
-*   geoview uses a z-index of 9999 for their map's loading mask. This caused us
-*   to use a z-index of 10010 for our header to prevent the loading mask from
-*   overlapping the menu bar. As a result, 11100 ensures that the menu bar
-*   does not overlap the full screen elements.
+* Why 11100:
+* - Geoview map loading mask uses z-index 9999.
+* - App header uses z-index 10010 so map overlays do not cover navigation.
+* - 11100 ensures full-screen overlays remain above both.
 ************************************************/
 div[role='presentation'] {
   z-index: 11100;

@@ -11,21 +11,9 @@
 
   const data = page.data;
   const uuid = data.uuid || '';
-  const items = data.item_v2!;
+
   // Use normalized coordinates from page data (not item_v2.coordinates which is a string)
   const coordinates = data.coordinates;
-
-  /***************** Time Slider *************************/
-  // Note: Geoview checks for a valid time dimension for each map layer before adding the
-  // time slider, so even if there is a valid time range here, the tool might not be added.
-  // Since Geoview does most of the error handling, we'll only check if a date range exists
-  // and not worry about the format of the dates.
-  const temporalExtentStart = items?.temporalExtent?.begin;
-  const temporalExtentEnd = items?.temporalExtent?.end;
-  let useTimeSlider = !!(temporalExtentStart && temporalExtentEnd);
-
-  /***************** Chart ****************************/
-  const addChart = true;
 
   // For small screens, don't include the map
   let showMap = $state(true);
@@ -59,8 +47,8 @@
     {mapText}
   </h2>
   {#if coordinates && showMap}
-    <div style="min-height: 300px;">
-      <Map {coordinates} id={uuid} dynamic={true} mapType="record" footer={true} timeSlider={useTimeSlider} chart={addChart} />
+    <div class="surface-shadow" style="min-height: 300px;">
+      <Map {coordinates} id={uuid} dynamic={true} mapType="record" footer={true} timeSlider={true} chart={true} />
     </div>
   {:else if coordinates}
     <p class="mx-5 md:mx-0">

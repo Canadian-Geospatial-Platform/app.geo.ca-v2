@@ -20,7 +20,10 @@
 ------------------------------------------------------------------>
 
 <script lang="ts">
+  import { tick } from 'svelte';
+  import { fly } from 'svelte/transition';
   import { page } from '$app/state';
+  import { pickByLanguage } from '$lib/utils/language';
   import Chevrondown from '$lib/components/icons/chevrondown.svelte';
   import Chevronup from '$lib/components/icons/chevronup.svelte';
   import Close from '$lib/components/icons/close.svelte';
@@ -46,141 +49,231 @@
   }: Props = $props();
 
   const lang = page.data.lang;
-  let clearAriaLabel = lang === 'fr-ca' ? 'Effacer la sélection' : 'Clear selection';
+  let clearAriaLabel = pickByLanguage(lang, 'Clear selection', 'Effacer la sélection');
+  let selectAriaLabel = pickByLanguage(lang, 'Select option', 'Selectionner une option');
 
   let expanded = $state(false);
-  let selectEl = $state<HTMLSelectElement>();
+  let customTriggerEl = $state<HTMLButtonElement>();
+  let customMenuEl = $state<HTMLDivElement>();
+
+  const isResultList = $derived(selectType === 'resultList');
+  const isTabCard = $derived(selectType === 'tabCard');
+  const isDefault = $derived(selectType === 'default');
+  const selectedLabel = $derived(selected?.label ?? defaultLabel ?? optionsData[0]?.label ?? '');
+
+  const triggerClasses = $derived.by(() => {
+    return [
+      'button-action-light relative text-left',
+      !isResultList && 'surface-shadow',
+      isResultList
+        ? 'min-w-[10rem] pr-11'
+        : isTabCard
+          ? 'w-full pr-10 select-trigger-tab-card'
+          : isDefault
+            ? 'w-fit min-w-0 px-3! py-1! pr-9! text-sm select-trigger-compact'
+            : 'w-full pr-7 select-trigger-compact',
+      expanded && 'select-trigger-open',
+    ];
+  });
+
+  const chevronClasses = $derived(
+    `w-5 h-5 absolute top-1/2 -translate-y-1/2 pointer-events-none ${isResultList || isTabCard ? 'right-4' : 'right-2'}`
+  );
+
+  const menuClasses = $derived.by(() => {
+    if (isResultList) {
+      return 'absolute right-0 z-20 mt-2 min-w-full overflow-hidden rounded border border-custom-16 bg-custom-1 surface-shadow';
+    }
+
+    return 'absolute left-0 z-20 mt-2 overflow-hidden rounded border border-custom-16 bg-custom-1 surface-shadow';
+  });
+
+  const menuStyle = $derived(isDefault && customTriggerEl ? `width: ${customTriggerEl.offsetWidth}px;` : undefined);
 
   /**
-   * Handles the selection change event.
-   *
-   * @param event - The change event.
+   * Focuses the currently selected option in the open menu.
    */
-  function handleSelectionChange(event: Event): void {
-    let value = (event.target as HTMLSelectElement)?.value;
+  function focusSelectedOption(): void {
+    const selectedOption = customMenuEl?.querySelector<HTMLButtonElement>('[aria-selected="true"]');
+    selectedOption?.focus();
+  }
 
-    if (value !== selected?.value) {
-      selected = optionsData.find((x) => x.value === value);
-      selectedChange(selected || null);
+  /**
+   * Handles the custom dropdown trigger click event.
+   */
+  async function handleCustomSelectClick(): Promise<void> {
+    expanded = !expanded;
+
+    if (expanded) {
+      await tick();
+      focusSelectedOption();
     }
   }
 
   /**
-   * Handles the select element click event.
-   */
-  function handleSelectClick(): void {
-    expanded = !expanded;
-  }
-
-  /**
-   * Handles the keydown event on the select element.
+   * Handles the keydown event on the custom dropdown trigger.
    *
    * @param event - The keyboard event.
    */
-  function handleSearchEnterKeyDown(event: KeyboardEvent): void {
-    let key = event.key;
-    if (key === 'Enter' || (key === ' ' && !expanded)) {
-      expanded = !expanded;
+  async function handleCustomTriggerKeyDown(event: KeyboardEvent): Promise<void> {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      await handleCustomSelectClick();
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+
+      if (!expanded) {
+        expanded = true;
+        await tick();
+      }
+
+      focusSelectedOption();
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      expanded = false;
     }
   }
 
   /**
-   * Handles the blur event on the select element.
+   * Closes the custom dropdown when focus leaves it.
+   *
+   * @param event - The focus event.
    */
-  function handleBlur(): void {
+  function handleCustomFocusOut(event: FocusEvent): void {
+    const relatedTarget = event.relatedTarget;
+
+    if (relatedTarget instanceof Node && customMenuEl?.parentElement?.contains(relatedTarget)) {
+      return;
+    }
+
     expanded = false;
+  }
+
+  /**
+   * Handles selecting an option from the custom dropdown.
+   *
+   * @param option - The selected option.
+   */
+  function handleCustomOptionClick(option: SelectOption): void {
+    if (option.value !== selected?.value) {
+      selected = option;
+      selectedChange(selected);
+    }
+
+    expanded = false;
+    customTriggerEl?.focus();
   }
 
   /**
    * Handles the remove selection button click event.
    */
   function handleRemoveSelect(): void {
-    // Change focus to select element instead of the remove button
-    // since the remove button will be removed from the DOM when no
-    // option is selected
-    if (selectEl instanceof HTMLSelectElement) {
-      selectEl.focus();
-    }
-
     // remove the selection
     expanded = false;
     selected = undefined;
     selectedChange(selected || null);
+    customTriggerEl?.focus();
   }
 </script>
 
-<div class={['relative', selectType === 'resultList' && 'resultList', selectType === 'default' && 'default']}>
-  <select
-    class={[
-      'pr-16 md:pr-12 appearance-none cursor-pointer',
-      selectType === 'tabCard' && 'tabCard',
-      selectType === 'categoryFilter' && 'categoryFilter',
-      (selectType === 'resultList' || selectType === 'default') && 'select-button-2',
-      (selectType === 'categoryFilter' || selectType === 'tabCard') && 'button-4',
-    ]}
-    onchange={handleSelectionChange}
-    onclick={handleSelectClick}
-    onkeydown={handleSearchEnterKeyDown}
-    onblur={handleBlur}
-    bind:this={selectEl}
-  >
-    {#if defaultLabel}
-      {#if !selected}
-        <option value="" disabled={!removableSelection} selected>{defaultLabel}</option>
-      {:else}
-        <option value="" disabled={!removableSelection}>{defaultLabel}</option>
-      {/if}
+<div class="relative">
+  <div class="relative" onfocusout={handleCustomFocusOut}>
+    {#if selected && removableSelection}
+      <button
+        type="button"
+        aria-label={clearAriaLabel}
+        class="clear-btn focus-visible-standard absolute top-1/4 right-10 md:right-14 z-10 text-gray-400 rounded-full p-1.5 cursor-pointer"
+        onclick={handleRemoveSelect}
+      >
+        <Close classes="w-2.5 h-2.5" />
+      </button>
     {/if}
 
-    {#each optionsData as option (option.value)}
-      {#if selected && selected.value === option.value}
-        <option value={option.value} selected>{option.label}</option>
-      {:else}
-        <option value={option.value}>{option.label}</option>
-      {/if}
-    {/each}
-  </select>
-  {#if selected && removableSelection}
     <button
       type="button"
-      aria-label={clearAriaLabel}
-      class="clear-btn absolute top-1/4 right-10 md:right-14 text-gray-400 rounded-full p-1.5 cursor-pointer"
-      onclick={handleRemoveSelect}
+      class={[...triggerClasses, 'focus-visible-standard']}
+      aria-label={selectAriaLabel}
+      aria-haspopup="listbox"
+      aria-expanded={expanded ? 'true' : 'false'}
+      onclick={handleCustomSelectClick}
+      onkeydown={handleCustomTriggerKeyDown}
+      bind:this={customTriggerEl}
     >
-      <Close classes="w-2.5 h-2.5" />
+      <span class="block truncate pr-6">{selectedLabel}</span>
+      {#if expanded}
+        <Chevronup classes={chevronClasses} />
+      {:else}
+        <Chevrondown classes={chevronClasses} />
+      {/if}
     </button>
-  {/if}
-  {#if expanded}
-    <Chevronup classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none" />
-  {:else}
-    <Chevrondown classes="w-5 h-5 absolute top-1/4 right-4 md:right-6 pointer-events-none" />
-  {/if}
+
+    {#if expanded}
+      <div
+        class={menuClasses}
+        style={menuStyle}
+        role="listbox"
+        aria-label={selectAriaLabel}
+        bind:this={customMenuEl}
+        transition:fly={{ y: 4, duration: 140 }}
+      >
+        {#each optionsData as option (option.value)}
+          <button
+            type="button"
+            class="result-list-option focus-visible-standard w-full px-4 py-2 text-left text-custom-16"
+            role="option"
+            aria-selected={selected?.value === option.value ? 'true' : 'false'}
+            onclick={() => handleCustomOptionClick(option)}
+          >
+            {option.label}
+          </button>
+        {/each}
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style lang="postcss">
   @reference "../../../app.css";
-  .resultList,
-  .default {
-    @apply text-custom-16;
-  }
-
-  .tabCard,
-  .categoryFilter {
-    /* Set the font explicitly for firefox with a fall back to system-ui */
-    font-family:
-      Open Sans,
-      system-ui;
-    @apply w-full;
-  }
-
   .clear-btn:hover,
   .clear-btn:focus {
     @apply text-custom-1;
     @apply bg-custom-22;
   }
 
-  option {
-    /* Ensures <option> inherits from <select> specifically for firefox */
-    font-family: inherit;
+  .result-list-option:hover,
+  .result-list-option:focus {
+    @apply bg-custom-23;
+    @apply text-custom-1;
+    @apply outline-none;
+  }
+
+  .select-trigger-compact {
+    @apply px-3;
+    @apply py-1;
+  }
+
+  .select-trigger-tab-card {
+    @apply px-4;
+    @apply py-2;
+  }
+
+  .select-trigger-open,
+  .select-trigger-open:hover,
+  .select-trigger-open:focus,
+  .select-trigger-open:focus-visible {
+    @apply bg-custom-16;
+    @apply text-custom-1;
+    @apply border-custom-16;
+  }
+
+  .result-list-option[aria-selected='true'] {
+    @apply bg-custom-16;
+    @apply text-custom-1;
+    @apply font-semibold;
   }
 </style>

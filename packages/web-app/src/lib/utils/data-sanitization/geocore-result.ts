@@ -36,15 +36,18 @@ function fixCoordinatesType(results: GeospatialRecord[]): GeospatialRecord[] {
  * @returns The array of records with normalized language fields.
  */
 function normalizeLanguage(records: GeospatialRecord[], lang: string): GeospatialRecord[] {
+  const langCode = lang.split('-')[0] as 'en' | 'fr';
+
   for (const record of records) {
     try {
-      const title = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
+      const title = record[`title_${langCode}` as 'title_en' | 'title_fr'];
       if (title) {
         record.title = title;
       }
 
-      // TODO: Should this be description? Why is description being set to the title?
-      const description = record[`title_${lang.split('-')[0]}` as 'title_en' | 'title_fr'];
+      const description = (record as unknown as Record<'description_en' | 'description_fr', string | undefined>)[
+        `description_${langCode}` as 'description_en' | 'description_fr'
+      ];
       if (description) {
         record.description = description;
       }

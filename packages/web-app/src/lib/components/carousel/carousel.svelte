@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
   import { page } from '$app/state';
+  import { pickByLanguage } from '$lib/utils/language';
   import Chevronleft from '$lib/components/icons/chevronleft.svelte';
   import Chevronright from '$lib/components/icons/chevronright.svelte';
 
@@ -24,8 +25,8 @@
   let flyLength = $state(0);
 
   /*************** Aria Labels ***************/
-  const carouselLabel = lang === 'fr-ca' ? 'Carrousel de dossiers similaires' : 'Similar records carousel';
-  const similarRecordLabelPrefix = lang === 'fr-ca' ? 'Dossiers similaire ' : 'Similar record ';
+  const carouselLabel = pickByLanguage(lang, 'Similar records carousel', 'Carrousel de dossiers similaires');
+  const similarRecordLabelPrefix = pickByLanguage(lang, 'Similar record ', 'Dossiers similaire ');
 
   /*************** Utility methods ***************/
 
@@ -230,6 +231,5 @@
 
   .change-index-button:hover {
     @apply bg-custom-5;
-    @apply shadow-[0_0.1875rem_0.375rem_#00000029];
   }
 </style>

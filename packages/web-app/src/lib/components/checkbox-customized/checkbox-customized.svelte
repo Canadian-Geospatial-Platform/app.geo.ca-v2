@@ -34,15 +34,7 @@
 </script>
 
 <div class="flex gap-[0.8125rem] flex-[1_1_10rem]">
-  <input
-    type="checkbox"
-    id={checkboxId}
-    name={checkboxName}
-    bind:checked
-    class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-      border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 cursor-pointer"
-    onchange={handleCheckboxClick}
-  />
+  <input type="checkbox" id={checkboxId} name={checkboxName} bind:checked class="peer checkbox-standard" onchange={handleCheckboxClick} />
   <label for={checkboxId}>
     {#if linkedLabel}
       <!-- This link can be external or internal, so we use fully constructed URL for relative paths -->

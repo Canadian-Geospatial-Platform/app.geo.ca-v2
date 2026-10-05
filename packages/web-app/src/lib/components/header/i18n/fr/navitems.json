@@ -131,23 +131,6 @@
       }
     ]
   },
-  "collections": {
-    "title": "Mes collections",
-    "options": [
-      {
-        "links": [
-          {
-            "title": "Mes cartes",
-            "href": "/fr-ca/map-browser"
-          },
-          {
-            "title": "Mes recherches",
-            "href": "/fr-ca/map-browser"
-          }
-        ]
-      }
-    ]
-  },
   "favourites": {
     "title": "Favoris",
     "href": "/fr-ca/favourites",

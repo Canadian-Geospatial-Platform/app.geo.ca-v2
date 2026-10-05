@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { pickByLanguage } from '$lib/utils/language';
   import Card from '$lib/components/card/card.svelte';
   import type { ContactInfo } from '$lib/db/db-types';
 
@@ -35,12 +36,7 @@
   const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
 
   let temporalCoverage = `${properties.temporalExtent?.begin} - ${properties.temporalExtent?.end}`;
-
-  if (lang === 'fr-ca') {
-    temporalCoverage = temporalCoverage.replaceAll('null', 'Présent');
-  } else {
-    temporalCoverage = temporalCoverage.replaceAll('null', 'Present');
-  }
+  temporalCoverage = temporalCoverage.replaceAll('null', pickByLanguage(lang, 'Present', 'Présent'));
 
   let topSection = [
     [dateCreatedText, dateCreated],
@@ -107,7 +103,8 @@
         Citation entries should be in this format:
         Publisher organization. (published date). <i>Name of resource</i>.
         Distributor organization. url link to resource (if it exists).
-        TODO: Publisher and distributor were both using distributor. Removed second instance, add publisher back in when it is available.
+        NOTE: Publisher currently maps to distributor-derived values because a
+        separate publisher source is not yet available in this payload.
       -->
       <div class="space-y-4">
         {#each distributorOrgArray as distributor, index (`${index}-${distributor}`)}
@@ -132,6 +129,7 @@
     </div>
     <div class="card-div">
       <h3 class="font-semibold">{useLimitationsText}</h3>
+      <!-- These are our descriptions, no injection risk -->
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       <p>{@html useLimitations}</p>
     </div>

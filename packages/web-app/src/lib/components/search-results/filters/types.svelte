@@ -1,6 +1,8 @@
 <script lang="ts">
   import { page } from '$app/state';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
+  import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
+  import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
   import type { Filter, FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
@@ -13,8 +15,13 @@
   const conditionLabel = translations?.condition ?? 'Condition:';
   const anyLabel = translations?.anyLabel ?? 'Any (OR)';
   const allLabel = translations?.allLabel ?? 'All (AND)';
+  const logicOptions: SelectOption[] = [
+    { value: 'any', label: anyLabel },
+    { value: 'all', label: allLabel },
+  ];
 
   let typeLogic = $state<'any' | 'all'>('any');
+  let selectedLogic = $state<SelectOption | undefined>(logicOptions[0]);
 
   /**
    * Resets from URL (this is what restores state when reopening)
@@ -25,6 +32,7 @@
 
     if (logic === 'all' || logic === 'any') {
       typeLogic = logic;
+      selectedLogic = logicOptions.find((option) => option.value === logic) ?? logicOptions[0];
     }
 
     if (types) {
@@ -41,13 +49,16 @@
   export function clearAllFilters(): void {
     checkedStates = {};
     typeLogic = 'any';
+    selectedLogic = logicOptions[0];
   }
 
   /**
    * Updates local state
    */
-  function onTypeLogicChange(value: 'any' | 'all'): void {
-    typeLogic = value;
+  function onTypeLogicChange(option: SelectOption | null): void {
+    const nextLogic = option?.value === 'all' ? 'all' : 'any';
+    typeLogic = nextLogic;
+    selectedLogic = logicOptions.find((logicOption) => logicOption.value === nextLogic) ?? logicOptions[0];
   }
 
   /**
@@ -62,16 +73,10 @@
 
 <!-- Condition dropdown -->
 <div class="mb-2 flex items-center gap-2">
-  <span class="text-sm text-gray-600">{conditionLabel}</span>
-  <select
-    id="type-logic"
-    class="border rounded px-2 py-1 text-sm cursor-pointer"
-    bind:value={typeLogic}
-    onchange={(event: Event) => onTypeLogicChange((event.target as HTMLSelectElement)?.value as 'any' | 'all')}
-  >
-    <option value="any">{anyLabel}</option>
-    <option value="all">{allLabel}</option>
-  </select>
+  <span class="text-base text-gray-600">{conditionLabel}</span>
+  <div class="w-full max-w-52">
+    <SelectCustomized optionsData={logicOptions} bind:selected={selectedLogic} selectedChange={onTypeLogicChange} />
+  </div>
 </div>
 
 <!-- Type checkboxes -->

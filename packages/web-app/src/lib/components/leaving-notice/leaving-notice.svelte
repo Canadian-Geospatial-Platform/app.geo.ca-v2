@@ -1,9 +1,10 @@
 <script>
   import { onDestroy } from 'svelte';
   import { page } from '$app/state';
+  import { pickByLanguage } from '$lib/utils/language';
 
   const lang = page.data.lang;
-  const message = lang === 'fr-ca' ? 'Vous quittez geo.ca' : 'Leaving geo.ca';
+  const message = pickByLanguage(lang, 'Leaving geo.ca', 'Vous quittez geo.ca');
 
   let dots = '';
   let interval;
@@ -17,8 +18,8 @@
 </script>
 
 <div
-  class="fixed top-0 z-[10050] flex items-center justify-center
-    w-full h-screen bg-custom-5/80 text-3xl md:text-7xl"
+  class="fixed inset-0 z-10050 flex items-center justify-center
+    w-screen h-screen bg-custom-5/80 text-3xl md:text-7xl"
   style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);"
 >
   {message}<span class="w-3">{dots}</span>

@@ -1,8 +1,34 @@
 import type { Handle } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
+import { getAppLanguage, isAppLanguage } from '$lib/utils/language';
+
+// OP-to-RP server calls carry no Origin header; the route authenticates via the signed logout_token.
+const CSRF_EXEMPT_PATHS = new Set(['/sign-in/back-channel-logout']);
+const FORM_CONTENT_TYPES = ['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain'];
+const UNSAFE_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
+function isForbiddenCrossSiteFormRequest(request: Request, url: URL): boolean {
+  if (!UNSAFE_METHODS.has(request.method) || CSRF_EXEMPT_PATHS.has(url.pathname)) {
+    return false;
+  }
+
+  const contentType = request.headers.get('content-type')?.split(';', 1)[0].trim().toLowerCase() ?? '';
+  if (!FORM_CONTENT_TYPES.includes(contentType)) {
+    return false;
+  }
+
+  return request.headers.get('origin') !== url.origin;
+}
 
 export const handle: Handle = async ({ event, resolve }) => {
   const url = new URL(event.request.url);
+
+  if (isForbiddenCrossSiteFormRequest(event.request, event.url)) {
+    const message = `Cross-site ${event.request.method} form submissions are forbidden`;
+    return event.request.headers.get('accept') === 'application/json'
+      ? Response.json({ message }, { status: 403 })
+      : new Response(message, { status: 403 });
+  }
 
   // In app.geo.ca v1, record pages have a different url structure.
   // To ensure that old links stay relavent, we can redirect them.
@@ -11,11 +37,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (url.pathname.startsWith('/result')) {
     // Get the id and language from the url
     const id = url.searchParams.get('id');
-    let lang = url.searchParams.get('lang') ?? 'en';
-
-    // Convert language code e.g. 'en' to 'en-ca'
-    if (lang === 'en') lang = 'en-ca';
-    else if (lang === 'fr') lang = 'fr-ca';
+    const lang = getAppLanguage(url.searchParams.get('lang'));
 
     if (id) {
       // Construct the new URL, throw redirect
@@ -27,11 +49,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (url.pathname.startsWith('/map')) {
     // Get the id and language from the url
     const id = url.searchParams.get('rvKey');
-    let lang = url.searchParams.get('lang') ?? 'en';
-
-    // Convert language code e.g. 'en' to 'en-ca'
-    if (lang === 'en') lang = 'en-ca';
-    else if (lang === 'fr') lang = 'fr-ca';
+    const lang = getAppLanguage(url.searchParams.get('lang'));
 
     if (id) {
       // Construct the new URL, throw redirect
@@ -49,16 +67,13 @@ export const handle: Handle = async ({ event, resolve }) => {
   }
 
   // Language varification - check to make sure the url lang is supported
-
-  // List of supported languages
-  const supportedLanguages = ['en-ca', 'fr-ca'];
-  const defaultLang = 'en-ca';
+  const defaultLang = getAppLanguage();
   const langParam = event.params.lang;
 
   // If someone enters an invalid language (e.g. fr-BE, or hdsjkfhjkds),
   // they should be rerouted to a valid one.
   // Note: not all events have a language set in the params, so we will ignore those.
-  if (langParam && !supportedLanguages.includes(langParam)) {
+  if (langParam && !isAppLanguage(langParam)) {
     const langRedirectUrl = event.request.url.replace(langParam, defaultLang);
     return Response.redirect(new URL(langRedirectUrl), 307);
   }

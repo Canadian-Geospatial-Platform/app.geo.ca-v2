@@ -4,16 +4,34 @@
   import Navitem from './navitem.svelte';
   import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
   import Chevronleft from '../icons/chevronleft.svelte';
+  import SignIn from '$lib/components/profile/sign-in.svelte';
 
-  const userId = page.data.userData?.uuid;
-  const navItems = page.data.navitems;
+  let navItems = $derived(page.data.navitems);
   const orientation = 'vertical';
+
+  type VerticalMenuLink = {
+    title?: string;
+    href?: string;
+  };
+
+  type VerticalMenuOption = {
+    colTitle?: string;
+    links: VerticalMenuLink[];
+  };
+
+  type VerticalMenuContent = {
+    title?: string;
+    href?: string;
+    options?: VerticalMenuOption[];
+  };
+
+  type MenuTogglePayload = {
+    menu: VerticalMenuContent;
+  };
 
   let active = $state(false);
   let mainMenuVisible = $state(false);
-  // TODO: Refactor to not use any type here and below in Navitem component.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let activeMenuContent = $state<any>(null);
+  let activeMenuContent = $state<VerticalMenuContent | null>(null);
 
   /**
    * Resets the navigation state.
@@ -30,12 +48,16 @@
   /**
    * Toggles the menu view based on the clicked menu item.
    *
-   * @param event - The click event.
+   * @param event - Either a DOM click event or a payload containing selected menu data.
    */
-  function toggleMenuView(event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement }): void {
+  function toggleMenuView(event: Event | MenuTogglePayload): void {
     mainMenuVisible = !mainMenuVisible;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    activeMenuContent = (event as any).menu;
+
+    if ('menu' in event) {
+      activeMenuContent = event.menu;
+    } else {
+      activeMenuContent = null;
+    }
 
     if (activeMenuContent?.href) {
       resetNav();
@@ -51,15 +73,18 @@
 <div class={['nav-items-container bg-custom-23', (!active || !mainMenuVisible) && 'hidden']}>
   <div class="rounded-[0.3125rem] bg-custom-1 divide-y divide-custom-16">
     {#each Object.entries(navItems) as [key, data] (key)}
-      {#if key !== 'lang' && (key !== 'collections' || userId)}
+      {#if key !== 'lang'}
         <div class="nav-item">
           <Navitem linkData={data} {orientation} dropDownClick={toggleMenuView} />
         </div>
       {/if}
     {/each}
   </div>
-  <div class="text-custom-1 nav-item">
-    <Navitem linkData={navItems.lang} {orientation} dropDownClick={toggleMenuView} />
+  <div class="flex m-3">
+    <div class="text-custom-1 nav-item grow">
+      <Navitem linkData={navItems.lang} {orientation} dropDownClick={toggleMenuView} />
+    </div>
+    <SignIn light={true} />
   </div>
 </div>
 
@@ -71,7 +96,7 @@
   <div class={['nav-items-container bg-custom-23 pb-10', (!active || mainMenuVisible) && 'hidden']}>
     <button
       class={[
-        'w-full h-[5.0625rem] pl-5 text-left bg-custom-16 text-custom-1 rounded-t-[0.3125rem]',
+        'w-full h-[5.0625rem] pl-5 text-left bg-custom-16 text-custom-1 rounded-t-[0.3125rem] cursor-pointer',
         activeMenuContent?.options && activeMenuContent?.options[0]?.colTitle && 'rounded-section-title',
       ]}
       onclick={toggleMenuView}
@@ -121,7 +146,7 @@
       @apply w-[43.75rem];
       @apply left-auto;
       @apply left-1/2;
-      @apply -translate-x-[23.125rem];
+      @apply translate-x-[-23.125rem];
     }
   }
 

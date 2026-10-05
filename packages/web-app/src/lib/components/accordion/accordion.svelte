@@ -2,7 +2,13 @@
   import Chevronup from '$lib/components/icons/chevronup.svelte';
   import Chevrondown from '$lib/components/icons/chevrondown.svelte';
 
-  let { accordionTitle, accordionContent } = $props();
+  let {
+    accordionTitle,
+    accordionContent,
+    expandTooltip = 'Expand',
+    collapseTooltip = 'Collapse',
+    toggleAriaLabel = 'Toggle accordion',
+  } = $props();
 
   let open = $state(false);
 
@@ -60,17 +66,23 @@
     aria-pressed={open ? 'true' : 'false'}
     aria-expanded={open ? 'true' : 'false'}
     tabindex="0"
-    aria-label="Toggle Accordion"
+    aria-label={toggleAriaLabel}
   >
-    <div class="col-span-10 sm:col-span-11">
+    <div class="col-span-10 sm:col-span-11 pr-2">
       {@render accordionTitle?.()}
     </div>
     <div class="col-span-1 col-start-12 self-center">
-      {#if open}
-        <Chevronup classes="mt-1 mr-3 h-7 w-7 ml-auto text-custom-16" />
-      {:else}
-        <Chevrondown classes="mt-1 mr-3 h-7 w-7 ml-auto text-custom-16" />
-      {/if}
+      <div
+        class="ml-auto mr-2 mt-1 block text-custom-16 cursor-pointer hover:text-custom-23"
+        title={open ? collapseTooltip : expandTooltip}
+        aria-hidden="true"
+      >
+        {#if open}
+          <Chevronup classes="mt-1 mr-3 h-7 w-7 ml-auto" />
+        {:else}
+          <Chevrondown classes="mt-1 mr-3 h-7 w-7 ml-auto" />
+        {/if}
+      </div>
     </div>
   </div>
 </div>

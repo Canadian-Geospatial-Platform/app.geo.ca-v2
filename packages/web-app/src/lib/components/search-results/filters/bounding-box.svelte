@@ -337,6 +337,8 @@
     @apply relative;
     @apply top-2;
     @apply mr-2;
+    @apply hover:bg-custom-23;
+    @apply hover:border-custom-23;
   }
 
   input[type='radio']:checked {

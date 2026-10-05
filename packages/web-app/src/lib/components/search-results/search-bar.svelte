@@ -95,8 +95,8 @@
 <Card type="searchBar">
   <div class="flex flex-row gap-y-5 flex-wrap md:flex-nowrap">
     <button
-      class={`text-nowrap shadow-[0rem_0.1875rem_0.375rem_#00000029]
-        ${navigating.type !== null ? 'button-3-disabled' : 'button-3'} cursor-pointer disabled:cursor-default`}
+      class={`text-nowrap
+        button-action-light disabled:cursor-default`}
       onclick={handleFilterButtonClick}
       disabled={navigating.type !== null}
     >
@@ -116,8 +116,7 @@
       <input
         type="text"
         placeholder={searchProductsText}
-        class={`w-full h-12 md:ml-5 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
-          shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-y-2 border-l-2 md:border-0
+        class={`w-full md:ml-5 search-input-shell md:border-0
           ${navigating.type !== null ? 'border-custom-17' : 'border-custom-16'}`}
         bind:this={searchTextInput}
         onkeydown={handleSearchEnterKeyDown}
@@ -125,10 +124,9 @@
         value={keywordFromUrl}
       />
       <button
-        class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
-          font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
-          hover:bg-custom-23 cursor-pointer disabled:cursor-default
-          ${navigating.type !== null ? 'bg-custom-17' : 'bg-custom-16'}`}
+        class={`search-submit-shell
+          button-search-dark
+          ${navigating.type !== null ? 'bg-custom-17 border-custom-17' : ''}`}
         onclick={handleSearchClick}
         disabled={navigating.type !== null}
       >

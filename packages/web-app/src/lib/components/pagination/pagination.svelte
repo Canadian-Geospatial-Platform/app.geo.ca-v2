@@ -90,15 +90,9 @@
   }
 </script>
 
-<div
-  class={[
-    'flex flex-row justify-between items-center pagination-width',
-    'rounded shadow-[0_0.1875rem_0.375rem_#00000029] bg-custom-16',
-    numPages < 2 && 'hidden',
-  ]}
->
+<div class={['flex flex-row justify-center items-center pagination-width', 'rounded bg-custom-16', numPages < 2 && 'hidden']}>
   <button
-    class="arrows mr-2 text-custom-16 disabled:text-custom-19 cursor-pointer disabled:cursor-default"
+    class="arrows button-tone-light focus-visible-standard mr-2"
     onclick={() => handlePageClick(currentPage - 1)}
     disabled={currentPage === 1 || totalItems === 0}
   >
@@ -107,9 +101,8 @@
   {#each pageButtons as page (page)}
     <button
       class={[
-        'font-custom-style-button-1 h-7 min-w-7 px-1 mx-1 cursor-pointer',
-        page === currentPage && 'current-page',
-        page !== currentPage && 'page-button',
+        'font-custom-style-button-1 focus-visible-standard inline-flex items-center justify-center leading-none h-7 min-w-7 px-1 mx-0.5 cursor-pointer rounded',
+        page === currentPage ? 'button-tone-light pagination-current' : 'button-tone-dark',
       ]}
       onclick={() => handlePageClick(page)}
     >
@@ -117,7 +110,7 @@
     </button>
   {/each}
   <button
-    class="arrows ml-2 text-custom-16 disabled:text-custom-19 cursor-pointer disabled:cursor-default"
+    class="arrows button-tone-light focus-visible-standard ml-2"
     onclick={() => handlePageClick(currentPage + 1)}
     disabled={currentPage === numPages || totalItems === 0}
   >
@@ -131,27 +124,19 @@
     @apply flex;
     @apply items-center;
     @apply justify-center;
-    @apply bg-custom-1;
     @apply h-7;
     @apply w-7;
     @apply rounded;
-    @apply hover:bg-custom-23;
-    @apply hover:text-custom-1;
+    @apply cursor-pointer;
+    @apply disabled:cursor-default;
+    @apply disabled:text-custom-19;
     @apply disabled:hover:text-custom-19;
     @apply disabled:hover:bg-custom-1;
   }
 
-  .current-page {
-    @apply bg-custom-1;
+  .pagination-current {
     @apply text-custom-7;
-    @apply rounded;
-    @apply hover:bg-custom-23;
     @apply hover:text-custom-1;
-  }
-
-  .page-button {
-    @apply rounded;
-    @apply hover:bg-custom-23;
   }
 
   .pagination-width {

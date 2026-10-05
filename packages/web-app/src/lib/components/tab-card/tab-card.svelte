@@ -55,7 +55,7 @@
       {#each tabContentArray as tab (`tab-${tab.value}`)}
         <button
           class={[
-            'hidden lg:flex items-center min-h-9 px-5 font-custom-style-body-3',
+            'hidden lg:flex items-center min-h-9 px-5 font-custom-style-body-3 cursor-pointer',
             'bg-custom-5 border-b-[0.1875rem] border-custom-16 rounded-t',
             tab.value === activeTabId && 'active',
             tab.value !== activeTabId && 'hover:bg-custom-25',

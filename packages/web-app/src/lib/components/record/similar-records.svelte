@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { onMount } from 'svelte';
+  import { pickByLanguage } from '$lib/utils/language';
   import Carousel from '$lib/components/carousel/carousel.svelte';
   import type { SimilarityRecord } from '$lib/db/db-types';
 
@@ -20,14 +21,13 @@
 
   const cardData = $derived(
     similarRecords.map((record: SimilarityRecord) => {
-      const title = lang === 'fr-ca' ? record.features_properties_title_fr : record.features_properties_title_en;
+      const title = pickByLanguage(lang, record.features_properties_title_en, record.features_properties_title_fr);
       const id: string = record.features_properties_id;
 
       // Todo: Change description when it becomes available from the similarity query.
       // For now, we can use a POST query to get the description for each record. This is slow,
       // so it will be temporary and removed once the similarity descriptions are available
       const description = similarDescriptions?.[id] ?? '';
-      // const description = lang === "fr-ca" ? record.features_properties_description_fr : record.features_properties_description_en;
 
       const url = `${urlPrefix}${record.features_properties_id}`;
 

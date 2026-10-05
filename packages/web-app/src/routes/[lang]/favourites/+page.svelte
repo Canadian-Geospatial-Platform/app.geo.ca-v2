@@ -23,4 +23,6 @@
   <LoadingMask classes="fixed left-0 top-0 items-center" />
 {/if}
 
-<div style="min-height: 300px;"><Favourites /></div>
+<div style="min-height: 300px;">
+  <Favourites />
+</div>

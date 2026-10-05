@@ -10,7 +10,7 @@ interface LayerResult {
 /**
  * Handles POST requests to fetch records by IDs and check for map layers.
  *
- * @param request - The request object.
+ * @param event - SvelteKit request event.
  * @returns A promise that resolves to the record response.
  */
 export async function POST({ request }: { request: Request }): Promise<Response> {
@@ -42,7 +42,8 @@ export async function POST({ request }: { request: Request }): Promise<Response>
   return json(records.filter((record) => record !== undefined));
 }
 
-/** Gets a record from the GeoCore API.
+/**
+ * Gets a record from the GeoCore API.
  *
  * @param id - The record ID.
  * @param lang - The language code.
@@ -96,7 +97,7 @@ function getFormats(record: GeospatialRecord, lang: string): string[] {
 }
 
 /**
- * Query vcs to check if resources have map layers
+ * Queries VCS to check whether resources have map layers.
  *
  * @param ids - An array of record IDs.
  * @param lang - The language code.

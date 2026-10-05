@@ -1,6 +1,7 @@
 <script lang="ts">
   import { SvelteSet } from 'svelte/reactivity';
   import { page } from '$app/state';
+  import { pickByLanguage } from '$lib/utils/language';
   import SortDown from '$lib/components/icons/sort-down.svelte';
   import SortInactive from '$lib/components/icons/sort-inactive.svelte';
   import SortUp from '$lib/components/icons/sort-up.svelte';
@@ -9,7 +10,9 @@
 
   // Every item in the array should have the same set of keys,
   // since the keys will become the column titles of the table
-  type TableContent = Array<Record<string, string> & { url?: string; disableCheckbox?: boolean }>;
+  type TableRow = Record<string, string | boolean> & { id?: string; url?: string; disableCheckbox?: boolean };
+  type TableContent = TableRow[];
+  type NormalizedTableRow = TableRow & { id: string };
   type sortDirectionState = 0 | 1 | 2;
 
   interface Props {
@@ -47,8 +50,8 @@
 
   /************** Translations **************/
   const lang = page.data.lang;
-  const selectAllLabel = lang === 'fr-ca' ? 'Tout sélectionner' : 'Select all';
-  const deleteLabel = lang === 'fr-ca' ? 'Supprimer la ressource' : 'Delete resource';
+  const selectAllLabel = pickByLanguage(lang, 'Select all', 'Tout sélectionner');
+  const deleteLabel = pickByLanguage(lang, 'Delete resource', 'Supprimer la ressource');
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -70,7 +73,14 @@
 
   let currentPageItems = $derived(sortedTableContent.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
 
-  let visibleRows = $derived(paginated ? currentPageItems : sortedTableContent);
+  // Some display-only tables do not provide ids. Normalize rows so internal logic
+  // can always rely on a string id.
+  let visibleRows: NormalizedTableRow[] = $derived(
+    (paginated ? currentPageItems : sortedTableContent).map((row, index) => ({
+      ...row,
+      id: row.id ?? `generated-row-${index}`,
+    }))
+  );
 
   // Check the checkboxes for all items in the visible rows when allSelected changes
   $effect(() => {
@@ -115,9 +125,9 @@
   export function updateTableContent(newTableContent: TableContent): void {
     // When updating the table, make sure the correct sort order is maintained
     if (sortDirection === 1) {
-      sortedTableContent = newTableContent.toSorted((a, b) => a[sortColumn].localeCompare(b[sortColumn]));
+      sortedTableContent = newTableContent.toSorted((a, b) => String(a[sortColumn]).localeCompare(String(b[sortColumn])));
     } else if (sortDirection === 2) {
-      sortedTableContent = newTableContent.toSorted((a, b) => a[sortColumn].localeCompare(b[sortColumn])).reverse();
+      sortedTableContent = newTableContent.toSorted((a, b) => String(a[sortColumn]).localeCompare(String(b[sortColumn]))).reverse();
     } else {
       sortedTableContent = newTableContent;
     }
@@ -164,9 +174,9 @@
     }
 
     if (sortDirection === 1) {
-      sortedTableContent = tableContent.toSorted((a, b) => a[sortColumn].localeCompare(b[sortColumn]));
+      sortedTableContent = tableContent.toSorted((a, b) => String(a[sortColumn]).localeCompare(String(b[sortColumn])));
     } else if (sortDirection === 2) {
-      sortedTableContent = tableContent.toSorted((a, b) => a[sortColumn].localeCompare(b[sortColumn])).reverse();
+      sortedTableContent = tableContent.toSorted((a, b) => String(a[sortColumn]).localeCompare(String(b[sortColumn]))).reverse();
     } else {
       sortedTableContent = tableContent;
     }
@@ -231,8 +241,7 @@
                 id="checkAll"
                 name="checkAll"
                 checked={visibleRows.every((row) => selectedIds.includes(row.id) || row.disableCheckbox)}
-                class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-                  border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer"
+                class="peer checkbox-standard focus-visible-standard"
                 onchange={(event) => handleSelectAllChange(event)}
               />
               <Checkmark
@@ -248,7 +257,7 @@
           <th class={[index === 0 && tableLabelsArray.length > 1 && 'w-1/2']}>
             <div class="flex flex-row justify-between font-custom-style-header-1">
               {tableLabels[labelTranslation]}
-              <button class="px-2" onclick={() => handleSortButtonClick(labelTranslation)}>
+              <button class="px-2 rounded focus-visible-standard" onclick={() => handleSortButtonClick(labelTranslation)}>
                 {#if sortDirection === 1 && labelTranslation === sortColumn}
                   <SortUp classes="inline w-4 h-4 text-custom-16" />
                 {:else if sortDirection === 2 && labelTranslation === sortColumn}
@@ -291,13 +300,11 @@
               <div class="flex pointer-events-auto w-fit mx-auto hover:cursor-pointer">
                 <input
                   type="checkbox"
-                  id={`check-${row?.id}`}
-                  name={`check-${row?.id}`}
+                  id={`check-${row.id}`}
+                  name={`check-${row.id}`}
                   checked={selectedIds.includes(row.id) && !row.disableCheckbox}
                   disabled={row.disableCheckbox}
-                  class="peer appearance-none min-w-[1.6875rem] h-[1.6875rem] border-2
-                    border-custom-16 rounded-sm bg-custom-1 checked:bg-custom-16 hover:cursor-pointer
-                    disabled:bg-gray-200 disabled:border-gray-400 disabled:hover:cursor-default"
+                  class="peer checkbox-standard focus-visible-standard"
                   onchange={(event) => handleCheckboxOnChange(event, row.id)}
                 />
                 <Checkmark
@@ -311,7 +318,7 @@
             {#each tableLabelsArray as label, index (`${index}-${label}`)}
               <!-------------- Clickable Row -------------->
               <td class="font-custom-style-body-4">
-                <a href={row.url} rel="external" class="block w-full h-full p-2.5">
+                <a href={row.url} rel="external" class="block w-full h-full p-2.5 focus-visible-standard">
                   <!-- These are our labels, so no danger of injection -->
                   <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                   {@html row[label]}
@@ -334,9 +341,8 @@
             <td class="pointer-events-none align-center p-2.5 h-full">
               <div class="flex pointer-events-auto w-fit mx-auto hover:cursor-pointer">
                 <button
-                  id={`garbage-${row?.id}`}
-                  class="p-2 text-custom-16 rounded border-2 border-transparent hover:border-custom-16
-                    hover:text-custom-1 hover:bg-custom-16 hover:shadow-[0_0.1875rem_0.375rem_#00000029] cursor-pointer"
+                  id={`garbage-${row.id}`}
+                  class="button-tone-light button-icon focus-visible-standard"
                   onclick={(event) => handleDeleteRowClick(event, row.id)}
                 >
                   <GarbageCan classes="h-6" />

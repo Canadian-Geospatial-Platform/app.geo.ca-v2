@@ -6,6 +6,10 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter(),
+    // Origin check is enforced in hooks.server.ts so the OIDC back-channel logout route can be exempted.
+    csrf: {
+      trustedOrigins: ['*'],
+    },
   },
 };
 

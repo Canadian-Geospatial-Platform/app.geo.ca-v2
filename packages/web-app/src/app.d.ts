@@ -1,7 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 import type { Filter } from '$lib/components/search-results/filters/filter-types';
-import type { ContactInfo, GeospatialRecord, SimilarityRecord } from '$lib/db/db-types';
+import type { ContactInfo, GeospatialRecord, MapConfigFavourite, SimilarityRecord } from '$lib/db/db-types';
 
 // SemanticSearch results have coordinates as number[][] instead of string
 type SemanticResultWithCoordinates = Omit<GeospatialRecord, 'coordinates'> & {
@@ -89,7 +89,6 @@ declare global {
       message: string;
       status?: number;
     }
-    // interface Locals {}
     interface PageData {
       // Common properties (from layout.server.ts)
       lang: 'en-ca' | 'fr-ca';
@@ -98,13 +97,17 @@ declare global {
       navitems: HeaderNavItems;
       headerTranslations: TranslationMap;
       shareTranslations: TranslationMap;
+      signedIn?: boolean;
+      FEATURE_SIGN_IN?: boolean;
 
       // User data
       userData?: {
         uuid: string | null;
         favourites?: string[];
-        mapCart?: string[];
+        mapConfigs?: MapConfigFavourite[];
+        authRevokedAt?: number | null;
       };
+      userDataStatus?: 'anonymous' | 'ok' | 'missing' | 'unavailable';
 
       // SEO/Meta properties
       canonicalUrl?: string;
@@ -140,7 +143,6 @@ declare global {
       analyticRes?: AnalyticResponse;
       coordinates?: number[][]; // Normalized coordinates for map display
     }
-    // interface Platform {}
   }
 }
 

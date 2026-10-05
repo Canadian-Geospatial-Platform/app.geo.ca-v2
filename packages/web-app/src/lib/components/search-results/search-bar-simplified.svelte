@@ -66,12 +66,11 @@
   }
 </script>
 
-<div class="flex flex-nowrap w-full">
+<div class="flex flex-nowrap w-full drop-shadow-[0_0.1875rem_0.375rem_#00000029] rounded-[0.3125rem]">
   <input
     type="text"
     placeholder={searchProductsText}
-    class={`w-full lg:w-1/2 h-12 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
-      shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-y-2 border-l-2
+    class={`w-full lg:w-1/2 search-input-shell
       ${navigating.type !== null ? 'border-custom-17' : 'border-custom-16'}`}
     bind:this={searchTextInput}
     onkeydown={handleSearchEnterKeyDown}
@@ -79,10 +78,9 @@
   />
 
   <button
-    class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
-      font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
-      hover:bg-custom-23 cursor-pointer disabled:cursor-default
-      ${navigating.type !== null ? 'bg-custom-17' : 'bg-custom-16'}`}
+    class={`search-submit-shell
+      button-search-dark
+      ${navigating.type !== null ? 'bg-custom-17 border-custom-17' : ''}`}
     onclick={handleSearchClick}
     disabled={navigating.type !== null}
   >

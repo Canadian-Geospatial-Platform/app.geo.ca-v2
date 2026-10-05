@@ -13,10 +13,7 @@ export function setPosition(node: HTMLElement, isHorizontal: boolean): { destroy
    ***************************************************************************/
   if (isHorizontal) {
     let nodeBounding: DOMRect;
-    let nodeLeft: number;
-    let nodeWidth: number;
-    let transformX: number;
-    let transformed: boolean;
+    let shiftX: number;
     const observer = new MutationObserver(function (): void {
       /***********************************************************************
        *  Note: The 'shifted' class will act as a flag to indicate if the
@@ -41,26 +38,26 @@ export function setPosition(node: HTMLElement, isHorizontal: boolean): { destroy
      * Calculates and sets the position of the dropdown menu.
      */
     function calcPosition(): void {
-      // Reset default transform value
+      // Start with CSS centering and no JS offset.
+      node.style.setProperty('--dropdown-shift-x', '0px');
       nodeBounding = node.getBoundingClientRect();
-      nodeWidth = nodeBounding.width;
-      transformX = 0 - nodeWidth / 2;
-      node.style.transform = `translate(${transformX}px, 0px)`;
+      shiftX = 0;
 
-      // Get the new bounding rectangle after transform
-      nodeBounding = node.getBoundingClientRect();
-      nodeLeft = nodeBounding.left;
-      transformed = false;
+      const viewportLeft = 5;
+      const viewportRight = window.innerWidth - 5;
 
-      // Set horizontal translation if node is off screen
-      if (nodeLeft < 0) {
-        transformX = 5 - nodeLeft - nodeWidth / 2;
-        transformed = true;
+      // Nudge right if off-screen on the left.
+      if (nodeBounding.left < viewportLeft) {
+        shiftX += viewportLeft - nodeBounding.left;
       }
 
-      // Transform node position if needed.
-      if (transformed) {
-        node.style.transform = `translate(${transformX}px, 0px)`;
+      // Nudge left if off-screen on the right.
+      if (nodeBounding.right > viewportRight) {
+        shiftX -= nodeBounding.right - viewportRight;
+      }
+
+      if (shiftX !== 0) {
+        node.style.setProperty('--dropdown-shift-x', `${shiftX}px`);
       }
 
       // Add 'shifted' class to avoid infinate loop

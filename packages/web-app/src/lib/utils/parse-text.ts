@@ -42,7 +42,8 @@ export const parseText = function (text: string): string {
   // Instead, the links will temporarily be replaced with a placeholder
   // and restored in Step 3.
 
-  const markdownLinkRegEx = /\[([^\]]+)\]\((https?:\/\/[^\s|)]+)\)/g;
+  // Stop URL matching before HTML tags (e.g. <br>) injected from newline conversion.
+  const markdownLinkRegEx = /\[([^\]]+)\]\((https?:\/\/[^\s<|)]+)\)/g;
   const links: string[] = [];
 
   const textWithPlaceholders = text.replaceAll(markdownLinkRegEx, (x, text, url) => {
@@ -57,7 +58,7 @@ export const parseText = function (text: string): string {
   /****** Step 2 ******/
   // Convert plain URLs into clickable links
 
-  const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
+  const urlRegEx = /(https?:\/\/[^\s<|)]+)/g;
   const textWithAnchors = textWithPlaceholders.replaceAll(urlRegEx, (url) => {
     return `<a href="${url}" class="underline hover:no-underline decoration-from-font text-custom-16">${url}</a>`;
   });

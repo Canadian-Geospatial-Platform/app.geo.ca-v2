@@ -5,6 +5,8 @@ import { sanitize } from '$lib/utils/data-sanitization/geocore-result';
 import { sanitizeSemantic } from '$lib/utils/data-sanitization/semantic-results';
 import { formatNumber } from '$lib/utils/format-number';
 import type { GeospatialRecord, UserInfo } from '$lib/db/db-types';
+import { getAppLanguage } from '$lib/utils/language';
+import { buildSeoMetadata } from '$lib/utils/metadata';
 
 import { SEMANTIC_SEARCH_URL, GEOCORE_API_DOMAIN } from '$env/static/private';
 
@@ -65,40 +67,35 @@ interface SemanticSearchParams {
   from: number;
 }
 
+type SearchMode = 'classic' | 'semantic';
+
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-  const searchMode = url.searchParams.get('searchMethod') === 'classic' || !SEMANTIC_SEARCH_URL ? 'classic' : 'semantic';
-  let response;
-  if (searchMode === 'classic') {
-    response = await generateUrl(
-      fetch,
-      url.searchParams,
-      params.lang,
-      cookies.get('id_token') || '',
-      request.headers.get('x-forwarded-for') || ''
-    );
-  } else {
-    response = await generateSemanticUrl(
-      fetch,
-      url.searchParams,
-      params.lang,
-      cookies.get('id_token') || '',
-      request.headers.get('x-forwarded-for') || ''
-    );
-  }
-  const analytics = await getAnalytics(fetch);
+  const lang = getAppLanguage(params.lang);
+  const searchMode: SearchMode = url.searchParams.get('searchMethod') === 'classic' || !SEMANTIC_SEARCH_URL ? 'classic' : 'semantic';
   let parsedResponse: ParsedResponse = {};
-  let userData: UserInfo = { Item: { uuid: '', favourites: [] } };
+  let userData: UserInfo = { Item: { uuid: '', favourites: [] }, status: 'anonymous' };
   let sanitizedResults: ReturnType<typeof sanitize> | ReturnType<typeof sanitizeSemantic> = [];
+
   try {
+    const response = await generateSearchUrl(
+      fetch,
+      url.searchParams,
+      lang,
+      cookies.get('id_token') || '',
+      request.headers.get('x-forwarded-for') || '',
+      searchMode
+    );
     parsedResponse = (await response.json()) as ParsedResponse;
     if (searchMode === 'classic') {
-      sanitizedResults = sanitize(parsedResponse.Items ?? [], params.lang);
+      sanitizedResults = sanitize(parsedResponse.Items ?? [], lang);
     } else {
       sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items ?? []);
     }
   } catch (e) {
-    console.error(e);
+    console.error('Failed to fetch search results:', e);
   }
+
+  const analytics = await getAnalytics(fetch);
 
   let totalHits;
   if (searchMode === 'classic') {
@@ -114,16 +111,13 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     console.warn(e);
   }
 
-  const canonicalUrl = `${url.origin}/${params.lang}/map-browser`;
-  const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
-  const alternateUrl = url.href.replace(params.lang, alternateLang);
-  const metaDescription =
-    params.lang === 'fr-ca'
-      ? 'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.'
-      : 'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.';
+  const seo = buildSeoMetadata(url, lang, 'map-browser', {
+    en: 'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.',
+    fr: 'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.',
+  });
 
   return {
-    lang: params.lang,
+    lang,
     results: sanitizedResults,
     userData: userData.Item,
     start: getMin(url.searchParams),
@@ -131,77 +125,46 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     analytics: analytics,
     searchMode: searchMode,
     totalHits: totalHits,
-    canonicalUrl: canonicalUrl,
-    alternateUrl: alternateUrl,
-    alternateLang: alternateLang,
-    metaDescription: metaDescription,
+    canonicalUrl: seo.canonicalUrl,
+    alternateUrl: seo.alternateUrl,
+    alternateLang: seo.alternateLang,
+    metaDescription: seo.metaDescription,
   };
 };
 
-// TODO: combine generateUrl and generateSemanticUrl into one function with a mode parameter
 /**
- * Generates a url and sends a fetch request to get records from the GeoCore API.
+ * Generates a search URL and sends a fetch request to get records from the API.
  *
  * @param fetch - The fetch function.
  * @param searchParams - The URL search parameters.
  * @param lang - The language code.
  * @param token - The authentication token.
  * @param ip - The user's IP address.
+ * @param mode - The search mode.
  * @returns A promise that resolves to the fetch response.
  */
-function generateUrl(
+function generateSearchUrl(
   fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
   searchParams: URLSearchParams,
   lang: string,
   token: string,
-  ip: string
+  ip: string,
+  mode: SearchMode
 ): Promise<Response> {
-  const url = new URL(`${GEOCORE_API_DOMAIN}/geo`);
-  const params = mapSearchParams(searchParams, lang);
+  const isSemantic = mode === 'semantic';
+  const url = isSemantic ? new URL(`${SEMANTIC_SEARCH_URL}/search-opensearch`) : new URL(`${GEOCORE_API_DOMAIN}/geo`);
+  const params = isSemantic ? mapSemanticSearchResults(searchParams, lang) : mapSearchParams(searchParams, lang);
+
   // URLSearchParams automatically encodes special characters to the html counterpart.
   // However, the geocore get requests require the '+' to be unencoded, so
-  // we can fix it with replaceAll(). Additionally, the ' character needs to be
-  // replaced with '', so we can use replaceAll() a second time.
-  url.search = new URLSearchParams(params as unknown as Record<string, string>)
-    .toString()
-    .replaceAll('%2B', '+')
-    .replaceAll('%27', '%27%27');
+  // we can fix it with replaceAll(). Classic mode also requires single quotes
+  // to be doubled for compatibility with the GeoCore endpoint.
+  let query = new URLSearchParams(params as unknown as Record<string, string>).toString().replaceAll('%2B', '+');
+  if (!isSemantic) {
+    query = query.replaceAll('%27', '%27%27');
+  }
+  url.search = query;
 
-  return fetch(url, {
-    headers: {
-      Authentication: `Bearer ${token}`,
-      'x-forwarded-for': ip,
-    },
-  });
-}
-
-/**
- * Generates semantic search url and sends a fetch request to get records from the GeoCore API.
- *
- * @param fetch - The fetch function.
- * @param searchParams - The URL search parameters.
- * @param lang - The language code.
- * @param token - The authentication token.
- * @param ip - The user's IP address.
- * @returns A promise that resolves to the fetch response.
- */
-function generateSemanticUrl(
-  fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
-  searchParams: URLSearchParams,
-  lang: string,
-  token: string,
-  ip: string
-): Promise<Response> {
-  // Testing staging version of semantic search instead of the prod version.
-  // Commenting out prod url out for now in case we decide to switch back.
-  // let url = new URL(SEMANTIC_SEARCH_URL);
-  const url = new URL(`${SEMANTIC_SEARCH_URL}/search-opensearch`);
-
-  const params = mapSemanticSearchResults(searchParams, lang);
-  // URLSearchParams automatically encodes special characters to the html counterpart.
-  // However, the geocore get requests require the '+' to be unencoded, so
-  // we can fix it with replaceAll().
-  url.search = new URLSearchParams(params as unknown as Record<string, string>).toString().replaceAll('%2B', '+');
   return fetch(url, {
     headers: {
       Authentication: `Bearer ${token}`,
@@ -218,14 +181,14 @@ function generateSemanticUrl(
  * @async
  */
 async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<AnalyticsItem> {
-  const analytics = await fetch(`${GEOCORE_API_DOMAIN}/analytics/11`);
   let parsedAnalytics: { Items: AnalyticsItem[] } = { Items: [] };
 
   try {
+    const analytics = await fetch(`${GEOCORE_API_DOMAIN}/analytics/11`);
     const payload = (await analytics.json()) as { Items?: AnalyticsItem[] };
     parsedAnalytics = { Items: payload.Items ?? [] };
   } catch (e) {
-    console.error(e);
+    console.error('Failed to fetch analytics:', e);
   }
 
   for (let i = 0; i < parsedAnalytics.Items.length; i++) {
@@ -249,10 +212,10 @@ async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) =>
  */
 function mapSearchParams(searchParams: URLSearchParams, lang: string): SearchParams {
   const mappedParams: SearchParams = {
-    north: searchParams.get('north') ?? 90,
-    east: searchParams.get('east') ?? 180,
-    south: searchParams.get('south') ?? -90,
-    west: searchParams.get('west') ?? -180,
+    north: getNumericSearchParam(searchParams, 'north', 90),
+    east: getNumericSearchParam(searchParams, 'east', 180),
+    south: getNumericSearchParam(searchParams, 'south', -90),
+    west: getNumericSearchParam(searchParams, 'west', -180),
     // TODO: separate keyword and category of interest.
     // For now, there is no category of interest param to query,
     // so it is grouped with the keywords
@@ -280,10 +243,10 @@ function mapSearchParams(searchParams: URLSearchParams, lang: string): SearchPar
  * @returns The mapped search parameters.
  */
 function mapSemanticSearchResults(searchParams: URLSearchParams, lang: string): SemanticSearchParams {
-  const west = searchParams.get('west') ?? -180;
-  const north = searchParams.get('north') ?? 90;
-  const east = searchParams.get('east') ?? 180;
-  const south = searchParams.get('south') ?? -90;
+  const west = getNumericSearchParam(searchParams, 'west', -180);
+  const north = getNumericSearchParam(searchParams, 'north', 90);
+  const east = getNumericSearchParam(searchParams, 'east', 180);
+  const south = getNumericSearchParam(searchParams, 'south', -90);
   const bbox = searchParams.get('bbox') ? `${west},${south},${east},${north}` : '';
   const searchTerms = searchParams.get('search-terms');
   const mappedParams: SemanticSearchParams = {
@@ -311,6 +274,28 @@ function mapSemanticSearchResults(searchParams: URLSearchParams, lang: string): 
     from: getMin(searchParams),
   };
   return mappedParams;
+}
+
+/**
+ * Parses a numeric URL search parameter and falls back to a default value when invalid.
+ *
+ * @param searchParams - The URL search parameters.
+ * @param key - The query parameter key.
+ * @param fallback - The default value to use when the parameter is missing or invalid.
+ * @returns A valid number as string.
+ */
+function getNumericSearchParam(searchParams: URLSearchParams, key: string, fallback: number): string {
+  const raw = searchParams.get(key);
+  if (raw === null || raw.trim() === '') {
+    return String(fallback);
+  }
+
+  const parsed = Number(raw);
+  if (Number.isFinite(parsed)) {
+    return String(parsed);
+  }
+
+  return String(fallback);
 }
 
 /**

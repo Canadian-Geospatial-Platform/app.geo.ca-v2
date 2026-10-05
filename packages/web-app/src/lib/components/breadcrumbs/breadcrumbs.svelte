@@ -1,15 +1,17 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { resolve } from '$app/paths';
+  import type { AppLanguage } from '$lib/utils/language';
+  import { pickByLanguage } from '$lib/utils/language';
 
   // Assign a default lang to prevent 'undefined' in the url when lang is not set
-  const lang = page.data.lang ?? 'en-ca';
+  const lang = (page.data.lang ?? 'en-ca') as AppLanguage;
 
-  const geoCaUrl = $derived(lang === 'fr-ca' ? 'https://geo.ca/fr/accueil/index.html' : 'https://geo.ca/home');
-  const homeLabel = $derived(lang === 'fr-ca' ? 'Accueil' : 'Home');
+  const geoCaUrl = $derived(pickByLanguage(lang, 'https://geo.ca/home', 'https://geo.ca/fr/accueil/index.html'));
+  const homeLabel = $derived(pickByLanguage(lang, 'Home', 'Accueil'));
 
   const appGeoCaUrl = $derived(`/${lang}/map-browser`);
-  const searchLabel = $derived(lang === 'fr-ca' ? 'Recherche' : 'Search');
+  const searchLabel = $derived(pickByLanguage(lang, 'Search', 'Recherche'));
 
   const title2 = $derived(page.data.tTitle2);
   const title3 = $derived(page.data.tTitle3);

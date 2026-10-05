@@ -2,8 +2,9 @@
   import { onMount } from 'svelte';
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
-  import { goto } from '$app/navigation';
+  import { goto, invalidate } from '$app/navigation';
   import { updateLocalStorage } from '$lib/utils/event-dispatchers/local-storage-changed';
+  import { FAVOURITES_STORAGE_KEY, getStoredFavourites, resolveInitialFavourites } from '$lib/utils/favourites-storage';
   import Accordion from '$lib/components/accordion/accordion.svelte';
   import Card from '$lib/components/card/card.svelte';
   import ResultListSkeleton from '$lib/components/loading-mask/result-list-skeleton.svelte';
@@ -23,17 +24,16 @@
     coordinates: number[][];
   };
 
-  /************* User Data ***************/
-  const userId = page.data.userData?.uuid;
+  const signedIn = Boolean(page.data.signedIn);
 
   // TODO: Centralize translations
-  /************* Translations ***************/
   const translations = page.data.t;
 
   const mapNotAvailableText = translations?.mapNotAvailable ? translations['mapNotAvailable'] : 'Map not available';
-  const saveSearchParamsText = translations?.saveSearchParams ? translations['saveSearchParams'] : 'Save Search Parameters';
   const formatText = translations?.formatParams ? translations['format'] : 'Format';
   const organizationText = translations?.organization ? translations['organization'] : 'Organization';
+  const expandMapTooltipText = translations?.expandToShowMap ? translations['expandToShowMap'] : 'Expand to display map';
+  const collapseMapTooltipText = translations?.collapseToHideMap ? translations['collapseToHideMap'] : 'Collapse to hide map';
   const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
   const removeFromFavouritesTitle = translations?.removeFromFavourites || 'Remove from Favourites';
   const addToFavouritesTitle = translations?.addToFavourites || 'Add to Favourites';
@@ -172,6 +172,22 @@
    * @returns A promise that resolves when the operation is complete.
    */
   async function handleFavouriteClick(recordId: string): Promise<void> {
+    const exists = favouriteRecordList.includes(recordId);
+
+    // Update server-side favourites for signed-in users
+    if (signedIn) {
+      const response = await fetch(`/${page.data.lang}/api/favourites`, {
+        method: exists ? 'DELETE' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: recordId }),
+      });
+
+      if (!response.ok) {
+        return;
+      }
+    }
+
+    // Update local favourite list
     if (!favouriteRecordList.includes(recordId)) {
       // Add to list of ids
       favouriteRecordList.push(recordId);
@@ -184,22 +200,29 @@
     }
 
     // Update localStorage and dispatch localstorage_updated event
-    updateLocalStorage('FavouritesResources', favouriteRecordList);
+    updateLocalStorage(FAVOURITES_STORAGE_KEY, favouriteRecordList);
+
+    // For signed-in users, re-run the layout load so the nav favourites count updates
+    if (signedIn) {
+      await invalidate('app:favourites');
+    }
   }
 
-  // Local storage is only accessible from the client side, so we need to get
-  // the FavouritesResources array inside onMount
+  // Local storage is only accessible from the client side, so we initialize
+  // favourites inside onMount.
   onMount(() => {
-    let stored = localStorage.getItem('FavouritesResources');
+    const storedFavourites = getStoredFavourites(localStorage);
+    const resolved = resolveInitialFavourites(signedIn, favouriteRecordList, storedFavourites);
+    favouriteRecordList = resolved.favourites;
 
-    if (stored) {
-      favouriteRecordList = stored.split(',');
+    if (resolved.shouldSyncLocalStorage) {
+      updateLocalStorage(FAVOURITES_STORAGE_KEY, favouriteRecordList);
     }
   });
 
   /****************** Map ******************/
   let mapType: MapTypes = 'resultList';
-  let lang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
+  let lang = page.data.lang.split('-')[0] as 'en' | 'fr';
 </script>
 
 <!-- When the window is resized, we can close each accordion to reset the map variables. -->
@@ -214,20 +237,18 @@
       <p class="font-custom-style-body-8 self-center">
         {pageMessage}
       </p>
-      <div class="flex flex-row gap-3 md:gap-5">
-        <div>
-          <SelectCustomized selectType="resultList" optionsData={sortBySelectData} bind:selected selectedChange={changeSort} />
+      {#if results.length}
+        <div class="flex flex-row gap-3 md:gap-5">
+          <div>
+            <SelectCustomized selectType="resultList" optionsData={sortBySelectData} bind:selected selectedChange={changeSort} />
+          </div>
         </div>
-        {#if userId}
-          <!-- TODO: Add a method for this button -->
-          <button class="button-3">{saveSearchParamsText}</button>
-        {/if}
-      </div>
+      {/if}
     </div>
     <!-- List -->
-    {#each results as result, index (result.id)}
+    {#each results as result, index (`${result.id}-${index}`)}
       <div class="bg-custom-1 px-5 py-4">
-        <Accordion bind:this={accordionComponents[index]}>
+        <Accordion bind:this={accordionComponents[index]} expandTooltip={expandMapTooltipText} collapseTooltip={collapseMapTooltipText}>
           {#snippet accordionTitle()}
             <div class="sm:grid grid-cols-10">
               <!------------- Record info ------------->
@@ -244,6 +265,20 @@
                 <div class="line-clamp-2 pt-1">
                   <!-- Remove new line characters -->
                   {lang === 'fr' ? result.description_fr.replaceAll('\\n', '') : result.description_en.replaceAll('\\n', '')}
+                </div>
+                <div class="mt-3">
+                  <p>
+                    <span class="font-semibold">{organizationText}: </span>
+                    {lang === 'fr'
+                      ? result.contact[0]?.organisation?.fr?.replaceAll(';', '; ')
+                      : result.contact[0]?.organisation?.en?.replaceAll(';', '; ')}
+                  </p>
+                  <p class="mt-2">
+                    <span class="font-semibold">{formatText}: </span>
+                    {#each getFormats(result) as format (format)}
+                      <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
+                    {/each}
+                  </p>
                 </div>
               </div>
 
@@ -271,22 +306,6 @@
           {/snippet}
           {#snippet accordionContent()}
             <div class="mt-5">
-              <!------------- Record Details ------------->
-              <div class="mb-5">
-                <p>
-                  <span class="font-semibold">{organizationText}: </span>
-                  {lang === 'fr'
-                    ? result.contact[0]?.organisation?.fr?.replaceAll(';', '; ')
-                    : result.contact[0]?.organisation?.en?.replaceAll(';', '; ')}
-                </p>
-                <p class="mt-2">
-                  <span class="font-semibold">{formatText}: </span>
-                  {#each getFormats(result) as format (format)}
-                    <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
-                  {/each}
-                </p>
-              </div>
-
               <!------------- Map ------------->
               <!-- Note: We will only show a map for screens larger than 640px -->
               {#if result.coordinates}

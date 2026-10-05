@@ -2,6 +2,13 @@ import type { PageLoad } from './$types';
 import enLabels from '$lib/components/favourites/i18n/en/translations.json';
 import frLabels from '$lib/components/favourites/i18n/fr/translations.json';
 
+/**
+ * Loads localized labels and forwards server data for the favourites landing page.
+ *
+ * @param params - Route parameters containing language.
+ * @param data - Server-loaded page data.
+ * @returns Localized page data for the favourites landing route.
+ */
 export const load: PageLoad = ({ params, data }) => {
   const lang = params.lang as 'fr-ca' | 'en-ca';
   const t = lang === 'fr-ca' ? frLabels : enLabels;

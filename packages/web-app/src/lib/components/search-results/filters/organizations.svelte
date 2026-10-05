@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { pickByLanguage } from '$lib/utils/language';
   import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
   import type { Filter, FilterItem } from './filter-types';
 
@@ -9,8 +10,8 @@
   let checkedStates: Record<string, boolean> = $state({});
 
   // Labels
-  const federal = page.data.lang === 'fr-ca' ? 'Organisations - Fédérales' : 'Organizations - Federal';
-  const provincial = page.data.lang === 'fr-ca' ? 'Organisations - Provinciales/Territoriales' : 'Organizations - Provincial/Territorial';
+  const federal = pickByLanguage(page.data.lang, 'Organizations - Federal', 'Organisations - Fédérales');
+  const provincial = pickByLanguage(page.data.lang, 'Organizations - Provincial/Territorial', 'Organisations - Provinciales/Territoriales');
 
   /**
    * Resets the Organizations filters to match the URL parameters.

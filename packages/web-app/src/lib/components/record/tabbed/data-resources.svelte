@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { pickByLanguage } from '$lib/utils/language';
   import { parseDataResources } from '$lib/components/record/tabbed/parseDataResources';
   import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
 
@@ -27,7 +28,7 @@
   /******************* Data *******************/
   const data = page.data;
   const lang = data.lang;
-  const langShort: 'en' | 'fr' = lang === 'fr-ca' ? 'fr' : 'en';
+  const langShort: 'en' | 'fr' = pickByLanguage(lang, 'en', 'fr');
   const items = data.item_v2!;
   const dataResourcesRaw = items.options;
 
@@ -66,7 +67,7 @@
   </div>
 
   <!-- Small - medium screen table -->
-  <div class="block md:hidden rounded bg-custom-1 px-5 drop-shadow-[0_0.1875rem_0.375rem_#00000029] divide-y divide-custom-17">
+  <div class="block md:hidden mobile-list-card">
     {#each dataResourcesList as dataResource, index (`${index}-${dataResource.name}`)}
       <div class="py-5">
         <!-- Resource Name -->
@@ -116,18 +117,10 @@
 
 <!-- Geocore and HNAP buttons -->
 <div class="flex flex-col sm:flex-row gap-4 pt-2">
-  <button
-    class="w-full sm:w-auto bg-custom-16 hover:bg-custom-23 hover:border-custom-23
-      text-custom-1 font-custom-style-body-5"
-    on:click={handleDownloadButtonClick}
-  >
+  <button class="w-full sm:w-auto button-utility-dark" on:click={handleDownloadButtonClick}>
     {downloadMetadataText}
   </button>
-  <button
-    class="w-full sm:w-auto bg-custom-1 hover:bg-custom-16 text-custom-16 hover:text-custom-1
-      font-custom-style-body-3"
-    on:click={handleViewISO1915ButtonClick}
-  >
+  <button class="w-full sm:w-auto button-utility-light" on:click={handleViewISO1915ButtonClick}>
     {viewISO1915Text}
   </button>
 </div>
@@ -135,6 +128,7 @@
 <style lang="postcss">
   @reference "../../../../app.css";
   button {
+    @apply cursor-pointer;
     @apply px-6;
     @apply py-2;
     @apply border-2;
