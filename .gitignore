@@ -14,5 +14,7 @@ vite.config.ts.timestamp-*
 *.d.ts
 .sst.config.*.mjs
 private-key.pem
+private-key-*.pem
 public-key.pem
 certificate.crt
+certificate-*.crt

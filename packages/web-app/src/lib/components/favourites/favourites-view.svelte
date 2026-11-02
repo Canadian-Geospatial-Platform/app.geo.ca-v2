@@ -43,6 +43,7 @@
   const savedMapsTooLarge = translations.savedMapsTooLarge;
   const mapLimitReached = translations.mapLimitReached;
   const presentationModeLabel = translations.presentationMode;
+  const presentationTipLabel = translations.presentationTipLabel;
   const presentationNoticeTitle = translations.presentationNoticeTitle;
   const presentationNotice = translations.presentationNotice;
   const dismissPresentationNotice = translations.dismissPresentationNotice;
@@ -422,6 +423,11 @@
             {presentationModeLabel}
           </button>
         {/if}
+      </div>
+      <div class="info-tip-card">
+        <p class="font-custom-style-body-9 m-0 text-custom-18">
+          {presentationTipLabel}
+        </p>
       </div>
       <div class="flex flex-wrap gap-3 mt-5 mb-5">
         {#if signedIn}

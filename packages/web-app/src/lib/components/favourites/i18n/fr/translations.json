@@ -37,6 +37,7 @@
   "mapTitle": "Carte",
   "mapsTab": "Cartes",
   "presentationMode": "Mode présentation",
+  "presentationTipLabel": "Conseil : Le mode présentation agrandit la carte pour remplir l’écran et masque les commandes de la page pour faciliter la consultation. Utilisez le bouton Précédent de votre navigateur pour revenir.",
   "presentationNoticeTitle": "Mode présentation",
   "presentationNotice": "Utilisez le bouton Précédent de votre navigateur pour revenir.",
   "dismissPresentationNotice": "Fermer",

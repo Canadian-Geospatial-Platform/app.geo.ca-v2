@@ -37,6 +37,7 @@
   "mapTitle": "Map",
   "mapsTab": "Maps",
   "presentationMode": "Presentation mode",
+  "presentationTipLabel": "Tip: Presentation mode expands the map to fill the screen and hides the page controls for easier viewing. Use your browser's Back button to return.",
   "presentationNoticeTitle": "Presentation mode",
   "presentationNotice": "Use your browser's Back button to return.",
   "dismissPresentationNotice": "Close",

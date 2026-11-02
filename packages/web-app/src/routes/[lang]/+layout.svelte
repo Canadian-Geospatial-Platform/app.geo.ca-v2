@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { afterNavigate } from '$app/navigation';
+  import { afterNavigate, invalidate } from '$app/navigation';
   import { page, updated } from '$app/state';
   import { onMount } from 'svelte';
   import '../../app.css';
@@ -24,6 +24,7 @@
   let sessionRefreshPending = false;
   let sessionLayoutActive = true;
   let sessionLogoutPending = false;
+  let previousSessionExpired = $state(false);
   const appLang = getAppLanguage(page.data.lang);
   const lang = appLang.slice(0, 2);
 
@@ -56,6 +57,15 @@
       sessionRefreshPending = false;
     }
   }
+
+  // When session expiration is detected, invalidate cached data so the page re-fetches user state.
+  // This ensures navigation to protected routes will reflect the signed-out state.
+  $effect(() => {
+    if (page.data.sessionExpired && !previousSessionExpired) {
+      previousSessionExpired = true;
+      void invalidate('app:favourites');
+    }
+  });
 
   // Set the language of the page. This needs to be done using onMount to
   // ensure it is only executed after the <html> element is present in the DOM.

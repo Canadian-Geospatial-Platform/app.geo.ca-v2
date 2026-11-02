@@ -34,7 +34,8 @@ upstream handler changes; review or remove it when updating the adapter. Do not 
 After following the setup, start a development server with these steps:
 
 - Set up your AWS credentials. [documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-- Create a stage env file by copying `.env.example` to `.env.<your-stage-name>` (for local dev use `.env.dev`).
+- For local dev, staging or production, copy the matching template from .env.example to `.env.dev`, `.env.staging` or `.env.production` and replace every placeholder.
+- Keep staging and production credentials separate, including the `private_key_jwt` key in AWS Secrets Manager and `SESSION_COOKIE_SECRET`. The `.env.example` file is a safe template; never commit the real `.env.staging` or `.env.production` files.
 - `packages/web-app/.env` is an optional local override file for web-app runtime values read from `process.env` (for example `GEOCORE_API_DOMAIN`, `SEMANTIC_SEARCH_URL`, and `USER_TABLE_NAME`).
 - Keep auth/stage settings (`OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, `OIDC_CUSTOM_DOMAIN`) in your stage env file at the repository root (for example `.env.dev`).
 - Optional scope policy setting: `OIDC_REQUESTED_SCOPES` (space/comma delimited; supported: `openid`, `profile`, `email`, `phone`, `language`).
@@ -64,13 +65,13 @@ When `OIDC_USE_PRIVATE_KEY_JWT=true`, non-local environments fail closed if a pr
 
 #### Staging/Production: Setting Up private_key_jwt
 
-1. **Generate an RSA key pair** (one-time setup):
+1. **Generate an RSA key pair** (one-time setup - certificate must be replaced yearly):
 
 Run this step in Bash, Git Bash, or WSL. If you're using PowerShell, `openssl` must be installed and available on your `PATH` first.
 
 ```bash
-openssl genrsa -out private-key.pem 2048
-openssl req -key private-key.pem -new -x509 -days 365 -out certificate.crt
+openssl genrsa -out private-key-<prod/staging>.pem 2048
+openssl req -key private-key-<prod/staging>.pem -new -x509 -days 365 -out certificate-<prod/staging>.crt
 ```
 
 If `openssl` is not recognized in your shell, install OpenSSL or switch to a shell that already provides it before continuing.
@@ -79,7 +80,7 @@ PowerShell 7+ alternative:
 
 ```powershell
 $rsa = [System.Security.Cryptography.RSA]::Create(2048)
-Set-Content -Path private-key.pem -Value $rsa.ExportPkcs8PrivateKeyPem()
+Set-Content -Path private-key-<prod/staging>.pem -Value $rsa.ExportPkcs8PrivateKeyPem()
 $certificateRequest = [System.Security.Cryptography.X509Certificates.CertificateRequest]::new(
   'CN=oidc-private-key-jwt',
   $rsa,
@@ -90,7 +91,7 @@ $certificate = $certificateRequest.CreateSelfSigned(
   [System.DateTimeOffset]::UtcNow.AddMinutes(-5),
   [System.DateTimeOffset]::UtcNow.AddDays(365)
 )
-[System.IO.File]::WriteAllBytes('certificate.crt', $certificate.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert))
+[System.IO.File]::WriteAllBytes('certificate-<prod/staging>.crt', $certificate.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert))
 $certificate.Dispose()
 $rsa.Dispose()
 ```
@@ -102,6 +103,8 @@ openssl req -key private.key -new -x509 -days 365 -out certificate.crt
 ```
 
 Windows note: if you want to keep using the Bash commands, install OpenSSL for Windows and make sure the `openssl` executable is on your `PATH` before running them.
+
+The certificate must be replaced yearly.
 
 2. **Register the key material with your OIDC provider**:
 
