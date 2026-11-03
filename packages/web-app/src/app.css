@@ -292,6 +292,14 @@
   @apply md:px-5;
 }
 
+.info-tip-card > p {
+  @apply font-lato;
+  @apply font-normal;
+  @apply text-[16px];
+  @apply m-0;
+  @apply text-custom-21;
+}
+
 .page-copy-block {
   @apply font-open-sans;
   @apply font-normal;

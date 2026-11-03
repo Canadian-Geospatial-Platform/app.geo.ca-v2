@@ -13,6 +13,14 @@
   const confirmTitle = $derived(pickByLanguage(page.data.lang, 'Confirm deletion', 'Confirmer la suppression'));
   const promptTitle = $derived(pickByLanguage(page.data.lang, 'Save as...', 'Enregistrer sous...'));
 
+  /**
+   * Opens a dialog and resolves when the user submits or cancels it.
+   *
+   * @param mode - Whether to request confirmation or text input.
+   * @param message - The message displayed in the dialog.
+   * @param initialValue - Initial prompt value; ignored for confirmation.
+   * @returns The submitted text, an empty string for confirmation, or null when cancelled.
+   */
   function request(mode: 'confirm' | 'prompt', message: string, initialValue = ''): Promise<string | null> {
     if (pending) throw new Error('A dialog is already open.');
     value = initialValue;
@@ -21,14 +29,31 @@
     });
   }
 
+  /**
+   * Shows a confirmation dialog.
+   *
+   * @param message - The message displayed in the dialog.
+   * @returns True when confirmed, or false when cancelled.
+   */
   export async function confirm(message: string): Promise<boolean> {
     return (await request('confirm', message)) !== null;
   }
 
+  /**
+   * Shows a text-entry dialog.
+   *
+   * @param message - The prompt displayed alongside the input.
+   * @param initialValue - The input's initial text.
+   * @returns The submitted text, or null when cancelled.
+   */
   export function prompt(message: string, initialValue = ''): Promise<string | null> {
     return request('prompt', message, initialValue);
   }
 
+  /**
+   * Resolves and closes the active dialog, if one is open.
+   * @param result - The submitted value, or null when the dialog is cancelled.
+   */
   function finish(result: string | null): void {
     const current = pending;
     pending = null;

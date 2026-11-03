@@ -82,7 +82,7 @@ describe('sign-out route redirects', () => {
       url: new URL(`https://example.test/${lang}/sign-in/logout?reason=session-expired`),
     } as unknown as Parameters<typeof loadLangLogout>[0];
 
-    await expectRedirect(() => loadLangLogout(event), { status: 303, location: `/${lang}/map-browser` });
+    await expectRedirect(() => loadLangLogout(event), { status: 303, location: `/${lang}/map-browser?sessionExpired=1` });
     expect(clearAuthCookiesMock).toHaveBeenCalledWith(cookies);
     expect(cookies.set).toHaveBeenCalledWith(
       'session_expired',
@@ -100,7 +100,7 @@ describe('sign-out route redirects', () => {
       url: new URL('http://localhost:8080/en-ca/sign-in/logout?reason=session-expired'),
     } as unknown as Parameters<typeof loadLangLogout>[0];
 
-    await expectRedirect(() => loadLangLogout(event), { status: 303, location: '/en-ca/map-browser' });
+    await expectRedirect(() => loadLangLogout(event), { status: 303, location: '/en-ca/map-browser?sessionExpired=1' });
     expect(cookies.set).toHaveBeenCalledWith('session_expired', '1', expect.objectContaining({ secure: false }));
   });
 

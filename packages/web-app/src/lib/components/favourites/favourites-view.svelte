@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { page } from '$app/state';
-  import { goto, pushState, replaceState } from '$app/navigation';
+  import { goto } from '$app/navigation';
   import { resolve } from '$app/paths';
   import { sanitizeMapConfigForStorage } from '#lib/utils/map-config-sanitizer.js';
   import MycartMap from '#lib/components/map/favourites-map.svelte';
@@ -126,7 +126,11 @@
   function clearAdditionIntent(): void {
     const nextUrl = new URL(page.url.href);
     nextUrl.searchParams.delete('addDatasetId');
-    replaceState(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, { ...page.state });
+    void goto(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, {
+      state: { ...page.state },
+      shallow: true,
+      replace: true,
+    });
   }
 
   /**
@@ -192,9 +196,9 @@
 
     const nextUrl = new URL(page.url.href);
     nextUrl.searchParams.set('presentation', '1');
-    pushState(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, {
-      ...page.state,
-      presentationMode: true,
+    void goto(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, {
+      state: { ...page.state, presentationMode: true },
+      shallow: true,
     });
   }
 
@@ -277,7 +281,11 @@
         nextUrl.searchParams.delete('addDatasetId');
         nextUrl.searchParams.set('mapId', createdMap.id);
         nextUrl.searchParams.set('source', 'maps');
-        replaceState(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, { ...page.state });
+        void goto(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, {
+          state: { ...page.state },
+          shallow: true,
+          replace: true,
+        });
       }
       savedMaps = payload.mapConfigs;
       showDatasetNotice = false;
@@ -425,7 +433,7 @@
         {/if}
       </div>
       <div class="info-tip-card">
-        <p class="font-custom-style-body-9 m-0 text-custom-18">
+        <p>
           {presentationTipLabel}
         </p>
       </div>

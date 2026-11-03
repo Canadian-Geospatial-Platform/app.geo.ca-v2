@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { afterNavigate, invalidate } from '$app/navigation';
+  import { afterNavigate, goto } from '$app/navigation';
   import { page, updated } from '$app/state';
   import { onMount } from 'svelte';
   import '../../app.css';
@@ -10,6 +10,7 @@
   import LeavingNotice from '#lib/components/leaving-notice/leaving-notice.svelte';
   import GoogleTag from '#lib/components/google-tag/google-tag.svelte';
   import AppDialog from '#lib/components/dialog/app-dialog.svelte';
+  import { SESSION_INACTIVITY_SECONDS, SESSION_WARNING_SECONDS } from '#lib/config/constants.js';
   import { getAppLanguage } from '#lib/utils/language.js';
 
   interface Props {
@@ -21,10 +22,11 @@
   let showSessionWarning = $state(false);
   let sessionSecondsRemaining = $state(0);
   let sessionExpiresAt = 0;
+  let lastUserActivityAt = 0;
+  let lastSessionTouchAt = 0;
   let sessionRefreshPending = false;
   let sessionLayoutActive = true;
   let sessionLogoutPending = false;
-  let previousSessionExpired = $state(false);
   const appLang = getAppLanguage(page.data.lang);
   const lang = appLang.slice(0, 2);
 
@@ -52,56 +54,89 @@
       }
       const data = (await response.json()) as { expiresAt?: number };
       sessionExpiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : 0;
+      lastUserActivityAt = Date.now();
+      lastSessionTouchAt = lastUserActivityAt;
       showSessionWarning = false;
     } finally {
       sessionRefreshPending = false;
     }
   }
 
-  // When session expiration is detected, invalidate cached data so the page re-fetches user state.
-  // This ensures navigation to protected routes will reflect the signed-out state.
-  $effect(() => {
-    if (page.data.sessionExpired && !previousSessionExpired) {
-      previousSessionExpired = true;
-      void invalidate('app:favourites');
-    }
-  });
-
   // Set the language of the page. This needs to be done using onMount to
   // ensure it is only executed after the <html> element is present in the DOM.
   // Assigning the language using <svelte:head> instead sometimes caused errors
   onMount(() => {
+    if (page.url.searchParams.get('sessionExpired') === '1') {
+      const cleanUrl = new URL(page.url.href);
+      cleanUrl.searchParams.delete('sessionExpired');
+      void goto(cleanUrl, { state: page.state, shallow: true, replace: true });
+    }
+
     let previousSignedIn = Boolean(page.data.signedIn);
+    lastUserActivityAt = Date.now();
+    lastSessionTouchAt = lastUserActivityAt;
     document.documentElement.lang = lang;
 
     let sessionTimer: ReturnType<typeof setInterval> | undefined;
+    let sessionStatusPending = false;
+    const heartbeatIntervalMs = Math.min(30_000, (SESSION_INACTIVITY_SECONDS * 1000) / 3);
     const updateSessionWarning = (): void => {
-      if (!sessionExpiresAt || !page.data.signedIn) {
+      if (!page.data.signedIn) {
         showSessionWarning = false;
         return;
       }
 
-      sessionSecondsRemaining = Math.max(0, Math.ceil((sessionExpiresAt - Date.now()) / 1000));
-      if (sessionSecondsRemaining <= 0) {
+      const now = Date.now();
+      const idleSeconds = (now - lastUserActivityAt) / 1000;
+      if (idleSeconds > SESSION_INACTIVITY_SECONDS) {
         endExpiredSession();
-      } else if (sessionSecondsRemaining <= 300) {
-        showSessionWarning = true;
+        return;
       }
+
+      const idleSecondsRemaining = Math.ceil(SESSION_INACTIVITY_SECONDS - idleSeconds);
+      const tokenSecondsRemaining = sessionExpiresAt ? Math.ceil((sessionExpiresAt - now) / 1000) : Number.POSITIVE_INFINITY;
+      if (tokenSecondsRemaining <= 0) {
+        endExpiredSession();
+        return;
+      }
+
+      sessionSecondsRemaining = Math.min(idleSecondsRemaining, tokenSecondsRemaining);
+      showSessionWarning = idleSecondsRemaining <= SESSION_WARNING_SECONDS || tokenSecondsRemaining <= 300;
     };
 
     const loadSessionExpiry = async (): Promise<void> => {
-      if (!page.data.signedIn) return;
-      const response = await fetch('/api/session');
-      if (!sessionLayoutActive) return;
-      if (response.ok) {
-        const data = (await response.json()) as { expiresAt?: number };
-        sessionExpiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : 0;
-        updateSessionWarning();
-        sessionTimer = setInterval(updateSessionWarning, 1000);
-      } else if (response.status === 401) {
-        endExpiredSession();
+      if (!page.data.signedIn || sessionStatusPending || sessionRefreshPending || sessionLogoutPending) return;
+      sessionStatusPending = true;
+      lastSessionTouchAt = Date.now();
+      try {
+        const response = await fetch('/api/session');
+        if (!sessionLayoutActive || sessionLogoutPending) return;
+        if (response.ok) {
+          const data = (await response.json()) as { expiresAt?: number };
+          sessionExpiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : 0;
+          lastSessionTouchAt = Date.now();
+          updateSessionWarning();
+          if (!sessionTimer) sessionTimer = setInterval(updateSessionWarning, 1000);
+        } else if (response.status === 401) {
+          endExpiredSession();
+        }
+      } finally {
+        sessionStatusPending = false;
       }
     };
+
+    const handleUserActivity = (): void => {
+      lastUserActivityAt = Date.now();
+      updateSessionWarning();
+      if (lastUserActivityAt - lastSessionTouchAt >= heartbeatIntervalMs) {
+        void loadSessionExpiry();
+      }
+    };
+    const userActivityEvents = ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart'] as const;
+    for (const eventName of userActivityEvents) {
+      window.addEventListener(eventName, handleUserActivity, { passive: true });
+    }
+    document.addEventListener('visibilitychange', updateSessionWarning);
 
     void loadSessionExpiry();
 
@@ -158,6 +193,10 @@
     return () => {
       sessionLayoutActive = false;
       if (sessionTimer) clearInterval(sessionTimer);
+      for (const eventName of userActivityEvents) {
+        window.removeEventListener(eventName, handleUserActivity);
+      }
+      document.removeEventListener('visibilitychange', updateSessionWarning);
       window.removeEventListener('click', handleClick);
       Element.prototype.scrollIntoView = originalScrollIntoView;
     };
@@ -166,7 +205,7 @@
 
 <GoogleTag />
 <Header />
-<main class="flex flex-col content-width bg-custom-1 min-h-screen pt-8" data-sveltekit-reload={updated.current ? '' : 'off'}>
+<main class="flex flex-col content-width bg-custom-1 min-h-screen pt-8" data-sveltekit-reload={updated.current ? '' : 'false'}>
   {#if page.data.authError}
     <div
       class="mb-4 rounded border border-red-700 bg-red-50 px-4 py-3 font-custom-style-body-1 text-red-900"
@@ -204,14 +243,6 @@
     closeOnBackdrop
     onclose={() => void staySignedIn()}
   >
-    <button
-      class="float-right text-2xl leading-none"
-      type="button"
-      aria-label={lang === 'fr' ? 'Fermer' : 'Close'}
-      onclick={() => void staySignedIn()}
-    >
-      &times;
-    </button>
     <h2 id="session-warning-title" class="mb-3 text-xl font-bold">
       {lang === 'fr' ? 'Nous allons fermer votre session pour cause d’inactivité' : 'Your session is about to end due to inactivity'}
     </h2>

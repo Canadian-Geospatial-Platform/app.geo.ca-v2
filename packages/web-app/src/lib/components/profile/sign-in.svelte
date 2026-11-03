@@ -5,7 +5,6 @@
   import { pickByLanguage } from '#lib/utils/language.js';
   import { FAVOURITES_STORAGE_KEY } from '#lib/utils/favourites-storage.js';
   import { encodeGuestFavouritesCookieValue, GUEST_FAVOURITES_COOKIE_NAME } from '#lib/utils/guest-favourites.js';
-  import LeavingNotice from '#lib/components/leaving-notice/leaving-notice.svelte';
 
   type Props = {
     light?: boolean;
@@ -28,7 +27,7 @@
     return currentPath === datasetsPath || currentPath === mapsPath;
   });
 
-  let showLeavingNotice = $state(false);
+  let signInRedirectPending = $state(false);
   const signOutHref = $derived(
     shouldReturnToFavourites
       ? resolve(`/[lang]/sign-in/oidc-logout?returnTo=${encodeURIComponent(`/${lang}/favourites`)}`, { lang })
@@ -53,17 +52,13 @@
    * Starts sign-in; the launcher defaults successful sign-in to localized favourites.
    */
   function handleSignInClick(): void {
-    if (showLeavingNotice) {
+    if (signInRedirectPending) {
       return;
     }
 
-    showLeavingNotice = true;
+    signInRedirectPending = true;
     cacheGuestFavouritesForMerge();
-
-    // Keep behavior aligned with other leaving notices before redirect.
-    setTimeout(() => {
-      window.location.href = `/${lang}/sign-in/launch`;
-    }, 300);
+    window.location.href = `/${lang}/sign-in/launch`;
   }
 </script>
 
@@ -90,7 +85,11 @@
       </div>
     {:else}
       <div class="flex flex-col items-center gap-0.5">
-        <button class={['button-signin', light ? 'button-action-light' : 'button-action-dark']} onclick={handleSignInClick}>
+        <button
+          class={['button-signin', light ? 'button-action-light' : 'button-action-dark']}
+          disabled={signInRedirectPending}
+          onclick={handleSignInClick}
+        >
           {signInText}
         </button>
         <span class={['text-xs pointer-events-none select-none', light ? 'text-custom-1 opacity-80' : 'text-custom-8 opacity-80']}>
@@ -100,7 +99,3 @@
     {/if}
   {/if}
 </div>
-
-{#if showLeavingNotice}
-  <LeavingNotice />
-{/if}

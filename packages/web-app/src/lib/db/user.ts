@@ -295,24 +295,28 @@ const markUserAuthRevoked = async (
       );
     }
 
+    const updateExpression = hasSid
+      ? 'SET #authRevokedSids.#sid = :authRevokedAt, lastBackChannelLogoutJti = :logoutTokenJti, lastBackChannelLogoutJtiSeenAt = :seenAt'
+      : 'SET authRevokedAt = :authRevokedAt, lastBackChannelLogoutJti = :logoutTokenJti, lastBackChannelLogoutJtiSeenAt = :seenAt';
+    const conditionExpression = hasSid
+      ? '(attribute_not_exists(lastBackChannelLogoutJti) OR lastBackChannelLogoutJti <> :logoutTokenJti OR attribute_not_exists(lastBackChannelLogoutJtiSeenAt) OR lastBackChannelLogoutJtiSeenAt < :replayWindowCutoff) AND (attribute_not_exists(#authRevokedSids.#sid) OR :authRevokedAt >= #authRevokedSids.#sid)'
+      : '(attribute_not_exists(lastBackChannelLogoutJti) OR lastBackChannelLogoutJti <> :logoutTokenJti OR attribute_not_exists(lastBackChannelLogoutJtiSeenAt) OR lastBackChannelLogoutJtiSeenAt < :replayWindowCutoff) AND (attribute_not_exists(authRevokedAt) OR :authRevokedAt >= authRevokedAt)';
+    const expressionAttributeNames = hasSid
+      ? {
+          '#authRevokedSids': 'authRevokedSids',
+          '#sid': sid,
+        }
+      : undefined;
+
     await docClient.send(
       new UpdateCommand({
         TableName: process.env.USER_TABLE_NAME,
         Key: {
           uuid: userKey,
         },
-        UpdateExpression: hasSid
-          ? 'SET #authRevokedSids.#sid = :authRevokedAt, lastBackChannelLogoutJti = :logoutTokenJti, lastBackChannelLogoutJtiSeenAt = :seenAt'
-          : 'SET authRevokedAt = :authRevokedAt, lastBackChannelLogoutJti = :logoutTokenJti, lastBackChannelLogoutJtiSeenAt = :seenAt',
-        ConditionExpression: hasSid
-          ? '(attribute_not_exists(lastBackChannelLogoutJti) OR lastBackChannelLogoutJti <> :logoutTokenJti OR attribute_not_exists(lastBackChannelLogoutJtiSeenAt) OR lastBackChannelLogoutJtiSeenAt < :replayWindowCutoff) AND (attribute_not_exists(#authRevokedSids.#sid) OR :authRevokedAt >= #authRevokedSids.#sid)'
-          : '(attribute_not_exists(lastBackChannelLogoutJti) OR lastBackChannelLogoutJti <> :logoutTokenJti OR attribute_not_exists(lastBackChannelLogoutJtiSeenAt) OR lastBackChannelLogoutJtiSeenAt < :replayWindowCutoff) AND (attribute_not_exists(authRevokedAt) OR :authRevokedAt >= authRevokedAt)',
-        ExpressionAttributeNames: hasSid
-          ? {
-              '#authRevokedSids': 'authRevokedSids',
-              '#sid': sid,
-            }
-          : undefined,
+        UpdateExpression: updateExpression,
+        ConditionExpression: conditionExpression,
+        ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: {
           ':authRevokedAt': revokedAt,
           ':logoutTokenJti': logoutTokenJti,

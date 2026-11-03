@@ -11,7 +11,8 @@ import { getCookieDomainOptions } from '#lib/utils/auth/cookie-policy.server.js'
  */
 export const load: PageServerLoad = ({ cookies, params, url }: Parameters<PageServerLoad>[0]): Promise<void> => {
   const destination = completeLocalLogout(cookies, url, params.lang);
-  if (url.searchParams.get('reason') === 'session-expired') {
+  const sessionExpired = url.searchParams.get('reason') === 'session-expired';
+  if (sessionExpired) {
     cookies.set('session_expired', '1', {
       path: '/',
       ...getCookieDomainOptions(),
@@ -21,5 +22,5 @@ export const load: PageServerLoad = ({ cookies, params, url }: Parameters<PageSe
       maxAge: 60,
     });
   }
-  throw redirect(303, destination);
+  throw redirect(303, sessionExpired ? `${destination}?sessionExpired=1` : destination);
 };

@@ -222,7 +222,7 @@
 
 <ActionDialog bind:this={actionDialog} />
 
-<h1 class="page-title-favourites font-custom-style-h1">
+<h1 class={['page-title-favourites font-custom-style-h1', signedIn && 'whitespace-nowrap']}>
   {favouritesTitle}
 </h1>
 
@@ -274,7 +274,7 @@
           </section>
         </div>
         <div class="info-tip-card">
-          <p class="font-custom-style-body-9 m-0 text-custom-18">
+          <p>
             {landingTipLabel}
           </p>
         </div>

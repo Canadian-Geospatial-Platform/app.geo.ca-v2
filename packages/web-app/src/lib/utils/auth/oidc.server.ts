@@ -6,6 +6,9 @@ const OPENID_CONFIGURATION_CACHE_TTL_MS = 5 * 60 * 1000;
 
 const openIdConfigurationCache = new Map<string, { value: OpenIdConfiguration; fetchedAt: number }>();
 
+type DiscoveryAttempt = { path: string; status: number | null; error?: string };
+type ParsedPrivateKeySecret = { pem: string; certPem: string | null; x5tS256: string | null };
+
 /**
  * Removes a trailing slash from URLs to avoid double-slash endpoint joins.
  *
@@ -105,6 +108,46 @@ export function getOidcManageUrl(): string | null {
 }
 
 /**
+ * Tries each supported discovery path and keeps the most complete successful response.
+ *
+ * @param customDomain - Normalized provider domain.
+ * @returns The best available configuration and fetch attempts for diagnostics.
+ */
+async function fetchOpenIdConfiguration(
+  customDomain: string
+): Promise<{ configuration: OpenIdConfiguration | null; attempts: DiscoveryAttempt[] }> {
+  let configuration: OpenIdConfiguration | null = null;
+  const attempts: DiscoveryAttempt[] = [];
+
+  for (const path of OPENID_CONFIGURATION_PATHS) {
+    try {
+      const response = await fetch(`${customDomain}${path}`);
+      attempts.push({ path, status: response.status });
+      if (!response.ok) {
+        continue;
+      }
+
+      const candidate = (await response.json()) as OpenIdConfiguration;
+      // Retain a partial response as fallback, but keep searching for a complete one.
+      configuration ??= candidate;
+      if (candidate.issuer && candidate.jwks_uri) {
+        configuration = candidate;
+        break;
+      }
+    } catch (error) {
+      // A failed path should not prevent trying the provider's alternate discovery URL.
+      attempts.push({
+        path,
+        status: null,
+        error: error instanceof Error ? error.message : 'unknown_error',
+      });
+    }
+  }
+
+  return { configuration, attempts };
+}
+
+/**
  * Fetches the provider's OIDC discovery document with a short-lived cache.
  *
  * @param customDomain - Normalized provider domain.
@@ -141,34 +184,9 @@ export async function getOpenIdConfiguration(customDomain: string): Promise<Open
     return cached.value;
   }
 
-  let bestConfiguration: OpenIdConfiguration | null = null;
-  const attempts: Array<{ path: string; status: number | null; error?: string }> = [];
+  const { configuration, attempts } = await fetchOpenIdConfiguration(customDomain);
 
-  for (const path of OPENID_CONFIGURATION_PATHS) {
-    try {
-      const response = await fetch(`${customDomain}${path}`);
-      attempts.push({ path, status: response.status });
-      if (!response.ok) {
-        continue;
-      }
-
-      const configuration = (await response.json()) as OpenIdConfiguration;
-      bestConfiguration ??= configuration;
-      if (configuration.issuer && configuration.jwks_uri) {
-        bestConfiguration = configuration;
-        break;
-      }
-    } catch (error) {
-      attempts.push({
-        path,
-        status: null,
-        error: error instanceof Error ? error.message : 'unknown_error',
-      });
-      // Continue trying alternate discovery paths.
-    }
-  }
-
-  if (!bestConfiguration) {
+  if (!configuration) {
     console.error('[auth/discovery] openid_configuration_unavailable', {
       ...telemetry,
       attempts,
@@ -176,17 +194,17 @@ export async function getOpenIdConfiguration(customDomain: string): Promise<Open
     return null;
   }
 
-  if (!bestConfiguration.issuer || !bestConfiguration.jwks_uri) {
+  if (!configuration.issuer || !configuration.jwks_uri) {
     console.error('[auth/discovery] openid_configuration_partial', {
       ...telemetry,
       attempts,
-      hasIssuer: Boolean(bestConfiguration.issuer),
-      hasJwksUri: Boolean(bestConfiguration.jwks_uri),
+      hasIssuer: Boolean(configuration.issuer),
+      hasJwksUri: Boolean(configuration.jwks_uri),
     });
   }
 
-  openIdConfigurationCache.set(customDomain, { value: bestConfiguration, fetchedAt: now });
-  return bestConfiguration;
+  openIdConfigurationCache.set(customDomain, { value: configuration, fetchedAt: now });
+  return configuration;
 }
 
 /**
@@ -363,6 +381,101 @@ function normalizeSecretTextValue(value: unknown, nestedKeys: string[]): string 
 }
 
 /**
+ * Normalizes PEM text that may contain escaped newlines.
+ *
+ * @param value - PEM text to normalize.
+ * @returns Trimmed PEM text with escaped newlines expanded.
+ */
+function normalizePemText(value: string): string {
+  return (value.includes('\\n') ? value.replace(/\\n/g, '\n') : value).trim();
+}
+
+/**
+ * Parses supported Secrets Manager payloads and derives an optional certificate thumbprint.
+ *
+ * @param secretString - Raw secret value returned by Secrets Manager.
+ * @param secretId - Secret identifier used in diagnostic logs.
+ * @returns Normalized key and certificate data, or null when the key payload is invalid.
+ */
+function parsePrivateKeySecret(secretString: string, secretId: string): ParsedPrivateKeySecret | null {
+  let pem = secretString;
+  let certPem: string | null = null;
+  let x5tS256: string | null = null;
+
+  if (secretString.trim().startsWith('{')) {
+    try {
+      const parsed = JSON.parse(secretString) as Record<string, unknown>;
+      const rawKeyValue = parsed['privateKey'] ?? parsed['private_key'] ?? parsed['key'];
+      const normalizedPem = normalizeSecretTextValue(rawKeyValue, ['privateKey', 'private_key', 'key', 'value']);
+      if (!normalizedPem) {
+        console.error('[auth/private-key] Could not normalize private key payload', { secretId });
+        return null;
+      }
+      pem = normalizedPem;
+
+      // Prefer a key-nested certificate so the key and thumbprint come from the same payload.
+      const certFromNestedKeyPayload = normalizeSecretTextValue(rawKeyValue, ['certificate', 'cert', 'value']);
+      const certFromTopLevelPayload = normalizeSecretTextValue(parsed['certificate'] ?? parsed['cert'], ['certificate', 'cert', 'value']);
+      certPem = certFromNestedKeyPayload ?? certFromTopLevelPayload;
+
+      if (certFromNestedKeyPayload && certFromTopLevelPayload && certFromNestedKeyPayload !== certFromTopLevelPayload) {
+        console.warn('[auth/private-key] Nested and top-level certificates differ; using nested certificate', { secretId });
+      }
+
+      if (certPem) {
+        certPem = normalizePemText(certPem);
+        x5tS256 = computeX5tS256(certPem);
+      }
+    } catch {
+      // If JSON parsing fails, preserve support for a raw PEM secret.
+      pem = secretString;
+      certPem = null;
+    }
+  }
+
+  pem = normalizePemText(pem);
+  if (!pem.startsWith('-----BEGIN') || (!pem.endsWith('-----END PRIVATE KEY-----') && !pem.endsWith('-----END RSA PRIVATE KEY-----'))) {
+    console.error('[auth/private-key] Private key format invalid', {
+      secretId,
+      startsCorrectly: pem.startsWith('-----BEGIN'),
+      endsCorrectly: pem.endsWith('-----END PRIVATE KEY-----') || pem.endsWith('-----END RSA PRIVATE KEY-----'),
+    });
+    return null;
+  }
+
+  return { pem, certPem, x5tS256 };
+}
+
+/**
+ * Rejects a certificate only when both public keys are readable and do not match.
+ *
+ * @param pem - Normalized private key.
+ * @param certPem - Optional normalized certificate.
+ * @param secretId - Secret identifier used in diagnostic logs.
+ * @returns False only when both public keys are readable and differ.
+ */
+function hasMatchingCertificate(pem: string, certPem: string | null, secretId: string): boolean {
+  if (!certPem) {
+    return true;
+  }
+
+  const privateKeyPublicKey = publicKeyFromPrivateKeyPem(pem);
+  const certificatePublicKey = publicKeyFromCertificatePem(certPem);
+  if (!privateKeyPublicKey || !certificatePublicKey || privateKeyPublicKey === certificatePublicKey) {
+    return true;
+  }
+
+  console.error('[auth/private-key] Private key and certificate do not form a matching pair', {
+    secretId,
+    hasPrivateKeyPublicKey: true,
+    hasCertificatePublicKey: true,
+    privateKeySpkiSha256: computeSpkiSha256(privateKeyPublicKey),
+    certificateSpkiSha256: computeSpkiSha256(certificatePublicKey),
+  });
+  return false;
+}
+
+/**
  * Retrieves the OIDC client private key and optional certificate thumbprint for private_key_jwt authentication.
  *
  * The Secrets Manager secret may be either:
@@ -402,85 +515,12 @@ export async function getPrivateKeyMaterial(): Promise<{ pem: string; x5tS256: s
     return null;
   }
 
-  let pem: string;
-  let x5tS256: string | null = null;
-  let certPem: string | null = null;
-
-  // Support JSON format: { "privateKey": "...", "certificate": "..." }
-  if (secretString.trim().startsWith('{')) {
-    try {
-      const parsed = JSON.parse(secretString) as Record<string, unknown>;
-      const rawKeyValue = parsed['privateKey'] ?? parsed['private_key'] ?? parsed['key'];
-
-      const normalizedPem = normalizeSecretTextValue(rawKeyValue, ['privateKey', 'private_key', 'key', 'value']);
-      if (!normalizedPem) {
-        console.error('[auth/private-key] Could not normalize private key payload', { secretId });
-        return null;
-      }
-      pem = normalizedPem;
-
-      // Prefer certificate embedded alongside a nested key payload so key and thumbprint stay aligned.
-      const certFromNestedKeyPayload = normalizeSecretTextValue(rawKeyValue, ['certificate', 'cert', 'value']);
-      const certFromTopLevelPayload = normalizeSecretTextValue(parsed['certificate'] ?? parsed['cert'], ['certificate', 'cert', 'value']);
-      certPem = certFromNestedKeyPayload ?? certFromTopLevelPayload;
-
-      if (certFromNestedKeyPayload && certFromTopLevelPayload && certFromNestedKeyPayload !== certFromTopLevelPayload) {
-        console.warn('[auth/private-key] Nested and top-level certificates differ; using nested certificate', { secretId });
-      }
-
-      if (certPem) {
-        if (certPem.includes('\\n')) {
-          certPem = certPem.replace(/\\n/g, '\n');
-        }
-        certPem = certPem.trim();
-        x5tS256 = computeX5tS256(certPem);
-      }
-    } catch {
-      pem = secretString;
-    }
-  } else {
-    pem = secretString;
-  }
-
-  // Normalise: ensure pem is a string, replace escaped newlines, trim whitespace
-  if (typeof pem !== 'string') {
-    console.error('[auth/private-key] Private key is not a string after parsing', { secretId, pemType: typeof pem });
+  const parsedSecret = parsePrivateKeySecret(secretString, secretId);
+  if (!parsedSecret || !hasMatchingCertificate(parsedSecret.pem, parsedSecret.certPem, secretId)) {
     return null;
   }
 
-  if (pem.includes('\\n')) {
-    pem = pem.replace(/\\n/g, '\n');
-  }
-  pem = pem.trim();
-
-  if (!pem.startsWith('-----BEGIN') || (!pem.endsWith('-----END PRIVATE KEY-----') && !pem.endsWith('-----END RSA PRIVATE KEY-----'))) {
-    console.error('[auth/private-key] Private key format invalid', {
-      secretId,
-      startsCorrectly: pem.startsWith('-----BEGIN'),
-      endsCorrectly: pem.endsWith('-----END PRIVATE KEY-----') || pem.endsWith('-----END RSA PRIVATE KEY-----'),
-    });
-    return null;
-  }
-
-  if (certPem) {
-    const privateKeyPublicKey = publicKeyFromPrivateKeyPem(pem);
-    const certificatePublicKey = publicKeyFromCertificatePem(certPem);
-    const privateKeySpkiSha256 = computeSpkiSha256(privateKeyPublicKey);
-    const certificateSpkiSha256 = computeSpkiSha256(certificatePublicKey);
-
-    if (privateKeyPublicKey && certificatePublicKey && privateKeyPublicKey !== certificatePublicKey) {
-      console.error('[auth/private-key] Private key and certificate do not form a matching pair', {
-        secretId,
-        hasPrivateKeyPublicKey: Boolean(privateKeyPublicKey),
-        hasCertificatePublicKey: Boolean(certificatePublicKey),
-        privateKeySpkiSha256,
-        certificateSpkiSha256,
-      });
-      return null;
-    }
-  }
-
-  const material = { pem, x5tS256 };
+  const material = { pem: parsedSecret.pem, x5tS256: parsedSecret.x5tS256 };
   privateKeyCache.set(secretId, { value: material, fetchedAt: now });
   return material;
 }
