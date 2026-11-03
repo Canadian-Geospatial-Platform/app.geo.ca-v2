@@ -81,8 +81,8 @@
     query.set('page-number', '0');
 
     let opts = {
-      replaceState: true,
-      keepfocus: true,
+      replace: true,
+      keepFocus: true,
     };
     // We need to preserve the current localized search-results route.
     // Using resolve('/?...') here sends the user to the site root instead of updating the current search page.

@@ -314,8 +314,9 @@
               </div>
             {/each}
           </div>
+          <br />
           <div class="info-tip-card">
-            <p class="font-custom-style-body-9 m-0 text-custom-18">
+            <p>
               <!-- Translation content is controlled in-repo; safe to render as HTML for inline icon/text formatting. -->
               <!-- eslint-disable-next-line svelte/no-at-html-tags -->
               {@html mapsTipLabel}

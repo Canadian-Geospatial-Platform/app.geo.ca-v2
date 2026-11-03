@@ -1,7 +1,8 @@
 import type { RequestHandler } from './$types';
 import { getUserData, putUserData } from '#lib/db/user.js';
-import type { MapConfigFavourite } from '#lib/db/db-types.js';
+import type { MapConfigFavourite, UserData } from '#lib/db/db-types.js';
 import { sanitizeMapConfigForStorage } from '#lib/utils/map-config-sanitizer.js';
+import type { Cookies } from '@sveltejs/kit';
 
 const MAX_SAVED_MAPS = 25;
 const MAX_ITEM_SIZE_BYTES = 300000; // 300KB (conservative safety margin below 400KB DynamoDB limit)
@@ -128,6 +129,83 @@ function createUniqueMapName(baseName: string, existingMaps: MapConfigFavourite[
   return candidate;
 }
 
+type MapConfigMutationPayload = {
+  action?: 'createMapConfig' | 'updateMapConfig' | 'deleteMapConfig';
+  id?: string;
+  name?: string;
+  config?: unknown;
+};
+
+/** Validates, builds, and persists a saved-map create or update request. */
+async function saveMapConfig(payload: MapConfigMutationPayload, userData: UserData, cookies: Cookies): Promise<Response> {
+  const mapConfigs = userData.mapConfigs ?? [];
+  const updating = payload.action === 'updateMapConfig';
+  const id = sanitizeId(payload.id);
+
+  if (updating && !id) {
+    return Response.json({ ok: false, mapConfigs, reason: 'invalid-id' }, { status: 400 });
+  }
+  if (updating && !mapConfigs.some((mapItem) => mapItem.id === id)) {
+    return Response.json({ ok: false, mapConfigs, reason: 'not-found' }, { status: 404 });
+  }
+  if (!updating && mapConfigs.length >= MAX_SAVED_MAPS) {
+    return Response.json({ ok: false, mapConfigs, reason: 'limit' }, { status: 400 });
+  }
+
+  const sanitizedConfig = sanitizeUploadedMapConfig(payload.config);
+  if (!sanitizedConfig) {
+    return Response.json({ ok: false, mapConfigs, reason: 'invalid-config' }, { status: 400 });
+  }
+
+  const nextMapConfigs: MapConfigFavourite[] = updating
+    ? mapConfigs.map((mapItem) => (mapItem.id === id ? { ...mapItem, config: sanitizedConfig } : mapItem))
+    : [
+        ...mapConfigs,
+        {
+          id: crypto.randomUUID(),
+          name: createUniqueMapName(sanitizeName(payload.name) || 'My Map', mapConfigs),
+          config: sanitizedConfig,
+          createdAt: new Date().toISOString(),
+        },
+      ];
+  const nextUserData = { ...userData, mapConfigs: nextMapConfigs, favourites: userData.favourites ?? [] };
+
+  // Map configs share the DynamoDB item with favourites and auth metadata, so measure the full row.
+  const estimatedSize = new TextEncoder().encode(JSON.stringify(nextUserData)).byteLength;
+  if (estimatedSize > MAX_ITEM_SIZE_BYTES) {
+    return Response.json({ ok: false, mapConfigs, reason: 'item-too-large' }, { status: 400 });
+  }
+
+  const result = await putUserData(nextUserData, cookies);
+  if (!result.ok) {
+    console.error('Failed to persist map config.', { action: payload.action, mapCount: nextMapConfigs.length });
+    return Response.json({ ok: false, mapConfigs, reason: 'persist-failed' }, { status: 500 });
+  }
+
+  return Response.json({ ok: true, mapConfigs: nextMapConfigs, mapConfigId: updating ? id : nextMapConfigs[mapConfigs.length].id });
+}
+
+/** Deletes a saved map while preserving the user's datasets and other profile data. */
+async function deleteMapConfig(idValue: unknown, userData: UserData, cookies: Cookies): Promise<Response> {
+  const mapConfigs = userData.mapConfigs ?? [];
+  const id = sanitizeId(idValue);
+  if (!id) {
+    return Response.json({ ok: false, mapConfigs, reason: 'invalid-id' }, { status: 400 });
+  }
+
+  const nextUserData = {
+    ...userData,
+    mapConfigs: mapConfigs.filter((mapItem) => mapItem.id !== id),
+    favourites: userData.favourites ?? [],
+  };
+  const result = await putUserData(nextUserData, cookies);
+  if (!result.ok) {
+    return Response.json({ ok: false, mapConfigs, reason: 'persist-failed' }, { status: 500 });
+  }
+
+  return Response.json({ ok: true, mapConfigs: nextUserData.mapConfigs });
+}
+
 /**
  * Adds a record id to the signed-in user's favourites.
  *
@@ -215,76 +293,15 @@ export const PATCH: RequestHandler = async ({ cookies, request }): Promise<Respo
     return Response.json({ ok: false, reason: 'unavailable' }, { status: 503 });
   }
 
-  const payload = (await request.json()) as {
-    action?: 'createMapConfig' | 'updateMapConfig' | 'deleteMapConfig';
-    id?: string;
-    name?: string;
-    config?: unknown;
-  };
-
+  const payload = (await request.json()) as MapConfigMutationPayload;
   const mapConfigs = userData.Item.mapConfigs ?? [];
 
   if (payload.action === 'createMapConfig' || payload.action === 'updateMapConfig') {
-    const updating = payload.action === 'updateMapConfig';
-    const id = sanitizeId(payload.id);
-    if (updating && !id) {
-      return Response.json({ ok: false, mapConfigs, reason: 'invalid-id' }, { status: 400 });
-    }
-    if (updating && !mapConfigs.some((mapItem) => mapItem.id === id)) {
-      return Response.json({ ok: false, mapConfigs, reason: 'not-found' }, { status: 404 });
-    }
-    if (!updating && mapConfigs.length >= MAX_SAVED_MAPS) {
-      return Response.json({ ok: false, mapConfigs, reason: 'limit' }, { status: 400 });
-    }
-
-    const sanitizedConfig = sanitizeUploadedMapConfig(payload.config);
-    if (!sanitizedConfig) {
-      return Response.json({ ok: false, mapConfigs, reason: 'invalid-config' }, { status: 400 });
-    }
-
-    const nextMapConfigs: MapConfigFavourite[] = updating
-      ? mapConfigs.map((mapItem) => (mapItem.id === id ? { ...mapItem, config: sanitizedConfig } : mapItem))
-      : [
-          ...mapConfigs,
-          {
-            id: crypto.randomUUID(),
-            name: createUniqueMapName(sanitizeName(payload.name) || 'My Map', mapConfigs),
-            config: sanitizedConfig,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-    const nextUserData = { ...userData.Item, mapConfigs: nextMapConfigs, favourites: userData.Item.favourites ?? [] };
-    const estimatedSize = new TextEncoder().encode(JSON.stringify(nextUserData)).byteLength;
-
-    if (estimatedSize > MAX_ITEM_SIZE_BYTES) {
-      return Response.json({ ok: false, mapConfigs, reason: 'item-too-large' }, { status: 400 });
-    }
-
-    const result = await putUserData(nextUserData, cookies);
-    if (!result.ok) {
-      console.error('Failed to persist map config.', { action: payload.action, mapCount: nextMapConfigs.length });
-      return Response.json({ ok: false, mapConfigs, reason: 'persist-failed' }, { status: 500 });
-    }
-
-    return Response.json({ ok: true, mapConfigs: nextMapConfigs, mapConfigId: updating ? id : nextMapConfigs[mapConfigs.length].id });
+    return saveMapConfig(payload, userData.Item, cookies);
   }
 
   if (payload.action === 'deleteMapConfig') {
-    const id = sanitizeId(payload.id);
-    if (!id) {
-      return Response.json({ ok: false, mapConfigs, reason: 'invalid-id' }, { status: 400 });
-    }
-
-    userData.Item.mapConfigs = mapConfigs.filter((mapItem) => mapItem.id !== id);
-    // Keep datasets list intact while mutating saved-map entries.
-    userData.Item.favourites = userData.Item.favourites ?? [];
-
-    const result = await putUserData(userData.Item, cookies);
-    if (!result.ok) {
-      return Response.json({ ok: false, mapConfigs, reason: 'persist-failed' }, { status: 500 });
-    }
-
-    return Response.json({ ok: result.ok, mapConfigs: userData.Item.mapConfigs });
+    return deleteMapConfig(payload.id, userData.Item, cookies);
   }
 
   return Response.json({ ok: false, mapConfigs, reason: 'invalid-action' }, { status: 400 });

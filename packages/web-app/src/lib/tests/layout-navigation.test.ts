@@ -41,4 +41,22 @@ describe('layout favourites navigation', () => {
       );
     }
   });
+
+  it('marks the destination layout as session-expired after the logout redirect', async () => {
+    vi.mocked(getUserData).mockResolvedValue({
+      status: 'anonymous',
+      Item: { uuid: null, favourites: [], mapConfigs: [] },
+    });
+    const cookies = { get: vi.fn(), set: vi.fn(), delete: vi.fn() };
+    const event = {
+      params: { lang: 'en-ca' },
+      cookies,
+      depends: vi.fn(),
+      url: new URL('https://example.test/en-ca/map-browser?sessionExpired=1'),
+    } as unknown as Parameters<typeof load>[0];
+
+    const result = await load(event);
+
+    expect(result?.sessionExpired).toBe(true);
+  });
 });

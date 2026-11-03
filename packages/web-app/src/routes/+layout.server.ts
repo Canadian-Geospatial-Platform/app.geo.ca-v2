@@ -70,7 +70,7 @@ export const load: LayoutServerLoad = async ({ params, cookies, depends, url }) 
   }
 
   // Consume the flash cookie set by a previous request so the banner only shows once.
-  const sessionExpired = cookies.get('session_expired') === '1';
+  const sessionExpired = cookies.get('session_expired') === '1' || url.searchParams.get('sessionExpired') === '1';
   if (sessionExpired) {
     cookies.delete('session_expired', { path: '/', ...getCookieDomainOptions() });
   }

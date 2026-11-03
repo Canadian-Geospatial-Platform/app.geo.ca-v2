@@ -163,6 +163,7 @@
   /****************** Favourites Resources ******************/
   let favouriteRecordList: string[] = $state(page.data?.userData?.favourites ? [...page.data.userData.favourites] : []);
 
+  // TODO: Cosider adding a fetch class to handle various fetch requests and responses.
   /**
    * Handles the click event for the favourite button.
    *

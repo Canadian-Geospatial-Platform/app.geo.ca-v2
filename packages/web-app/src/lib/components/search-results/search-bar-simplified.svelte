@@ -57,7 +57,7 @@
     query.set('page-number', '0');
 
     let opts = {
-      replaceState: true,
+      replace: true,
       reset: false,
     };
     // This component is used outside the search page, so it must navigate to map-browser explicitly.

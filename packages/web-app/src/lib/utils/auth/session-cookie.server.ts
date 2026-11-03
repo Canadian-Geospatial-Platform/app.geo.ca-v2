@@ -1,11 +1,10 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import type { Cookies } from '@sveltejs/kit';
+import { SESSION_INACTIVITY_SECONDS } from '#lib/config/constants.js';
 import { getCookieDomainOptions, isSecureCookieEnvironment } from '#lib/utils/auth/cookie-policy.server.js';
 
 /** Name of the signed, server-owned authentication session cookie. */
 export const SESSION_COOKIE_NAME = 'auth_session';
-/** Maximum permitted idle time before an authentication session expires, in seconds. */
-export const SESSION_INACTIVITY_SECONDS = 60 * 60;
 /** Maximum lifetime of an authentication session, regardless of activity, in seconds. */
 export const SESSION_MAXIMUM_SECONDS = 12 * 60 * 60;
 

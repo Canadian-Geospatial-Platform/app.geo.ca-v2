@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import adapter from 'svelte-kit-sst';
 
+// TODO: Remove this compatibility wrapper once svelte-kit-sst updates its generated handler for SvelteKit 3.
 /**
  * SvelteKit 3 removed node/polyfills; the SST Lambda runtime provides these APIs natively.
  * Keep this compatibility wrapper until svelte-kit-sst updates its generated handler.

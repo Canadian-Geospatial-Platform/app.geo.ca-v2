@@ -1,7 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { SESSION_INACTIVITY_SECONDS } from '#lib/config/constants.js';
 import {
-  SESSION_INACTIVITY_SECONDS,
   SESSION_MAXIMUM_SECONDS,
   createSessionCookie,
   touchSessionCookie,
