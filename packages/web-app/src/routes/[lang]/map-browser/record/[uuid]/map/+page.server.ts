@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
-import { getRecord } from '$lib/db/record';
-import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
+import { getRecord } from '#lib/db/record.js';
+import { normalizeCoordinates } from '#lib/utils/normalize-coordinates.js';
 
 type FeatureLike = {
   properties?: { title?: string };
@@ -26,6 +26,12 @@ function getFirstFeature(features: unknown): FeatureLike | null {
   return first as FeatureLike;
 }
 
+/**
+ * Loads the record title and coordinates used by the map page.
+ *
+ * @param event - SvelteKit load event containing the record UUID, language, and URL.
+ * @returns Localized breadcrumb data, the record UUID, and map coordinates when available.
+ */
 export const load: PageServerLoad = async ({ params, url }) => {
   let title = '';
   let coordinates: number[][] | null = null;

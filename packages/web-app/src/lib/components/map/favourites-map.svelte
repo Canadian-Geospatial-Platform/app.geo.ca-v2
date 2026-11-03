@@ -8,17 +8,25 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { onMount } from 'svelte';
-  import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
+  import { loadCGPVScript } from '#lib/components/map/loadCGPVScript.js';
   import type { GeoviewConfig } from './map-types';
+  import { addDatasetToMap, type DatasetAdditionResult } from '#lib/utils/map-dataset.js';
 
   interface Props {
     layerIds: string[];
+    mapConfig?: Record<string, unknown> | null;
+    /** Dataset to add to the live saved map once the map is ready. */
+    addDatasetId?: string | null;
+    /** Reports a completed addition or duplicate, never an intermediate loading state. */
+    onDatasetAdded?: (result: DatasetAdditionResult) => void;
+    /** Lets the parent display map initialization or dataset-addition failures. */
+    onLoadError?: () => void;
   }
 
-  let { layerIds }: Props = $props();
+  let { layerIds, mapConfig = null, addDatasetId = null, onDatasetAdded, onLoadError }: Props = $props();
 
   let mapId = 'map-favourites-resources';
-  let mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
+  let mapLang = page.data.lang.split('-')[0] as 'en' | 'fr';
 
   /***************** Map config *****************/
   const interaction = 'dynamic';
@@ -34,7 +42,6 @@
   const components = ['north-arrow', 'overview-map'];
   const appBarTabs = ['geolocator', 'legend', 'details', 'export'];
   const footerBarTabs = ['layers', 'data-table', 'time-slider', 'geochart'];
-  const footerBarCollapsed = true;
 
   let config: GeoviewConfig = $state({
     map: {
@@ -60,11 +67,26 @@
       tabs: {
         core: footerBarTabs,
       },
-      collapsed: footerBarCollapsed,
     },
   });
 
   let sConfig = $derived(JSON.stringify(config));
+
+  /**
+   * Returns a map-state config generated from the current map viewer.
+   */
+  export function getMapConfigFromCurrentState(): Record<string, unknown> | null {
+    try {
+      if (!cgpv.api.hasMapViewer(mapId)) {
+        return null;
+      }
+
+      return cgpv.api.getMapViewer(mapId).createMapConfigFromMapState();
+    } catch (error) {
+      console.error('Error while creating map config from map state:', error);
+      return null;
+    }
+  }
 
   /**
    * Destroys the map viewer instance.
@@ -79,29 +101,62 @@
     }
   }
 
-  onMount(async (): Promise<void> => {
-    // The loadCGPVScript function ensures the external cgpv library is fully loaded before
-    // trying to use the geocore code, otherwise it sometimes fails
-    await loadCGPVScript();
+  onMount(() => {
+    let active = true;
+    const controller = new AbortController();
+    /**
+     * Initializes the viewer and applies any pending addition to a loaded saved map.
+     * Ignores late results after unmount so they cannot update the previous page.
+     */
+    async function initialize(): Promise<void> {
+      // The loadCGPVScript function ensures the external cgpv library is fully loaded before
+      // trying to use the geocore code, otherwise it sometimes fails
+      try {
+        await loadCGPVScript();
+        if (!active) return;
+        // Destroy the old map if it exists. This ensures that when the map is toggled
+        // on and off multiple time, it always has visible layers.
+        if (cgpv.api.hasMapViewer(mapId)) {
+          await cgpv.api.deleteMapViewer(mapId, false);
+        }
+        if (!active) return;
 
-    try {
-      // Destroy the old map if it exists. This ensures that when the map is toggled
-      // on and off multiple time, it always has visible layers.
-      if (cgpv.api.hasMapViewer(mapId)) {
-        await cgpv.api.deleteMapViewer(mapId, false);
+        if (mapConfig) {
+          // Build the map directly from a saved map config.
+          await cgpv.api.createMapFromConfig(mapId, JSON.stringify(mapConfig));
+          if (addDatasetId && active) {
+            const result = await addDatasetToMap(cgpv.api.getMapViewer(mapId), addDatasetId, controller.signal);
+            if (active) onDatasetAdded?.(result);
+          }
+        } else {
+          // Build the map from the default config.
+          await cgpv.api.createMapFromConfig(mapId, sConfig);
+          if (!active) return;
+
+          // Add map layers for each selected resource id.
+          layerIds.forEach((layer: string) => {
+            cgpv.api.getMapViewer(mapId).layer.addGeoviewLayerByGeoCoreUUID(layer);
+          });
+        }
+      } catch (error) {
+        if (!active) return;
+        console.error(error);
+        onLoadError?.();
       }
-
-      // Build the map from the config
-      await cgpv.api.createMapFromConfig(mapId, sConfig);
-
-      // Add map layers for each id
-      layerIds.forEach((layer: string) => {
-        cgpv.api.getMapViewer(mapId).layer.addGeoviewLayerByGeoCoreUUID(layer);
-      });
-    } catch (error) {
-      console.error(error);
     }
+    void initialize();
+    return () => {
+      active = false;
+      // Stop an addition still waiting on map readiness; an in-flight GeoView request is not cancellable here.
+      controller.abort();
+    };
   });
 </script>
 
-<div id={mapId} class="bg-blue-500/5 w-full aspect-video" data-config={sConfig} data-lang={mapLang} style="border: gray 1px solid;"></div>
+<div
+  id={mapId}
+  class="bg-blue-500/5 w-full aspect-video surface-shadow"
+  data-config={sConfig}
+  data-lang={mapLang}
+  style="border: gray 1px solid;"
+></div>

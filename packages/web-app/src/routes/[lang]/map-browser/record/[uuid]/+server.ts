@@ -1,8 +1,5 @@
-import type { GeospatialRecord } from '$lib/db/db-types.js';
-import { json } from '@sveltejs/kit';
+import type { GeospatialRecord } from '#lib/db/db-types.js';
 import type { RequestEvent } from '@sveltejs/kit';
-
-import { GEOCORE_API_DOMAIN } from '$env/static/private';
 
 /**
  * Handles POST requests to fetch records by IDs.
@@ -14,12 +11,12 @@ export async function POST({ request }: RequestEvent): Promise<Response> {
   const { ids, lang } = await request.json();
 
   if (!Array.isArray(ids)) {
-    return json({ error: 'Invalid IDs' }, { status: 400 });
+    return Response.json({ error: 'Invalid IDs' }, { status: 400 });
   }
 
   const records: GeospatialRecord[] = await getRecordsByIds(ids, lang);
 
-  return json(records);
+  return Response.json(records);
 }
 
 /**
@@ -30,7 +27,7 @@ export async function POST({ request }: RequestEvent): Promise<Response> {
  * @returns A promise that resolves to the fetch response.
  */
 function getRecord(id: string, lang: string): Promise<Response> {
-  const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
+  const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/id/v2`);
   const params = {
     id: id,
     lang: lang.split('-')[0],

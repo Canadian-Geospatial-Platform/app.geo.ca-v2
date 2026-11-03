@@ -1,4 +1,4 @@
-import type { GeospatialRecord } from '$lib/db/db-types';
+import type { GeospatialRecord } from '#lib/db/db-types.js';
 
 type SemanticFeature = {
   properties: GeospatialRecord;

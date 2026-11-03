@@ -18,7 +18,7 @@
     {#each keywords as keyword, index (`${index}-${keyword}`)}
       <a
         class="font-custom-style-body-2 block sm:inline"
-        href={resolve(`/${data.lang}/map-browser?search-terms=${encodeURIComponent(keyword.toLowerCase())}`)}
+        href={resolve(`/[lang]/map-browser?search-terms=${encodeURIComponent(keyword.toLowerCase())}`, { lang: data.lang })}
       >
         {keyword.toLowerCase()}
       </a><span class="hidden sm:inline">{index < keywords.length - 1 ? ', ' : ''}</span>

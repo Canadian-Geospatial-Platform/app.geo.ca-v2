@@ -25,7 +25,6 @@
   "organization": "Organisation",
   "relationInstructions": "Choisissez le type de requête spatiale à exécuter. 'Intersecte' retourne toutes les ressources dont la boîte englobante est au moins partiellement à l’intérieur de la zone de recherche. 'À l’intérieur' retourne toutes les ressources dont la boîte englobante est entièrement à l’intérieur de la zone de recherche.",
   "removeFromFavourites": "Supprimer des favoris",
-  "saveSearchParams": "Sauvegarder les paramètres de recherche",
   "search": "Recherche",
   "searchDatasets": "Rechercher des ensembles de données",
   "searchProducts": "Recherche de produits",

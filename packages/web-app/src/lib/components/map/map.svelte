@@ -8,9 +8,9 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { onMount } from 'svelte';
-  import { loadCGPVScript } from '$lib/components/map/loadCGPVScript';
-  import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
-  import type { GeoviewConfig, MapTypes } from '$lib/components/map/map-types';
+  import { loadCGPVScript } from '#lib/components/map/loadCGPVScript.js';
+  import { normalizeCoordinates } from '#lib/utils/normalize-coordinates.js';
+  import type { GeoviewConfig, MapTypes } from '#lib/components/map/map-types.js';
 
   interface Props {
     coordinates: number[][] | null | undefined;
@@ -37,7 +37,7 @@
   }: Props = $props();
 
   let mapId = $derived(`map-${mapType}-${id}`);
-  let mapLang = page.data.lang === 'fr-ca' ? 'fr' : 'en';
+  let mapLang = page.data.lang.split('-')[0] as 'en' | 'fr';
 
   // TODO: extract to use one config for this and favourites map.
   let config: GeoviewConfig = $derived.by(() => ({

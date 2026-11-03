@@ -1,7 +1,4 @@
-import type { DistributionOption, GeospatialRecord } from '$lib/db/db-types';
-import { json } from '@sveltejs/kit';
-
-import { GEOCORE_API_DOMAIN } from '$env/static/private';
+import type { DistributionOption, GeospatialRecord } from '#lib/db/db-types.js';
 
 interface LayerResult {
   layers: Array<{ id: string }>;
@@ -10,14 +7,14 @@ interface LayerResult {
 /**
  * Handles POST requests to fetch records by IDs and check for map layers.
  *
- * @param request - The request object.
+ * @param event - SvelteKit request event.
  * @returns A promise that resolves to the record response.
  */
 export async function POST({ request }: { request: Request }): Promise<Response> {
   const { ids, lang } = await request.json();
 
   if (!Array.isArray(ids)) {
-    return json({ error: 'Invalid IDs' }, { status: 400 });
+    return Response.json({ error: 'Invalid IDs' }, { status: 400 });
   }
 
   const records = await getRecordsByIds(ids, lang, request.headers.get('x-forwarded-for') || '');
@@ -39,10 +36,11 @@ export async function POST({ request }: { request: Request }): Promise<Response>
     }
   }
 
-  return json(records.filter((record) => record !== undefined));
+  return Response.json(records.filter((record) => record !== undefined));
 }
 
-/** Gets a record from the GeoCore API.
+/**
+ * Gets a record from the GeoCore API.
  *
  * @param id - The record ID.
  * @param lang - The language code.
@@ -50,7 +48,7 @@ export async function POST({ request }: { request: Request }): Promise<Response>
  * @returns A promise that resolves to the fetch response.
  */
 function getRecord(id: string, lang: string, ip: string): Promise<Response> {
-  const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2`);
+  const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/id/v2`);
   const params = {
     id: id,
     lang: lang.split('-')[0],
@@ -96,7 +94,7 @@ function getFormats(record: GeospatialRecord, lang: string): string[] {
 }
 
 /**
- * Query vcs to check if resources have map layers
+ * Queries VCS to check whether resources have map layers.
  *
  * @param ids - An array of record IDs.
  * @param lang - The language code.
@@ -107,7 +105,7 @@ async function checkForMapLayers(ids: string[], lang: string): Promise<string[]>
   let filteredIds = [];
 
   // Set url search params
-  const url = new URL(`${GEOCORE_API_DOMAIN}/vcs`);
+  const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/vcs`);
   const params = {
     id: ids.join(','),
     lang: langShort,

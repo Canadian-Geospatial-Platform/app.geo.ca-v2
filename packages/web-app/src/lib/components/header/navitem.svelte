@@ -1,19 +1,21 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { onMount } from 'svelte';
-  import { clickOutside } from '$lib/components/component-utils/clickOutside';
-  import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
-  import { LOCALSTORAGE_UPDATED } from '$lib/utils/event-dispatchers/local-storage-changed';
-  import Navdropdown from '$lib/components/header/navdropdown.svelte';
-  import Chevronup from '$lib/components/icons/chevronup.svelte';
-  import Chevrondown from '$lib/components/icons/chevrondown.svelte';
-  import Chevronright from '$lib/components/icons/chevronright.svelte';
-  import Globe from '$lib/components/icons/globe.svelte';
+  import { clickOutside } from '#lib/components/component-utils/clickOutside.js';
+  import { toggleScroll } from '#lib/components/component-utils/toggleScroll.js';
+  import { LOCALSTORAGE_UPDATED } from '#lib/utils/event-dispatchers/local-storage-changed.js';
+  import type { AppLanguage } from '#lib/utils/language.js';
+  import { getLanguageSwitchUrl, pickByLanguage } from '#lib/utils/language.js';
+  import Navdropdown from '#lib/components/header/navdropdown.svelte';
+  import Chevronup from '#lib/components/icons/chevronup.svelte';
+  import Chevrondown from '#lib/components/icons/chevrondown.svelte';
+  import Chevronright from '#lib/components/icons/chevronright.svelte';
+  import Globe from '#lib/components/icons/globe.svelte';
 
   let { linkData, orientation, dropDownClick } = $props();
 
-  const lang = page.data.lang;
-  const homeText = lang === 'fr-ca' ? 'Accueil' : 'Home';
+  const lang = page.data.lang as AppLanguage;
+  const homeText = pickByLanguage(lang, 'Home', 'Accueil');
 
   let localStorageKey = $derived(linkData?.localStorageKey);
   let localStorageValue = $state('');
@@ -104,10 +106,8 @@
    * @param lang - The language to toggle to.
    * @returns The new URL.
    */
-  function toggleLanguage(lang: string): string {
-    let currentUrl = `${page.url.origin}${page.url.pathname}`;
-    let url = lang === 'fr-ca' ? currentUrl.replace('en-ca', 'fr-ca') : currentUrl.replace('fr-ca', 'en-ca');
-    return url;
+  function toggleLanguage(lang: AppLanguage): string {
+    return getLanguageSwitchUrl(new URL(page.url.href), lang);
   }
 
   onMount((): (() => void) => {
@@ -124,16 +124,16 @@
 
 <div class={['h-full', active && orientation === 'horizontal' && 'active']}>
   {#if linkData?.options && orientation === 'horizontal'}
-    <button class="nav-link" use:clickOutside={() => handleClickOutside(orientation)} onclick={() => handleDropdownClick(orientation)}>
-      {linkData.title}
-      {#if chevronDown}
-        <Chevrondown classes="mt-1 ml-1 h-4 w-4 text-custom-16" />
-      {:else}
-        <Chevronup classes="mt-1 ml-1 h-4 w-4 text-custom-16" />
-      {/if}
-    </button>
+    <div class="relative inline-flex h-full">
+      <button class="nav-link" use:clickOutside={() => handleClickOutside(orientation)} onclick={() => handleDropdownClick(orientation)}>
+        {linkData.title}
+        {#if chevronDown}
+          <Chevrondown classes="mt-1 ml-1 h-4 w-4 text-custom-16" />
+        {:else}
+          <Chevronup classes="mt-1 ml-1 h-4 w-4 text-custom-16" />
+        {/if}
+      </button>
 
-    <div class="relative">
       <Navdropdown options={linkData['options']} bind:active {orientation} />
     </div>
     <div class={[active && 'mask']}></div>
@@ -151,12 +151,12 @@
       </div>
     </button>
   {:else if linkData?.title && linkData?.title === 'English'}
-    <a class="nav-link" href={toggleLanguage('en-ca')} data-sveltekit-reload rel="external">
+    <a class={['nav-link', orientation === 'horizontal' && 'mr-8']} href={toggleLanguage('en-ca')} data-sveltekit-reload rel="external">
       <Globe classes="h-[1.25rem] w-[1.25rem] mr-1" />
       {linkData.title}
     </a>
   {:else if linkData?.title && linkData?.title === 'Français'}
-    <a class="nav-link" href={toggleLanguage('fr-ca')} data-sveltekit-reload rel="external">
+    <a class={['nav-link', orientation === 'horizontal' && 'mr-8']} href={toggleLanguage('fr-ca')} data-sveltekit-reload rel="external">
       <Globe classes="h-[1.25rem] w-[1.25rem] mr-1" />
       {linkData.title}
     </a>
@@ -169,7 +169,7 @@
   {:else if linkData?.href}
     <div class="flex relative h-full">
       <a
-        class="nav-link"
+        class={['nav-link', linkData?.counter && localStorageKey && orientation === 'horizontal' && 'pr-[0.625rem]']}
         href={linkData['href']}
         rel="external"
         onclick={() => {
@@ -183,8 +183,10 @@
       {#if linkData?.counter && localStorageKey}
         <div
           class:hidden={!localStorageListLength || localStorageListLength === 0}
-          class="align-middle absolute top-3.5 right-0 lg:-right-5 bg-red-700 rounded-full min-w-[1.625rem] h-[1.625rem]
-          p-1 text-center text-custom-1 font-open-sans text-xs font-normal border-2 border-custom-1"
+          class={[
+            'align-middle absolute top-3.5 bg-red-700 rounded-full min-w-[1.625rem] h-[1.625rem] p-1 text-center text-custom-1 font-open-sans text-xs font-normal border-2 border-custom-1',
+            orientation === 'horizontal' ? 'right-0 lg:-right-5' : 'right-1',
+          ]}
         >
           {localStorageListLength}
         </div>
@@ -199,18 +201,23 @@
     @apply flex;
     @apply h-full;
     @apply items-center;
+    @apply border-0;
+    @apply rounded-none;
+    @apply bg-transparent;
+    @apply outline-none;
+    @apply cursor-pointer;
   }
   .active {
     @apply shadow-[0_0.125rem_0.188rem_white,0_0.188rem_white];
-    @apply border-b;
   }
 
   .mask {
-    @apply absolute;
+    @apply fixed;
     @apply top-20;
-    @apply right-0;
+    @apply left-0;
     @apply w-full;
     @apply h-screen;
     @apply bg-custom-12;
+    @apply z-10;
   }
 </style>

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import CheckboxCustomized from '$lib/components/checkbox-customized/checkbox-customized.svelte';
-  import DateRange from '$lib/components/search-results/filters/date-range.svelte';
-  import type { BBox, DateRangeItem, Filter } from '$lib/components/search-results/filters/filter-types.d.ts';
+  import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
+  import DateRange from '#lib/components/search-results/filters/date-range.svelte';
+  import type { BBox, DateRangeItem, Filter } from '#lib/components/search-results/filters/filter-types.d.ts';
   import BoundingBox from './bounding-box.svelte';
 
   interface Props {

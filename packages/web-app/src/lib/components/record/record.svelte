@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page, navigating } from '$app/state';
-  import MicroData from '$lib/components/microdata/microdata.svelte';
-  import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
+  import MicroData from '#lib/components/microdata/microdata.svelte';
+  import LoadingMask from '#lib/components/loading-mask/loading-mask.svelte';
   import Description from './description.svelte';
   import Metadata from './metadata.svelte';
   import MapContainer from './map-container.svelte';

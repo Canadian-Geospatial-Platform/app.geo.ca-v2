@@ -131,23 +131,6 @@
       }
     ]
   },
-  "collections": {
-    "title": "My Collections",
-    "options": [
-      {
-        "links": [
-          {
-            "title": "My Maps",
-            "href": "/en-ca/map-browser"
-          },
-          {
-            "title": "My Searches",
-            "href": "/en-ca/map-browser"
-          }
-        ]
-      }
-    ]
-  },
   "favourites": {
     "title": "Favourites",
     "href": "/en-ca/favourites",

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
+  import SortableTable from '#lib/components/sortable-table/sortable-table.svelte';
 
   type AdvMetadataRow = {
     label: string;

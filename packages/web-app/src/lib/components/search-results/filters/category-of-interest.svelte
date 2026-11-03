@@ -1,9 +1,9 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { tempCategoryOfInterest, updateTempCategoryOfInterest } from '$lib/components/search-results/store';
-  import SelectCustomized from '$lib/components/select-customized/select-customized.svelte';
-  import type { FilterItem } from '$lib/components/search-results/filters/filter-types.d.ts';
-  import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
+  import { tempCategoryOfInterest, updateTempCategoryOfInterest } from '#lib/components/search-results/store.js';
+  import SelectCustomized from '#lib/components/select-customized/select-customized.svelte';
+  import type { FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
+  import type { SelectOption } from '#lib/components/select-customized/selected-types.d.ts';
 
   // Note: the list of categories are based on the Topic Categories from ISO 19115-1
   // https://icsm-au.github.io/metadata-working-group/defs/TopicCategory

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import TabCard from '$lib/components/tab-card/tab-card.svelte';
+  import TabCard from '#lib/components/tab-card/tab-card.svelte';
   import DataResources from './data-resources.svelte';
   import AdvancedMetadata from './advanced-metadata.svelte';
   import Contact from './contact.svelte';
   import RelatedProducts from './related-products.svelte';
-  import type { SelectOption } from '$lib/components/select-customized/selected-types.d.ts';
+  import type { SelectOption } from '#lib/components/select-customized/selected-types.d.ts';
 
   /******************* Translations *******************/
   const translations = page.data.t;

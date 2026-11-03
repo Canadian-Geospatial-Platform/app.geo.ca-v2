@@ -1,13 +1,17 @@
 <script lang="ts">
+  import { afterNavigate, goto } from '$app/navigation';
   import { page, updated } from '$app/state';
   import { onMount } from 'svelte';
   import '../../app.css';
-  import Header from '$lib/components/header/header.svelte';
-  import Footer from '$lib/components/footer/footer.svelte';
-  import Feedback from '$lib/components/feedback/feedback.svelte';
-  import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
-  import LeavingNotice from '$lib/components/leaving-notice/leaving-notice.svelte';
-  import GoogleTag from '$lib/components/google-tag/google-tag.svelte';
+  import Header from '#lib/components/header/header.svelte';
+  import Footer from '#lib/components/footer/footer.svelte';
+  import Feedback from '#lib/components/feedback/feedback.svelte';
+  import Breadcrumbs from '#lib/components/breadcrumbs/breadcrumbs.svelte';
+  import LeavingNotice from '#lib/components/leaving-notice/leaving-notice.svelte';
+  import GoogleTag from '#lib/components/google-tag/google-tag.svelte';
+  import AppDialog from '#lib/components/dialog/app-dialog.svelte';
+  import { SESSION_INACTIVITY_SECONDS, SESSION_WARNING_SECONDS } from '#lib/config/constants.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
 
   interface Props {
     children?: import('svelte').Snippet;
@@ -15,30 +19,150 @@
 
   let { children }: Props = $props();
   let showLeavingSitePopup = $state(false);
-  const lang = page.data.lang?.slice(0, 2) ?? 'en';
+  let showSessionWarning = $state(false);
+  let sessionSecondsRemaining = $state(0);
+  let sessionExpiresAt = 0;
+  let lastUserActivityAt = 0;
+  let lastSessionTouchAt = 0;
+  let sessionRefreshPending = false;
+  let sessionLayoutActive = true;
+  let sessionLogoutPending = false;
+  const appLang = getAppLanguage(page.data.lang);
+  const lang = appLang.slice(0, 2);
+
+  function endExpiredSession(): void {
+    if (!sessionLayoutActive || sessionLogoutPending) return;
+    sessionLogoutPending = true;
+    showSessionWarning = false;
+    sessionExpiresAt = 0;
+    window.location.replace(`/${appLang}/sign-in/logout?reason=session-expired`);
+  }
+
+  // The browser never receives the refresh token; the server reads the HTTP-only cookie.
+  /**
+   * Refreshes the server-managed session or sends the user to logout if it has expired.
+   */
+  async function staySignedIn(): Promise<void> {
+    if (sessionRefreshPending || sessionLogoutPending) return;
+    sessionRefreshPending = true;
+    try {
+      const response = await fetch('/api/session', { method: 'POST' });
+      if (!sessionLayoutActive || sessionLogoutPending) return;
+      if (!response.ok) {
+        endExpiredSession();
+        return;
+      }
+      const data = (await response.json()) as { expiresAt?: number };
+      sessionExpiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : 0;
+      lastUserActivityAt = Date.now();
+      lastSessionTouchAt = lastUserActivityAt;
+      showSessionWarning = false;
+    } finally {
+      sessionRefreshPending = false;
+    }
+  }
 
   // Set the language of the page. This needs to be done using onMount to
   // ensure it is only executed after the <html> element is present in the DOM.
   // Assigning the language using <svelte:head> instead sometimes caused errors
   onMount(() => {
+    if (page.url.searchParams.get('sessionExpired') === '1') {
+      const cleanUrl = new URL(page.url.href);
+      cleanUrl.searchParams.delete('sessionExpired');
+      void goto(cleanUrl, { state: page.state, shallow: true, replace: true });
+    }
+
+    let previousSignedIn = Boolean(page.data.signedIn);
+    lastUserActivityAt = Date.now();
+    lastSessionTouchAt = lastUserActivityAt;
     document.documentElement.lang = lang;
 
-    /**********************************************************************/
-    //TODO: Find a better solution than this monkey-patch hack. We may need to create a ticket with geoview for a fix.
-    //
-    //   Some geoview components use the scrollIntoView method when buttons in the side-bar
-    //   or footer are clicked. In app v2, this causes the top of maps to scroll behind the
-    //   header bar, causing important elements, like the search bar, to be obstructed.
-    //   As a temp fix, we can redefine the default Element.prototype.scrollIntoView to block
-    //   the scroll and issue a warning whenever the scroll is blocked.
-    //   We can save a copy of the old Element.prototype.scrollIntoView first, just in case
-    //   we need it for something else later.
-    // const originalScrollIntoView = Element.prototype.scrollIntoView;
+    let sessionTimer: ReturnType<typeof setInterval> | undefined;
+    let sessionStatusPending = false;
+    const heartbeatIntervalMs = Math.min(30_000, (SESSION_INACTIVITY_SECONDS * 1000) / 3);
+    const updateSessionWarning = (): void => {
+      if (!page.data.signedIn) {
+        showSessionWarning = false;
+        return;
+      }
 
-    Element.prototype.scrollIntoView = function () {
-      console.warn('Blocked scrollIntoView on', this);
+      const now = Date.now();
+      const idleSeconds = (now - lastUserActivityAt) / 1000;
+      if (idleSeconds > SESSION_INACTIVITY_SECONDS) {
+        endExpiredSession();
+        return;
+      }
+
+      const idleSecondsRemaining = Math.ceil(SESSION_INACTIVITY_SECONDS - idleSeconds);
+      const tokenSecondsRemaining = sessionExpiresAt ? Math.ceil((sessionExpiresAt - now) / 1000) : Number.POSITIVE_INFINITY;
+      if (tokenSecondsRemaining <= 0) {
+        endExpiredSession();
+        return;
+      }
+
+      sessionSecondsRemaining = Math.min(idleSecondsRemaining, tokenSecondsRemaining);
+      showSessionWarning = idleSecondsRemaining <= SESSION_WARNING_SECONDS || tokenSecondsRemaining <= 300;
     };
-    /************************ Hack Ends Here ******************************/
+
+    const loadSessionExpiry = async (): Promise<void> => {
+      if (!page.data.signedIn || sessionStatusPending || sessionRefreshPending || sessionLogoutPending) return;
+      sessionStatusPending = true;
+      lastSessionTouchAt = Date.now();
+      try {
+        const response = await fetch('/api/session');
+        if (!sessionLayoutActive || sessionLogoutPending) return;
+        if (response.ok) {
+          const data = (await response.json()) as { expiresAt?: number };
+          sessionExpiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : 0;
+          lastSessionTouchAt = Date.now();
+          updateSessionWarning();
+          if (!sessionTimer) sessionTimer = setInterval(updateSessionWarning, 1000);
+        } else if (response.status === 401) {
+          endExpiredSession();
+        }
+      } finally {
+        sessionStatusPending = false;
+      }
+    };
+
+    const handleUserActivity = (): void => {
+      lastUserActivityAt = Date.now();
+      updateSessionWarning();
+      if (lastUserActivityAt - lastSessionTouchAt >= heartbeatIntervalMs) {
+        void loadSessionExpiry();
+      }
+    };
+    const userActivityEvents = ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart'] as const;
+    for (const eventName of userActivityEvents) {
+      window.addEventListener(eventName, handleUserActivity, { passive: true });
+    }
+    document.addEventListener('visibilitychange', updateSessionWarning);
+
+    void loadSessionExpiry();
+
+    afterNavigate(() => {
+      const currentSignedIn = Boolean(page.data.signedIn);
+
+      // Ensure components switch to their correct signed-out rendering path.
+      if (previousSignedIn && !currentSignedIn) {
+        window.location.reload();
+        return;
+      }
+
+      previousSignedIn = currentSignedIn;
+    });
+
+    const originalScrollIntoView = Element.prototype.scrollIntoView;
+
+    // Keep native scrolling for the app, but block map-internal auto scrolls.
+    Element.prototype.scrollIntoView = function (...args: Parameters<Element['scrollIntoView']>) {
+      const isGeoViewElement = this.closest('[id^="map-"]');
+      if (isGeoViewElement) {
+        return;
+      }
+
+      return originalScrollIntoView.apply(this, args);
+    };
 
     /**
      * When the user clicks on an external link, indicate to the user that they are leaving.
@@ -62,17 +186,46 @@
         setTimeout(() => {
           showLeavingSitePopup = false;
           window.location.href = href;
-        }, 2000);
+        }, 1000);
       }
     }
     window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
+    return () => {
+      sessionLayoutActive = false;
+      if (sessionTimer) clearInterval(sessionTimer);
+      for (const eventName of userActivityEvents) {
+        window.removeEventListener(eventName, handleUserActivity);
+      }
+      document.removeEventListener('visibilitychange', updateSessionWarning);
+      window.removeEventListener('click', handleClick);
+      Element.prototype.scrollIntoView = originalScrollIntoView;
+    };
   });
 </script>
 
 <GoogleTag />
 <Header />
-<main class="flex flex-col content-width bg-custom-1 min-h-screen pt-8" data-sveltekit-reload={updated.current ? '' : 'off'}>
+<main class="flex flex-col content-width bg-custom-1 min-h-screen pt-8" data-sveltekit-reload={updated.current ? '' : 'false'}>
+  {#if page.data.authError}
+    <div
+      class="mb-4 rounded border border-red-700 bg-red-50 px-4 py-3 font-custom-style-body-1 text-red-900"
+      role="alert"
+      aria-live="assertive"
+    >
+      {lang === 'fr'
+        ? 'Impossible de vous connecter pour le moment. Veuillez reessayer. Si le probleme persiste, contactez geoinfo@nrcan-rncan.gc.ca.'
+        : 'Unable to sign you in right now. Please try again. If the issue persists, contact geoinfo@nrcan-rncan.gc.ca.'}
+    </div>
+  {/if}
+  {#if page.data.sessionExpired}
+    <div
+      class="mb-4 rounded border border-yellow-600 bg-yellow-50 px-4 py-3 font-custom-style-body-1 text-yellow-900"
+      role="status"
+      aria-live="polite"
+    >
+      {lang === 'fr' ? 'Votre session a expiré. Vous avez été déconnecté.' : 'You have been signed out because your session expired.'}
+    </div>
+  {/if}
   <Breadcrumbs />
   <div>
     {@render children?.()}
@@ -80,6 +233,41 @@
   <Feedback />
 </main>
 <Footer />
+
+{#if showSessionWarning}
+  <AppDialog
+    open={showSessionWarning}
+    role="alertdialog"
+    labelledby="session-warning-title"
+    describedby="session-warning-description"
+    closeOnBackdrop
+    onclose={() => void staySignedIn()}
+  >
+    <h2 id="session-warning-title" class="mb-3 text-xl font-bold">
+      {lang === 'fr' ? 'Nous allons fermer votre session pour cause d’inactivité' : 'Your session is about to end due to inactivity'}
+    </h2>
+    <p id="session-warning-description" class="mb-2">
+      {lang === 'fr'
+        ? 'Si vous ne prolongez pas votre session, celle-ci sera automatiquement fermée.'
+        : 'If you do not continue your session you will be signed out automatically.'}
+    </p>
+    <p class="mb-4 font-semibold" aria-live="assertive">
+      {lang === 'fr'
+        ? `Temps restant : ${Math.ceil(sessionSecondsRemaining / 60)} minutes`
+        : `Time remaining: ${Math.ceil(sessionSecondsRemaining / 60)} minutes`}
+    </p>
+    <p class="mb-4">{lang === 'fr' ? 'Souhaitez-vous prolonger votre session?' : 'Do you wish to continue your session?'}</p>
+    <div class="flex flex-wrap gap-3">
+      <button class="button-action-dark" onclick={staySignedIn}>
+        {lang === 'fr' ? 'Prolonger la session' : 'Stay signed in'}
+      </button>
+      <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+      <a class="button-action-light" href={`/${appLang}/sign-in/oidc-logout`}>
+        {lang === 'fr' ? 'Se déconnecter' : 'Sign out'}
+      </a>
+    </div>
+  </AppDialog>
+{/if}
 
 {#if showLeavingSitePopup}
   <LeavingNotice />

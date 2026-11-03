@@ -42,12 +42,13 @@
     @apply flex;
     @apply absolute;
     @apply z-20;
-    @apply top-[0.28em];
+    @apply top-full;
+    @apply mt-[0.1875rem];
     @apply left-1/2;
-    @apply -translate-x-1/2;
     @apply p-4;
     @apply space-x-4;
     @apply bg-custom-5;
+    transform: translateX(calc(-50% + var(--dropdown-shift-x, 0px)));
   }
 
   .vertical {

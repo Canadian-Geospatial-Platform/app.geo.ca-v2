@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { onMount } from 'svelte';
-  import SpatioFilterMap from '$lib/components/map/spatio-filter-map.svelte';
+  import SpatioFilterMap from '#lib/components/map/spatio-filter-map.svelte';
   import type { BBox } from './filter-types';
 
   interface Props {
@@ -337,6 +337,8 @@
     @apply relative;
     @apply top-2;
     @apply mr-2;
+    @apply hover:bg-custom-23;
+    @apply hover:border-custom-23;
   }
 
   input[type='radio']:checked {

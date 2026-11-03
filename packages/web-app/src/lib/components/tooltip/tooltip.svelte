@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setPosition } from '$lib/components/tooltip/setPosition';
+  import { setPosition } from '#lib/components/tooltip/setPosition.js';
 
   let { describedById, tooltipText } = $props();
 </script>
@@ -36,8 +36,9 @@
     @apply rounded;
   }
 
-  :global([aria-describedby]:hover),
-  :global([aria-describedby]:focus) {
+  /* Only target tooltip parents; this unlayered rule would otherwise override `fixed` on dialogs and map controls. */
+  :global([aria-describedby]:has(> [role='tooltip']):hover),
+  :global([aria-describedby]:has(> [role='tooltip']):focus) {
     @apply relative;
   }
 

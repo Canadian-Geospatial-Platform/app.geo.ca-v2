@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
-  import Pagination from '$lib/components/pagination/pagination.svelte';
+  import SortableTable from '#lib/components/sortable-table/sortable-table.svelte';
+  import Pagination from '#lib/components/pagination/pagination.svelte';
 
   type RelatedProductsRow = {
     id: string;
@@ -52,7 +52,7 @@
   };
 
   /****************** Pagination ******************/
-  // TODO: move to constants file if used in other places
+  // Keep pagination size local to this view unless reused elsewhere.
   const itemsPerPage = 10;
   const total = $derived(relatedRecords.length ?? 0);
   let currentPage = $state(1);

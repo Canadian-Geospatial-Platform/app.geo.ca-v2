@@ -2,19 +2,18 @@
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
-  import { updateTempCategoryOfInterest } from '$lib/components/search-results/store';
-  import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
-  import { clickOutside } from '$lib/components/component-utils/clickOutside';
-  import Close from '$lib/components/icons/close.svelte';
-  import Search from '$lib/components/icons/search.svelte';
-  import CategoryOfInterest from '$lib/components/search-results/filters/category-of-interest.svelte';
-  import Organizations from '$lib/components/search-results/filters/organizations.svelte';
-  import Types from '$lib/components/search-results/filters/types.svelte';
-  import Themes from '$lib/components/search-results/filters/themes.svelte';
-  import EoCollections from '$lib/components/search-results/filters/eo-collections.svelte';
-  import SourceSystem from '$lib/components/search-results/filters/source-system.svelte';
-  import OtherFilters from '$lib/components/search-results/filters/other-filters.svelte';
-  import SpatioTemporal from '$lib/components/search-results/filters/spatio-temporal.svelte';
+  import { updateTempCategoryOfInterest } from '#lib/components/search-results/store.js';
+  import { toggleScroll } from '#lib/components/component-utils/toggleScroll.js';
+  import AppDialog from '#lib/components/dialog/app-dialog.svelte';
+  import Close from '#lib/components/icons/close.svelte';
+  import CategoryOfInterest from '#lib/components/search-results/filters/category-of-interest.svelte';
+  import Organizations from '#lib/components/search-results/filters/organizations.svelte';
+  import Types from '#lib/components/search-results/filters/types.svelte';
+  import Themes from '#lib/components/search-results/filters/themes.svelte';
+  import EoCollections from '#lib/components/search-results/filters/eo-collections.svelte';
+  import SourceSystem from '#lib/components/search-results/filters/source-system.svelte';
+  import OtherFilters from '#lib/components/search-results/filters/other-filters.svelte';
+  import SpatioTemporal from '#lib/components/search-results/filters/spatio-temporal.svelte';
   import type { BBox, DateRangeItem } from './filters/filter-types';
 
   interface Props {
@@ -45,7 +44,7 @@
   const filterByText = translations?.filterBy ?? 'Filter By';
   const filterDescriptionText = translations?.filterDescription ?? '';
   const clearAllText = translations?.clearAll ?? 'Clear All';
-  const searchText = translations?.search ?? 'Search';
+  const applyText = translations?.apply ?? 'Apply';
 
   let temporalActive = $state(false);
   let spatialActive = $state(false);
@@ -144,21 +143,11 @@
     }
 
     const query = buildFilterParams(filters);
+    closeModal();
+
     // We need to keep the user on the current localized map-browser route.
     // Using resolve('/?...') navigates to the site root and drops the search page context.
-    // eslint-disable-next-line svelte/no-navigation-without-resolve
-    await goto(`${page.url.pathname}?${query.toString()}`, { replaceState: true, keepFocus: true });
-
-    closeModal();
-  }
-
-  /**
-   * Handles click outside event to close the dropdown.
-   */
-  function handleClickOutside(): void {
-    if (active) {
-      closeModal();
-    }
+    await goto(`${page.url.pathname}?${query.toString()}`, { replace: true, reset: false });
   }
 
   /************* utility methods ***************/
@@ -182,7 +171,7 @@
    * @param searchParams - The URL search parameters.
    * @returns The count of active filters.
    */
-  function getFilterCountFromUrl(searchParams: URLSearchParams): number {
+  function getFilterCountFromUrl(searchParams: Pick<URLSearchParams, 'getAll'>): number {
     const filterLists = {
       bboxList: getList(bboxKey, false, searchParams),
       categoryList: getList(categoriesKey, false, searchParams),
@@ -254,10 +243,25 @@
   }
 
   /**
-   * Builds the URL search parameters based on the filters.
+   * Validates that a bounding box contains numeric coordinates.
    *
-   * @param filters - The filters object.
-   * @returns The URL search parameters.
+   * @param bbox - Candidate bounding box.
+   * @returns True when all coordinates are numeric.
+   */
+  function isValidBbox(bbox: BBox | null | undefined): bbox is BBox {
+    if (!bbox) return false;
+    const north = Number(bbox.north);
+    const east = Number(bbox.east);
+    const south = Number(bbox.south);
+    const west = Number(bbox.west);
+    return !isNaN(north) && !isNaN(east) && !isNaN(south) && !isNaN(west);
+  }
+
+  /**
+   * Builds URL search parameters from the current filter selections.
+   *
+   * @param filters - The selected filters.
+   * @returns URL search parameters used for navigation.
    */
   function buildFilterParams(filters: Filters): URLSearchParams {
     const bbox: BBox | null | undefined = filters.bbox;
@@ -289,11 +293,11 @@
     }
 
     // BBOX
-    if (bbox) {
-      query.set('north', bbox.north);
-      query.set('east', bbox.east);
-      query.set('south', bbox.south);
-      query.set('west', bbox.west);
+    if (bbox && isValidBbox(bbox)) {
+      query.set('north', String(bbox.north));
+      query.set('east', String(bbox.east));
+      query.set('south', String(bbox.south));
+      query.set('west', String(bbox.west));
       query.set(bboxKey, `${bbox.south}|${bbox.west}|${bbox.north}|${bbox.east}`);
     } else {
       query.delete('north');
@@ -370,7 +374,7 @@
    * @param searchParams - The URL search parameters.
    * @returns The retrieved value or array of values.
    */
-  function getList(key: string, split: boolean, searchParams: URLSearchParams): string | string[] | null {
+  function getList(key: string, split: boolean, searchParams: Pick<URLSearchParams, 'getAll'>): string | string[] | null {
     const value = searchParams.getAll(key)[0];
     return split && value ? value.split(delineator) : value;
   }
@@ -384,71 +388,55 @@
   }
 </script>
 
-<!-- Note: we need the z-index to be 10020 so that it is above the header and the map loading mask (geoview has this set at 9999) -->
-<div
-  role="dialog"
-  aria-modal="true"
-  tabindex="0"
-  class={['fixed flex justify-center z-10020 inset-0 bg-custom-7/75 overflow-y-scroll hide-scroll pb-4', !active && 'hidden']}
-  onkeydown={(event) => {
-    if (event.key === 'Escape') closeModal();
-  }}
->
-  <form
-    class="md:grid md:grid-cols-6 bg-custom-1 border border-custom-21 w-full md:w-2/3 h-fit md:mt-2 m-5 md:m-0"
-    onsubmit={handleSubmit}
-    use:clickOutside={handleClickOutside}
-  >
-    <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
-      <div>
-        <h1 class="font-custom-style-h1-2">{filterByText}</h1>
-        <p>{filterDescriptionText}</p>
+<AppDialog open={active} wide padded={false} labelledby="filter-modal-title" closeOnBackdrop onclose={closeModal}>
+  <form class="flex flex-col max-h-[calc(100dvh-2rem)]" onsubmit={handleSubmit}>
+    <div class="relative flex-1 overflow-y-auto min-h-0 md:grid md:grid-cols-6 hide-scroll">
+      <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
+        <div>
+          <h2 id="filter-modal-title" class="mb-3 text-xl font-bold">{filterByText}</h2>
+          <p>{filterDescriptionText}</p>
+        </div>
+        <div class="flex flex-col gap-y-5">
+          <CategoryOfInterest bind:this={categoriesComponent} />
+          <SpatioTemporal bind:temporalActive bind:spatialActive bind:this={spatioTemporalComponent} />
+          <Organizations bind:this={orgCompontent} />
+          <Types bind:this={typeCompontent} />
+          <Themes bind:this={themeCompontent} />
+          <EoCollections bind:this={eoCollectionsComponent} />
+          <SourceSystem bind:this={sourceSystemComponent} />
+          <OtherFilters bind:this={othersCompontent} />
+        </div>
       </div>
-      <div class="flex flex-col gap-y-5">
-        <CategoryOfInterest bind:this={categoriesComponent} />
-        <SpatioTemporal bind:temporalActive bind:spatialActive bind:this={spatioTemporalComponent} />
-        <Organizations bind:this={orgCompontent} />
-        <Types bind:this={typeCompontent} />
-        <Themes bind:this={themeCompontent} />
-        <EoCollections bind:this={eoCollectionsComponent} />
-        <SourceSystem bind:this={sourceSystemComponent} />
-        <OtherFilters bind:this={othersCompontent} />
+      <div class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end">
+        <button
+          type="button"
+          aria-label={page.data.lang?.startsWith('fr') ? 'Fermer' : 'Close'}
+          class="button-tone-light button-icon flex justify-center items-center rounded-[50%]
+          h-9 w-9 md:h-[3.0625rem] md:w-[3.0625rem]"
+          onclick={handleCloseButtonClick}
+        >
+          <Close classes="h-4 md:h-[1.3125rem]" />
+        </button>
       </div>
-    </div>
-    <div class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end">
-      <button
-        type="button"
-        class="flex justify-center items-center border border-custom-16 rounded-[50%]
-          h-9 w-9 md:h-[3.0625rem] md:w-[3.0625rem] hover:bg-custom-16 text-custom-16
-          hover:text-custom-1 cursor-pointer"
-        onclick={handleCloseButtonClick}
-      >
-        <Close classes="h-4 md:h-[1.3125rem]" />
-      </button>
     </div>
     <div
-      class="grid grid-cols-1 md:grid-cols-2 col-span-6 bg-custom-5 md:border-t border-custom-21
+      class="grid grid-cols-1 md:grid-cols-2 bg-custom-5 md:border-t border-custom-21
         px-5 py-7 md:py-[1.125rem] gap-y-8"
     >
       <button
         type="button"
-        class="row-start-2 md:row-start-1 w-full md:w-auto justify-self-start button-3
-          h-12 md:h-auto cursor-pointer"
+        class="row-start-2 md:row-start-1 w-full md:w-auto justify-self-start button-action-light
+          h-12 md:h-auto"
         onclick={handleClearAllClick}
       >
         {clearAllText}
       </button>
-      <button
-        type="submit"
-        class="w-full md:w-auto justify-self-end button-5 h-12 md:h-auto
-          shadow-[0rem_0.1875rem_0.375rem_#00000029] cursor-pointer"
-      >
-        <Search classes="inline" height="1.125rem" />
-        {searchText}
+      <button type="submit" class="w-full md:w-auto justify-self-end button-action-dark h-12 md:h-auto">
+        {applyText}
       </button>
     </div>
   </form>
-</div>
+</AppDialog>
 
 <style lang="postcss">
   @reference "../../../app.css";

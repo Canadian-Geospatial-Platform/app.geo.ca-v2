@@ -1,9 +1,9 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import Email from '$lib/components/icons/email.svelte';
-  import Facebook from '$lib/components/icons/facebook.svelte';
-  import Linkedin from '$lib/components/icons/linkedin.svelte';
-  import X from '$lib/components/icons/x.svelte';
+  import Email from '#lib/components/icons/email.svelte';
+  import Facebook from '#lib/components/icons/facebook.svelte';
+  import Linkedin from '#lib/components/icons/linkedin.svelte';
+  import X from '#lib/components/icons/x.svelte';
 
   const translations = page.data.shareTranslations;
   const shareText = translations?.shareText ? translations['shareText'] : 'Share';

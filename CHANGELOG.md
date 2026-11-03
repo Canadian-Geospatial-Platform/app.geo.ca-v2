@@ -1,19 +1,18 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
- 
+
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
- 
-## 2028-09-02
 
- 
+## 2025-08-27
+
 ### Added
- 
+
 - add health canada filter.
 
 ### Changed
- 
+
 - remove justice filters.
 
 ### Fixed

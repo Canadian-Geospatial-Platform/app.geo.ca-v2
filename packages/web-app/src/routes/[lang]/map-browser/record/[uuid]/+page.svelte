@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Record from '$lib/components/record/record.svelte';
+  import Record from '#lib/components/record/record.svelte';
   import { page } from '$app/state';
 
   const canonicalUrl = page.data.canonicalUrl;

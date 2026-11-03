@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import SortableTable from '$lib/components/sortable-table/sortable-table.svelte';
-  import type { ContactInfo } from '$lib/db/db-types';
+  import SortableTable from '#lib/components/sortable-table/sortable-table.svelte';
+  import type { ContactInfo } from '#lib/db/db-types.js';
 
   type ContactRow = {
     label: string;

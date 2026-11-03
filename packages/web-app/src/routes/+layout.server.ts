@@ -1,23 +1,106 @@
 import type { LayoutServerLoad } from './$types';
-import enFooterLinks from '$lib/components/footer/i18n/en/links.json';
-import enLegal from '$lib/components/footer/i18n/en/legal.json';
-import frFooterLinks from '$lib/components/footer/i18n/fr/links.json';
-import frLegal from '$lib/components/footer/i18n/fr/legal.json';
-import enNavitems from '$lib/components/header/i18n/en/navitems.json';
-import frNavitems from '$lib/components/header/i18n/fr/navitems.json';
-import enHeaderTranslations from '$lib/components/header/i18n/en/translations.json';
-import frHeaderTranslations from '$lib/components/header/i18n/fr/translations.json';
-import enShareTranslations from '$lib/components/share/i18n/en/translations.json';
-import frShareTranslations from '$lib/components/share/i18n/fr/translations.json';
+import enFooterLinks from '#lib/components/footer/i18n/en/links.json';
+import enLegal from '#lib/components/footer/i18n/en/legal.json';
+import frFooterLinks from '#lib/components/footer/i18n/fr/links.json';
+import frLegal from '#lib/components/footer/i18n/fr/legal.json';
+import enNavitems from '#lib/components/header/i18n/en/navitems.json';
+import frNavitems from '#lib/components/header/i18n/fr/navitems.json';
+import enHeaderTranslations from '#lib/components/header/i18n/en/translations.json';
+import frHeaderTranslations from '#lib/components/header/i18n/fr/translations.json';
+import enShareTranslations from '#lib/components/share/i18n/en/translations.json';
+import frShareTranslations from '#lib/components/share/i18n/fr/translations.json';
+import { getUserData } from '#lib/db/user.js';
+import { getCookieDomainOptions } from '#lib/utils/auth/cookie-policy.server.js';
+import { isOidcConfigured } from '#lib/utils/auth/sign-in-core.server.js';
+import { getOidcManageUrl } from '#lib/utils/auth/oidc.server.js';
+import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
 
-export const load: LayoutServerLoad = async ({ params }) => {
-  // TODO: improve language handling
+type NavLink = {
+  title: string;
+  href: string;
+  info?: string;
+  tipId?: string;
+};
+
+type NavOption = {
+  colTitle?: string;
+  links: NavLink[];
+};
+
+type NavItem = {
+  title: string;
+  href?: string;
+  counter?: boolean;
+  localStorageKey?: string;
+  options?: NavOption[];
+};
+
+type NavItems = Record<string, NavItem>;
+
+/**
+ * Loads global layout data for language-specific navigation, footer content,
+ * and signed-in user context used across pages.
+ *
+ * @param event - SvelteKit load event containing params and cookies.
+ * @returns Layout data used by shared navigation, footer, and profile UI.
+ */
+export const load: LayoutServerLoad = async ({ params, cookies, depends, url }) => {
+  depends('app:favourites');
+
+  const lang = getAppLanguage(params.lang);
+  const userInfo = await getUserData(cookies);
+  const signedIn = Boolean(userInfo.Item.uuid);
+  console.debug('[+layout.server] User state loaded', {
+    signedIn,
+    userStatus: userInfo.status,
+    uuid: userInfo.Item.uuid,
+  });
+
+  // When stale auth cookies were cleared this request, set a short-lived flash cookie so the
+  // "signed out" notification survives any subsequent redirect (e.g. from a protected route).
+  if (userInfo.sessionExpired) {
+    cookies.set('session_expired', '1', {
+      path: '/',
+      ...getCookieDomainOptions(),
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: url.protocol === 'https:',
+      maxAge: 60,
+    });
+  }
+
+  // Consume the flash cookie set by a previous request so the banner only shows once.
+  const sessionExpired = cookies.get('session_expired') === '1' || url.searchParams.get('sessionExpired') === '1';
+  if (sessionExpired) {
+    cookies.delete('session_expired', { path: '/', ...getCookieDomainOptions() });
+  }
+  const authError = cookies.get('auth_error') === 'signin_failed';
+  if (authError) {
+    cookies.delete('auth_error', { path: '/', ...getCookieDomainOptions() });
+  }
+  const navitems = structuredClone(pickByLanguage(lang, enNavitems, frNavitems)) as NavItems;
+
+  if (signedIn && navitems.favourites) {
+    navitems.favourites = {
+      title: pickByLanguage(lang, 'My GEO.ca', 'Mon GEO.ca'),
+      href: `/${lang}/favourites`,
+    };
+  }
+
   return {
-    lang: params.lang as 'en-ca' | 'fr-ca',
-    footerLinks: params.lang === 'fr-ca' ? frFooterLinks : enFooterLinks,
-    legalData: params.lang === 'fr-ca' ? frLegal : enLegal,
-    navitems: params.lang === 'fr-ca' ? frNavitems : enNavitems,
-    headerTranslations: params.lang === 'fr-ca' ? frHeaderTranslations : enHeaderTranslations,
-    shareTranslations: params.lang === 'fr-ca' ? frShareTranslations : enShareTranslations,
+    lang,
+    signedIn,
+    sessionExpired,
+    authError,
+    FEATURE_SIGN_IN: isOidcConfigured(),
+    // Expose the deployment-controlled management portal only to authenticated users and only over HTTPS.
+    manageCanadaLoginUrl: signedIn ? getOidcManageUrl() : null,
+    userData: userInfo.Item,
+    userDataStatus: userInfo.status,
+    footerLinks: pickByLanguage(lang, enFooterLinks, frFooterLinks),
+    legalData: pickByLanguage(lang, enLegal, frLegal),
+    navitems,
+    headerTranslations: pickByLanguage(lang, enHeaderTranslations, frHeaderTranslations),
+    shareTranslations: pickByLanguage(lang, enShareTranslations, frShareTranslations),
   };
 };

@@ -1,11 +1,12 @@
 import type { PageServerLoad } from './$types';
-import { GEOCORE_API_DOMAIN } from '$env/static/private';
-import enLabels from '$lib/components/record/i18n/en/translations.json';
-import frLabels from '$lib/components/record/i18n/fr/translations.json';
-import { parseText } from '$lib/utils/parse-text';
-import { formatNumber } from '$lib/utils/format-number';
-import { normalizeCoordinates } from '$lib/utils/normalize-coordinates';
-import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '$lib/db/db-types';
+import enLabels from '#lib/components/record/i18n/en/translations.json';
+import frLabels from '#lib/components/record/i18n/fr/translations.json';
+import { parseText } from '#lib/utils/parse-text.js';
+import { formatNumber } from '#lib/utils/format-number.js';
+import { normalizeCoordinates } from '#lib/utils/normalize-coordinates.js';
+import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
+import { buildCatalogTitle, buildPageTitle, buildSeoMetadata } from '#lib/utils/metadata.js';
+import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '#lib/db/db-types.js';
 import { error } from '@sveltejs/kit';
 
 type MutableGeospatialRecord = Omit<GeospatialRecord, 'keywords' | 'topicCategory'> & {
@@ -29,8 +30,15 @@ type AnalyticsSummary = {
   all?: string;
 };
 
+/**
+ * Loads a record and its related metadata for the localized record page.
+ *
+ * @param event - SvelteKit load event containing the record UUID and request context.
+ * @returns Record details, related items, and localized page metadata.
+ */
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-  const lang = params.lang === 'en-ca' ? 'en' : 'fr';
+  const appLang = getAppLanguage(params.lang);
+  const lang = appLang === 'en-ca' ? 'en' : 'fr';
 
   let record: RecordApiResponse | null = null;
   const response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
@@ -58,7 +66,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
    */
   const fetchRelated = async (id: string): Promise<GeospatialRecord[]> => {
     try {
-      const collectionsResponse = await fetch(`${GEOCORE_API_DOMAIN}/collections?id=${id}`);
+      const collectionsResponse = await fetch(`${process.env.GEOCORE_API_DOMAIN}/collections?id=${id}`);
       const parsedCollectionsResponse = await collectionsResponse.json();
       const related = [];
 
@@ -92,7 +100,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     };
   }
 
-  const t = params.lang === 'en-ca' ? enLabels : frLabels;
+  const t = pickByLanguage(appLang, enLabels, frLabels);
 
   const related = await fetchRelated(params.uuid);
 
@@ -187,35 +195,26 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     });
   }
 
-  const canonicalUrl = `${url.origin}/${params.lang}/map-browser/record/${params.uuid}`;
-  const alternateLang = params.lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
-  const alternateUrl = url.href.replace(params.lang, alternateLang);
-  const metaDescription =
-    params.lang === 'fr-ca'
-      ? `La page de métadonnées et la carte de l'enregistrement GeoCore ${params.uuid}`
-      : `The metadata page and map for the GeoCore record ${params.uuid}`;
+  const seo = buildSeoMetadata(url, appLang, `map-browser/record/${params.uuid}`, {
+    en: `The metadata page and map for the GeoCore record ${params.uuid}`,
+    fr: `La page de métadonnées et la carte de l'enregistrement GeoCore ${params.uuid}`,
+  });
 
   item_v2.title = item_v2[`title_${lang}`];
   return {
-    tTitle1: {
-      text: params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
-      href: `${url.origin}/${params.lang}/map-browser`,
-    },
-    tTitle2: {
-      text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
-      href: url.href,
-    },
-    lang: params.lang,
+    tTitle1: buildCatalogTitle(url, appLang),
+    tTitle2: buildPageTitle(url, appLang, 'Metadata', 'Métadonnées'),
+    lang: appLang,
     uuid: params.uuid,
     similar: extractSimilar(item_v2),
     related: related,
     analyticRes: analyticRes,
     t: t,
     item_v2: item_v2,
-    canonicalUrl: canonicalUrl,
-    alternateUrl: alternateUrl,
-    alternateLang: alternateLang,
-    metaDescription: metaDescription,
+    canonicalUrl: seo.canonicalUrl,
+    alternateUrl: seo.alternateUrl,
+    alternateLang: seo.alternateLang,
+    metaDescription: seo.metaDescription,
     // Pass normalized coordinates separately for map display
     coordinates: normalizedCoordinates,
   };
@@ -237,7 +236,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     token: string,
     ip: string
   ): Promise<Response> {
-    const url = new URL(`${GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
+    const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
 
     return fetch(url, {
       headers: {

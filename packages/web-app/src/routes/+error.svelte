@@ -1,11 +1,11 @@
 <script lang="ts">
   import '../app.css';
   import { navigating, page } from '$app/state';
-  import Header from '$lib/components/header/header.svelte';
-  import Footer from '$lib/components/footer/footer.svelte';
-  import Feedback from '$lib/components/feedback/feedback.svelte';
-  import LoadingMask from '$lib/components/loading-mask/loading-mask.svelte';
-  import Breadcrumbs from '$lib/components/breadcrumbs/breadcrumbs.svelte';
+  import Header from '#lib/components/header/header.svelte';
+  import Footer from '#lib/components/footer/footer.svelte';
+  import Feedback from '#lib/components/feedback/feedback.svelte';
+  import LoadingMask from '#lib/components/loading-mask/loading-mask.svelte';
+  import Breadcrumbs from '#lib/components/breadcrumbs/breadcrumbs.svelte';
 </script>
 
 {#if navigating.type !== null}
@@ -18,10 +18,14 @@
   <div>
     {#if page.data.lang === 'fr-ca'}
       Oups... Une erreur s'est produite. N'hésitez pas à le signaler en nous envoyant un email à
-      <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca">geoinfo@nrcan-rncan.gc.ca</a>.
+      <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca"
+        >geoinfo@nrcan-rncan.gc.ca</a
+      >.
     {:else}
       Oops... There was an error. Feel free to report it by sending us an email to
-      <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca">geoinfo@nrcan-rncan.gc.ca</a>.
+      <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca"
+        >geoinfo@nrcan-rncan.gc.ca</a
+      >.
     {/if}
   </div>
   <Feedback />

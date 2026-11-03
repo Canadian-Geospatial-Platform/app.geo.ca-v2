@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import ResultList from '$lib/components/search-results/result-list.svelte';
-  import SearchBar from '$lib/components/search-results/search-bar.svelte';
+  import ResultList from '#lib/components/search-results/result-list.svelte';
+  import SearchBar from '#lib/components/search-results/search-bar.svelte';
 
   /************* Translations ***************/
   const translations = page.data.t;

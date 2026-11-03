@@ -2,11 +2,11 @@
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
   import { goto } from '$app/navigation';
-  import { toggleScroll } from '$lib/components/component-utils/toggleScroll';
-  import Card from '$lib/components/card/card.svelte';
-  import Search from '$lib/components/icons/search.svelte';
-  import FilterModal from '$lib/components/search-results/filter-modal.svelte';
-  import Filter from '$lib/components/icons/filter.svelte';
+  import { toggleScroll } from '#lib/components/component-utils/toggleScroll.js';
+  import Card from '#lib/components/card/card.svelte';
+  import Search from '#lib/components/icons/search.svelte';
+  import FilterModal from '#lib/components/search-results/filter-modal.svelte';
+  import Filter from '#lib/components/icons/filter.svelte';
 
   /************* Translations ***************/
   const translations = page.data.t;
@@ -81,12 +81,11 @@
     query.set('page-number', '0');
 
     let opts = {
-      replaceState: true,
-      keepfocus: true,
+      replace: true,
+      keepFocus: true,
     };
     // We need to preserve the current localized search-results route.
     // Using resolve('/?...') here sends the user to the site root instead of updating the current search page.
-    // eslint-disable-next-line svelte/no-navigation-without-resolve
     goto(`${page.url.pathname}?${query.toString()}`, opts);
   }
 </script>
@@ -95,8 +94,8 @@
 <Card type="searchBar">
   <div class="flex flex-row gap-y-5 flex-wrap md:flex-nowrap">
     <button
-      class={`text-nowrap shadow-[0rem_0.1875rem_0.375rem_#00000029]
-        ${navigating.type !== null ? 'button-3-disabled' : 'button-3'} cursor-pointer disabled:cursor-default`}
+      class={`text-nowrap
+        button-action-light disabled:cursor-default`}
       onclick={handleFilterButtonClick}
       disabled={navigating.type !== null}
     >
@@ -116,8 +115,7 @@
       <input
         type="text"
         placeholder={searchProductsText}
-        class={`w-full h-12 md:ml-5 px-5 rounded-s-[0.3125rem] font-custom-style-placeholder
-          shadow-[inset_0rem_0.1875rem_0.375rem_#00000029] border-y-2 border-l-2 md:border-0
+        class={`w-full md:ml-5 search-input-shell md:border-0
           ${navigating.type !== null ? 'border-custom-17' : 'border-custom-16'}`}
         bind:this={searchTextInput}
         onkeydown={handleSearchEnterKeyDown}
@@ -125,10 +123,9 @@
         value={keywordFromUrl}
       />
       <button
-        class={`text-nowrap h-12 px-5 rounded-e-[0.3125rem]
-          font-custom-style-button-3 shadow-[0rem_0.1875rem_0.375rem_#00000029]
-          hover:bg-custom-23 cursor-pointer disabled:cursor-default
-          ${navigating.type !== null ? 'bg-custom-17' : 'bg-custom-16'}`}
+        class={`search-submit-shell
+          button-search-dark
+          ${navigating.type !== null ? 'bg-custom-17 border-custom-17' : ''}`}
         onclick={handleSearchClick}
         disabled={navigating.type !== null}
       >

@@ -1,4 +1,4 @@
-import type { DistributionOption } from '$lib/db/db-types';
+import type { DistributionOption } from '#lib/db/db-types.js';
 
 /**
  * Parsed representation of a distribution option row.

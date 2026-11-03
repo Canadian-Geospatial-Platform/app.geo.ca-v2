@@ -1,7 +1,10 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
-import type { CategoryOfInterest } from '$lib/components/search-results/filters/filter-types';
+import type { CategoryOfInterest } from '#lib/components/search-results/filters/filter-types.d.ts';
 
+/**
+ * Shared temporary category selection used while editing search filters.
+ */
 export const tempCategoryOfInterest: Writable<CategoryOfInterest | null> = writable(null);
 
 /**
