@@ -2,6 +2,7 @@ import adapter from './scripts/svelte-kit-sst.js';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
+import { gitCommitDate } from './scripts/git-date.ts';
 
 // Allow self-signed certificates in dev (e.g. internal API endpoints with corp CA).
 // This flag is intentionally scoped to vite.config.ts so it never runs in production builds.
@@ -10,6 +11,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default defineConfig({
+  define: {
+    __APP_DATE_MODIFIED__: JSON.stringify(gitCommitDate),
+  },
   plugins: [
     sveltekit({
       preprocess: vitePreprocess(),

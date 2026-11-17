@@ -61,8 +61,8 @@ describe('getLangFromPath', () => {
     const pagePaths = [
       '',
       '/map-browser',
-      '/map-browser/record/000183ed-8864-42f0-ae43-c4313a860720',
-      '/map-browser/record/000183ed-8864-42f0-ae43-c4313a860720/map',
+      '/map-browser/record/test-record-id',
+      '/map-browser/record/test-record-id/map',
       '/favourites',
       '/favourites/datasets',
       '/favourites/maps',

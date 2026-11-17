@@ -6,8 +6,7 @@
   const lang = getAppLanguage(page.data.lang);
   const dateModifiedText: string = pickByLanguage(lang, 'Date Modified', 'Date modifiée');
 
-  //TODO: Date should not be hardcoded
-  const dateModified: string = '2025-05-29';
+  const dateModified: string = __APP_DATE_MODIFIED__;
 </script>
 
 <div

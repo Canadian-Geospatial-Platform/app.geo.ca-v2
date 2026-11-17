@@ -346,6 +346,7 @@ Data persistence:
     - https://d28mialgy1tfmv.cloudfront.net/sign-in/back-channel-logout
 
 - Deploy from the root of the repository: `npx sst deploy --stage <yourStageName>`.
+- The footer's "Date Modified" is injected at build time from the latest commit's committer date (`git log -1 --format=%cs`, in `YYYY-MM-DD` format). Git and a repository checkout with at least the latest commit are required for builds, development, and tests. The date updates when a new commit is built and deployed; rebuilding the same commit preserves the date.
 
 ### Staging Go/No-Go Check
 

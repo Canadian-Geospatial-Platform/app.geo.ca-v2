@@ -32,6 +32,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+        __APP_DATE_MODIFIED__: 'readonly',
       },
     },
   },

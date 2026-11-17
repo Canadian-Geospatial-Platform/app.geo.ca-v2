@@ -84,6 +84,8 @@ type AnalyticResponse = {
 };
 
 declare global {
+  const __APP_DATE_MODIFIED__: string;
+
   namespace App {
     interface PageState {
       presentationMode?: boolean;
