@@ -86,7 +86,7 @@ interface MapConfigFavourite {
 - **Data**: Fetches saved dataset records from GeoCore API
 - **Features**: Display list, delete individual items, delete all, open selected items on map
 - **Storage**: Removes deleted IDs from `UserData.favourites`
-- **Add to saved map**: Signed-in users can choose an existing saved map for a dataset, using the Add button immediately before Delete (also available on mobile). The column heading retains the full action label. The button is disabled if the dataset has no map layer or no saved maps are available. The picker uses the shared centered app dialog.
+- **Add to saved map**: Signed-in users can choose an existing saved map for a dataset, using the Add button immediately before Delete (also available on mobile). The column heading retains the full action label. The button is disabled if the dataset has no map layer or no saved maps are available. The picker uses the shared centered app dialog and closes immediately when a map is selected. Add buttons remain disabled while navigation is pending; if navigation fails, the picker reopens with an error and allows a retry.
 
 ### `[lang]/favourites/maps`
 

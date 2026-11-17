@@ -1,16 +1,17 @@
 import type { GeospatialRecord } from '#lib/db/db-types.js';
+import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
 
 /**
  * Sanitizes the given results by filtering, fixing coordinate types, and normalizing language fields.
  *
  * @param results - The array of results to sanitize.
- * @param lang - The language code for normalization.
+ * @param inputLanguage - The language code for normalization.
  * @returns The sanitized array of results.
  */
-function sanitize(results: GeospatialRecord[], lang: string): GeospatialRecord[] {
+function sanitize(results: GeospatialRecord[], inputLanguage: string): GeospatialRecord[] {
   const truthyResults = results.filter((result) => result);
   const fixedCoordsResults = fixCoordinatesType(truthyResults);
-  const normalizedLanguagedResults = normalizeLanguage(fixedCoordsResults, lang);
+  const normalizedLanguagedResults = normalizeLanguage(fixedCoordsResults, inputLanguage);
   return normalizedLanguagedResults;
 }
 
@@ -32,21 +33,21 @@ function fixCoordinatesType(results: GeospatialRecord[]): GeospatialRecord[] {
  * Normalizes the language fields in the given records based on the provided language code.
  *
  * @param records - The array of records to normalize.
- * @param lang - The language code for normalization.
+ * @param inputLanguage - The language code for normalization.
  * @returns The array of records with normalized language fields.
  */
-function normalizeLanguage(records: GeospatialRecord[], lang: string): GeospatialRecord[] {
-  const langCode = lang.split('-')[0] as 'en' | 'fr';
+function normalizeLanguage(records: GeospatialRecord[], inputLanguage: string): GeospatialRecord[] {
+  const contentLang = getContentLanguage(getAppLanguage(inputLanguage));
 
   for (const record of records) {
     try {
-      const title = record[`title_${langCode}` as 'title_en' | 'title_fr'];
+      const title = record[`title_${contentLang}` as 'title_en' | 'title_fr'];
       if (title) {
         record.title = title;
       }
 
       const description = (record as unknown as Record<'description_en' | 'description_fr', string | undefined>)[
-        `description_${langCode}` as 'description_en' | 'description_fr'
+        `description_${contentLang}` as 'description_en' | 'description_fr'
       ];
       if (description) {
         record.description = description;

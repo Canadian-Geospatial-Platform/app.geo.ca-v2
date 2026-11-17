@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import { resolve } from '$app/paths';
 
-  const translations = page.data.t;
-  const keywordsText = translations?.keywords ? translations['keywords'] : 'Related keywords';
+  const keywordsText = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record').keywords);
 
   const data = page.data;
   const items = data.item_v2!;

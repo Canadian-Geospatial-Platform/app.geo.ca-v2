@@ -1,8 +1,9 @@
+import { getTranslations } from '#lib/i18n/index.js';
 import { getUserData } from '#lib/db/user.js';
 import type { GeospatialRecord, UserData, UserDataLoadStatus } from '#lib/db/db-types.js';
 import { sanitize } from '#lib/utils/data-sanitization/geocore-result.js';
 import { buildCatalogTitle, buildPageTitle, buildSeoMetadata } from '#lib/utils/metadata.js';
-import type { AppLanguage } from '#lib/utils/language.js';
+import { getContentLanguage, type AppLanguage } from '#lib/utils/language.js';
 
 type FavouritesLoadInput = {
   fetch: (url: string | URL, options?: RequestInit) => Promise<Response>;
@@ -29,15 +30,12 @@ type FavouritesLoadOutput = {
  * @param input - Page load inputs including fetch, URL, cookies, and language.
  * @returns Shared favourites page data used by server and page loads.
  */
-export async function loadFavouritesPageData({ fetch, url, cookies, lang }: FavouritesLoadInput): Promise<FavouritesLoadOutput> {
+export async function loadFavouritesPageData({ fetch, url, cookies, lang: appLang }: FavouritesLoadInput): Promise<FavouritesLoadOutput> {
   let response: GeospatialRecord[] = [];
   let userInfo: Awaited<ReturnType<typeof getUserData>> | undefined;
   let sanitizedResults: GeospatialRecord[] = [];
 
-  const seo = buildSeoMetadata(url, lang, 'favourites', {
-    en: 'Browse your saved resources and create a custom map.',
-    fr: 'Consultez vos ressources sauvegardées et créez une carte personnalisée.',
-  });
+  const seo = buildSeoMetadata(url, appLang, 'favourites', getTranslations(appLang).pages.favourites.description);
 
   try {
     // Keep the page rendering even if user lookup fails.
@@ -47,22 +45,22 @@ export async function loadFavouritesPageData({ fetch, url, cookies, lang }: Favo
   }
 
   try {
-    response = await getRecords(userInfo?.status === 'unavailable' ? [] : (userInfo?.Item.favourites ?? []), lang, fetch);
+    response = await getRecords(userInfo?.status === 'unavailable' ? [] : (userInfo?.Item.favourites ?? []), appLang, fetch);
   } catch (e) {
     console.error('error fetching records: \n', e);
   }
 
   try {
-    sanitizedResults = sanitize(response, lang);
+    sanitizedResults = sanitize(response, appLang);
   } catch (e) {
     console.error('error sanitizing records: \n', e);
   }
 
   return {
-    tTitle1: buildCatalogTitle(url, lang),
+    tTitle1: buildCatalogTitle(url, appLang),
     tTitle2: userInfo?.Item.uuid
-      ? buildPageTitle(url, lang, 'My GEO.ca', 'Mon GEO.ca')
-      : buildPageTitle(url, lang, 'Favourites', 'Favoris'),
+      ? buildPageTitle(url, getTranslations(appLang).general.myGeo)
+      : buildPageTitle(url, getTranslations(appLang).components.header.navigation.favourites.title),
     results: sanitizedResults,
     userData: userInfo?.Item || { uuid: null, favourites: [], mapConfigs: [] },
     userDataStatus: userInfo?.status ?? 'anonymous',
@@ -77,15 +75,19 @@ export async function loadFavouritesPageData({ fetch, url, cookies, lang }: Favo
  * Gets a record from the GeoCore API.
  *
  * @param id - GeoCore record identifier.
- * @param lang - Full application language code used to derive the GeoCore locale.
+ * @param appLang - Full application language code used to derive the GeoCore locale.
  * @param fetch - Fetch implementation used to call the GeoCore API.
  * @returns Promise resolving to the GeoCore response for a single record.
  */
-function getRecord(id: string, lang: string, fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<Response> {
+function getRecord(
+  id: string,
+  appLang: AppLanguage,
+  fetch: (url: string | URL, options?: RequestInit) => Promise<Response>
+): Promise<Response> {
   const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/id`);
   const params = {
     id: id,
-    lang: lang.split('-')[0],
+    lang: getContentLanguage(appLang),
   };
   url.search = new URLSearchParams(params).toString();
   return fetch(url);
@@ -95,16 +97,16 @@ function getRecord(id: string, lang: string, fetch: (url: string | URL, options?
  * Gets multiple records from the GeoCore API.
  *
  * @param idIterator - Iterable collection of GeoCore record identifiers.
- * @param lang - Full application language code used to derive the GeoCore locale.
+ * @param appLang - Full application language code used to derive the GeoCore locale.
  * @param fetch - Fetch implementation used to call the GeoCore API.
  * @returns Promise resolving to the list of successfully parsed GeoCore records.
  */
 async function getRecords(
   idIterator: Iterable<string>,
-  lang: string,
+  appLang: AppLanguage,
   fetch: (url: string | URL, options?: RequestInit) => Promise<Response>
 ): Promise<GeospatialRecord[]> {
-  const responses = await Promise.all(Array.from(idIterator, (id) => getRecord(id, lang, fetch)));
+  const responses = await Promise.all(Array.from(idIterator, (id) => getRecord(id, appLang, fetch)));
 
   const records = await Promise.all(
     responses.map(async (response) => {

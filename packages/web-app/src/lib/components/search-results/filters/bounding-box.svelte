@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import SpatioFilterMap from '#lib/components/map/spatio-filter-map.svelte';
@@ -20,33 +22,15 @@
   let westCoord = -140.99778;
 
   /************* Translations ***************/
-  const translations = page.data.t;
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
 
   type directions = 'north' | 'east' | 'south' | 'west';
-  const north = translations?.north ? translations['north'] : 'North';
-  const east = translations?.east ? translations['east'] : 'East';
-  const south = translations?.south ? translations['south'] : 'South';
-  const west = translations?.west ? translations['west'] : 'West';
-
-  const intersects = translations?.intersects ? translations['intersects'] : 'Intersects';
-  const within = translations?.within ? translations['within'] : 'Within';
-
-  const degrees = translations?.degrees ? translations['degrees'] : 'Degrees';
-  const spatialInstructions = translations?.spatialInstructions ? translations['spatialInstructions'] : '';
-  const relationInstructions = translations?.relationInstructions ? translations['relationInstructions'] : '';
-
-  const validatorRequired = translations?.validatorRequired ? translations['validatorRequired'] : 'Please fill out this field.';
-  const validatorTooBig = translations?.validatorTooBig ? translations['validatorTooBig'] : 'Value must be less than or equal to ';
-  const validatorTooSmall = translations?.validatorTooSmall ? translations['validatorTooSmall'] : 'Value must be greater than or equal to ';
-  const validatorNorthGreater = translations?.validatorNorthGreater
-    ? translations['validatorNorthGreater']
-    : 'The northern latitude value should be greater than the southern latitude.';
 
   const labels = $derived([
-    { label: north, id: `${coordinatesId}-north`, max: '90', placeHolder: '90' },
-    { label: east, id: `${coordinatesId}-east`, max: '180', placeHolder: '180' },
-    { label: south, id: `${coordinatesId}-south`, max: '90', placeHolder: '-90' },
-    { label: west, id: `${coordinatesId}-west`, max: '180', placeHolder: '-180' },
+    { label: translations.north, id: `${coordinatesId}-north`, max: '90', placeHolder: '90' },
+    { label: translations.east, id: `${coordinatesId}-east`, max: '180', placeHolder: '180' },
+    { label: translations.south, id: `${coordinatesId}-south`, max: '90', placeHolder: '-90' },
+    { label: translations.west, id: `${coordinatesId}-west`, max: '180', placeHolder: '-180' },
   ]);
 
   // Element references
@@ -243,20 +227,20 @@
       // Also, we only need to check the latitue because longitudes can wrap arround in
       // in the oposite direction.
       if (Number.isNaN(number)) {
-        message = validatorRequired;
+        message = translations.validatorRequired;
       } else if (!Number.isNaN(min) && number < min) {
-        message = `${validatorTooSmall}${min}`;
+        message = `${translations.validatorTooSmall}${min}`;
       } else if (!Number.isNaN(max) && number > max) {
-        message = `${validatorTooBig}${max}`;
+        message = `${translations.validatorTooBig}${max}`;
       } else if (input.id === `${coordinatesId}-north`) {
         const southValue = Number.parseFloat(inputs[`${coordinatesId}-south`]?.value || '');
         if (!Number.isNaN(southValue) && number < southValue) {
-          message = validatorNorthGreater;
+          message = translations.validatorNorthGreater;
         }
       } else if (input.id === `${coordinatesId}-south`) {
         const northValue = Number.parseFloat(inputs[`${coordinatesId}-north`]?.value || '');
         if (!Number.isNaN(northValue) && number > northValue) {
-          message = validatorNorthGreater;
+          message = translations.validatorNorthGreater;
         }
       }
 
@@ -275,20 +259,20 @@
 </script>
 
 {#if searchMode === 'semantic'}
-  <p class="mt-4 mb-2">{relationInstructions}</p>
+  <p class="mt-4 mb-2">{translations.relationInstructions}</p>
   <div class="mb-4">
     <input type="radio" name="spatial-relation" id="intersects" value="intersects" bind:group={relationGroup} />
-    <label class="mr-3 cursor-pointer" for="intersects">{intersects}</label>
+    <label class="mr-3 cursor-pointer" for="intersects">{translations.intersects}</label>
     <input type="radio" name="spatial-relation" id="within" value="within" bind:group={relationGroup} />
-    <label class="cursor-pointer" for="within">{within}</label>
+    <label class="cursor-pointer" for="within">{translations.within}</label>
   </div>
 {/if}
-<p class="mb-3">{spatialInstructions}</p>
+<p class="mb-3">{translations.spatialInstructions}</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-[36rem]">
   {#each labels as { label, id, max, placeHolder } (id)}
     <div class="flex flex-col">
       <label for={id}>
-        {label} ({degrees})
+        {label} ({translations.degrees})
       </label>
       <!--
         Note: the 'required' attribute only works when the input is enabled,

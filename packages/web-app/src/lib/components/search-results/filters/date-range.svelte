@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import type { DateRangeItem } from './filter-types';
 
@@ -10,21 +12,14 @@
   let { dateId, active = $bindable(false) }: Props = $props();
 
   /************* Translations ***************/
-  const translations = page.data.t;
-
-  const startDate = translations?.startDate ? translations['startDate'] : 'Start Date';
-  const endDate = translations?.endDate ? translations['endDate'] : 'End Date';
-  const validatorRequired = translations?.validatorRequired ? translations['validatorRequired'] : 'Please fill out this field.';
-  const validatorStartGreater = translations?.validatorStartGreater
-    ? translations['validatorStartGreater']
-    : 'The start date should be earlier or equal to the end date.';
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
 
   const startDateKey = $derived(`${dateId}-begin`);
   const endDateKey = $derived(`${dateId}-end`);
 
   const labels = $derived({
-    start: { label: startDate, key: startDateKey },
-    end: { label: endDate, key: endDateKey },
+    start: { label: translations.startDate, key: startDateKey },
+    end: { label: translations.endDate, key: endDateKey },
   });
 
   let beginInput: HTMLInputElement | undefined = $state();
@@ -102,16 +97,16 @@
       // the form is submitted. So, we need to check both the start and end dates
       // seperately to account for the user possibly selecting dates in the reverse order.
       if (Number.isNaN(date)) {
-        message = validatorRequired;
+        message = translations.validatorRequired;
       } else if (input === beginInput) {
         const endDate = Date.parse(endInput?.value || '');
         if (!Number.isNaN(endDate) && date > endDate) {
-          message = validatorStartGreater;
+          message = translations.validatorStartGreater;
         }
       } else if (input === endInput) {
         const startDate = Date.parse(beginInput?.value || '');
         if (!Number.isNaN(startDate) && date < startDate) {
-          message = validatorStartGreater;
+          message = translations.validatorStartGreater;
         }
       }
 

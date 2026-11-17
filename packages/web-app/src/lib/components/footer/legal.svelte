@@ -1,43 +1,30 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
 
-  const legalData: { [key: string]: string } | undefined = page.data.legalData;
-
-  let logoUrl = legalData?.logoUrl ? legalData['logoUrl'] : '';
-  let logoAlt = legalData?.logoAlt ? legalData['logoAlt'] : '';
-  let contactUs = legalData?.contactUs ? legalData['contactUs'] : '';
-  let ccmeo = legalData?.ccmeo ? legalData['ccmeo'] : '';
-  let nrcan = legalData?.nrcan ? legalData['nrcan'] : '';
-  let goc = legalData?.goc ? legalData['goc'] : '';
-  let license = legalData?.license ? legalData['license'] : '';
-  let licenceUrl = legalData?.licenceUrl ? legalData['licenceUrl'] : '';
-  let copyright = legalData?.copyright ? legalData['copyright'] : '';
-  let email = legalData?.email ? legalData['email'] : '';
-  let cdgi = legalData?.cdgi ? legalData['cdgi'] : '';
-  let cdgiLink = legalData?.cdgiLink ? legalData['cdgiLink'] : '';
-  let cdgiLinkText = legalData?.cdgiLinkText ? legalData['cdgiLinkText'] : '';
-  let cdgiAcronym = legalData?.cdgiAcronym ? legalData['cdgiAcronym'] : '';
+  const legalData = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.footer.legal);
 </script>
 
 <div class="bg-custom-5 font-open-sans py-4">
   <div class="grid grid-cols-1 md:grid-cols-2 content-width">
     <div class="legal-col">
-      <h3 class="mb-2.5">{contactUs}</h3>
-      <p>{ccmeo}</p>
-      <p>{nrcan}</p>
-      <p>{goc}</p>
-      <p><a href={`mailto:${email}?subject=app.geo.ca`}>{email}</a></p>
+      <h3 class="mb-2.5">{legalData.contactUs}</h3>
+      <p>{legalData.ccmeo}</p>
+      <p>{legalData.nrcan}</p>
+      <p>{legalData.goc}</p>
+      <p><a href={`mailto:${legalData.email}?subject=app.geo.ca`}>{legalData.email}</a></p>
     </div>
     <div class="legal-col md:text-right">
-      <img class="w-28 md:ml-auto mb-5" src={logoUrl} alt={logoAlt} />
-      <p><a href={licenceUrl} rel="external">{license}</a></p>
-      <p>{copyright}</p>
+      <img class="w-28 md:ml-auto mb-5" src={legalData.logoUrl} alt={legalData.logoAlt} />
+      <p><a href={legalData.licenceUrl} rel="external">{legalData.license}</a></p>
+      <p>{legalData.copyright}</p>
       <p>
-        {cdgi}
-        <a href={cdgiLink} rel="external">
-          {cdgiLinkText}
+        {legalData.cdgi}
+        <a href={legalData.cdgiLink} rel="external">
+          {legalData.cdgiLinkText}
         </a>
-        {cdgiAcronym}
+        {legalData.cdgiAcronym}
       </p>
     </div>
   </div>

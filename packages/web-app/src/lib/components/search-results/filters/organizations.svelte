@@ -1,17 +1,14 @@
 <script lang="ts">
+  import { getAppLanguage } from '#lib/utils/language.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import type { Filter, FilterItem } from './filter-types';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters!.filters;
-  const organizations = filters.find((filter: Filter) => filter.section === 'org')!;
+  const translations = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults);
+  const organizations: Filter = $derived(translations.filters.filters.find((filter: Filter) => filter.section === 'org')!);
   let checkedStates: Record<string, boolean> = $state({});
-
-  // Labels
-  const federal = pickByLanguage(page.data.lang, 'Organizations - Federal', 'Organisations - Fédérales');
-  const provincial = pickByLanguage(page.data.lang, 'Organizations - Provincial/Territorial', 'Organisations - Provinciales/Territoriales');
 
   /**
    * Resets the Organizations filters to match the URL parameters.
@@ -34,7 +31,7 @@
 
 <!-- Federal -->
 <h3 class="font-custom-style-h3">
-  {federal}
+  {translations.organizations.federal}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
   {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}
@@ -54,7 +51,7 @@
 
 <!-- Provincial/Territorial -->
 <h3 class="font-custom-style-h3">
-  {provincial}
+  {translations.organizations.provincial}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
   {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}

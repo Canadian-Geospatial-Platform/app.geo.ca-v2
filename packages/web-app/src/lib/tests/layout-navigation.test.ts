@@ -16,12 +16,12 @@ describe('layout favourites navigation', () => {
   it.each([
     ['en-ca', 'My GEO.ca', 'Favourites'],
     ['fr-ca', 'Mon GEO.ca', 'Favoris'],
-  ] as const)('uses the correct signed-in and guest links for %s', async (lang, signedInLabel, guestLabel) => {
+  ] as const)('uses the correct signed-in and guest links for %s', async (appLang, signedInLabel, guestLabel) => {
     const event = {
-      params: { lang },
+      params: { lang: appLang },
       cookies: { get: vi.fn(), set: vi.fn(), delete: vi.fn() },
       depends: vi.fn(),
-      url: new URL(`https://example.test/${lang}/map-browser`),
+      url: new URL(`https://example.test/${appLang}/map-browser`),
     } as unknown as Parameters<typeof load>[0];
 
     for (const status of ['ok', 'missing', 'unavailable', 'anonymous'] as const) {
@@ -34,10 +34,14 @@ describe('layout favourites navigation', () => {
 
       const result = await load(event);
       expect(result?.signedIn).toBe(signedIn);
+      expect(result).not.toHaveProperty('headerTranslations');
+      expect(result).not.toHaveProperty('shareTranslations');
+      expect(result).not.toHaveProperty('footerLinks');
+      expect(result).not.toHaveProperty('legalData');
       expect(result?.navitems?.favourites).toEqual(
         signedIn
-          ? { title: signedInLabel, href: `/${lang}/favourites` }
-          : { title: guestLabel, href: `/${lang}/favourites`, counter: true, localStorageKey: 'FavouritesResources' }
+          ? { title: signedInLabel, href: `/${appLang}/favourites` }
+          : { title: guestLabel, href: `/${appLang}/favourites`, counter: true, localStorageKey: 'FavouritesResources' }
       );
     }
   });

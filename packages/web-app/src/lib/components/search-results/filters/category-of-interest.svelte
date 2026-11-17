@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels, getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import { tempCategoryOfInterest, updateTempCategoryOfInterest } from '#lib/components/search-results/store.js';
   import SelectCustomized from '#lib/components/select-customized/select-customized.svelte';
@@ -8,7 +10,7 @@
   // Note: the list of categories are based on the Topic Categories from ISO 19115-1
   // https://icsm-au.github.io/metadata-working-group/defs/TopicCategory
   const categoriesKey = 'category-of-interest';
-  const categories = page.data.categories ?? [];
+  const categories = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.categories);
   let selected: SelectOption | undefined = undefined;
   let categoryStoreVal: string | null = null;
 
@@ -40,9 +42,7 @@
   }
 
   /************* Translations ***************/
-  const translations = page.data.t;
-  const categoryOfInterestText = translations?.categoryOfInterest ? translations['categoryOfInterest'] : 'Select Category of Interest';
-  const categorySelectDefaultText = translations?.categorySelectDefault ? translations['categorySelectDefault'] : 'Select a Category...';
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
 
   /************* Filter Data ***************/
   /**
@@ -87,13 +87,13 @@
 
 <div class="w-full">
   <h3 class="font-custom-style-h3 mb-5">
-    {categoryOfInterestText}
+    {translations.categoryOfInterest}
   </h3>
   <div class="w-full md:max-w-md">
     <SelectCustomized
       optionsData={categories}
       removableSelection={true}
-      defaultLabel={categorySelectDefaultText}
+      defaultLabel={translations.categorySelectDefault}
       selectType="categoryFilter"
       bind:selected
       selectedChange={handleCategoryOfInterestChange}

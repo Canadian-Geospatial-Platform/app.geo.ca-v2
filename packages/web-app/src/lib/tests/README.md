@@ -99,12 +99,21 @@ npm run test
 - `guest-favourites.test.ts`
   - Covers `encodeGuestFavouritesCookieValue`/`decodeGuestFavouritesCookieValue`: encode/decode round-trip, whitespace/dedup normalization, and malformed-URI fallback.
 
-- `language.test.ts`
-  - Covers `getAppLanguage`, `isAppLanguage`, `isFrench`, `pickByLanguage`, and `getLangFromPath` (path and absolute-URL forms).
 - `auth-status-route.test.ts`
   - Covers the auth-status endpoint's signed-in response, unavailable state, allowed-origin credentialed CORS, and preflight handling.
 - `csrf-hook.test.ts`
   - Covers the server hook's form POST origin checks, same-origin allowance, JSON exclusion, and back-channel logout exemption.
+
+### Language and translations
+
+- `language.test.ts`
+  - Covers language normalization/validation, short content-language conversion, English/French value selection, and language extraction from paths and absolute URLs.
+- `translations.test.ts`
+  - Enforces centralized dictionary shape/placeholder parity and checks shared/component labels, interpolation and missing parameters, request-language server rendering, resource-language labels, locale-specific number separators for numeric/string inputs and search counts, singular/plural search messages, and omission of unused search dictionaries.
+- `translations.component.test.ts`
+  - Verifies live language switching without remounting and selected dropdown label updates without changing the selected value or invoking its change callback.
+- `search-bar.component.test.ts`
+  - Checks Enter/button keyword searches in both languages, preserving filters and resetting pagination with supported navigation options. Also covers normalized language selection for the filter close-button label.
 
 ### Logout handling
 
@@ -129,7 +138,7 @@ npm run test
   - Covers all four favourites API operations: POST/DELETE (single dataset id add/remove), PUT (clear all), and PATCH (map-config create/update/delete, including duplicate-name auto-renaming and the max-item limit).
 
 - `favourites-datasets.component.test.ts`
-  - Covers the datasets component's initial render, failed deletion state preservation, saved-map navigation errors, and selected-dataset map navigation.
+  - Covers initial rendering, failed deletion state preservation, immediate picker dismissal and blocked repeat additions during pending navigation, picker restoration/retry after navigation failure, and selected-dataset map navigation.
 
 - `favourites-route-split.test.ts`
   - Verifies the split favourites routes (`/favourites`, `/favourites/datasets`, `/favourites/maps`, `/favourites/view`) correctly load page data and remain accessible to guests and signed-in users.
@@ -147,7 +156,7 @@ npm run test
 - `favourites-storage.test.ts`
   - Covers local favourites normalization, browser-storage reads, and signed-in/guest initial-source selection.
 - `layout-navigation.test.ts`
-  - Covers localized signed-in and guest favourites navigation labels and guest local-storage metadata in the root layout.
+  - Covers localized signed-in and guest favourites navigation, guest local-storage metadata, the session-expired flag, and omission of unused translation payloads in the root layout.
 - `localized-root-route.test.ts`
   - Covers English and French root-route redirects to the corresponding map browser.
 - `map-dataset.test.ts`

@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { resolve } from '$app/paths';
   import { slide } from 'svelte/transition';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { FAVOURITES_STORAGE_KEY } from '#lib/utils/favourites-storage.js';
   import { encodeGuestFavouritesCookieValue, GUEST_FAVOURITES_COOKIE_NAME } from '#lib/utils/guest-favourites.js';
 
@@ -12,17 +13,16 @@
 
   let { light = false }: Props = $props();
 
-  const lang = page.data.lang;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
   const signedIn = $derived(Boolean(page.data.signedIn));
   const featureSignIn = $derived(page.data.FEATURE_SIGN_IN !== false);
 
-  const signInText = $derived(pickByLanguage(lang, 'Sign in', 'Se connecter'));
-  const signOutText = $derived(pickByLanguage(lang, 'Sign out', 'Se déconnecter'));
+  const translations = $derived(getTranslations(appLang));
   const manageCanadaLoginUrl = $derived(page.data.manageCanadaLoginUrl ?? '');
   const shouldReturnToFavourites = $derived.by(() => {
     const currentPath = page.url.pathname;
-    const datasetsPath = `/${lang}/favourites/datasets`;
-    const mapsPath = `/${lang}/favourites/maps`;
+    const datasetsPath = `/${appLang}/favourites/datasets`;
+    const mapsPath = `/${appLang}/favourites/maps`;
 
     return currentPath === datasetsPath || currentPath === mapsPath;
   });
@@ -30,8 +30,8 @@
   let signInRedirectPending = $state(false);
   const signOutHref = $derived(
     shouldReturnToFavourites
-      ? resolve(`/[lang]/sign-in/oidc-logout?returnTo=${encodeURIComponent(`/${lang}/favourites`)}`, { lang })
-      : resolve('/[lang]/sign-in/oidc-logout', { lang })
+      ? resolve(`/[lang]/sign-in/oidc-logout?returnTo=${encodeURIComponent(`/${appLang}/favourites`)}`, { lang: appLang })
+      : resolve('/[lang]/sign-in/oidc-logout', { lang: appLang })
   );
 
   /**
@@ -58,7 +58,7 @@
 
     signInRedirectPending = true;
     cacheGuestFavouritesForMerge();
-    window.location.href = `/${lang}/sign-in/launch`;
+    window.location.href = `/${appLang}/sign-in/launch`;
   }
 </script>
 
@@ -69,7 +69,7 @@
         {#if manageCanadaLoginUrl}
           <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
           <a href={manageCanadaLoginUrl} class="text-sm underline" data-sveltekit-reload>
-            {pickByLanguage(lang, 'Manage CanadaLogin', 'Gérer ConnexionCanada')}
+            {translations.components.header.profile.manage}
           </a>
         {/if}
         <!-- eslint-disable svelte/no-navigation-without-resolve -->
@@ -79,7 +79,7 @@
           href={signOutHref}
           class={['button-signin', light ? 'button-action-light' : 'button-action-dark']}
         >
-          {signOutText}
+          {translations.general.signOut}
         </a>
         <!-- eslint-enable svelte/no-navigation-without-resolve -->
       </div>
@@ -90,10 +90,10 @@
           disabled={signInRedirectPending}
           onclick={handleSignInClick}
         >
-          {signInText}
+          {translations.general.signIn}
         </button>
         <span class={['text-xs pointer-events-none select-none', light ? 'text-custom-1 opacity-80' : 'text-custom-8 opacity-80']}>
-          {pickByLanguage(lang, 'with CanadaLogin', 'par ConnexionCanada')}
+          {translations.components.header.profile.provider}
         </span>
       </div>
     {/if}

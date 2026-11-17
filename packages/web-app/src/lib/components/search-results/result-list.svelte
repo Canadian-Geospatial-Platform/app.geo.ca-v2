@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
   import { onMount } from 'svelte';
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
@@ -26,17 +28,8 @@
 
   const signedIn = Boolean(page.data.signedIn);
 
-  // TODO: Centralize translations
-  const translations = page.data.t;
-
-  const mapNotAvailableText = translations?.mapNotAvailable ? translations['mapNotAvailable'] : 'Map not available';
-  const formatText = translations?.formatParams ? translations['format'] : 'Format';
-  const organizationText = translations?.organization ? translations['organization'] : 'Organization';
-  const expandMapTooltipText = translations?.expandToShowMap ? translations['expandToShowMap'] : 'Expand to display map';
-  const collapseMapTooltipText = translations?.collapseToHideMap ? translations['collapseToHideMap'] : 'Collapse to hide map';
-  const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
-  const removeFromFavouritesTitle = translations?.removeFromFavourites || 'Remove from Favourites';
-  const addToFavouritesTitle = translations?.addToFavourites || 'Add to Favourites';
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getComponentLabels(appLang, 'searchResults'));
 
   /************* Accordion Components ***************/
   let data = $derived(page.data);
@@ -65,18 +58,10 @@
   // + 1 because the first page of results is page 0, but the pagination element starts at 1
   let currentPage: number = $state(Number(page.url.searchParams.get('page-number') ?? '0') + 1);
 
-  const sortBySelectData: SelectOption[] = page.data.sortOptions ?? [];
-  const searchMode = page.data.searchMode ?? 'semantic';
-
-  let sortOrder;
-  if (searchMode === 'semantic') {
-    sortOrder = page.url.searchParams.get('sort') ?? 'relevancy';
-  } else {
-    sortOrder = page.url.searchParams.get('sort') ?? 'popularity-desc';
-  }
-
-  let defaultOption = sortBySelectData.find((sortData: { value: string }) => sortData.value === sortOrder);
-  let selected = $state<SelectOption | undefined>(defaultOption ?? sortBySelectData[0]);
+  const sortBySelectData: SelectOption[] = $derived(page.data.sortOptions ?? []);
+  const searchMode = $derived(page.data.searchMode ?? 'semantic');
+  const sortOrder = $derived(page.url.searchParams.get('sort') ?? (searchMode === 'semantic' ? 'relevancy' : 'popularity-desc'));
+  let selected = $derived(sortBySelectData.find((option) => option.value === sortOrder) ?? sortBySelectData[0]);
 
   /**
    * Changes the sort order of the search results.
@@ -136,7 +121,7 @@
     // Get an array of just the format of each record option
     const formatArray = options.map((option: DistributionOption) => {
       const description = option.description;
-      const descriptionString = lang === 'fr' ? description.fr : description.en;
+      const descriptionString = pickByLanguage(appLang, description.en, description.fr);
       const descriptionArray = descriptionString?.split(';');
 
       // The description string is always in this format 'type;format;language',
@@ -221,7 +206,6 @@
 
   /****************** Map ******************/
   let mapType: MapTypes = 'resultList';
-  let lang = page.data.lang.split('-')[0] as 'en' | 'fr';
 </script>
 
 <!-- When the window is resized, we can close each accordion to reset the map variables. -->
@@ -247,7 +231,11 @@
     <!-- List -->
     {#each results as result, index (`${result.id}-${index}`)}
       <div class="bg-custom-1 px-5 py-4">
-        <Accordion bind:this={accordionComponents[index]} expandTooltip={expandMapTooltipText} collapseTooltip={collapseMapTooltipText}>
+        <Accordion
+          bind:this={accordionComponents[index]}
+          expandTooltip={translations.expandToShowMap}
+          collapseTooltip={translations.collapseToHideMap}
+        >
           {#snippet accordionTitle()}
             <div class="sm:grid grid-cols-10">
               <!------------- Record info ------------->
@@ -259,21 +247,23 @@
                 -->
                 <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
                 <a href={`${hrefPrefix}${result.id}`} class="underline hover:no-underline font-custom-style-header-4">
-                  {lang === 'fr' ? result.title_fr : result.title_en}
+                  {pickByLanguage(appLang, result.title_en, result.title_fr)}
                 </a>
                 <div class="line-clamp-2 pt-1">
                   <!-- Remove new line characters -->
-                  {lang === 'fr' ? result.description_fr.replaceAll('\\n', '') : result.description_en.replaceAll('\\n', '')}
+                  {pickByLanguage(appLang, result.description_en.replaceAll('\\n', ''), result.description_fr.replaceAll('\\n', ''))}
                 </div>
                 <div class="mt-3">
                   <p>
-                    <span class="font-semibold">{organizationText}: </span>
-                    {lang === 'fr'
-                      ? result.contact[0]?.organisation?.fr?.replaceAll(';', '; ')
-                      : result.contact[0]?.organisation?.en?.replaceAll(';', '; ')}
+                    <span class="font-semibold">{translations.organization}: </span>
+                    {pickByLanguage(
+                      appLang,
+                      result.contact[0]?.organisation?.en?.replaceAll(';', '; '),
+                      result.contact[0]?.organisation?.fr?.replaceAll(';', '; ')
+                    )}
                   </p>
                   <p class="mt-2">
-                    <span class="font-semibold">{formatText}: </span>
+                    <span class="font-semibold">{translations.format}: </span>
                     {#each getFormats(result) as format (format)}
                       <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
                     {/each}
@@ -286,7 +276,7 @@
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23 cursor-pointer"
-                  title={removeFromFavouritesTitle}
+                  title={translations.removeFromFavourites}
                   onclick={() => handleFavouriteClick(result.id)}
                 >
                   <HeartFilled classes="h-9" />
@@ -295,7 +285,7 @@
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23 cursor-pointer"
-                  title={addToFavouritesTitle}
+                  title={translations.addToFavourites}
                   onclick={() => handleFavouriteClick(result.id)}
                 >
                   <Heart classes="h-9 hover:fill-custom-23" />
@@ -313,7 +303,7 @@
                 </div>
                 <div class="sm:hidden">
                   <p class="md:mx-0">
-                    {windowTooSmall}
+                    {translations.windowTooSmall}
                   </p>
                   <div class="mt-5 bg-[url('/map-not-available.png')] bg-cover max-w-full h-60">
                     <div class="bg-black/35 w-full h-full flex items-center justify-center">
@@ -322,7 +312,7 @@
                   </div>
                 </div>
               {:else}
-                {mapNotAvailableText}
+                {translations.mapNotAvailable}
               {/if}
             </div>
           {/snippet}

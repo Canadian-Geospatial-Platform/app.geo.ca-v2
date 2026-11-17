@@ -29,6 +29,7 @@
   import Chevronright from '#lib/components/icons/chevronright.svelte';
   import { page } from '$app/state';
   import { formatNumber } from '#lib/utils/format-number.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
 
   interface Props {
     totalItems?: number;
@@ -46,6 +47,7 @@
     pageChange,
   }: Props = $props();
 
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
   let urlPageNumber = $derived(parseInt(page.url.searchParams.get('page-number') || '0', 10) + 1);
   let numPages = $derived(Math.ceil(totalItems / itemsPerPage));
   let halfNumPageButtons = $derived(Math.floor(numPageButtons / 2));
@@ -106,7 +108,7 @@
       ]}
       onclick={() => handlePageClick(page)}
     >
-      {formatNumber(page)}
+      {formatNumber(page, appLang)}
     </button>
   {/each}
   <button

@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import type { Filter, FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters!.filters;
-  const eoCollections = filters.find((filter: Filter) => filter.section === 'eo_collection')!;
+  const filters = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters);
+  const eoCollections = $derived(filters.find((filter: Filter) => filter.section === 'eo_collection')!);
   let checkedStates: Record<string, boolean> = $state({});
 
   // TODO: Extract this and clearAllFilters from here, organisations.svelte, source-system.svelte, themes.svelte, and types.svelte into a utility file

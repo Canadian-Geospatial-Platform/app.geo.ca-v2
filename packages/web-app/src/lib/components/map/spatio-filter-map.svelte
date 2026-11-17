@@ -1,4 +1,5 @@
 <script module lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   // Declare cgpv as a global variable
   // TODO: Find a way to import the cgpv types from geoview here so we don't have to use 'any'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,8 +10,8 @@
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { loadCGPVScript } from '#lib/components/map/loadCGPVScript.js';
-  import { pickByLanguage } from '#lib/utils/language.js';
   import type { GeoviewConfig } from './map-types';
+  import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
 
   // OpenLayers Feature type definition to avoid adding ol dependency
   interface OLGeometry {
@@ -44,7 +45,7 @@
   /************ Map Config ************/
 
   const mapId = 'map-spatio-filter';
-  const mapLang = page.data.lang.split('-')[0] as 'en' | 'fr';
+  const contentLang = getContentLanguage(getAppLanguage(page.data.lang));
 
   const basemapId = 'transport';
   const shaded = true;
@@ -201,14 +202,8 @@
         /*********** Get Extent From View Custom Button ***********/
 
         const buttonGroupName = 'buttonGroup';
-        const buttonTooltip = pickByLanguage(
-          page.data.lang,
-          'Set bounding box to visible extent',
-          "Définir le cadre de délimitation sur l'étendue visible"
-        );
-
         const button = {
-          tooltip: buttonTooltip,
+          tooltip: getTranslations(page.data.lang).components.map.visibleExtent,
           children: cgpv.reactUtilities.react.createElement(
             'svg',
             {
@@ -397,6 +392,6 @@
   id={mapId}
   class="bg-blue-500/5 h-[25rem] max-w-[36rem]"
   data-config={sConfig}
-  data-lang={mapLang}
+  data-lang={contentLang}
   style="border: gray 1px solid;"
 ></div>

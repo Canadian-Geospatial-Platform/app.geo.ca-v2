@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getComponentLabels, getTranslations, formatTranslation } from '#lib/i18n/index.js';
   import { onMount } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
   import { page } from '$app/state';
@@ -14,42 +15,19 @@
   import Checkmark from '#lib/components/icons/checkmark.svelte';
   import GarbageCan from '#lib/components/icons/garbage-can.svelte';
   import SearchBarSimplified from '#lib/components/search-results/search-bar-simplified.svelte';
-  import enTranslations from '#lib/components/favourites/i18n/en/translations.json';
   import type { FavouritesRecord, FavouritesRow } from '#lib/db/db-types.js';
-  import type { AppLanguage } from '#lib/utils/language.js';
-  import { isFrench, pickByLanguage } from '#lib/utils/language.js';
+  import { getContentLanguage, getAppLanguage } from '#lib/utils/language.js';
 
-  type FavouritesTranslations = typeof enTranslations;
-  const translations: FavouritesTranslations = {
-    ...enTranslations,
-    ...((page.data.t ?? {}) as Partial<FavouritesTranslations>),
-  };
-  const lang = page.data.lang as AppLanguage;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getComponentLabels(appLang, 'favourites'));
   const signedIn = Boolean(page.data.signedIn);
   const userDataUnavailable = page.data.userDataStatus === 'unavailable';
 
   // Translations
-  const favouritesTitle = signedIn ? pickByLanguage(lang, 'My GEO.ca', 'Mon GEO.ca') : translations.title;
-  const datasetsDescription = translations.datasetsDescription || translations.description;
-  const loginInfo = translations.loginInfo;
-  const landingDescription = translations.landingDescription;
-  const datasetsTabLabel = translations.datasetsTab;
-  const mapsTabLabel = translations.mapsTab;
-  const datasetsLinkLabel = translations.datasetsLinkLabel;
-  const mapsLinkLabel = translations.mapsLinkLabel;
-  const datasetsLandingDescription = translations.datasetsLandingDescription;
-  const mapsLandingDescription = translations.mapsLandingDescription;
-  const landingTipLabel = translations.landingTipLabel;
-  const remove = translations.remove;
-  const removeAll = translations.removeAll;
-  const resourceListEmpty = translations.resourceListEmpty;
-  const findAResource = translations.findAResource;
-  const savedDataUnavailable = translations.savedDataUnavailable;
-  const viewOnMapLabel = translations.viewOnMap;
-  const searchFor = translations.searchFor;
+  const favouritesTitle = $derived(signedIn ? getTranslations(appLang).general.myGeo : translations.title);
 
-  const langShort = pickByLanguage(lang, 'en', 'fr');
-  const titleKey = `title_${langShort}` as 'title_en' | 'title_fr';
+  const contentLang = $derived(getContentLanguage(appLang));
+  const titleKey = $derived(`title_${contentLang}` as 'title_en' | 'title_fr');
 
   // State
   let actionDialog: ActionDialog;
@@ -69,12 +47,10 @@
     tableDataArray.length > 0 && tableDataArray.every((row) => selectedIds.includes(row.id) || row.disableCheckbox)
   );
 
-  const resourceFormatsLabel = translations.resourceFormats;
-  const resourceNameLabel = translations.resourceName;
-  const tableLabels: Record<string, string> = {
-    name: resourceNameLabel,
-    formats: resourceFormatsLabel,
-  };
+  const tableLabels: Record<string, string> = $derived({
+    name: translations.resourceName,
+    formats: translations.resourceFormats,
+  });
 
   /************* Handlers ***************/
 
@@ -86,15 +62,16 @@
   async function handleDeleteResource(id: string): Promise<void> {
     // Before deleting, ask the user's permission
     const resource = tableDataArray.find((tableData: FavouritesRow) => tableData.id === id);
-    const resourceName = resource?.name;
-    const permissionText = isFrench(lang)
-      ? `Êtes-vous sûr de vouloir supprimer la ressource suivante? \n\n${resourceName} (${id})`
-      : `Are you sure you want to delete the following resource? \n\n${resourceName} (${id})`;
+    const resourceName = resource?.name ?? id;
+    const permissionText = formatTranslation(getTranslations(appLang).components.favourites.messages.deleteResource, {
+      name: resourceName,
+      id: id,
+    });
 
     if (await actionDialog.confirm(permissionText)) {
       // If the user confirms, proceed with deletion. For signed-in users, also update the server-side favourites.
       if (signedIn) {
-        const response = await fetch(`/${lang}/api/favourites`, {
+        const response = await fetch(`/${appLang}/api/favourites`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id }),
@@ -128,14 +105,14 @@
    * resetting local table state and local-storage data.
    */
   async function handleRemoveAllClick(): Promise<void> {
-    const permissionText = isFrench(lang)
-      ? `Êtes-vous certain de vouloir supprimer ${favouriteRecordList.length} ressources?`
-      : `Are you sure you want to delete ${favouriteRecordList.length} resources?`;
+    const permissionText = formatTranslation(getTranslations(appLang).components.favourites.messages.deleteResources, {
+      count: favouriteRecordList.length,
+    });
 
     if (await actionDialog.confirm(permissionText)) {
       // If the user confirms, proceed with deletion. For signed-in users, also update the server-side favourites.
       if (signedIn) {
-        const response = await fetch(`/${lang}/api/favourites`, {
+        const response = await fetch(`/${appLang}/api/favourites`, {
           method: 'PUT',
         });
         if (!response.ok) {
@@ -168,7 +145,7 @@
     }
 
     const ids = selectedIds.join(',');
-    goto(resolve(`/[lang]/favourites/view?ids=${encodeURIComponent(ids)}&source=datasets`, { lang }));
+    goto(resolve(`/[lang]/favourites/view?ids=${encodeURIComponent(ids)}&source=datasets`, { lang: appLang }));
   }
 
   /**
@@ -191,9 +168,9 @@
     }
 
     if (favouriteRecordList.length > 0) {
-      const response = await fetch(`/${lang}/favourites`, {
+      const response = await fetch(`/${appLang}/favourites`, {
         method: 'POST',
-        body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
+        body: JSON.stringify({ ids: favouriteRecordList, lang: appLang }),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -205,7 +182,7 @@
           id: record.id,
           formats: record.formats.join(', '),
           name: record[titleKey],
-          url: `${page.url.origin}/${lang}/map-browser/record/${record.id}`,
+          url: `${page.url.origin}/${appLang}/map-browser/record/${record.id}`,
         };
       });
 
@@ -230,14 +207,14 @@
   {#if isLanding}
     {#if userDataUnavailable}
       <div class="status-alert-error font-custom-style-body-1" role="status" aria-live="polite">
-        {savedDataUnavailable}
+        {translations.savedDataUnavailable}
       </div>
     {:else}
       <!-- Landing page for signed-in users -->
       <p class="font-custom-style-body-1 mx-0 mb-7 max-w-4xl leading-relaxed">
         <!-- These are our descriptions, no injection risk -->
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html landingDescription}
+        {@html translations.landingDescription}
       </p>
       <Card type="tabbed">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -246,14 +223,14 @@
           >
             <div class="flex items-start justify-between gap-4">
               <h2 class="font-custom-style-h2-2">
-                <a class="hover:underline" href={resolve('/[lang]/favourites/datasets', { lang })}>
-                  {datasetsTabLabel} ({favouriteRecordList.length})
+                <a class="hover:underline" href={resolve('/[lang]/favourites/datasets', { lang: appLang })}>
+                  {translations.datasetsTab} ({favouriteRecordList.length})
                 </a>
               </h2>
             </div>
-            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">{datasetsLandingDescription}</p>
-            <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/datasets', { lang })}>
-              {datasetsLinkLabel}
+            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">{translations.datasetsLandingDescription}</p>
+            <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/datasets', { lang: appLang })}>
+              {translations.datasetsLinkLabel}
             </a>
           </section>
 
@@ -262,20 +239,20 @@
           >
             <div class="flex items-start justify-between gap-4">
               <h2 class="font-custom-style-h2-2">
-                <a class="hover:underline" href={resolve('/[lang]/favourites/maps', { lang })}>
-                  {mapsTabLabel} ({savedMapsCount})
+                <a class="hover:underline" href={resolve('/[lang]/favourites/maps', { lang: appLang })}>
+                  {translations.mapsTab} ({savedMapsCount})
                 </a>
               </h2>
             </div>
-            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">{mapsLandingDescription}</p>
-            <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/maps', { lang })}>
-              {mapsLinkLabel}
+            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">{translations.mapsLandingDescription}</p>
+            <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/maps', { lang: appLang })}>
+              {translations.mapsLinkLabel}
             </a>
           </section>
         </div>
         <div class="info-tip-card">
           <p>
-            {landingTipLabel}
+            {translations.landingTipLabel}
           </p>
         </div>
       </Card>
@@ -284,10 +261,10 @@
     <!-- Guest list -->
     <p class="page-copy-block">
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-      {@html datasetsDescription}
+      {@html translations.datasetsDescription}
     </p>
     <p class="page-copy-block">
-      {loginInfo}
+      {translations.loginInfo}
     </p>
 
     {#if records.length > 0}
@@ -336,7 +313,10 @@
               <!-- Resource -->
               <div class="flex-1">
                 <!-- Resource data-->
-                <a href={resolve('/[lang]/map-browser/record/[uuid]', { lang, uuid: item.id })} class="font-custom-style-h2-2 block">
+                <a
+                  href={resolve('/[lang]/map-browser/record/[uuid]', { lang: appLang, uuid: item.id })}
+                  class="font-custom-style-h2-2 block"
+                >
                   {item.name}
                 </a>
                 <p class="font-custom-style-body-9">{item.id}</p>
@@ -344,7 +324,7 @@
                 <!-- Remove Button-->
                 <button class="button-action-light button-action-remove" onclick={() => handleDeleteResource(item.id)}>
                   <GarbageCan classes="h-4 button-icon-inline" />
-                  {remove}
+                  {translations.remove}
                 </button>
               </div>
             </div>
@@ -360,19 +340,19 @@
               disabled={!canOpenMap}
               aria-disabled={!canOpenMap}
             >
-              {viewOnMapLabel} ({numSelected})
+              {translations.viewOnMap} ({numSelected})
             </button>
           </div>
 
           <button class="button-inline-desktop button-action-light button-width-mobile-full" onclick={handleRemoveAllClick}>
             <GarbageCan classes="h-4 button-icon-inline" />
-            {removeAll}
+            {translations.removeAll}
           </button>
         </div>
       </Card>
 
       <h2 class="mb-4 mt-9 mx-0 font-custom-style-h2 md:mr-auto">
-        {searchFor}
+        {translations.searchFor}
       </h2>
       <SearchBarSimplified />
     {:else}
@@ -380,11 +360,11 @@
         <NoMap classes="text-custom-19 m-auto h-48 md:h-80 lg:h-96" />
 
         <p class="block m-auto w-fit font-custom-style-h2 text-center">
-          {resourceListEmpty}
+          {translations.resourceListEmpty}
         </p>
 
-        <a class="button-action-dark button-cta-link-dark block m-auto mt-5" href={resolve('/[lang]/map-browser', { lang })}>
-          {findAResource}
+        <a class="button-action-dark button-cta-link-dark block m-auto mt-5" href={resolve('/[lang]/map-browser', { lang: appLang })}>
+          {translations.findAResource}
         </a>
       </div>
     {/if}

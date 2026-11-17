@@ -1,12 +1,5 @@
+import { getTranslations } from '#lib/i18n/index.js';
 import { pickByLanguage, type AppLanguage } from '#lib/utils/language.js';
-
-/**
- * Localized description payload used for SEO metadata.
- */
-interface DescriptionByLanguage {
-  en: string;
-  fr: string;
-}
 
 /**
  * Standard SEO metadata payload returned by server loads.
@@ -27,24 +20,24 @@ interface BreadcrumbTitle {
 }
 
 /**
- * Builds canonical, alternate, and localized description metadata for a page.
+ * Builds canonical and alternate URLs with an already-localized page description.
  *
  * @param url Current request URL.
- * @param lang Current app language.
+ * @param appLang Current app language.
  * @param canonicalPath Path segment after language, without leading slash.
- * @param description Localized description strings.
+ * @param description Description already localized for appLang; used unchanged.
  * @returns SEO metadata object used in page data.
  */
-export function buildSeoMetadata(url: URL, lang: AppLanguage, canonicalPath: string, description: DescriptionByLanguage): SeoMetadata {
-  const canonicalUrl = `${url.origin}/${lang}/${canonicalPath}`;
-  const alternateLang: AppLanguage = lang === 'fr-ca' ? 'en-ca' : 'fr-ca';
-  const alternateUrl = url.href.replace(lang, alternateLang);
-  const metaDescription = pickByLanguage(lang, description.en, description.fr);
+export function buildSeoMetadata(url: URL, appLang: AppLanguage, canonicalPath: string, description: string): SeoMetadata {
+  const canonicalUrl = `${url.origin}/${appLang}/${canonicalPath}`;
+  const alternateAppLang = pickByLanguage<AppLanguage>(appLang, 'fr-ca', 'en-ca');
+  const alternateUrl = url.href.replace(appLang, alternateAppLang);
+  const metaDescription = description;
 
   return {
     canonicalUrl,
     alternateUrl,
-    alternateLang,
+    alternateLang: alternateAppLang,
     metaDescription,
   };
 }
@@ -53,13 +46,13 @@ export function buildSeoMetadata(url: URL, lang: AppLanguage, canonicalPath: str
  * Builds the common catalog breadcrumb title.
  *
  * @param url Current request URL.
- * @param lang Current app language.
+ * @param appLang Current app language.
  * @returns Localized breadcrumb title and href for the catalog root.
  */
-export function buildCatalogTitle(url: URL, lang: AppLanguage): BreadcrumbTitle {
+export function buildCatalogTitle(url: URL, appLang: AppLanguage): BreadcrumbTitle {
   return {
-    text: pickByLanguage(lang, 'Geospatial Data Catalog', 'Catalogue de données géospatiales'),
-    href: `${url.origin}/${lang}/map-browser`,
+    text: getTranslations(appLang).general.catalogue,
+    href: `${url.origin}/${appLang}/map-browser`,
   };
 }
 
@@ -67,14 +60,12 @@ export function buildCatalogTitle(url: URL, lang: AppLanguage): BreadcrumbTitle 
  * Builds a localized page breadcrumb title for the current URL.
  *
  * @param url Current request URL.
- * @param lang Current app language.
- * @param titleEn English page title.
- * @param titleFr French page title.
+ * @param title Already-localized page title; used unchanged.
  * @returns Localized breadcrumb title and href.
  */
-export function buildPageTitle(url: URL, lang: AppLanguage, titleEn: string, titleFr: string): BreadcrumbTitle {
+export function buildPageTitle(url: URL, title: string): BreadcrumbTitle {
   return {
-    text: pickByLanguage(lang, titleEn, titleFr),
+    text: title,
     href: url.href,
   };
 }

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels, getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import SelectCustomized from '#lib/components/select-customized/select-customized.svelte';
@@ -6,22 +8,19 @@
   import type { Filter, FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
-  const filters = page.data.filters?.filters;
-  const types = filters?.find((filter: Filter) => filter.section === 'type');
+  const filters = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters);
+  const types = $derived(filters?.find((filter: Filter) => filter.section === 'type'));
   let checkedStates = $state<Record<string, boolean>>({});
 
   /************* Translations ***************/
-  const translations = page.data.t;
-  const conditionLabel = translations?.condition ?? 'Condition:';
-  const anyLabel = translations?.anyLabel ?? 'Any (OR)';
-  const allLabel = translations?.allLabel ?? 'All (AND)';
-  const logicOptions: SelectOption[] = [
-    { value: 'any', label: anyLabel },
-    { value: 'all', label: allLabel },
-  ];
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
+  const logicOptions: SelectOption[] = $derived([
+    { value: 'any', label: translations.anyLabel },
+    { value: 'all', label: translations.allLabel },
+  ]);
 
   let typeLogic = $state<'any' | 'all'>('any');
-  let selectedLogic = $state<SelectOption | undefined>(logicOptions[0]);
+  let selectedLogic = $derived(logicOptions.find((option) => option.value === typeLogic));
 
   /**
    * Resets from URL (this is what restores state when reopening)
@@ -73,7 +72,7 @@
 
 <!-- Condition dropdown -->
 <div class="mb-2 flex items-center gap-2">
-  <span class="text-base text-gray-600">{conditionLabel}</span>
+  <span class="text-base text-gray-600">{translations.condition}</span>
   <div class="w-full max-w-52">
     <SelectCustomized optionsData={logicOptions} bind:selected={selectedLogic} selectedChange={onTypeLogicChange} />
   </div>

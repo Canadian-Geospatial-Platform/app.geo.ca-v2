@@ -4,13 +4,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { getAppLanguageMock, loadFavouritesPageDataMock } = vi.hoisted(() => ({
-  getAppLanguageMock: vi.fn<(lang: string) => 'en-ca' | 'fr-ca'>(),
+  getAppLanguageMock: vi.fn<(inputLanguage: string) => 'en-ca' | 'fr-ca'>(),
   loadFavouritesPageDataMock: vi.fn(),
 }));
 
 vi.mock('#lib/utils/language.js', () => ({
   getAppLanguage: getAppLanguageMock,
-  pickByLanguage: (lang: 'en-ca' | 'fr-ca', enValue: string, frValue: string) => (lang === 'fr-ca' ? frValue : enValue),
+  pickByLanguage: (appLang: 'en-ca' | 'fr-ca', enValue: string, frValue: string) => (appLang === 'fr-ca' ? frValue : enValue),
 }));
 
 vi.mock('#lib/utils/favourites/page-load.server.js', () => ({
@@ -45,14 +45,14 @@ function createPageData(uuid: string | null) {
  * Creates a minimal page-server event for route load tests.
  *
  * @param url - Absolute request URL.
- * @param lang - Route language parameter.
+ * @param appLang - Route language parameter.
  * @returns Mock event payload with fetch, cookies, params, and URL.
  */
-function createEvent(url: string, lang: string = 'en-ca') {
+function createEvent(url: string, appLang: string = 'en-ca') {
   return {
     fetch: vi.fn(),
     cookies: {} as never,
-    params: { lang },
+    params: { lang: appLang },
     url: new URL(url),
   } as const;
 }
@@ -60,7 +60,7 @@ function createEvent(url: string, lang: string = 'en-ca') {
 describe('favourites split route loads', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    getAppLanguageMock.mockImplementation((lang) => (lang === 'fr-ca' ? 'fr-ca' : 'en-ca'));
+    getAppLanguageMock.mockImplementation((inputLanguage) => (inputLanguage === 'fr-ca' ? 'fr-ca' : 'en-ca'));
   });
 
   it('keeps /favourites accessible for guests', async () => {

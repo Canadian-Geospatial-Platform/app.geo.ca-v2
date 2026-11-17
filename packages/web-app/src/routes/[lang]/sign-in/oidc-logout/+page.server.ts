@@ -12,10 +12,10 @@ import { getAppLanguage } from '#lib/utils/language.js';
  * @returns Confirmation data and a safe local return path.
  */
 export const load: PageServerLoad = ({ url, params }) => {
-  const lang = getAppLanguage(params.lang);
+  const appLang = getAppLanguage(params.lang);
   return {
-    lang,
-    returnTo: url.searchParams.get('returnTo') === `/${lang}/favourites` ? `/${lang}/favourites` : null,
+    lang: appLang,
+    returnTo: url.searchParams.get('returnTo') === `/${appLang}/favourites` ? `/${appLang}/favourites` : null,
   };
 };
 

@@ -10,6 +10,7 @@
   import { onMount } from 'svelte';
   import { loadCGPVScript } from '#lib/components/map/loadCGPVScript.js';
   import { normalizeCoordinates } from '#lib/utils/normalize-coordinates.js';
+  import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
   import type { GeoviewConfig, MapTypes } from '#lib/components/map/map-types.js';
 
   interface Props {
@@ -37,7 +38,7 @@
   }: Props = $props();
 
   let mapId = $derived(`map-${mapType}-${id}`);
-  let mapLang = page.data.lang.split('-')[0] as 'en' | 'fr';
+  let contentLang = getContentLanguage(getAppLanguage(page.data.lang));
 
   // TODO: extract to use one config for this and favourites map.
   let config: GeoviewConfig = $derived.by(() => ({
@@ -263,4 +264,10 @@
   });
 </script>
 
-<div id={mapId} class="bg-blue-500/5 w-full aspect-video" data-config={sConfig} data-lang={mapLang} style="border: gray 1px solid;"></div>
+<div
+  id={mapId}
+  class="bg-blue-500/5 w-full aspect-video"
+  data-config={sConfig}
+  data-lang={contentLang}
+  style="border: gray 1px solid;"
+></div>

@@ -4,7 +4,7 @@
 
   const canonicalUrl = page.data.canonicalUrl;
   const alternateUrl = page.data.alternateUrl;
-  const alternateLang = page.data.alternateLang;
+  const alternateAppLang = page.data.alternateLang;
   const metaDescription = page.data.metaDescription;
 </script>
 
@@ -12,7 +12,7 @@
   <title>{page.data.item_v2?.title}</title>
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
-  <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+  <link rel="alternate" hreflang={alternateAppLang} href={alternateUrl} />
 </svelte:head>
 
 <Record />

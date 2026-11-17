@@ -1,5 +1,6 @@
 import type { GeospatialRecord } from '#lib/db/db-types.js';
 import type { RequestEvent } from '@sveltejs/kit';
+import { getAppLanguage, getContentLanguage, type AppLanguage } from '#lib/utils/language.js';
 
 /**
  * Handles POST requests to fetch records by IDs.
@@ -8,13 +9,13 @@ import type { RequestEvent } from '@sveltejs/kit';
  * @returns A promise that resolves to the record response.
  */
 export async function POST({ request }: RequestEvent): Promise<Response> {
-  const { ids, lang } = await request.json();
+  const { ids, lang: requestedLanguage } = await request.json();
 
   if (!Array.isArray(ids)) {
     return Response.json({ error: 'Invalid IDs' }, { status: 400 });
   }
 
-  const records: GeospatialRecord[] = await getRecordsByIds(ids, lang);
+  const records: GeospatialRecord[] = await getRecordsByIds(ids, getAppLanguage(requestedLanguage));
 
   return Response.json(records);
 }
@@ -23,14 +24,14 @@ export async function POST({ request }: RequestEvent): Promise<Response> {
  * Gets a record from the GeoCore API.
  *
  * @param id - The record ID.
- * @param lang - The language code.
+ * @param appLang - The language code.
  * @returns A promise that resolves to the fetch response.
  */
-function getRecord(id: string, lang: string): Promise<Response> {
+function getRecord(id: string, appLang: AppLanguage): Promise<Response> {
   const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/id/v2`);
   const params = {
     id: id,
-    lang: lang.split('-')[0],
+    lang: getContentLanguage(appLang),
   };
   url.search = new URLSearchParams(params).toString();
   return fetch(url);
@@ -40,14 +41,14 @@ function getRecord(id: string, lang: string): Promise<Response> {
  * Gets multiple records from the GeoCore API.
  *
  * @param idIterator - An array of record IDs.
- * @param lang - The language code.
+ * @param appLang - The language code.
  * @returns A promise that resolves to an array of records.
  */
-async function getRecordsByIds(idIterator: string[], lang: string): Promise<GeospatialRecord[]> {
+async function getRecordsByIds(idIterator: string[], appLang: AppLanguage): Promise<GeospatialRecord[]> {
   const promises: Promise<Response>[] = [];
 
   for (const id of idIterator) {
-    promises.push(getRecord(id, lang));
+    promises.push(getRecord(id, appLang));
   }
 
   const results = await Promise.all(promises);

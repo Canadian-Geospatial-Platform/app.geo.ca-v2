@@ -1,18 +1,12 @@
+import type { AppLanguage } from '#lib/utils/language.js';
+
 /**
- * Formats a number by adding comma separators for thousands.
- *
- * To conform with the Canada.ca Content Style Guide large numbers should be
- * formatted with a comma separator every three digits.
+ * Formats a number using the application's locale for grouping and decimal separators.
  *
  * @param num - The number to format.
+ * @param appLang - Normalized application language, independent of the runtime's default locale.
  * @returns The formatted number as a string.
  */
-export const formatNumber = function (num: string | number): string {
-  if (typeof num === 'number') {
-    num = num.toLocaleString();
-  } else if (typeof num === 'string') {
-    num = Number.parseFloat(num).toLocaleString();
-  }
-
-  return num;
+export const formatNumber = function (num: string | number, appLang: AppLanguage): string {
+  return (typeof num === 'number' ? num : Number.parseFloat(num)).toLocaleString(appLang);
 };

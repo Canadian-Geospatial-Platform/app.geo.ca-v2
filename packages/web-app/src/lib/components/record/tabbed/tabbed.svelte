@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import TabCard from '#lib/components/tab-card/tab-card.svelte';
   import DataResources from './data-resources.svelte';
@@ -8,35 +10,31 @@
   import type { SelectOption } from '#lib/components/select-customized/selected-types.d.ts';
 
   /******************* Translations *******************/
-  const translations = page.data.t;
-  const dataResources: string = translations?.dataResources ? translations['dataResources'] : 'Data resources';
-  const advancedMetadata: string = translations?.advancedMetadata ? translations['advancedMetadata'] : 'Advanced metadata';
-  const contactData: string = translations?.contactData ? translations['contactData'] : 'Contact';
-  const relatedProducts: string = translations?.relatedProducts ? translations['relatedProducts'] : 'Related products';
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record'));
 
   /******************* Data *******************/
-  const tabContentArray: SelectOption[] = [
+  const tabContentArray: SelectOption[] = $derived([
     {
-      label: dataResources,
+      label: translations.dataResources,
       value: '1',
       component: DataResources,
     },
     {
-      label: advancedMetadata,
+      label: translations.advancedMetadata,
       value: '2',
       component: AdvancedMetadata,
     },
     {
-      label: contactData,
+      label: translations.contactData,
       value: '3',
       component: Contact,
     },
     {
-      label: relatedProducts,
+      label: translations.relatedProducts,
       value: '4',
       component: RelatedProducts,
     },
-  ];
+  ]);
 </script>
 
 <div class="flex flex-col space-y-3">

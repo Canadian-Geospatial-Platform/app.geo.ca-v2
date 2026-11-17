@@ -1,3 +1,4 @@
+import { getTranslations } from '#lib/i18n/index.js';
 import type { Actions, PageServerLoad } from './$types';
 import { addToFavourites, removeFromFavourites } from '#lib/actions.js';
 import { getUserData } from '#lib/db/user.js';
@@ -5,7 +6,7 @@ import { sanitize } from '#lib/utils/data-sanitization/geocore-result.js';
 import { sanitizeSemantic } from '#lib/utils/data-sanitization/semantic-results.js';
 import { formatNumber } from '#lib/utils/format-number.js';
 import type { GeospatialRecord, UserInfo } from '#lib/db/db-types.js';
-import { getAppLanguage } from '#lib/utils/language.js';
+import { getAppLanguage, getContentLanguage, type AppLanguage } from '#lib/utils/language.js';
 import { buildSeoMetadata } from '#lib/utils/metadata.js';
 
 interface ParsedResponse {
@@ -74,7 +75,7 @@ type SearchMode = 'classic' | 'semantic';
  * @returns Search result data required by the map-browser page.
  */
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
-  const lang = getAppLanguage(params.lang);
+  const appLang = getAppLanguage(params.lang);
   const searchMode: SearchMode =
     url.searchParams.get('searchMethod') === 'classic' || !process.env.SEMANTIC_SEARCH_URL ? 'classic' : 'semantic';
   let parsedResponse: ParsedResponse = {};
@@ -85,14 +86,14 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     const response = await generateSearchUrl(
       fetch,
       url.searchParams,
-      lang,
+      appLang,
       cookies.get('id_token') || '',
       request.headers.get('x-forwarded-for') || '',
       searchMode
     );
     parsedResponse = (await response.json()) as ParsedResponse;
     if (searchMode === 'classic') {
-      sanitizedResults = sanitize(parsedResponse.Items ?? [], lang);
+      sanitizedResults = sanitize(parsedResponse.Items ?? [], appLang);
     } else {
       sanitizedResults = sanitizeSemantic(parsedResponse?.response?.items ?? []);
     }
@@ -100,7 +101,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     console.error('Failed to fetch search results:', e);
   }
 
-  const analytics = await getAnalytics(fetch);
+  const analytics = await getAnalytics(fetch, appLang);
 
   let totalHits;
   if (searchMode === 'classic') {
@@ -116,13 +117,10 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     console.warn(e);
   }
 
-  const seo = buildSeoMetadata(url, lang, 'map-browser', {
-    en: 'Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters.',
-    fr: 'Parcourez les enregistrements GeoCore et trouvez les jeux de données les plus pertinents selon vos termes de recherche et filtres sélectionnés.',
-  });
+  const seo = buildSeoMetadata(url, appLang, 'map-browser', getTranslations(appLang).pages.search.description);
 
   return {
-    lang,
+    lang: appLang,
     results: sanitizedResults,
     userData: userData.Item,
     start: getMin(url.searchParams),
@@ -142,7 +140,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
  *
  * @param fetch - The fetch function.
  * @param searchParams - The URL search parameters.
- * @param lang - The language code.
+ * @param appLang - The language code.
  * @param token - The authentication token.
  * @param ip - The user's IP address.
  * @param mode - The search mode.
@@ -151,7 +149,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
 function generateSearchUrl(
   fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
   searchParams: URLSearchParams,
-  lang: string,
+  appLang: AppLanguage,
   token: string,
   ip: string,
   mode: SearchMode
@@ -160,7 +158,7 @@ function generateSearchUrl(
   const url = isSemantic
     ? new URL(`${process.env.SEMANTIC_SEARCH_URL}/search-opensearch`)
     : new URL(`${process.env.GEOCORE_API_DOMAIN}/geo`);
-  const params = isSemantic ? mapSemanticSearchResults(searchParams, lang) : mapSearchParams(searchParams, lang);
+  const params = isSemantic ? mapSemanticSearchResults(searchParams, appLang) : mapSearchParams(searchParams, appLang);
 
   // URLSearchParams automatically encodes special characters to the html counterpart.
   // However, the geocore get requests require the '+' to be unencoded, so
@@ -184,10 +182,14 @@ function generateSearchUrl(
  * Fetches analytics data from the GeoCore API.
  *
  * @param fetch - The fetch function.
+ * @param appLang - Normalized application language used to format analytics counts.
  * @returns The analytics results.
  * @async
  */
-async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) => Promise<Response>): Promise<AnalyticsItem> {
+async function getAnalytics(
+  fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
+  appLang: AppLanguage
+): Promise<AnalyticsItem> {
   let parsedAnalytics: { Items: AnalyticsItem[] } = { Items: [] };
 
   try {
@@ -203,8 +205,10 @@ async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) =>
     const total = item?.total;
     const organization = item?.organization;
 
-    parsedAnalytics.Items[i].total = total ? formatNumber(total) : 'N/A';
-    parsedAnalytics.Items[i].organization = organization ? formatNumber(organization) : 'N/A';
+    parsedAnalytics.Items[i].total = total ? formatNumber(total, appLang) : getTranslations(appLang).general.notApplicable;
+    parsedAnalytics.Items[i].organization = organization
+      ? formatNumber(organization, appLang)
+      : getTranslations(appLang).general.notApplicable;
   }
 
   return parsedAnalytics?.Items[0] ?? {};
@@ -214,10 +218,10 @@ async function getAnalytics(fetch: (url: string | URL, options?: RequestInit) =>
  * Maps URL search parameters to the format required by the GeoCore API.
  *
  * @param searchParams - The URL search parameters.
- * @param lang - The language code.
+ * @param appLang - The language code.
  * @returns The mapped search parameters.
  */
-function mapSearchParams(searchParams: URLSearchParams, lang: string): SearchParams {
+function mapSearchParams(searchParams: URLSearchParams, appLang: AppLanguage): SearchParams {
   const mappedParams: SearchParams = {
     north: getNumericSearchParam(searchParams, 'north', 90),
     east: getNumericSearchParam(searchParams, 'east', 180),
@@ -234,7 +238,7 @@ function mapSearchParams(searchParams: URLSearchParams, lang: string): SearchPar
     foundational: searchParams.get('foundational') ? 'true' : '',
     begin: typeof searchParams.get('begin') === 'string' ? new Date(searchParams.get('begin') as string).toISOString() : '',
     end: typeof searchParams.get('end') === 'string' ? new Date(searchParams.get('end') as string).toISOString() : '',
-    lang: lang.split('-')[0],
+    lang: getContentLanguage(appLang),
     min: getMin(searchParams),
     max: getMax(searchParams),
     sort: searchParams.get('sort'),
@@ -246,10 +250,10 @@ function mapSearchParams(searchParams: URLSearchParams, lang: string): SearchPar
  * Maps semantic URL search parameters to the format required by the GeoCore API for semantic search.
  *
  * @param searchParams - The URL search parameters.
- * @param lang - The language code.
+ * @param appLang - The language code.
  * @returns The mapped search parameters.
  */
-function mapSemanticSearchResults(searchParams: URLSearchParams, lang: string): SemanticSearchParams {
+function mapSemanticSearchResults(searchParams: URLSearchParams, appLang: AppLanguage): SemanticSearchParams {
   const west = getNumericSearchParam(searchParams, 'west', -180);
   const north = getNumericSearchParam(searchParams, 'north', 90);
   const east = getNumericSearchParam(searchParams, 'east', 180);
@@ -274,7 +278,7 @@ function mapSemanticSearchResults(searchParams: URLSearchParams, lang: string): 
     eo_collection: searchParams.get('eo_collection') ?? '',
     polarization: '',
     orbit_direction: '',
-    lang: lang.split('-')[0],
+    lang: getContentLanguage(appLang),
     sort: searchParams.get('sort') ?? 'relevancy',
     order: searchParams.get('sort') === 'title' ? 'asc' : 'desc',
     size: searchParams.get('results-per-page') ?? '10',

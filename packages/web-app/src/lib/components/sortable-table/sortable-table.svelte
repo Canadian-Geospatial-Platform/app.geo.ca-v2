@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import type { Snippet } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import SortDown from '#lib/components/icons/sort-down.svelte';
   import SortInactive from '#lib/components/icons/sort-inactive.svelte';
   import SortUp from '#lib/components/icons/sort-up.svelte';
@@ -56,9 +57,8 @@
   }: Props = $props();
 
   /************** Translations **************/
-  const lang = page.data.lang;
-  const selectAllLabel = pickByLanguage(lang, 'Select all', 'Tout sélectionner');
-  const deleteLabel = pickByLanguage(lang, 'Delete resource', 'Supprimer la ressource');
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang).components.sortableTable);
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -241,7 +241,7 @@
           <th class="w-fit border border-custom-9">
             <div class="flex flex-col items-center w-fit mx-auto hover:cursor-pointer relative">
               <label class="block font-custom-style-header-1 whitespace-nowrap mb-2" for="checkAll">
-                {selectAllLabel}
+                {translations.selectAll}
               </label>
               <input
                 type="checkbox"
@@ -284,7 +284,7 @@
           <!-------------- Remove Row Column -------------->
           <th class="w-fit border border-custom-9">
             <div class="block font-custom-style-header-1 mb-2">
-              {deleteLabel}
+              {translations.deleteResource}
             </div>
           </th>
         {/if}

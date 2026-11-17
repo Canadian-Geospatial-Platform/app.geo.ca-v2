@@ -1,10 +1,9 @@
+import { getTranslations, formatTranslation } from '#lib/i18n/index.js';
 import type { PageServerLoad } from './$types';
-import enLabels from '#lib/components/record/i18n/en/translations.json';
-import frLabels from '#lib/components/record/i18n/fr/translations.json';
 import { parseText } from '#lib/utils/parse-text.js';
 import { formatNumber } from '#lib/utils/format-number.js';
 import { normalizeCoordinates } from '#lib/utils/normalize-coordinates.js';
-import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
+import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
 import { buildCatalogTitle, buildPageTitle, buildSeoMetadata } from '#lib/utils/metadata.js';
 import type { GeospatialRecord, SimilarityRecord, ContactInfo } from '#lib/db/db-types.js';
 import { error } from '@sveltejs/kit';
@@ -38,10 +37,16 @@ type AnalyticsSummary = {
  */
 export const load: PageServerLoad = async ({ request, fetch, params, url, cookies }) => {
   const appLang = getAppLanguage(params.lang);
-  const lang = appLang === 'en-ca' ? 'en' : 'fr';
+  const contentLang = getContentLanguage(appLang);
 
   let record: RecordApiResponse | null = null;
-  const response = await generateUrl(fetch, params.uuid, lang, cookies.get('id_token') || '', request.headers.get('x-forwarded-for') || '');
+  const response = await generateUrl(
+    fetch,
+    params.uuid,
+    contentLang,
+    cookies.get('id_token') || '',
+    request.headers.get('x-forwarded-for') || ''
+  );
   try {
     record = await response.json();
   } catch (error) {
@@ -95,12 +100,10 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   let analyticRes: AnalyticsSummary = {};
   if (record?.hits) {
     analyticRes = {
-      '30': formatNumber(record.hits.last_30_days ?? 0),
-      all: formatNumber(record.hits.all_time ?? 0),
+      '30': formatNumber(record.hits.last_30_days ?? 0, appLang),
+      all: formatNumber(record.hits.all_time ?? 0, appLang),
     };
   }
-
-  const t = pickByLanguage(appLang, enLabels, frLabels);
 
   const related = await fetchRelated(params.uuid);
 
@@ -129,10 +132,10 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     item_v2.distributor.forEach((dist: ContactInfo | null, index: number) => {
       if (dist && dist.organisation) {
         // Filter for unique values with a new Set object
-        const orgString = dist.organisation[lang as 'en' | 'fr'];
+        const orgString = dist.organisation[contentLang as 'en' | 'fr'];
         const orgs = [...new Set(orgString?.split('; ') || [])];
         // convert back to string
-        dist.organisation[lang as 'en' | 'fr'] = orgs.length > 0 ? orgs.join('; ') : '';
+        dist.organisation[contentLang as 'en' | 'fr'] = orgs.length > 0 ? orgs.join('; ') : '';
       } else {
         item_v2.distributor[index] = { organisation: { en: '', fr: '' } } as ContactInfo;
       }
@@ -195,21 +198,22 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
     });
   }
 
-  const seo = buildSeoMetadata(url, appLang, `map-browser/record/${params.uuid}`, {
-    en: `The metadata page and map for the GeoCore record ${params.uuid}`,
-    fr: `La page de métadonnées et la carte de l'enregistrement GeoCore ${params.uuid}`,
-  });
+  const seo = buildSeoMetadata(
+    url,
+    appLang,
+    `map-browser/record/${params.uuid}`,
+    formatTranslation(getTranslations(appLang).pages.record.description, { id: params.uuid })
+  );
 
-  item_v2.title = item_v2[`title_${lang}`];
+  item_v2.title = item_v2[`title_${contentLang}`];
   return {
     tTitle1: buildCatalogTitle(url, appLang),
-    tTitle2: buildPageTitle(url, appLang, 'Metadata', 'Métadonnées'),
+    tTitle2: buildPageTitle(url, getTranslations(appLang).components.record.labels.metadata),
     lang: appLang,
     uuid: params.uuid,
     similar: extractSimilar(item_v2),
     related: related,
     analyticRes: analyticRes,
-    t: t,
     item_v2: item_v2,
     canonicalUrl: seo.canonicalUrl,
     alternateUrl: seo.alternateUrl,
@@ -224,7 +228,7 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
    *
    * @param fetch - The fetch function.
    * @param uuid - The UUID of the record.
-   * @param lang - The language code.
+   * @param contentLang - The language code.
    * @param token - The authentication token.
    * @param ip - The IP address.
    * @returns A promise that resolves to the fetch response.
@@ -232,11 +236,11 @@ export const load: PageServerLoad = async ({ request, fetch, params, url, cookie
   function generateUrl(
     fetch: (url: string | URL, options?: RequestInit) => Promise<Response>,
     uuid: string,
-    lang: string,
+    contentLang: string,
     token: string,
     ip: string
   ): Promise<Response> {
-    const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${lang}`);
+    const url = new URL(`${process.env.GEOCORE_API_DOMAIN}/id/v2?id=${uuid}&lang=${contentLang}`);
 
     return fetch(url, {
       headers: {

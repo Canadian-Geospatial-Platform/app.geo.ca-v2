@@ -1,24 +1,22 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import { resolve } from '$app/paths';
-  import type { AppLanguage } from '#lib/utils/language.js';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
 
   // Assign a default lang to prevent 'undefined' in the url when lang is not set
-  const lang = (page.data.lang ?? 'en-ca') as AppLanguage;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
 
-  const geoCaUrl = $derived(pickByLanguage(lang, 'https://geo.ca/home', 'https://geo.ca/fr/accueil/index.html'));
-  const homeLabel = $derived(pickByLanguage(lang, 'Home', 'Accueil'));
+  const translations = $derived(getTranslations(appLang));
 
-  const appGeoCaUrl = $derived(`/${lang}/map-browser`);
-  const searchLabel = $derived(pickByLanguage(lang, 'Search', 'Recherche'));
+  const appGeoCaUrl = $derived(`/${appLang}/map-browser`);
 
   const title2 = $derived(page.data.tTitle2);
   const title3 = $derived(page.data.tTitle3);
 
   const breadcrumbs = $derived([
-    { text: homeLabel, href: geoCaUrl },
-    { text: searchLabel, href: appGeoCaUrl },
+    { text: translations.general.home, href: translations.components.breadcrumbs.homeUrl },
+    { text: translations.general.search, href: appGeoCaUrl },
     ...(title2 ? [title2] : []),
     ...(title3 ? [title3] : []),
   ]);

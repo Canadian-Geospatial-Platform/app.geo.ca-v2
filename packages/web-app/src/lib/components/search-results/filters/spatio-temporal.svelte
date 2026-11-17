@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import DateRange from '#lib/components/search-results/filters/date-range.svelte';
@@ -13,11 +15,11 @@
   let { temporalActive = $bindable(false), spatialActive = $bindable(false) }: Props = $props();
 
   /************* Filter Data ***************/
-  const filters = page.data.filters!.filters;
-  const spatioTemporalFilters = filters.find((filter: Filter) => filter.section === 'spatio-temporal')!;
-  const section = spatioTemporalFilters.section;
-  const label = spatioTemporalFilters.label;
-  const filterList = spatioTemporalFilters.filterList;
+  const filters = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters);
+  const spatioTemporalFilters = $derived(filters.find((filter: Filter) => filter.section === 'spatio-temporal')!);
+  const section = $derived(spatioTemporalFilters.section);
+  const label = $derived(spatioTemporalFilters.label);
+  const filterList = $derived(spatioTemporalFilters.filterList);
 
   let checkedStates: Record<string, boolean | string> = $state({});
   let temporalComponent: DateRange | undefined = $state();

@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { clickOutside } from '#lib/components/component-utils/clickOutside.js';
   import { toggleScroll } from '#lib/components/component-utils/toggleScroll.js';
   import { LOCALSTORAGE_UPDATED } from '#lib/utils/event-dispatchers/local-storage-changed.js';
   import type { AppLanguage } from '#lib/utils/language.js';
-  import { getLanguageSwitchUrl, pickByLanguage } from '#lib/utils/language.js';
+  import { getLanguageSwitchUrl, getAppLanguage } from '#lib/utils/language.js';
   import Navdropdown from '#lib/components/header/navdropdown.svelte';
   import Chevronup from '#lib/components/icons/chevronup.svelte';
   import Chevrondown from '#lib/components/icons/chevrondown.svelte';
@@ -14,8 +15,8 @@
 
   let { linkData, orientation, dropDownClick } = $props();
 
-  const lang = page.data.lang as AppLanguage;
-  const homeText = pickByLanguage(lang, 'Home', 'Accueil');
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const homeText = $derived(getTranslations(appLang).general.home);
 
   let localStorageKey = $derived(linkData?.localStorageKey);
   let localStorageValue = $state('');
@@ -103,11 +104,11 @@
   /**
    * Toggles the language and returns the new URL.
    *
-   * @param lang - The language to toggle to.
+   * @param appLang - The language to toggle to.
    * @returns The new URL.
    */
-  function toggleLanguage(lang: AppLanguage): string {
-    return getLanguageSwitchUrl(new URL(page.url.href), lang);
+  function toggleLanguage(appLang: AppLanguage): string {
+    return getLanguageSwitchUrl(new URL(page.url.href), appLang);
   }
 
   onMount((): (() => void) => {

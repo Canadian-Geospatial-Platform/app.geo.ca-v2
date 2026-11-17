@@ -1,7 +1,9 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
 
-  const linksData = page.data.footerLinks;
+  const linksData = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.footer.links);
 </script>
 
 <div class="bg-custom-14">

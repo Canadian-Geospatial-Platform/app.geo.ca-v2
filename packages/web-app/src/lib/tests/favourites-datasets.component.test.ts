@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from '@testing-library/svelte';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
@@ -138,9 +138,43 @@ describe('FavouritesDatasets', () => {
     expect(mocks.updateLocalStorage).not.toHaveBeenCalled();
   });
 
-  it('keeps the saved-map picker open and reports a navigation failure', async () => {
+  it('closes the saved-map picker immediately and prevents another addition while navigation is pending', async () => {
+    let finishNavigation!: () => void;
+    mocks.goto.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          finishNavigation = resolve;
+        })
+    );
+    render(FavouritesDatasets);
+    await screen.findAllByText('Dataset One');
+
+    const addButtons = screen.getAllByRole('button', { name: 'Add' });
+    await fireEvent.click(addButtons[0]);
+    await fireEvent.click(screen.getByRole('button', { name: 'Saved map' }));
+
+    expect(screen.queryByRole('dialog', { name: 'Choose a saved map' })).toBeNull();
+    for (const button of addButtons) {
+      expect(button.hasAttribute('disabled')).toBe(true);
+      expect(button.getAttribute('aria-busy')).toBe('true');
+    }
+    await fireEvent.click(addButtons[0]);
+    expect(mocks.goto).toHaveBeenCalledExactlyOnceWith('/en-ca/favourites/view?mapId=map-1&addDatasetId=dataset-1&source=maps');
+
+    finishNavigation();
+    await waitFor(() => expect(addButtons[0].hasAttribute('disabled')).toBe(false));
+    expect(screen.queryByRole('dialog', { name: 'Choose a saved map' })).toBeNull();
+  });
+
+  it('restores the saved-map picker with an error after delayed navigation fails and allows a retry', async () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-    mocks.goto.mockRejectedValueOnce(new Error('Navigation failed'));
+    let rejectNavigation!: (error: Error) => void;
+    mocks.goto.mockImplementationOnce(
+      () =>
+        new Promise<void>((_resolve, reject) => {
+          rejectNavigation = reject;
+        })
+    );
     render(FavouritesDatasets);
     await screen.findAllByText('Dataset One');
 
@@ -148,8 +182,14 @@ describe('FavouritesDatasets', () => {
     await fireEvent.click(screen.getByRole('button', { name: 'Saved map' }));
 
     expect(mocks.goto).toHaveBeenCalledWith('/en-ca/favourites/view?mapId=map-1&addDatasetId=dataset-1&source=maps');
+    expect(screen.queryByRole('dialog', { name: 'Choose a saved map' })).toBeNull();
+    rejectNavigation(new Error('Navigation failed'));
     expect((await screen.findByRole('alert')).textContent).toContain('Unable to open the selected saved map');
-    expect(screen.getByRole('button', { name: 'Saved map' })).toBeTruthy();
+    const savedMapButton = screen.getByRole('button', { name: 'Saved map' });
+    expect(savedMapButton.hasAttribute('disabled')).toBe(false);
+    await fireEvent.click(savedMapButton);
+    expect(mocks.goto).toHaveBeenCalledTimes(2);
+    expect(screen.queryByRole('dialog', { name: 'Choose a saved map' })).toBeNull();
     consoleError.mockRestore();
   });
 

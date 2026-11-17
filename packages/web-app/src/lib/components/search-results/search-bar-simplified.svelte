@@ -4,6 +4,8 @@
   filters, and sends the user back to the search page when the search button is clicked.
 ----------------------------------->
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
   import { resolve } from '$app/paths';
@@ -11,10 +13,7 @@
   import Search from '#lib/components/icons/search.svelte';
 
   /************* Translations ***************/
-  const translations = page.data.t;
-
-  const searchText = translations?.search ? translations['search'] : 'Search';
-  const searchProductsText = translations?.searchProducts ? translations['searchProducts'] : 'Search Products';
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
 
   /***************** Data ******************/
   let searchTextInput: HTMLInputElement | undefined = $state();
@@ -69,7 +68,7 @@
 <div class="flex flex-nowrap w-full drop-shadow-[0_0.1875rem_0.375rem_#00000029] rounded-[0.3125rem]">
   <input
     type="text"
-    placeholder={searchProductsText}
+    placeholder={translations.searchProducts}
     class={`w-full lg:w-1/2 search-input-shell
       ${navigating.type !== null ? 'border-custom-17' : 'border-custom-16'}`}
     bind:this={searchTextInput}
@@ -86,7 +85,7 @@
   >
     <Search classes="inline" height="1.125rem" />
     <span class="hidden md:inline">
-      {searchText}
+      {translations.search}
     </span>
   </button>
 </div>

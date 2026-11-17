@@ -126,5 +126,5 @@ Current implementation uses private_key_jwt with RS256 and is documented for pub
 - Back-channel logout verification: ../packages/web-app/src/lib/utils/auth/sign-in-back-channel.server.ts
 - Back-channel logout route: ../packages/web-app/src/routes/sign-in/back-channel-logout/+server.ts
 - Operational auth docs: ../README.md
-- Suggested app names (EN/FR): ../packages/web-app/src/lib/utils/metadata.ts
-- Production host evidence: ../packages/web-app/src/lib/components/footer/i18n/en/links.json
+- Suggested app names (EN/FR): `general.catalogue` in [en-ca.json](../packages/web-app/src/lib/i18n/en-ca.json) and [fr-ca.json](../packages/web-app/src/lib/i18n/fr-ca.json)
+- Production host evidence: `components.footer.links` in [en-ca.json](../packages/web-app/src/lib/i18n/en-ca.json)

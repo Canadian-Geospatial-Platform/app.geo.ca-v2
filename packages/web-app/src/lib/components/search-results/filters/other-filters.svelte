@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import type { Filter, FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
 
   /************* Filter Data ***************/
-  const filters: Filter[] = page.data.filters!.filters;
-  const others = filters.find((filter: Filter) => filter.section === 'others')!;
+  const filters: Filter[] = $derived(
+    getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters
+  );
+  const others = $derived(filters.find((filter: Filter) => filter.section === 'others')!);
   let checkedStates: Record<string, boolean | string> = $state({});
 
   /**

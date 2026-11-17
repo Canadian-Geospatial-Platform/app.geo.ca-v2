@@ -51,11 +51,11 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (url.pathname.startsWith('/result')) {
     // Get the id and language from the url
     const id = url.searchParams.get('id');
-    const lang = getAppLanguage(url.searchParams.get('lang'));
+    const appLang = getAppLanguage(url.searchParams.get('lang'));
 
     if (id) {
       // Construct the new URL, throw redirect
-      const newUrl = `/${lang}/map-browser/record/${id}`;
+      const newUrl = `/${appLang}/map-browser/record/${id}`;
       throw redirect(307, newUrl);
     }
   }
@@ -63,11 +63,11 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (url.pathname.startsWith('/map')) {
     // Get the id and language from the url
     const id = url.searchParams.get('rvKey');
-    const lang = getAppLanguage(url.searchParams.get('lang'));
+    const appLang = getAppLanguage(url.searchParams.get('lang'));
 
     if (id) {
       // Construct the new URL, throw redirect
-      const newUrl = `/${lang}/map-browser/record/${id}`;
+      const newUrl = `/${appLang}/map-browser/record/${id}`;
       throw redirect(307, newUrl);
     }
   }
@@ -81,14 +81,14 @@ export const handle: Handle = async ({ event, resolve }) => {
   }
 
   // Language varification - check to make sure the url lang is supported
-  const defaultLang = getAppLanguage();
-  const langParam = event.params.lang;
+  const defaultAppLang = getAppLanguage();
+  const languageParam = event.params.lang;
 
   // If someone enters an invalid language (e.g. fr-BE, or hdsjkfhjkds),
   // they should be rerouted to a valid one.
   // Note: not all events have a language set in the params, so we will ignore those.
-  if (langParam && !isAppLanguage(langParam)) {
-    const langRedirectUrl = event.request.url.replace(langParam, defaultLang);
+  if (languageParam && !isAppLanguage(languageParam)) {
+    const langRedirectUrl = event.request.url.replace(languageParam, defaultAppLang);
     return Response.redirect(new URL(langRedirectUrl), 307);
   }
 

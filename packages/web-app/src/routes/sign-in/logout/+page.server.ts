@@ -10,7 +10,7 @@ import { isAppLanguage } from '#lib/utils/language.js';
  * @returns Redirect response to a language-scoped map browser page.
  */
 export const load: PageServerLoad = ({ cookies, url }: Parameters<PageServerLoad>[0]): Promise<void> => {
-  const cookieLang = cookies.get('post_logout_lang');
-  const langHint = isAppLanguage(cookieLang) ? cookieLang : undefined;
-  throw redirect(303, completeLocalLogout(cookies, url, langHint));
+  const cookieLanguage = cookies.get('post_logout_lang');
+  const appLangHint = isAppLanguage(cookieLanguage) ? cookieLanguage : undefined;
+  throw redirect(303, completeLocalLogout(cookies, url, appLangHint));
 };

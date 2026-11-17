@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import { toggleScroll } from '#lib/components/component-utils/toggleScroll.js';
 
@@ -11,8 +13,7 @@
   // eslint-disable-next-line no-useless-assignment
   let { active = $bindable(), mainMenuVisible = $bindable() }: Props = $props();
 
-  const translations = page.data.headerTranslations;
-  const menuButton = translations?.menuButton ? translations['menuButton'] : '';
+  const translations = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.header);
 
   /**
    * Handles the menu button click event.
@@ -31,7 +32,7 @@
     active && 'menu-active',
   ]}
   onclick={handleMenuButtonClick}
-  title={menuButton}
+  title={translations.labels.menuButton}
 >
   {#if !active}
     <div class="col-span-1 mt-[0.1875rem] mr-[0.3125rem]">
@@ -39,7 +40,7 @@
       <div class="bar bar2"></div>
       <div class="bar bar3"></div>
     </div>
-    <p class="col-span-3">MENU</p>
+    <p class="col-span-3">{translations.menu}</p>
   {:else}
     <div class="col-span-4 mt-1 mb-0.5 mx-px self-center translate-x-0.5">
       <div class="bar bar1"></div>

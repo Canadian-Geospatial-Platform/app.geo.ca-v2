@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
@@ -39,12 +41,7 @@
 
   let { active = $bindable(false), numFilters = $bindable() }: Props = $props();
 
-  const translations = page.data.t;
-
-  const filterByText = translations?.filterBy ?? 'Filter By';
-  const filterDescriptionText = translations?.filterDescription ?? '';
-  const clearAllText = translations?.clearAll ?? 'Clear All';
-  const applyText = translations?.apply ?? 'Apply';
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
 
   let temporalActive = $state(false);
   let spatialActive = $state(false);
@@ -393,8 +390,8 @@
     <div class="relative flex-1 overflow-y-auto min-h-0 md:grid md:grid-cols-6 hide-scroll">
       <div class="col-span-5 flex flex-col gap-5 px-5 pb-5 pt-8 font-custom-style-body-1">
         <div>
-          <h2 id="filter-modal-title" class="mb-3 text-xl font-bold">{filterByText}</h2>
-          <p>{filterDescriptionText}</p>
+          <h2 id="filter-modal-title" class="mb-3 text-xl font-bold">{translations.filterBy}</h2>
+          <p>{translations.filterDescription}</p>
         </div>
         <div class="flex flex-col gap-y-5">
           <CategoryOfInterest bind:this={categoriesComponent} />
@@ -410,7 +407,7 @@
       <div class="absolute md:static top-2 right-4 col-span-1 px-5 pt-8 justify-self-end">
         <button
           type="button"
-          aria-label={page.data.lang?.startsWith('fr') ? 'Fermer' : 'Close'}
+          aria-label={translations.close}
           class="button-tone-light button-icon flex justify-center items-center rounded-[50%]
           h-9 w-9 md:h-[3.0625rem] md:w-[3.0625rem]"
           onclick={handleCloseButtonClick}
@@ -429,10 +426,10 @@
           h-12 md:h-auto"
         onclick={handleClearAllClick}
       >
-        {clearAllText}
+        {translations.clearAll}
       </button>
       <button type="submit" class="w-full md:w-auto justify-self-end button-action-dark h-12 md:h-auto">
-        {applyText}
+        {translations.apply}
       </button>
     </div>
   </form>

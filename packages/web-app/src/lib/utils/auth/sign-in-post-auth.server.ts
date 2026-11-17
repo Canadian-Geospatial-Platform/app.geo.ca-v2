@@ -7,11 +7,11 @@ import { getLangFromPath } from '#lib/utils/language.js';
  *
  * @param requestUrl - Current request URL.
  * @param state - Optional state value from auth round-trip.
- * @param lang - Active language segment.
+ * @param appLang - Active language segment.
  * @returns Safe in-app path for redirect.
  */
-function normalizeStateUrl(requestUrl: URL, state: string | null, lang: string): string {
-  const fallbackPath = `/${lang}/map-browser`;
+function normalizeStateUrl(requestUrl: URL, state: string | null, appLang: string): string {
+  const fallbackPath = `/${appLang}/map-browser`;
   if (!state) {
     return fallbackPath;
   }
@@ -43,25 +43,25 @@ export function getLangFromState(state: string | null): 'en-ca' | 'fr-ca' {
  *
  * @param requestUrl - Current request URL.
  * @param state - Optional state value from auth round-trip.
- * @param lang - Active language segment.
+ * @param appLang - Active language segment.
  * @returns Safe post-auth path.
  */
-export function getPostAuthRedirect(requestUrl: URL, state: string | null, lang: string): string {
-  return normalizeStateUrl(requestUrl, state, lang);
+export function getPostAuthRedirect(requestUrl: URL, state: string | null, appLang: string): string {
+  return normalizeStateUrl(requestUrl, state, appLang);
 }
 
 /**
  * Returns the in-app destination used after local sign-out cookie cleanup.
  *
- * @param lang - Optional language segment. Defaults to `en-ca` when missing.
+ * @param appLang - Optional language segment. Defaults to `en-ca` when missing.
  * @param returnTo - Optional explicit in-app path to return to.
  * @returns Language-scoped map browser path.
  */
-export function getPostLogoutRedirectPath(lang?: string, returnTo?: string | null): string {
-  const fallbackLang = lang ?? 'en-ca';
-  const fallbackPath = `/${fallbackLang}/map-browser`;
+export function getPostLogoutRedirectPath(appLang?: string, returnTo?: string | null): string {
+  const fallbackAppLang = appLang ?? 'en-ca';
+  const fallbackPath = `/${fallbackAppLang}/map-browser`;
 
-  const allowedReturnToPaths = lang ? [`/${lang}/favourites`] : ['/en-ca/favourites', '/fr-ca/favourites'];
+  const allowedReturnToPaths = appLang ? [`/${appLang}/favourites`] : ['/en-ca/favourites', '/fr-ca/favourites'];
   if (returnTo && allowedReturnToPaths.includes(returnTo)) {
     return returnTo;
   }
@@ -77,11 +77,11 @@ export function getPostLogoutRedirectPath(lang?: string, returnTo?: string | nul
  *
  * @param cookies - Cookie jar from the request context.
  * @param url - Current request URL, used to read the `returnTo` query param.
- * @param lang - Active language segment, when known.
+ * @param appLang - Active language segment, when known.
  * @returns Language-scoped redirect path after local sign-out cookie cleanup.
  */
-export function completeLocalLogout(cookies: Cookies, url: URL, lang?: string): string {
+export function completeLocalLogout(cookies: Cookies, url: URL, appLang?: string): string {
   clearAuthCookies(cookies);
   const returnTo = url.searchParams.get('returnTo');
-  return getPostLogoutRedirectPath(lang, returnTo);
+  return getPostLogoutRedirectPath(appLang, returnTo);
 }

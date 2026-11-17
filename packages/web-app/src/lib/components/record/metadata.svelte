@@ -1,57 +1,46 @@
 <script lang="ts">
+  import { getComponentLabels, getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
   import Card from '#lib/components/card/card.svelte';
   import type { ContactInfo } from '#lib/db/db-types.js';
 
   /******************* Translations *******************/
-  const translations = page.data.t;
-
-  // Description
-  const metadatatext = translations?.metadata ? translations['metadata'] : 'Metadata';
-
-  // Top Section
-  const dateCreatedText = translations?.dateCreated ? translations['dateCreated'] : '';
-  const datePublishedText = translations?.datePublished ? translations['datePublished'] : '';
-  const temporalCoverageText = translations?.temporalCoverage ? translations['temporalCoverage'] : '';
-  const accessLast30Text = translations?.accessLast30 ? translations['accessLast30'] : '';
-  const accessAllTimeText = translations?.accessAllTime ? translations['accessAllTime'] : '';
-
-  // Sources
-  const sourcesText = translations?.sources ? translations['sources'] : '';
-
-  // Use Limitations
-  const useLimitationsText = translations?.useLimitations ? translations['useLimitations'] : '';
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record'));
 
   /******************* Data *******************/
   const data = page.data;
-  const lang = data.lang;
-  const langPrefix = lang.split('-')[0] as 'en' | 'fr';
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const contentLang = $derived(getContentLanguage(appLang));
   const properties = data.item_v2!;
 
   // Top Section
-  const dateCreated = properties.created || 'N/A';
-  const datePublished = properties.published || 'N/A';
-  const accessLast30 = data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : 'N/A';
-  const accessAllTime = data.analyticRes && data.analyticRes.all ? data.analyticRes.all : 'N/A';
+  const dateCreated = $derived(properties.created || translations.notApplicable);
+  const datePublished = $derived(properties.published || translations.notApplicable);
+  const accessLast30 = $derived(data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : translations.notApplicable);
+  const accessAllTime = $derived(data.analyticRes && data.analyticRes.all ? data.analyticRes.all : translations.notApplicable);
 
-  let temporalCoverage = `${properties.temporalExtent?.begin} - ${properties.temporalExtent?.end}`;
-  temporalCoverage = temporalCoverage.replaceAll('null', pickByLanguage(lang, 'Present', 'Présent'));
+  const temporalCoverage = $derived(
+    `${properties.temporalExtent?.begin} - ${properties.temporalExtent?.end}`.replaceAll(
+      'null',
+      getTranslations(appLang).components.record.present
+    )
+  );
 
-  let topSection = [
-    [dateCreatedText, dateCreated],
-    [datePublishedText, datePublished],
-    [temporalCoverageText, temporalCoverage],
-    [accessLast30Text, accessLast30],
-    [accessAllTimeText, accessAllTime],
-  ];
+  let topSection = $derived([
+    [translations.dateCreated, dateCreated],
+    [translations.datePublished, datePublished],
+    [translations.temporalCoverage, temporalCoverage],
+    [translations.accessLast30, accessLast30],
+    [translations.accessAllTime, accessAllTime],
+  ]);
 
   // Sources
   const title = properties.title;
   const distributors: ContactInfo[] = (properties.distributor || []).filter(
     (distributor): distributor is ContactInfo => distributor !== null
   );
-  const distributorOrgArray = distributors.map((distributor: ContactInfo) => distributor.organisation[langPrefix]);
+  const distributorOrgArray = $derived(distributors.map((distributor: ContactInfo) => distributor.organisation[contentLang]));
 
   const onlineResourceArray = distributors
     ? distributors.map((distributor: ContactInfo) => {
@@ -70,7 +59,7 @@
 
   // Use limitations
   const legalConstraints = properties.useLimits;
-  let useLimitations = 'N/A';
+  let useLimitations = $derived(translations.notApplicable);
 
   if (legalConstraints) {
     const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
@@ -86,7 +75,7 @@
 
 <div class="font-custom-style-body-1">
   <h2 class="font-custom-style-h2 mb-7 mx-5 md:mx-0">
-    {metadatatext}
+    {translations.metadata}
   </h2>
   <Card>
     <div class="card-div flex flex-col lg:flex-row lg:space-x-3 justify-between">
@@ -98,7 +87,7 @@
       {/each}
     </div>
     <div class="card-div">
-      <h3 class="font-semibold">{sourcesText}</h3>
+      <h3 class="font-semibold">{translations.sources}</h3>
       <!--
         Citation entries should be in this format:
         Publisher organization. (published date). <i>Name of resource</i>.
@@ -128,7 +117,7 @@
       </div>
     </div>
     <div class="card-div">
-      <h3 class="font-semibold">{useLimitationsText}</h3>
+      <h3 class="font-semibold">{translations.useLimitations}</h3>
       <!-- These are our descriptions, no injection risk -->
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       <p>{@html useLimitations}</p>

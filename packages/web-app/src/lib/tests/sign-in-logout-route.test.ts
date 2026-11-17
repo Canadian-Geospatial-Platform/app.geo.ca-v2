@@ -74,15 +74,15 @@ describe('sign-out route redirects', () => {
     expect(clearAuthCookiesMock).toHaveBeenCalled();
   });
 
-  it.each(['en-ca', 'fr-ca'])('ends an expired %s session without confirmation and sets the expiry notice', async (lang) => {
+  it.each(['en-ca', 'fr-ca'])('ends an expired %s session without confirmation and sets the expiry notice', async (appLang) => {
     const cookies = { set: vi.fn() };
     const event = {
       cookies,
-      params: { lang },
-      url: new URL(`https://example.test/${lang}/sign-in/logout?reason=session-expired`),
+      params: { lang: appLang },
+      url: new URL(`https://example.test/${appLang}/sign-in/logout?reason=session-expired`),
     } as unknown as Parameters<typeof loadLangLogout>[0];
 
-    await expectRedirect(() => loadLangLogout(event), { status: 303, location: `/${lang}/map-browser?sessionExpired=1` });
+    await expectRedirect(() => loadLangLogout(event), { status: 303, location: `/${appLang}/map-browser?sessionExpired=1` });
     expect(clearAuthCookiesMock).toHaveBeenCalledWith(cookies);
     expect(cookies.set).toHaveBeenCalledWith(
       'session_expired',

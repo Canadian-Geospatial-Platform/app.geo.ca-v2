@@ -2,7 +2,15 @@
  * Test coverage: Unit tests for app-language normalization and path-based language detection.
  */
 import { describe, expect, it } from 'vitest';
-import { getAppLanguage, getLangFromPath, getLanguageSwitchUrl, isAppLanguage, isFrench, pickByLanguage } from '#lib/utils/language.js';
+import {
+  getAppLanguage,
+  getContentLanguage,
+  getLangFromPath,
+  getLanguageSwitchUrl,
+  isAppLanguage,
+  isFrench,
+  pickByLanguage,
+} from '#lib/utils/language.js';
 
 describe('getAppLanguage', () => {
   it('normalizes short codes to full app codes', () => {
@@ -48,6 +56,15 @@ describe('pickByLanguage', () => {
   it('picks the French value for fr-ca and the English value otherwise', () => {
     expect(pickByLanguage('fr-ca', 'Sign in', 'Se connecter')).toBe('Se connecter');
     expect(pickByLanguage('en-ca', 'Sign in', 'Se connecter')).toBe('Sign in');
+  });
+});
+
+describe('getContentLanguage', () => {
+  it.each([
+    ['en-ca', 'en'],
+    ['fr-ca', 'fr'],
+  ] as const)('converts %s to the content language %s', (appLang, expected) => {
+    expect(getContentLanguage(appLang)).toBe(expected);
   });
 });
 

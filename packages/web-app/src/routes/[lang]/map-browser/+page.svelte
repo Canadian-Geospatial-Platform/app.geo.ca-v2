@@ -1,13 +1,15 @@
 <script lang="ts">
+  import { getAppLanguage } from '#lib/utils/language.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import SearchResults from '#lib/components/search-results/search-results.svelte';
 
-  const lang = page.data.lang;
-  const title = lang === 'fr-ca' ? 'app.geo.ca - Résultats de recherche' : 'app.geo.ca - Search Results';
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const title = $derived(getTranslations(appLang).pages.search.title);
 
   const canonicalUrl = page.data.canonicalUrl;
   const alternateUrl = page.data.alternateUrl;
-  const alternateLang = page.data.alternateLang;
+  const alternateAppLang = page.data.alternateLang;
   const metaDescription = page.data.metaDescription;
 </script>
 
@@ -15,7 +17,7 @@
   <title>{title}</title>
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
-  <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+  <link rel="alternate" hreflang={alternateAppLang} href={alternateUrl} />
 </svelte:head>
 
 <div class="flex flex-wrap lg:flex-nowrap items-start gap-4 py-4">

@@ -55,6 +55,76 @@ After following the setup, start a development server with these steps:
 
 - For local development, run `npm run dev` from the repository root. SST v4 starts the multiplexer and frontend together.
 
+### Translations
+
+Application-owned English and French copy lives in
+[`en-ca.json`](packages/web-app/src/lib/i18n/en-ca.json) and
+[`fr-ca.json`](packages/web-app/src/lib/i18n/fr-ca.json). Keep their keys, value types,
+array structures, and named placeholders identical.
+
+- Use `general` for phrases shared across components; keep context-specific wording
+  under `components.<component>` with subsections for labels, messages, and configuration.
+  Route-specific copy belongs under `pages`, and session notices under `layout.session`.
+- Normalize route/input languages with `getAppLanguage` from
+  [`language.ts`](packages/web-app/src/lib/utils/language.ts), then use `getTranslations`
+  or `getComponentLabels` from [`i18n/index.ts`](packages/web-app/src/lib/i18n/index.ts).
+  Keep the full application locale (`en-ca`/`fr-ca`) for URLs, catalogue selection,
+  and formatting. Use `getContentLanguage` with a normalized locale only where APIs,
+  map configuration, or bilingual data fields require `en`/`fr`; do not split locale strings.
+  Name full-locale variables and parameters `appLang`, and short-code variables
+  `contentLang`. Preserve boundary field names such as route parameters, page data,
+  component props, and API payloads named `lang`; alias them when binding local variables.
+  `getComponentLabels` combines shared phrases with a component's labels without
+  duplicating translations; component labels override shared keys. Its component argument
+  is a catalogue section key (for example, `'record'` selects `components.record.labels`),
+  not a folder inferred from the current file. Keep `general` a flat map of strings.
+  Do not add local dictionaries or English-only fallbacks.
+- In Svelte, derive the locale and labels with `$derived` so language switches update
+  reused components. In server loaders, select translations per request; never store
+  the active language globally. Treat dictionaries as immutable and clone configuration
+  before modifying it.
+- Read component copy directly from the catalogues rather than returning unused
+  dictionaries through page/layout loaders. Keep loader-provided localized data
+  that is consumed, such as signed-in navigation, breadcrumbs, and sorting options.
+  Use labels directly in reactive markup or `$derived` structures instead of
+  introducing pass-through aliases for individual labels. When a component needs
+  multiple catalogue strings, derive the catalogue or relevant section once rather
+  than deriving each label from a separate helper call. Keep separate variables
+  for transformed/combined labels and values that are subsequently reassigned.
+- Use `formatTranslation` for complete sentences with named parameters such as `{count}`.
+  Keep singular/plural templates explicit. It throws for missing parameters; render its
+  output as text, not `{@html}`. Prefer Svelte markup around translated text for new rich content.
+- API-provided dataset titles/descriptions and user-authored map names remain external
+  content, selected with the existing language helpers rather than copied into JSON.
+  Preserve operational filter values, IDs, and localized destinations when editing labels.
+- Pass the normalized application language to `formatNumber` so grouping and decimal
+  separators follow the selected language on both server and client. Reuse locale-dependent
+  `Intl.DateTimeFormat` instances with `$derived` when formatting multiple rows.
+
+For a single label, derive it directly; for several labels, retain a derived component
+label map and access its properties in markup or other `$derived` expressions:
+
+```svelte
+<script lang="ts">
+  import { page } from '$app/state';
+  import { getAppLanguage } from '#lib/utils/language.js';
+  import { getComponentLabels } from '#lib/i18n/index.js';
+
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const keywordsText = $derived(getComponentLabels(appLang, 'record').keywords);
+</script>
+
+<h2>{keywordsText}</h2>
+```
+
+`buildSeoMetadata` and `buildPageTitle` accept already-localized description/title
+strings; callers select them from the catalogues before invoking those helpers.
+
+Run `npm run test:unit -- src/lib/tests/translations.test.ts` and
+`npm run test:components -- src/lib/tests/translations.component.test.ts` from
+`packages/web-app` to check dictionary parity, interpolation, search messages, and live
+language switching.
+
 ### OIDC Authentication: client_secret_post vs. private_key_jwt
 
 **Local development** uses `client_secret_post` authentication, where the client sends `OIDC_CLIENT_SECRET` in the token request body. This is simpler for local setup without requiring AWS infrastructure.

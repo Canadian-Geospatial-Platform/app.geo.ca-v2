@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { SvelteURLSearchParams } from 'svelte/reactivity';
   import { page, navigating } from '$app/state';
   import { goto } from '$app/navigation';
@@ -9,14 +11,7 @@
   import Filter from '#lib/components/icons/filter.svelte';
 
   /************* Translations ***************/
-  const translations = page.data.t;
-
-  const filtersText = translations?.filters ? translations['filters'] : 'Filters';
-  const searchText = translations?.search ? translations['search'] : 'Search';
-  const searchProductsText = translations?.searchProducts ? translations['searchProducts'] : 'Search Products';
-
-  const datasetsText = translations?.datasets ? translations['datasets'] : 'Datasets';
-  const contributorsText = translations?.contributors ? translations['contributors'] : 'Contributors';
+  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
 
   /***************** Data ******************/
   const searchKey = 'search-terms';
@@ -28,9 +23,8 @@
   let keywordFromUrl = $derived(page.url.searchParams.get(searchKey));
 
   // TODO: Get actual numbers for all data variables
-  const notApplicable = 'N/A';
-  const datasets = analytics?.total ?? notApplicable;
-  const contributors = analytics?.organization ?? notApplicable;
+  const datasets = $derived(analytics?.total ?? translations.notApplicable);
+  const contributors = $derived(analytics?.organization ?? translations.notApplicable);
 
   /***************** Handlers ******************/
   let modalActive: boolean = $state(false);
@@ -80,13 +74,9 @@
     }
     query.set('page-number', '0');
 
-    let opts = {
-      replace: true,
-      keepFocus: true,
-    };
     // We need to preserve the current localized search-results route.
     // Using resolve('/?...') here sends the user to the site root instead of updating the current search page.
-    goto(`${page.url.pathname}?${query.toString()}`, opts);
+    goto(`${page.url.pathname}?${query.toString()}`, { replace: true, reset: false });
   }
 </script>
 
@@ -109,12 +99,12 @@
       {:else}
         <Filter classes="inline h-5" />
       {/if}
-      {filtersText}
+      {translations.filters}
     </button>
     <div class="flex flex-nowrap w-full">
       <input
         type="text"
-        placeholder={searchProductsText}
+        placeholder={translations.searchProducts}
         class={`w-full md:ml-5 search-input-shell md:border-0
           ${navigating.type !== null ? 'border-custom-17' : 'border-custom-16'}`}
         bind:this={searchTextInput}
@@ -131,17 +121,17 @@
       >
         <Search classes="inline" height="1.125rem" />
         <span class="hidden md:inline">
-          {searchText}
+          {translations.search}
         </span>
       </button>
     </div>
   </div>
   <div class="flex flex-row flex-wrap lg:flex-nowrap gap-x-4 gap-y-1 lg:gap-x-7 font-custom-style-body-8">
-    <div>{datasetsText}: {datasets}</div>
-    <div>{contributorsText}: {contributors}</div>
+    <div>{translations.datasets}: {datasets}</div>
+    <div>{translations.contributors}: {contributors}</div>
     <!--
       TODO: Uncomment when we have a query to get this data.
-      For now it is always 'N/A' so we don't need to display it.
+      Application, API, and collection counts are not yet available.
     -->
     <!--<div>{applicationsText}: {applications}</div>-->
     <!--<div>{apisText}: {apis}</div>-->
