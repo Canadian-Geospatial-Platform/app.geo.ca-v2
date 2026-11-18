@@ -3,9 +3,6 @@ import fr from './fr-ca.json';
 import { pickByLanguage, type AppLanguage } from '#lib/utils/language.js';
 
 export type Translations = typeof en;
-type LabelComponent = {
-  [K in keyof Translations['components']]: Translations['components'][K] extends { labels: object } ? K : never;
-}[keyof Translations['components']];
 
 /**
  * Selects the shared catalogue without changing a global active language.
@@ -15,21 +12,6 @@ type LabelComponent = {
  */
 export function getTranslations(appLang: AppLanguage): Translations {
   return pickByLanguage<Translations>(appLang, en, fr);
-}
-
-/**
- * Combines shared phrases with a component's labels.
- *
- * @param appLang - Normalized application language.
- * @param component - Key under components whose section contains a labels object.
- * @returns A new label map, with component labels taking precedence over general phrases.
- */
-export function getComponentLabels<K extends LabelComponent>(
-  appLang: AppLanguage,
-  component: K
-): Translations['general'] & Translations['components'][K]['labels'] {
-  const translations = getTranslations(appLang);
-  return { ...translations.general, ...translations.components[component].labels };
 }
 
 /**

@@ -22,11 +22,11 @@ export type ParsedDataResource = {
  * @returns Rows with external names/URLs and localized ENG, FRA, and ZXX language labels.
  */
 export function parseDataResources(dataResourcesRaw: DistributionOption[], contentLang: 'en' | 'fr'): ParsedDataResource[] {
-  const t = getTranslations(getAppLanguage(contentLang));
+  const translations = getTranslations(getAppLanguage(contentLang));
   const languageReplacements: Record<string, string> = {
-    eng: t.general.english,
-    fra: t.general.french,
-    zxx: t.general.notAvailable,
+    eng: translations.general.english,
+    fra: translations.general.french,
+    zxx: translations.general.notAvailable,
   };
 
   const dataResources: ParsedDataResource[] = [];

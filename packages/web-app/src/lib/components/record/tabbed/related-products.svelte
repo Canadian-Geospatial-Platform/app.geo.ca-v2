@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import SortableTable from '#lib/components/sortable-table/sortable-table.svelte';
@@ -17,12 +17,12 @@
     type: string;
   };
 
-  /******************* Translations *******************/
-  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record'));
-
-  /******************* Data *******************/
-  const data = page.data;
+  // App language and translations
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
+
+  // Data and page context
+  const data = page.data;
   const descriptionLang = $derived(pickByLanguage(appLang, 'description_en', 'description_fr'));
 
   const url = page.url;
@@ -43,8 +43,8 @@
 
   // Only data fields should be table columns; id/url are internal row metadata.
   const tableLabels: RelatedProductsTableLabels = $derived({
-    name: translations.name,
-    type: translations.type,
+    name: translations.components.record.labels.name,
+    type: translations.components.record.labels.type,
   });
 
   /****************** Pagination ******************/
@@ -65,7 +65,7 @@
 
 {#if tableDataArray.length === 0}
   <div>
-    {translations.relatedProductsNotAvailable}
+    {translations.components.record.labels.relatedProductsNotAvailable}
   </div>
 {:else}
   <SortableTable tableContent={tableDataArray} {tableLabels} clickableRows={true} paginated={true} {currentPage} {itemsPerPage} />

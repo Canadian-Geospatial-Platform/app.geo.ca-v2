@@ -259,6 +259,6 @@ npm run test:unit -- src/lib/tests/favourites-api.test.ts
 
 ## Related Documentation
 
-- [README.md](../README.md) - Setup, deployment, and general architecture
+- [Developer guide](../DEVELOPMENT.md) - Setup, deployment, and application internals
 - [CONTRIBUTING.md](../CONTRIBUTING.md) - Development workflow (if it exists)
 - Inline JSDoc in source files for function-level documentation

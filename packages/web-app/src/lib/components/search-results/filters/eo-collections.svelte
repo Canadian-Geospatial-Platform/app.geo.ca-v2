@@ -5,9 +5,12 @@
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import type { Filter, FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
 
-  /************* Filter Data ***************/
-  const filters = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters);
-  const eoCollections = $derived(filters.find((filter: Filter) => filter.section === 'eo_collection')!);
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const filtersTranslations = $derived(getTranslations(appLang).components.searchResults.filters);
+
+  // EO Collections filter data
+  const eoCollections = $derived(filtersTranslations.find((filter: Filter) => filter.section === 'eo_collection')!);
   let checkedStates: Record<string, boolean> = $state({});
 
   // TODO: Extract this and clearAllFilters from here, organisations.svelte, source-system.svelte, themes.svelte, and types.svelte into a utility file

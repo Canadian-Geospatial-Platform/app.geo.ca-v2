@@ -6,7 +6,7 @@
   import AppDialog from '#lib/components/dialog/app-dialog.svelte';
 
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const message = $derived(getTranslations(appLang).components.leavingNotice.title);
+  const titleText = $derived(getTranslations(appLang).components.leavingNotice.title);
 
   let dots = $state('');
 
@@ -19,5 +19,5 @@
 </script>
 
 <AppDialog open labelledby="leaving-notice-title">
-  <h2 id="leaving-notice-title" class="text-xl font-bold">{message}<span aria-hidden="true">{dots}</span></h2>
+  <h2 id="leaving-notice-title" class="text-xl font-bold">{titleText}<span aria-hidden="true">{dots}</span></h2>
 </AppDialog>

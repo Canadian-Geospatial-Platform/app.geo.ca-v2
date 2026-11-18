@@ -5,7 +5,7 @@
   import SearchResults from '#lib/components/search-results/search-results.svelte';
 
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const title = $derived(getTranslations(appLang).pages.search.title);
+  const titleText = $derived(getTranslations(appLang).pages.search.title);
 
   const canonicalUrl = page.data.canonicalUrl;
   const alternateUrl = page.data.alternateUrl;
@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-  <title>{title}</title>
+  <title>{titleText}</title>
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang={alternateAppLang} href={alternateUrl} />

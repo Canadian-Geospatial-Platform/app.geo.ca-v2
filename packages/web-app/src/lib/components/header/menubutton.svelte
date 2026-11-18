@@ -13,7 +13,8 @@
   // eslint-disable-next-line no-useless-assignment
   let { active = $bindable(), mainMenuVisible = $bindable() }: Props = $props();
 
-  const translations = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.header);
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const headerTranslations = $derived(getTranslations(appLang).components.header);
 
   /**
    * Handles the menu button click event.
@@ -32,7 +33,7 @@
     active && 'menu-active',
   ]}
   onclick={handleMenuButtonClick}
-  title={translations.labels.menuButton}
+  title={headerTranslations.labels.menuButton}
 >
   {#if !active}
     <div class="col-span-1 mt-[0.1875rem] mr-[0.3125rem]">
@@ -40,7 +41,7 @@
       <div class="bar bar2"></div>
       <div class="bar bar3"></div>
     </div>
-    <p class="col-span-3">{translations.menu}</p>
+    <p class="col-span-3">{headerTranslations.menu}</p>
   {:else}
     <div class="col-span-4 mt-1 mb-0.5 mx-px self-center translate-x-0.5">
       <div class="bar bar1"></div>

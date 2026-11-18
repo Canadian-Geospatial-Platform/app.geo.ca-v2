@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { pickByLanguage, getAppLanguage } from '#lib/utils/language.js';
@@ -8,7 +8,7 @@
 
   const data = page.data;
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const similarRecordsText = $derived(getComponentLabels(appLang, 'record').similarProducts);
+  const similarRecordsText = $derived(getTranslations(appLang).components.record.labels.similarProducts);
   const recordId = data.item_v2!.id;
   const urlPrefix = $derived(`${page.url.origin}/${appLang}/map-browser/record/`);
   const similarRecords = data.similar || [];

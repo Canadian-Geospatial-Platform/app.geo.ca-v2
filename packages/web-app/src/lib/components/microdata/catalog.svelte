@@ -5,9 +5,9 @@
   import Organisations from './organisations.svelte';
   const { item, lang: contentLang } = $props();
 
-  // NOTE: This component still follows a reference markup path and should be
-  // updated when the new schema mapping is finalized for these fields.
-  const translations = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.microdata);
+  // Get the application language and translations for the microdata component.
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const microdataTranslations = $derived(getTranslations(appLang).components.microdata);
 
   /**
    * Constructs a WKT polygon string from the item's coordinates.
@@ -29,16 +29,16 @@
 
 <div property="includedInDataCatalog" typeof="DataCatalog">
   <span property="name"
-    >{translations.catalogueTitle}
+    >{microdataTranslations.catalogueTitle}
     <span property="spatialCoverage" typeof="Place">
       <span property="geo" typeof="GeoShape">
-        <span property="name">{translations.boundary}</span>
+        <span property="name">{microdataTranslations.boundary}</span>
         <span property="polygon">{boundaryMultiPolygon()}</span>
       </span>
     </span>
   </span>
 
-  <span property="description">{translations.catalogueDescription}</span>
+  <span property="description">{microdataTranslations.catalogueDescription}</span>
   <span property="datePublished">
     <span property="dateModified"></span>
     <span property="inLanguage">{`${contentLang}-CA`}</span>

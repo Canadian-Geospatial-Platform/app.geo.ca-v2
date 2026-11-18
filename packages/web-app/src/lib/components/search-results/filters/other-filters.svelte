@@ -5,11 +5,12 @@
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import type { Filter, FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
 
-  /************* Filter Data ***************/
-  const filters: Filter[] = $derived(
-    getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters
-  );
-  const others = $derived(filters.find((filter: Filter) => filter.section === 'others')!);
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const filtersTranslations = $derived(getTranslations(appLang).components.searchResults.filters);
+
+  // Other filters data
+  const others = $derived(filtersTranslations.find((filter: Filter) => filter.section === 'others')!);
   let checkedStates: Record<string, boolean | string> = $state({});
 
   /**

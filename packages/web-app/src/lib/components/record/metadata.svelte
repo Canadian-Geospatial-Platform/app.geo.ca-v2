@@ -1,24 +1,24 @@
 <script lang="ts">
-  import { getComponentLabels, getTranslations } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
   import Card from '#lib/components/card/card.svelte';
   import type { ContactInfo } from '#lib/db/db-types.js';
 
-  /******************* Translations *******************/
-  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record'));
-
-  /******************* Data *******************/
-  const data = page.data;
+  // App language and translations
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
+
+  // Data from the page
+  const data = page.data;
   const contentLang = $derived(getContentLanguage(appLang));
   const properties = data.item_v2!;
 
   // Top Section
-  const dateCreated = $derived(properties.created || translations.notApplicable);
-  const datePublished = $derived(properties.published || translations.notApplicable);
-  const accessLast30 = $derived(data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : translations.notApplicable);
-  const accessAllTime = $derived(data.analyticRes && data.analyticRes.all ? data.analyticRes.all : translations.notApplicable);
+  const dateCreated = $derived(properties.created || translations.general.notApplicable);
+  const datePublished = $derived(properties.published || translations.general.notApplicable);
+  const accessLast30 = $derived(data.analyticRes && data.analyticRes['30'] ? data.analyticRes['30'] : translations.general.notApplicable);
+  const accessAllTime = $derived(data.analyticRes && data.analyticRes.all ? data.analyticRes.all : translations.general.notApplicable);
 
   const temporalCoverage = $derived(
     `${properties.temporalExtent?.begin} - ${properties.temporalExtent?.end}`.replaceAll(
@@ -28,11 +28,11 @@
   );
 
   let topSection = $derived([
-    [translations.dateCreated, dateCreated],
-    [translations.datePublished, datePublished],
-    [translations.temporalCoverage, temporalCoverage],
-    [translations.accessLast30, accessLast30],
-    [translations.accessAllTime, accessAllTime],
+    [translations.components.record.labels.dateCreated, dateCreated],
+    [translations.components.record.labels.datePublished, datePublished],
+    [translations.components.record.labels.temporalCoverage, temporalCoverage],
+    [translations.components.record.labels.accessLast30, accessLast30],
+    [translations.components.record.labels.accessAllTime, accessAllTime],
   ]);
 
   // Sources
@@ -59,7 +59,7 @@
 
   // Use limitations
   const legalConstraints = properties.useLimits;
-  let useLimitations = $derived(translations.notApplicable);
+  let useLimitations = $derived(translations.general.notApplicable);
 
   if (legalConstraints) {
     const urlRegEx = /(https?:\/\/[^\s|)]+)/g;
@@ -75,7 +75,7 @@
 
 <div class="font-custom-style-body-1">
   <h2 class="font-custom-style-h2 mb-7 mx-5 md:mx-0">
-    {translations.metadata}
+    {translations.components.record.labels.metadata}
   </h2>
   <Card>
     <div class="card-div flex flex-col lg:flex-row lg:space-x-3 justify-between">
@@ -87,7 +87,7 @@
       {/each}
     </div>
     <div class="card-div">
-      <h3 class="font-semibold">{translations.sources}</h3>
+      <h3 class="font-semibold">{translations.components.record.labels.sources}</h3>
       <!--
         Citation entries should be in this format:
         Publisher organization. (published date). <i>Name of resource</i>.
@@ -117,7 +117,7 @@
       </div>
     </div>
     <div class="card-div">
-      <h3 class="font-semibold">{translations.useLimitations}</h3>
+      <h3 class="font-semibold">{translations.components.record.labels.useLimitations}</h3>
       <!-- These are our descriptions, no injection risk -->
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       <p>{@html useLimitations}</p>

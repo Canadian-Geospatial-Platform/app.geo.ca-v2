@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels, getTranslations, formatTranslation } from '#lib/i18n/index.js';
+  import { getTranslations, formatTranslation } from '#lib/i18n/index.js';
   import { onMount } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
   import { page } from '$app/state';
@@ -19,12 +19,12 @@
   import { getContentLanguage, getAppLanguage } from '#lib/utils/language.js';
 
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const translations = $derived(getComponentLabels(appLang, 'favourites'));
+  const translations = $derived(getTranslations(appLang));
   const signedIn = Boolean(page.data.signedIn);
   const userDataUnavailable = page.data.userDataStatus === 'unavailable';
 
   // Translations
-  const favouritesTitle = $derived(signedIn ? getTranslations(appLang).general.myGeo : translations.title);
+  const favouritesTitle = $derived(signedIn ? getTranslations(appLang).general.myGeo : translations.components.favourites.labels.title);
 
   const contentLang = $derived(getContentLanguage(appLang));
   const titleKey = $derived(`title_${contentLang}` as 'title_en' | 'title_fr');
@@ -48,8 +48,8 @@
   );
 
   const tableLabels: Record<string, string> = $derived({
-    name: translations.resourceName,
-    formats: translations.resourceFormats,
+    name: translations.components.favourites.labels.resourceName,
+    formats: translations.components.favourites.labels.resourceFormats,
   });
 
   /************* Handlers ***************/
@@ -207,14 +207,14 @@
   {#if isLanding}
     {#if userDataUnavailable}
       <div class="status-alert-error font-custom-style-body-1" role="status" aria-live="polite">
-        {translations.savedDataUnavailable}
+        {translations.components.favourites.labels.savedDataUnavailable}
       </div>
     {:else}
       <!-- Landing page for signed-in users -->
       <p class="font-custom-style-body-1 mx-0 mb-7 max-w-4xl leading-relaxed">
         <!-- These are our descriptions, no injection risk -->
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html translations.landingDescription}
+        {@html translations.components.favourites.labels.landingDescription}
       </p>
       <Card type="tabbed">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -224,13 +224,15 @@
             <div class="flex items-start justify-between gap-4">
               <h2 class="font-custom-style-h2-2">
                 <a class="hover:underline" href={resolve('/[lang]/favourites/datasets', { lang: appLang })}>
-                  {translations.datasetsTab} ({favouriteRecordList.length})
+                  {translations.components.favourites.labels.datasetsTab} ({favouriteRecordList.length})
                 </a>
               </h2>
             </div>
-            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">{translations.datasetsLandingDescription}</p>
+            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">
+              {translations.components.favourites.labels.datasetsLandingDescription}
+            </p>
             <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/datasets', { lang: appLang })}>
-              {translations.datasetsLinkLabel}
+              {translations.components.favourites.labels.datasetsLinkLabel}
             </a>
           </section>
 
@@ -240,19 +242,21 @@
             <div class="flex items-start justify-between gap-4">
               <h2 class="font-custom-style-h2-2">
                 <a class="hover:underline" href={resolve('/[lang]/favourites/maps', { lang: appLang })}>
-                  {translations.mapsTab} ({savedMapsCount})
+                  {translations.components.favourites.labels.mapsTab} ({savedMapsCount})
                 </a>
               </h2>
             </div>
-            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">{translations.mapsLandingDescription}</p>
+            <p class="font-custom-style-body-1 mt-3 mb-5 leading-relaxed">
+              {translations.components.favourites.labels.mapsLandingDescription}
+            </p>
             <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/maps', { lang: appLang })}>
-              {translations.mapsLinkLabel}
+              {translations.components.favourites.labels.mapsLinkLabel}
             </a>
           </section>
         </div>
         <div class="info-tip-card">
           <p>
-            {translations.landingTipLabel}
+            {translations.components.favourites.labels.landingTipLabel}
           </p>
         </div>
       </Card>
@@ -261,10 +265,10 @@
     <!-- Guest list -->
     <p class="page-copy-block">
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-      {@html translations.datasetsDescription}
+      {@html translations.components.favourites.labels.datasetsDescription}
     </p>
     <p class="page-copy-block">
-      {translations.loginInfo}
+      {translations.components.favourites.labels.loginInfo}
     </p>
 
     {#if records.length > 0}
@@ -324,7 +328,7 @@
                 <!-- Remove Button-->
                 <button class="button-action-light button-action-remove" onclick={() => handleDeleteResource(item.id)}>
                   <GarbageCan classes="h-4 button-icon-inline" />
-                  {translations.remove}
+                  {translations.components.favourites.labels.remove}
                 </button>
               </div>
             </div>
@@ -340,19 +344,19 @@
               disabled={!canOpenMap}
               aria-disabled={!canOpenMap}
             >
-              {translations.viewOnMap} ({numSelected})
+              {translations.components.favourites.labels.viewOnMap} ({numSelected})
             </button>
           </div>
 
           <button class="button-inline-desktop button-action-light button-width-mobile-full" onclick={handleRemoveAllClick}>
             <GarbageCan classes="h-4 button-icon-inline" />
-            {translations.removeAll}
+            {translations.components.favourites.labels.removeAll}
           </button>
         </div>
       </Card>
 
       <h2 class="mb-4 mt-9 mx-0 font-custom-style-h2 md:mr-auto">
-        {translations.searchFor}
+        {translations.components.favourites.labels.searchFor}
       </h2>
       <SearchBarSimplified />
     {:else}
@@ -360,11 +364,11 @@
         <NoMap classes="text-custom-19 m-auto h-48 md:h-80 lg:h-96" />
 
         <p class="block m-auto w-fit font-custom-style-h2 text-center">
-          {translations.resourceListEmpty}
+          {translations.components.favourites.labels.resourceListEmpty}
         </p>
 
         <a class="button-action-dark button-cta-link-dark block m-auto mt-5" href={resolve('/[lang]/map-browser', { lang: appLang })}>
-          {translations.findAResource}
+          {translations.components.favourites.labels.findAResource}
         </a>
       </div>
     {/if}

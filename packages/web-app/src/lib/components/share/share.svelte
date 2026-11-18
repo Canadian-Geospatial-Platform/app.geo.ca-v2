@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import Email from '#lib/components/icons/email.svelte';
@@ -7,7 +7,9 @@
   import Linkedin from '#lib/components/icons/linkedin.svelte';
   import X from '#lib/components/icons/x.svelte';
 
-  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'share'));
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
 
   // Note: these variables need to be computed to react to changes to the page's url
   let path = $derived(page.url.href);
@@ -51,18 +53,18 @@
 
 <div class="flex flex-wrap items-center justify-start">
   <h1 class="font-custom-style-body-1 mr-3 w-full md:w-fit text-left mb-2 md:mb-0">
-    {translations.shareText}
+    {translations.components.share.labels.shareText}
   </h1>
-  <button aria-label={translations.facebook} onclick={handleFacebookLink}>
+  <button aria-label={translations.components.share.labels.facebook} onclick={handleFacebookLink}>
     <Facebook />
   </button>
-  <button aria-label={translations.x} onclick={handleXLink}>
+  <button aria-label={translations.components.share.labels.x} onclick={handleXLink}>
     <X />
   </button>
-  <button aria-label={translations.linkedIn} onclick={handleLinkedInLink}>
+  <button aria-label={translations.components.share.labels.linkedIn} onclick={handleLinkedInLink}>
     <Linkedin />
   </button>
-  <button aria-label={translations.email} onclick={handleEmailLink}>
+  <button aria-label={translations.components.share.labels.email} onclick={handleEmailLink}>
     <Email />
   </button>
 </div>

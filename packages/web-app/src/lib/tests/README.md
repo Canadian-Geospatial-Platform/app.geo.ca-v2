@@ -112,6 +112,7 @@ npm run test
   - Enforces centralized dictionary shape/placeholder parity and checks shared/component labels, interpolation and missing parameters, request-language server rendering, resource-language labels, locale-specific number separators for numeric/string inputs and search counts, singular/plural search messages, and omission of unused search dictionaries.
 - `translations.component.test.ts`
   - Verifies live language switching without remounting and selected dropdown label updates without changing the selected value or invoking its change callback.
+  - Covers category selection initialization from the URL, stale-state clearing, store-driven updates, resets, and subscription cleanup on unmount.
 - `search-bar.component.test.ts`
   - Checks Enter/button keyword searches in both languages, preserving filters and resetting pagination with supported navigation options. Also covers normalized language selection for the filter close-button label.
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import Card from '#lib/components/card/card.svelte';
@@ -12,8 +12,9 @@
 
   let { tabContentArray }: Props = $props();
 
-  /******************* Translations *******************/
-  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record'));
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
 
   // Set the first tab to active by default
   let activeTabId = $state('');
@@ -48,7 +49,7 @@
       {title}
     </h2>
     <h2 class="lg:hidden font-custom-style-h2 mx-5 md:mx-0 mb-7">
-      {translations.resources}
+      {translations.components.record.labels.resources}
     </h2>
     <div class="flex mr-6 space-x-3 self-end">
       <!-------------- Tabs for large screens -------------->
@@ -70,7 +71,7 @@
   <!-------------- Select for small screens -------------->
   <div class="bg-custom-5 lg:hidden">
     <h2 class="mx-5 font-custom-style-header-1 pt-5">
-      {translations.selectCategory}
+      {translations.components.record.labels.selectCategory}
     </h2>
     <div class="mx-5 mt-2.5 sm:w-fit">
       <SelectCustomized optionsData={tabContentArray} selectType="tabCard" bind:selected={activeTab} selectedChange={handleTabClick} />

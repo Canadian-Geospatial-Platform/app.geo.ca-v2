@@ -5,9 +5,12 @@
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import type { Filter, FilterItem } from './filter-types';
 
-  /************* Filter Data ***************/
-  const translations = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults);
-  const organizations: Filter = $derived(translations.filters.filters.find((filter: Filter) => filter.section === 'org')!);
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const searchResultsTranslations = $derived(getTranslations(appLang).components.searchResults);
+
+  // Organizations filter data
+  const organizations: Filter = $derived(searchResultsTranslations.filters.find((filter: Filter) => filter.section === 'org')!);
   let checkedStates: Record<string, boolean> = $state({});
 
   /**
@@ -31,7 +34,7 @@
 
 <!-- Federal -->
 <h3 class="font-custom-style-h3">
-  {translations.organizations.federal}
+  {searchResultsTranslations.organizations.federal}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
   {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}
@@ -51,7 +54,7 @@
 
 <!-- Provincial/Territorial -->
 <h3 class="font-custom-style-h3">
-  {translations.organizations.provincial}
+  {searchResultsTranslations.organizations.provincial}
 </h3>
 <div class="space-y-[1.125rem] lg:columns-2">
   {#each organizations.filterList as filterListItem (`${organizations.section}-${filterListItem.value}`)}

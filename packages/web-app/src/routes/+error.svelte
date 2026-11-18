@@ -9,7 +9,8 @@
   import LoadingMask from '#lib/components/loading-mask/loading-mask.svelte';
   import Breadcrumbs from '#lib/components/breadcrumbs/breadcrumbs.svelte';
 
-  const errorMessage = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).pages.error.message);
+  const appLang = getAppLanguage(page.data.lang ?? page.params.lang);
+  const errorMessageText = $derived(getTranslations(appLang).pages.error.message);
 </script>
 
 {#if navigating.type !== null}
@@ -20,7 +21,7 @@
 <div class="flex flex-col content-width space-y-7 bg-custom-1 min-h-screen pt-7">
   <Breadcrumbs />
   <div>
-    {errorMessage}
+    {errorMessageText}
     <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca"
       >geoinfo@nrcan-rncan.gc.ca</a
     >.

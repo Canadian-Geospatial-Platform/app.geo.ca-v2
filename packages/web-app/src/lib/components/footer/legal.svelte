@@ -3,28 +3,29 @@
   import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
 
-  const legalData = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.footer.legal);
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const legalTranslations = $derived(getTranslations(appLang).components.footer.legal);
 </script>
 
 <div class="bg-custom-5 font-open-sans py-4">
   <div class="grid grid-cols-1 md:grid-cols-2 content-width">
     <div class="legal-col">
-      <h3 class="mb-2.5">{legalData.contactUs}</h3>
-      <p>{legalData.ccmeo}</p>
-      <p>{legalData.nrcan}</p>
-      <p>{legalData.goc}</p>
-      <p><a href={`mailto:${legalData.email}?subject=app.geo.ca`}>{legalData.email}</a></p>
+      <h3 class="mb-2.5">{legalTranslations.contactUs}</h3>
+      <p>{legalTranslations.ccmeo}</p>
+      <p>{legalTranslations.nrcan}</p>
+      <p>{legalTranslations.goc}</p>
+      <p><a href={`mailto:${legalTranslations.email}?subject=app.geo.ca`}>{legalTranslations.email}</a></p>
     </div>
     <div class="legal-col md:text-right">
-      <img class="w-28 md:ml-auto mb-5" src={legalData.logoUrl} alt={legalData.logoAlt} />
-      <p><a href={legalData.licenceUrl} rel="external">{legalData.license}</a></p>
-      <p>{legalData.copyright}</p>
+      <img class="w-28 md:ml-auto mb-5" src={legalTranslations.logoUrl} alt={legalTranslations.logoAlt} />
+      <p><a href={legalTranslations.licenceUrl} rel="external">{legalTranslations.license}</a></p>
+      <p>{legalTranslations.copyright}</p>
       <p>
-        {legalData.cdgi}
-        <a href={legalData.cdgiLink} rel="external">
-          {legalData.cdgiLinkText}
+        {legalTranslations.cdgi}
+        <a href={legalTranslations.cdgiLink} rel="external">
+          {legalTranslations.cdgiLinkText}
         </a>
-        {legalData.cdgiAcronym}
+        {legalTranslations.cdgiAcronym}
       </p>
     </div>
   </div>

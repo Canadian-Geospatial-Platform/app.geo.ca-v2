@@ -56,9 +56,9 @@
     rowAction,
   }: Props = $props();
 
-  /************** Translations **************/
+  // App language and translations
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const translations = $derived(getTranslations(appLang).components.sortableTable);
+  const sortableTableTranslations = $derived(getTranslations(appLang).components.sortableTable);
 
   // Convert table label keys to an array to ensure that all data rows have the same order
   // and to simplify sorting
@@ -241,7 +241,7 @@
           <th class="w-fit border border-custom-9">
             <div class="flex flex-col items-center w-fit mx-auto hover:cursor-pointer relative">
               <label class="block font-custom-style-header-1 whitespace-nowrap mb-2" for="checkAll">
-                {translations.selectAll}
+                {sortableTableTranslations.selectAll}
               </label>
               <input
                 type="checkbox"
@@ -284,7 +284,7 @@
           <!-------------- Remove Row Column -------------->
           <th class="w-fit border border-custom-9">
             <div class="block font-custom-style-header-1 mb-2">
-              {translations.deleteResource}
+              {sortableTableTranslations.deleteResource}
             </div>
           </th>
         {/if}

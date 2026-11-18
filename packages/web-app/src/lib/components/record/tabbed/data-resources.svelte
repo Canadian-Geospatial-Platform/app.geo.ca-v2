@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import { getContentLanguage, getAppLanguage } from '#lib/utils/language.js';
   import { parseDataResources } from '#lib/components/record/tabbed/parseDataResources.js';
@@ -12,12 +12,12 @@
     languages: string;
   };
 
-  /******************* Translations *******************/
-  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record'));
-
-  /******************* Data *******************/
-  const data = page.data;
+  // App language and translations
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
+
+  // Data from the page
+  const data = page.data;
   const contentLang = $derived(getContentLanguage(appLang));
   const items = data.item_v2!;
   const dataResourcesRaw = items.options;
@@ -27,10 +27,10 @@
 
   // Translation of table column labels
   const tableLabels: DataResourcesRow = $derived({
-    name: translations.name,
-    type: translations.type,
-    format: translations.format,
-    languages: translations.languages,
+    name: translations.components.record.labels.name,
+    type: translations.components.record.labels.type,
+    format: translations.general.format,
+    languages: translations.components.record.labels.languages,
   });
 
   /**
@@ -70,7 +70,7 @@
         <!-- Resource Type -->
         <div class="block sm:inline pr-3">
           <h3 class="font-custom-style-h3-2 inline">
-            {translations.type}:
+            {translations.components.record.labels.type}:
           </h3>
           <p class="font-custom-style-body-9 inline">
             {dataResource.type}
@@ -80,7 +80,7 @@
         <!-- Resource format -->
         <div class="block sm:inline pr-3">
           <h3 class="font-custom-style-h3-2 inline">
-            {translations.format}:
+            {translations.general.format}:
           </h3>
           <p class="font-custom-style-body-9 inline">
             {dataResource.format}
@@ -90,7 +90,7 @@
         <!-- Resource Languages -->
         <div class="block sm:inline pr-3">
           <h3 class="font-custom-style-h3-2 inline">
-            {translations.languages}:
+            {translations.components.record.labels.languages}:
           </h3>
           <p class="font-custom-style-body-9 inline">
             {dataResource.languages}
@@ -101,17 +101,17 @@
   </div>
 {:else}
   <div>
-    {translations.resourcesNotAvailable}
+    {translations.components.record.labels.resourcesNotAvailable}
   </div>
 {/if}
 
 <!-- Geocore and HNAP buttons -->
 <div class="flex flex-col sm:flex-row gap-4 pt-2">
-  <button class="w-full sm:w-auto button-utility-dark" on:click={handleDownloadButtonClick}>
-    {translations.downloadMetadata}
+  <button class="w-full sm:w-auto button-utility-dark" onclick={handleDownloadButtonClick}>
+    {translations.components.record.labels.downloadMetadata}
   </button>
-  <button class="w-full sm:w-auto button-utility-light" on:click={handleViewISO1915ButtonClick}>
-    {translations.viewISO1915}
+  <button class="w-full sm:w-auto button-utility-light" onclick={handleViewISO1915ButtonClick}>
+    {translations.components.record.labels.viewISO1915}
   </button>
 </div>
 

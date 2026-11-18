@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels, getTranslations, formatTranslation } from '#lib/i18n/index.js';
+  import { getTranslations, formatTranslation } from '#lib/i18n/index.js';
   import { onMount } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
   import { page } from '$app/state';
@@ -26,7 +26,7 @@
    * and opens selected records in the map view route.
    */
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const translations = $derived(getComponentLabels(appLang, 'favourites'));
+  const translations = $derived(getTranslations(appLang));
   const signedIn = Boolean(page.data.signedIn);
   const userDataUnavailable = page.data.userDataStatus === 'unavailable';
 
@@ -55,9 +55,9 @@
    * @returns Localized disabled-state explanation, or an empty string when eligible.
    */
   function addDisabledReason(unmappable: boolean): string {
-    if (unmappable) return translations.datasetNotMappable;
-    if (userDataUnavailable) return translations.savedDataUnavailable;
-    if (savedMaps.length === 0) return translations.noSavedMapsToAdd;
+    if (unmappable) return translations.components.favourites.labels.datasetNotMappable;
+    if (userDataUnavailable) return translations.components.favourites.labels.savedDataUnavailable;
+    if (savedMaps.length === 0) return translations.components.favourites.labels.noSavedMapsToAdd;
     return '';
   }
 
@@ -93,8 +93,8 @@
   );
 
   const tableLabels: Record<string, string> = $derived({
-    name: translations.resourceName,
-    formats: translations.resourceFormats,
+    name: translations.components.favourites.labels.resourceName,
+    formats: translations.components.favourites.labels.resourceFormats,
   });
 
   /**
@@ -226,7 +226,11 @@
 </script>
 
 <ActionDialog bind:this={actionDialog} />
-<AppDialog open={datasetToAdd !== null} title={translations.chooseSavedMap} onclose={() => (datasetToAdd = null)}>
+<AppDialog
+  open={datasetToAdd !== null}
+  title={translations.components.favourites.labels.chooseSavedMap}
+  onclose={() => (datasetToAdd = null)}
+>
   <ul class="max-h-80 overflow-y-auto space-y-3 mb-5">
     {#each savedMaps as savedMap (savedMap.id)}
       <li>
@@ -237,9 +241,9 @@
     {/each}
   </ul>
   {#if pickerError}
-    <p class="status-alert-error mb-5" role="alert">{translations.openSavedMapFailed}</p>
+    <p class="status-alert-error mb-5" role="alert">{translations.components.favourites.labels.openSavedMapFailed}</p>
   {/if}
-  <button class="button-action-dark" onclick={() => (datasetToAdd = null)}>{translations.cancel}</button>
+  <button class="button-action-dark" onclick={() => (datasetToAdd = null)}>{translations.general.cancel}</button>
 </AppDialog>
 
 {#snippet addToSavedMapButton(id: string, unmappable: boolean, mobile = false)}
@@ -248,7 +252,7 @@
     class="button-action-light"
     disabled={Boolean(reason) || openingSavedMap}
     aria-busy={openingSavedMap}
-    title={reason || translations.addToSavedMap}
+    title={reason || translations.components.favourites.labels.addToSavedMap}
     aria-describedby={reason ? `add-map-reason-${id}-${mobile}` : undefined}
     onclick={() => {
       if (openingSavedMap) return;
@@ -256,7 +260,7 @@
       datasetToAdd = id;
     }}
   >
-    {translations.add}
+    {translations.components.favourites.labels.add}
   </button>
   {#if reason}
     <span id={`add-map-reason-${id}-${mobile}`} class="sr-only">{reason}</span>
@@ -267,19 +271,19 @@
   {@render addToSavedMapButton(row.id, Boolean(row.disableCheckbox))}
 {/snippet}
 
-<h1 class="page-title-favourites font-custom-style-h1">{translations.datasetsTab}</h1>
+<h1 class="page-title-favourites font-custom-style-h1">{translations.components.favourites.labels.datasetsTab}</h1>
 
 <div class="page-section-favourites">
   {#if userDataUnavailable}
     <div class="status-alert-error font-custom-style-body-1" role="status" aria-live="polite">
-      {translations.savedDataUnavailable}
+      {translations.components.favourites.labels.savedDataUnavailable}
     </div>
   {:else if !loading}
     {#if tableDataArray.length > 0}
       <p class="page-copy-block">
         <!-- These are our descriptions, no injection risk -->
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html translations.datasetsDescription}
+        {@html translations.components.favourites.labels.datasetsDescription}
       </p>
 
       <Card>
@@ -296,7 +300,7 @@
             deleteResource={handleDeleteResource}
             bind:this={sortableTable}
             bind:selectedIds
-            actionColumnLabel={translations.addToSavedMap}
+            actionColumnLabel={translations.components.favourites.labels.addToSavedMap}
             rowAction={signedIn ? savedMapAction : undefined}
           />
         </div>
@@ -341,7 +345,7 @@
                 {/if}
                 <button class="button-action-light button-action-remove" onclick={() => handleDeleteResource(item.id)}>
                   <GarbageCan classes="h-4 button-icon-inline" />
-                  {translations.remove}
+                  {translations.components.favourites.labels.remove}
                 </button>
               </div>
             </div>
@@ -356,25 +360,25 @@
               disabled={!canOpenMap}
               aria-disabled={!canOpenMap}
             >
-              {translations.viewOnMap} ({numSelected})
+              {translations.components.favourites.labels.viewOnMap} ({numSelected})
             </button>
           </div>
 
           <button class="button-inline-desktop button-action-light button-width-mobile-full" onclick={handleRemoveAllClick}>
             <GarbageCan classes="h-4 button-icon-inline" />
-            {translations.removeAll}
+            {translations.components.favourites.labels.removeAll}
           </button>
         </div>
       </Card>
 
       <div class="mt-9">
         <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/maps', { lang: appLang })}>
-          {translations.mapsLinkLabel}
+          {translations.components.favourites.labels.mapsLinkLabel}
         </a>
       </div>
 
       <h2 class="mb-4 mt-9 mx-0 font-custom-style-h2 md:mr-auto">
-        {translations.searchFor}
+        {translations.components.favourites.labels.searchFor}
       </h2>
       <SearchBarSimplified />
     {:else}
@@ -382,11 +386,11 @@
         <NoMap classes="text-custom-19 m-auto h-48 md:h-80 lg:h-96" />
 
         <p class="block m-auto w-fit font-custom-style-h2 text-center">
-          {translations.resourceListEmpty}
+          {translations.components.favourites.labels.resourceListEmpty}
         </p>
 
         <a class="button-action-dark button-cta-link-dark block m-auto mt-5" href={resolve('/[lang]/map-browser', { lang: appLang })}>
-          {translations.findAResource}
+          {translations.components.favourites.labels.findAResource}
         </a>
       </div>
     {/if}

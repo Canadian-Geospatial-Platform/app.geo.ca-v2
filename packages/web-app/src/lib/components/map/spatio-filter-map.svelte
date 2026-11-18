@@ -45,7 +45,9 @@
   /************ Map Config ************/
 
   const mapId = 'map-spatio-filter';
-  const contentLang = getContentLanguage(getAppLanguage(page.data.lang));
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const contentLang = $derived(getContentLanguage(appLang));
+  const visibleExtentText = $derived(getTranslations(appLang).components.map.visibleExtent);
 
   const basemapId = 'transport';
   const shaded = true;
@@ -203,7 +205,7 @@
 
         const buttonGroupName = 'buttonGroup';
         const button = {
-          tooltip: getTranslations(page.data.lang).components.map.visibleExtent,
+          tooltip: visibleExtentText,
           children: cgpv.reactUtilities.react.createElement(
             'svg',
             {

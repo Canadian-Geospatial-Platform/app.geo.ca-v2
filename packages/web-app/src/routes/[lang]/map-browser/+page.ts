@@ -55,7 +55,7 @@ export const load: PageLoad = ({ params, data, url }) => {
  * @returns The page message.
  */
 function parsePageMessage(appLang: AppLanguage, url: URL, totalResults: number): string {
-  const messages = getTranslations(appLang).components.searchResults.pagination;
+  const paginationTranslations = getTranslations(appLang).components.searchResults.pagination;
   const searchParams = url.searchParams;
   const pageNumberParam = parseInt(searchParams.get('page-number') || '0');
   const perPageParam = parseInt(searchParams.get('results-per-page') || '10');
@@ -67,7 +67,8 @@ function parsePageMessage(appLang: AppLanguage, url: URL, totalResults: number):
   const totalPages = formatNumber(Math.ceil(totalResults / countPerPage), appLang);
   const formattedNumberOfResults = formatNumber(totalResults, appLang);
 
-  const template = totalResults === 0 ? messages.empty : totalResults === 1 ? messages.one : messages.other;
+  const template =
+    totalResults === 0 ? paginationTranslations.empty : totalResults === 1 ? paginationTranslations.one : paginationTranslations.other;
   return formatTranslation(template, { count: formattedNumberOfResults, page: pageNumber, pages: totalPages });
 }
 
@@ -80,13 +81,13 @@ function parsePageMessage(appLang: AppLanguage, url: URL, totalResults: number):
  * @returns The result message.
  */
 function parseResultMessage(appLang: AppLanguage, url: URL, totalResults: number): string {
-  const messages = getTranslations(appLang).components.searchResults.messages;
+  const messagesTranslations = getTranslations(appLang).components.searchResults.messages;
   const searchParams = url.searchParams;
   const searchTerm = searchParams.get('search-terms');
 
   const formattedNumberOfResults = formatNumber(totalResults, appLang);
 
-  const templates = searchTerm ? messages.keyword : messages.browse;
+  const templates = searchTerm ? messagesTranslations.keyword : messagesTranslations.browse;
   const template = totalResults === 1 ? templates.one : templates.other;
   return formatTranslation(template, { count: formattedNumberOfResults, term: searchTerm ?? '' });
 }

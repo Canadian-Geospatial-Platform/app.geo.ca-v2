@@ -1,17 +1,26 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'svelte/server';
+import { get } from 'svelte/store';
 import en from '#lib/i18n/en-ca.json';
 import fr from '#lib/i18n/fr-ca.json';
-import { formatTranslation, getComponentLabels, getTranslations } from '#lib/i18n/index.js';
+import { formatTranslation, getTranslations } from '#lib/i18n/index.js';
 import { getAppLanguage } from '#lib/utils/language.js';
 import { formatNumber } from '#lib/utils/format-number.js';
 import { load as loadSearch } from '../../routes/[lang]/map-browser/+page';
 import { parseDataResources } from '#lib/components/record/tabbed/parseDataResources.js';
 
-const { page } = vi.hoisted(() => ({ page: { data: { lang: 'en-ca' }, params: { lang: 'en-ca' } } }));
+const { page } = vi.hoisted(() => ({
+  page: {
+    data: { lang: 'en-ca' },
+    params: { lang: 'en-ca' },
+    url: new URL('https://example.test/en-ca/map-browser'),
+  },
+}));
 vi.mock('$app/state', () => ({ page }));
 
 import Feedback from '#lib/components/feedback/feedback.svelte';
+import CategoryOfInterest from '#lib/components/search-results/filters/category-of-interest.svelte';
+import { tempCategoryOfInterest, updateTempCategoryOfInterest } from '#lib/components/search-results/store.js';
 
 /** Describes catalogue structure and placeholder names without including translated text. */
 function catalogueShape(value: unknown, path = ''): Record<string, string> {
@@ -27,17 +36,31 @@ function catalogueShape(value: unknown, path = ''): Record<string, string> {
 }
 
 describe('centralized translations', () => {
+  it('renders the URL category without reading or mutating shared temporary state during SSR', () => {
+    const [urlCategory, staleCategory] = en.components.searchResults.categories;
+    page.data.lang = 'en-ca';
+    page.params.lang = 'en-ca';
+    page.url.searchParams.set('category-of-interest', urlCategory.value);
+    updateTempCategoryOfInterest(staleCategory.value);
+    try {
+      const { body } = render(CategoryOfInterest);
+      expect(body).toContain(urlCategory.label);
+      expect(get(tempCategoryOfInterest)).toBe(staleCategory.value);
+    } finally {
+      updateTempCategoryOfInterest(null);
+      page.url.searchParams.delete('category-of-interest');
+    }
+  });
+
   it('keeps every key, array entry, value type and placeholder in sync between languages', () => {
     expect(catalogueShape(fr)).toEqual(catalogueShape(en));
   });
 
-  it('combines shared phrases and component-specific labels without English fallbacks', () => {
-    const labels = getComponentLabels(getAppLanguage('FR'), 'favourites');
-    expect(labels.cancel).toBe('Annuler');
-    expect(labels.chooseSavedMap).toBe('Choisir une carte enregistrée');
+  it('selects shared phrases and component labels using the normalized language', () => {
+    const translations = getTranslations(getAppLanguage('FR'));
+    expect(translations.general.cancel).toBe('Annuler');
+    expect(translations.components.favourites.labels.chooseSavedMap).toBe('Choisir une carte enregistrée');
     expect(getTranslations(getAppLanguage(null)).general.cancel).toBe('Cancel');
-    expect(getComponentLabels('en-ca', 'favourites').cancel).toBe('Cancel');
-    expect(labels.cancel).toBe('Annuler');
   });
 
   it('interpolates repeated parameters literally and rejects missing parameters', () => {

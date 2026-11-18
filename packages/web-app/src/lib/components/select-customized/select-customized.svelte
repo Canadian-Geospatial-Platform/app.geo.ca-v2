@@ -31,7 +31,7 @@
   }: Props = $props();
 
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const translations = $derived(getTranslations(appLang).components.select);
+  const selectTranslations = $derived(getTranslations(appLang).components.select);
 
   let expanded = $state(false);
   let customTriggerEl = $state<HTMLButtonElement>();
@@ -170,7 +170,7 @@
     {#if selected && removableSelection}
       <button
         type="button"
-        aria-label={translations.clear}
+        aria-label={selectTranslations.clear}
         class="clear-btn focus-visible-standard absolute top-1/4 right-10 md:right-14 z-10 text-gray-400 rounded-full p-1.5 cursor-pointer"
         onclick={handleRemoveSelect}
       >
@@ -181,7 +181,7 @@
     <button
       type="button"
       class={[...triggerClasses, 'focus-visible-standard']}
-      aria-label={translations.select}
+      aria-label={selectTranslations.select}
       aria-haspopup="listbox"
       aria-expanded={expanded ? 'true' : 'false'}
       onclick={handleCustomSelectClick}
@@ -201,7 +201,7 @@
         class={menuClasses}
         style={menuStyle}
         role="listbox"
-        aria-label={translations.select}
+        aria-label={selectTranslations.select}
         bind:this={customMenuEl}
         transition:fly={{ y: 4, duration: 140 }}
       >

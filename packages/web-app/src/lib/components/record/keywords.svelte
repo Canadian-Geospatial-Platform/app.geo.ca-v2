@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import { resolve } from '$app/paths';
 
-  const keywordsText = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record').keywords);
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const keywordsText = $derived(getTranslations(appLang).components.record.labels.keywords);
 
   const data = page.data;
   const items = data.item_v2!;

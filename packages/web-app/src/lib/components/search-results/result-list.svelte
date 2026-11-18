@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
   import { onMount } from 'svelte';
   import { SvelteURLSearchParams } from 'svelte/reactivity';
@@ -29,7 +29,7 @@
   const signedIn = Boolean(page.data.signedIn);
 
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const translations = $derived(getComponentLabels(appLang, 'searchResults'));
+  const translations = $derived(getTranslations(appLang));
 
   /************* Accordion Components ***************/
   let data = $derived(page.data);
@@ -233,8 +233,8 @@
       <div class="bg-custom-1 px-5 py-4">
         <Accordion
           bind:this={accordionComponents[index]}
-          expandTooltip={translations.expandToShowMap}
-          collapseTooltip={translations.collapseToHideMap}
+          expandTooltip={translations.components.searchResults.labels.expandToShowMap}
+          collapseTooltip={translations.components.searchResults.labels.collapseToHideMap}
         >
           {#snippet accordionTitle()}
             <div class="sm:grid grid-cols-10">
@@ -255,7 +255,7 @@
                 </div>
                 <div class="mt-3">
                   <p>
-                    <span class="font-semibold">{translations.organization}: </span>
+                    <span class="font-semibold">{translations.general.organization}: </span>
                     {pickByLanguage(
                       appLang,
                       result.contact[0]?.organisation?.en?.replaceAll(';', '; '),
@@ -263,7 +263,7 @@
                     )}
                   </p>
                   <p class="mt-2">
-                    <span class="font-semibold">{translations.format}: </span>
+                    <span class="font-semibold">{translations.general.format}: </span>
                     {#each getFormats(result) as format (format)}
                       <span class="text-sm bg-custom-16/15 py-0.5 px-2 mt-1 mr-2 rounded inline-block">{format}</span>
                     {/each}
@@ -276,7 +276,7 @@
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23 cursor-pointer"
-                  title={translations.removeFromFavourites}
+                  title={translations.general.removeFromFavourites}
                   onclick={() => handleFavouriteClick(result.id)}
                 >
                   <HeartFilled classes="h-9" />
@@ -285,7 +285,7 @@
                 <button
                   class="col-start-10 justify-self-end text-custom-16 self-center w-fit
                   mt-2 sm:mt-0 hover:text-custom-23 cursor-pointer"
-                  title={translations.addToFavourites}
+                  title={translations.general.addToFavourites}
                   onclick={() => handleFavouriteClick(result.id)}
                 >
                   <Heart classes="h-9 hover:fill-custom-23" />
@@ -303,7 +303,7 @@
                 </div>
                 <div class="sm:hidden">
                   <p class="md:mx-0">
-                    {translations.windowTooSmall}
+                    {translations.general.windowTooSmall}
                   </p>
                   <div class="mt-5 bg-[url('/map-not-available.png')] bg-cover max-w-full h-60">
                     <div class="bg-black/35 w-full h-full flex items-center justify-center">
@@ -312,7 +312,7 @@
                   </div>
                 </div>
               {:else}
-                {translations.mapNotAvailable}
+                {translations.components.searchResults.labels.mapNotAvailable}
               {/if}
             </div>
           {/snippet}

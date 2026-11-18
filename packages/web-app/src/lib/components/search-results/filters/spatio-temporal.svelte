@@ -14,9 +14,12 @@
 
   let { temporalActive = $bindable(false), spatialActive = $bindable(false) }: Props = $props();
 
-  /************* Filter Data ***************/
-  const filters = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters);
-  const spatioTemporalFilters = $derived(filters.find((filter: Filter) => filter.section === 'spatio-temporal')!);
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const filtersTranslations = $derived(getTranslations(appLang).components.searchResults.filters);
+
+  // Spatio-Temporal filter data
+  const spatioTemporalFilters = $derived(filtersTranslations.find((filter: Filter) => filter.section === 'spatio-temporal')!);
   const section = $derived(spatioTemporalFilters.section);
   const label = $derived(spatioTemporalFilters.label);
   const filterList = $derived(spatioTemporalFilters.filterList);

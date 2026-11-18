@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
@@ -10,7 +10,7 @@
   import HeartFilled from '#lib/components/icons/heart-filled.svelte';
 
   const data = page.data;
-  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'record'));
+  const translations = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)));
   const items = data.item_v2!;
   const properties = items;
 
@@ -96,12 +96,12 @@
   {#if favouriteRecordList.includes(properties.id)}
     <button class="button-utility-dark button-favourite" onclick={() => handleFavouriteClick(properties.id)}>
       <HeartFilled classes="h-6 inline my-2 mr-1" />
-      {translations.removeFromFavourites}
+      {translations.general.removeFromFavourites}
     </button>
   {:else}
     <button class="button-utility-light button-favourite" onclick={() => handleFavouriteClick(properties.id)}>
       <Heart classes="h-6 inline my-2 mr-1" />
-      {translations.addToFavourites}
+      {translations.general.addToFavourites}
     </button>
   {/if}
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
   import { onMount } from 'svelte';
   import { page } from '$app/state';
@@ -19,7 +19,7 @@
    * and allows signed-in users to save the current map state.
    */
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const translations = $derived(getComponentLabels(appLang, 'favourites'));
+  const translations = $derived(getTranslations(appLang));
   const signedIn = Boolean(page.data.signedIn);
   const userDataUnavailable = page.data.userDataStatus === 'unavailable';
 
@@ -118,7 +118,7 @@
     addingDataset = false;
     if (result === 'already-present') {
       clearAdditionIntent();
-      setStatus('success', translations.datasetAlreadyPresent);
+      setStatus('success', translations.components.favourites.labels.datasetAlreadyPresent);
     } else {
       // Retain the query parameter so refresh can replay the addition until a save succeeds.
       showDatasetNotice = true;
@@ -130,7 +130,10 @@
    */
   function handleMapLoadError(): void {
     addingDataset = false;
-    setStatus('error', addDatasetId ? translations.addDatasetFailed : translations.mapLoadFailed);
+    setStatus(
+      'error',
+      addDatasetId ? translations.components.favourites.labels.addDatasetFailed : translations.components.favourites.labels.mapLoadFailed
+    );
   }
 
   /**
@@ -193,7 +196,7 @@
       const defaultName = createUniqueMapName('My Map');
       let name = defaultName;
       if (mode === 'create') {
-        const requestedName = await actionDialog.prompt(translations.saveMapPrompt, defaultName);
+        const requestedName = await actionDialog.prompt(translations.components.favourites.labels.saveMapPrompt, defaultName);
         if (requestedName === null) {
           return;
         }
@@ -204,7 +207,7 @@
       statusMessage = '';
       const mapStateConfig = mapComponent?.getMapConfigFromCurrentState();
       if (!mapStateConfig) {
-        setStatus('error', translations.saveMapFailed);
+        setStatus('error', translations.components.favourites.labels.saveMapFailed);
         return;
       }
 
@@ -226,27 +229,27 @@
       };
       if (!response.ok || !payload.ok) {
         if (payload.reason === 'limit') {
-          setStatus('error', translations.mapLimitReached);
+          setStatus('error', translations.components.favourites.labels.mapLimitReached);
         } else if (payload.reason === 'item-too-large') {
-          setStatus('error', translations.savedMapsTooLarge);
+          setStatus('error', translations.components.favourites.labels.savedMapsTooLarge);
         } else if (payload.reason === 'not-found') {
-          setStatus('error', translations.savedMapNotFound);
+          setStatus('error', translations.components.favourites.labels.savedMapNotFound);
         } else if (payload.reason === 'unavailable') {
-          setStatus('error', translations.savedDataUnavailable);
+          setStatus('error', translations.components.favourites.labels.savedDataUnavailable);
         } else {
-          setStatus('error', translations.saveMapFailed);
+          setStatus('error', translations.components.favourites.labels.saveMapFailed);
         }
         return;
       }
 
       if (!Array.isArray(payload.mapConfigs)) {
-        setStatus('error', translations.saveMapFailed);
+        setStatus('error', translations.components.favourites.labels.saveMapFailed);
         return;
       }
       if (mode === 'create') {
         const createdMap = payload.mapConfigs.find((mapConfig) => mapConfig.id === payload.mapConfigId);
         if (!createdMap) {
-          setStatus('error', translations.saveMapFailed);
+          setStatus('error', translations.components.favourites.labels.saveMapFailed);
           return;
         }
 
@@ -266,9 +269,9 @@
       savedMaps = payload.mapConfigs;
       showDatasetNotice = false;
       if (mode === 'update' && page.url.searchParams.has('addDatasetId')) clearAdditionIntent();
-      setStatus('success', translations.saveMapSuccess);
+      setStatus('success', translations.components.favourites.labels.saveMapSuccess);
     } catch {
-      setStatus('error', translations.saveMapFailed);
+      setStatus('error', translations.components.favourites.labels.saveMapFailed);
     } finally {
       saving = false;
     }
@@ -303,7 +306,7 @@
     const requestedDataset = page.url.searchParams.get('addDatasetId')?.trim();
     if (requestedDataset) {
       if (!signedIn || !selectedMapConfig) {
-        setStatus('error', translations.openSavedMapFailed);
+        setStatus('error', translations.components.favourites.labels.openSavedMapFailed);
         loading = false;
         return;
       }
@@ -352,13 +355,13 @@
       />
     {:else if userDataUnavailable && viewSource === 'maps'}
       <div class="status-alert-error font-custom-style-body-1" role="status" aria-live="polite">
-        {translations.savedDataUnavailable}
+        {translations.components.favourites.labels.savedDataUnavailable}
       </div>
     {/if}
     {#if !presentationMode}
       {#if addingDataset}
         <p class="mt-5 font-custom-style-body-1" role="status">
-          {translations.addingDataset}
+          {translations.components.favourites.labels.addingDataset}
         </p>
       {/if}
       {#if statusType && statusMessage}
@@ -373,10 +376,10 @@
       {#if signedIn && (selectedMapConfig || selectedIds.length > 0)}
         <p class="font-custom-style-body-1 mx-0 pt-5 mb-2">
           <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-          {@html translations.saveMapHelp}
+          {@html translations.components.favourites.labels.saveMapHelp}
           {#if selectedMapConfig}
             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-            {@html translations.overwriteMapHelp}
+            {@html translations.components.favourites.labels.overwriteMapHelp}
           {/if}
         </p>
       {/if}
@@ -388,7 +391,7 @@
               onclick={() => handleSaveMapClick('update')}
               disabled={saving || addingDataset}
             >
-              {translations.save}
+              {translations.general.save}
             </button>
           {/if}
           <button
@@ -396,7 +399,7 @@
             onclick={() => handleSaveMapClick('create')}
             disabled={saving || addingDataset}
           >
-            {translations.saveAs}
+            {translations.general.saveAs}
           </button>
         {/if}
         {#if selectedMapConfig || selectedIds.length > 0}
@@ -404,13 +407,13 @@
             class="button-inline-desktop button-action-light surface-shadow button-width-mobile-full"
             onclick={handleEnterPresentationMode}
           >
-            {translations.presentationMode}
+            {translations.components.favourites.labels.presentationMode}
           </button>
         {/if}
       </div>
       <div class="info-tip-card">
         <p>
-          {translations.presentationTipLabel}
+          {translations.components.favourites.labels.presentationTipLabel}
         </p>
       </div>
       <div class="flex flex-wrap gap-3 mt-5 mb-5">
@@ -419,17 +422,17 @@
             class="button-inline-desktop button-action-dark surface-shadow button-width-mobile-full"
             onclick={handleGoToDatasetsClick}
           >
-            {translations.datasetsLinkLabel}
+            {translations.components.favourites.labels.datasetsLinkLabel}
           </button>
           <button class="button-inline-desktop button-action-dark surface-shadow button-width-mobile-full" onclick={handleGoToMapsClick}>
-            {translations.mapsLinkLabel}
+            {translations.components.favourites.labels.mapsLinkLabel}
           </button>
         {:else}
           <button
             class="button-inline-desktop button-action-dark surface-shadow button-width-mobile-full"
             onclick={handleReturnToListClick}
           >
-            {translations.returnToList}
+            {translations.components.favourites.labels.returnToList}
           </button>
         {/if}
       </div>
@@ -442,24 +445,24 @@
 <ActionDialog bind:this={actionDialog} />
 <AppDialog
   open={showDatasetNotice}
-  title={translations.unsavedMapChanges}
+  title={translations.components.favourites.labels.unsavedMapChanges}
   describedby="unsaved-dataset-description"
   onclose={() => (showDatasetNotice = false)}
 >
-  <p id="unsaved-dataset-description" class="mb-5">{translations.unsavedDatasetNotice}</p>
+  <p id="unsaved-dataset-description" class="mb-5">{translations.components.favourites.labels.unsavedDatasetNotice}</p>
   <button class="button-action-dark" onclick={() => (showDatasetNotice = false)}>
-    {translations.close}
+    {translations.general.close}
   </button>
 </AppDialog>
 <AppDialog
   open={presentationMode && showPresentationNotice}
-  title={translations.presentationNoticeTitle}
+  title={translations.components.favourites.labels.presentationNoticeTitle}
   describedby="presentation-notice-description"
   onclose={() => (showPresentationNotice = false)}
 >
-  <p id="presentation-notice-description" class="mb-5">{translations.presentationNotice}</p>
+  <p id="presentation-notice-description" class="mb-5">{translations.components.favourites.labels.presentationNotice}</p>
   <button class="button-action-dark" onclick={() => (showPresentationNotice = false)}>
-    {translations.close}
+    {translations.general.close}
   </button>
 </AppDialog>
 

@@ -6,7 +6,6 @@
 
   // Assign a default lang to prevent 'undefined' in the url when lang is not set
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-
   const translations = $derived(getTranslations(appLang));
 
   const appGeoCaUrl = $derived(`/${appLang}/map-browser`);

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels, getTranslations } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
@@ -7,16 +7,18 @@
   import type { SelectOption } from '#lib/components/select-customized/selected-types.d.ts';
   import type { Filter, FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
 
-  /************* Filter Data ***************/
-  const filters = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.searchResults.filters.filters);
-  const themes = $derived(filters?.find((filter: Filter) => filter.section === 'theme'));
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const searchResultsTranslations = $derived(getTranslations(appLang).components.searchResults);
+
+  // Themes filter data
+  const themes = $derived(searchResultsTranslations.filters.find((filter: Filter) => filter.section === 'theme'));
   let checkedStates = $state<Record<string, boolean>>({});
 
-  /************* Translations ***************/
-  const translations = $derived(getComponentLabels(getAppLanguage(page.data.lang ?? page.params.lang), 'searchResults'));
+  // Logic options for theme filter
   const logicOptions: SelectOption[] = $derived([
-    { value: 'any', label: translations.anyLabel },
-    { value: 'all', label: translations.allLabel },
+    { value: 'any', label: searchResultsTranslations.labels.anyLabel },
+    { value: 'all', label: searchResultsTranslations.labels.allLabel },
   ]);
 
   let themeLogic = $state<'any' | 'all'>('any');
@@ -72,7 +74,7 @@
 
 <!-- Condition dropdown -->
 <div class="mb-2 flex items-center gap-2">
-  <span class="text-base text-gray-600">{translations.condition}</span>
+  <span class="text-base text-gray-600">{searchResultsTranslations.labels.condition}</span>
   <div class="w-full max-w-52">
     <SelectCustomized optionsData={logicOptions} bind:selected={selectedLogic} selectedChange={onThemeLogicChange} />
   </div>

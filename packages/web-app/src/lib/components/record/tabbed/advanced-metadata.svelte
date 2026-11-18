@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getComponentLabels } from '#lib/i18n/index.js';
+  import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import SortableTable from '#lib/components/sortable-table/sortable-table.svelte';
@@ -9,11 +9,11 @@
     description: string;
   };
 
-  /******************* Translations *******************/
+  // App language and translations
   const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
-  const translations = $derived(getComponentLabels(appLang, 'record'));
+  const translations = $derived(getTranslations(appLang));
 
-  /******************* Data *******************/
+  // Data from the page
   const data = page.data;
   const langIndex = $derived(pickByLanguage(appLang, 0, 1));
   const items = data.item_v2!;
@@ -24,7 +24,7 @@
 
   const status = $derived(items.status.split('; ')[langIndex]);
   const maintenance = $derived(items.maintenance.split('; ')[langIndex]);
-  const id = $derived(data.uuid || translations.notApplicable);
+  const id = $derived(data.uuid || translations.general.notApplicable);
 
   // Each topic category should be a link back to the search page
   const topicCategoryArray = $derived(
@@ -36,39 +36,42 @@
   const topicCategory = $derived(topicCategoryArray.join(', '));
 
   const type = $derived(items.type.split('; ')[langIndex]);
-  const north = $derived(items.bbox?.north?.toString() || translations.notApplicable);
-  const east = $derived(items.bbox?.east?.toString() || translations.notApplicable);
-  const south = $derived(items.bbox?.south?.toString() || translations.notApplicable);
-  const west = $derived(items.bbox?.west?.toString() || translations.notApplicable);
+  const north = $derived(items.bbox?.north?.toString() || translations.general.notApplicable);
+  const east = $derived(items.bbox?.east?.toString() || translations.general.notApplicable);
+  const south = $derived(items.bbox?.south?.toString() || translations.general.notApplicable);
+  const west = $derived(items.bbox?.west?.toString() || translations.general.notApplicable);
   const spatialRepresentation = $derived(
-    items?.spatialRepresentation ? items?.spatialRepresentation.split('; ')[langIndex] : translations.notApplicable
+    items?.spatialRepresentation ? items?.spatialRepresentation.split('; ')[langIndex] : translations.general.notApplicable
   );
-  const projection = $derived(items.refSys || translations.notApplicable);
+  const projection = $derived(items.refSys || translations.general.notApplicable);
 
-  const dateCreated = $derived(items.created || translations.notApplicable);
-  const datePublished = $derived(items.published || translations.notApplicable);
+  const dateCreated = $derived(items.created || translations.general.notApplicable);
+  const datePublished = $derived(items.published || translations.general.notApplicable);
   const temporalCoverage = `${items.temporalExtent.begin} - ${items.temporalExtent.end}`;
 
   // Table Array
   const tableDataArray: Array<AdvMetadataRow> = $derived([
-    { label: translations.status.toUpperCase(), description: status },
-    { label: translations.maintenance.toUpperCase(), description: maintenance },
-    { label: translations.id.toUpperCase(), description: id },
-    { label: translations.topicCategory.toUpperCase(), description: topicCategory },
-    { label: translations.type.toUpperCase(), description: type },
-    { label: translations.north.toUpperCase(), description: north },
-    { label: translations.east.toUpperCase(), description: east },
-    { label: translations.south.toUpperCase(), description: south },
-    { label: translations.west.toUpperCase(), description: west },
-    { label: translations.spatialRepresentation.toUpperCase(), description: spatialRepresentation },
-    { label: translations.projection.toUpperCase(), description: projection },
-    { label: translations.dateCreated.toUpperCase(), description: dateCreated },
-    { label: translations.datePublished.toUpperCase(), description: datePublished },
-    { label: translations.temporalCoverage.toUpperCase(), description: temporalCoverage },
+    { label: translations.components.record.labels.status.toUpperCase(), description: status },
+    { label: translations.components.record.labels.maintenance.toUpperCase(), description: maintenance },
+    { label: translations.components.record.labels.id.toUpperCase(), description: id },
+    { label: translations.components.record.labels.topicCategory.toUpperCase(), description: topicCategory },
+    { label: translations.components.record.labels.type.toUpperCase(), description: type },
+    { label: translations.general.north.toUpperCase(), description: north },
+    { label: translations.general.east.toUpperCase(), description: east },
+    { label: translations.general.south.toUpperCase(), description: south },
+    { label: translations.general.west.toUpperCase(), description: west },
+    { label: translations.components.record.labels.spatialRepresentation.toUpperCase(), description: spatialRepresentation },
+    { label: translations.components.record.labels.projection.toUpperCase(), description: projection },
+    { label: translations.components.record.labels.dateCreated.toUpperCase(), description: dateCreated },
+    { label: translations.components.record.labels.datePublished.toUpperCase(), description: datePublished },
+    { label: translations.components.record.labels.temporalCoverage.toUpperCase(), description: temporalCoverage },
   ]);
 
   // Translation of table column labels
-  const tableLabels: AdvMetadataRow = $derived({ label: translations.label, description: translations.description });
+  const tableLabels: AdvMetadataRow = $derived({
+    label: translations.components.record.labels.label,
+    description: translations.components.record.labels.description,
+  });
 </script>
 
 <SortableTable tableContent={tableDataArray} {tableLabels} clickableRows={false} />

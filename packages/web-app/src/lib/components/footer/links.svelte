@@ -3,12 +3,13 @@
   import { getTranslations } from '#lib/i18n/index.js';
   import { getAppLanguage } from '#lib/utils/language.js';
 
-  const linksData = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)).components.footer.links);
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const linksTranslations = $derived(getTranslations(appLang).components.footer.links);
 </script>
 
 <div class="bg-custom-14">
   <div class="content-width grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-2 py-2 md:py-12 md:px-0">
-    {#each Object.entries(linksData) as [colIndex, data] (colIndex)}
+    {#each Object.entries(linksTranslations) as [colIndex, data] (colIndex)}
       <div class="p-3 font-custom-style-footer-1">
         {#if data?.title}
           <h3>{data['title']}</h3>
