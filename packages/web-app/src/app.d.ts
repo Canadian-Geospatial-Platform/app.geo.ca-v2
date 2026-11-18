@@ -1,24 +1,11 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import type { Filter } from '#lib/components/search-results/filters/filter-types';
 import type { ContactInfo, GeospatialRecord, MapConfigFavourite, SimilarityRecord } from '#lib/db/db-types.js';
 
 // SemanticSearch results have coordinates as number[][] instead of string
 type SemanticResultWithCoordinates = Omit<GeospatialRecord, 'coordinates'> & {
   coordinates: number[][];
 };
-
-type LinkItem = {
-  title: string;
-  href: string;
-};
-
-type FooterSection = {
-  title?: string;
-  links?: LinkItem[];
-};
-
-type FooterLinksData = Record<string, FooterSection>;
 
 type HeaderMenuOption = {
   colTitle?: string;
@@ -34,20 +21,9 @@ type HeaderNavItem = {
 
 type HeaderNavItems = Record<string, HeaderNavItem>;
 
-type TranslationMap = Record<string, string>;
-
-type CategoryOption = {
-  value: string;
-  label: string;
-};
-
 type SortOption = {
   value: string;
   label: string;
-};
-
-type FiltersPayload = {
-  filters: Filter[];
 };
 
 type AnalyticsSummary = {
@@ -84,6 +60,8 @@ type AnalyticResponse = {
 };
 
 declare global {
+  const __APP_DATE_MODIFIED__: string;
+
   namespace App {
     interface PageState {
       presentationMode?: boolean;
@@ -96,11 +74,7 @@ declare global {
     interface PageData {
       // Common properties (from layout.server.ts)
       lang: 'en-ca' | 'fr-ca';
-      footerLinks: FooterLinksData;
-      legalData: { [key: string]: string };
       navitems: HeaderNavItems;
-      headerTranslations: TranslationMap;
-      shareTranslations: TranslationMap;
       signedIn?: boolean;
       FEATURE_SIGN_IN?: boolean;
 
@@ -119,8 +93,7 @@ declare global {
       alternateLang?: string;
       metaDescription?: string;
 
-      // Translation properties
-      t?: TranslationMap; // Component translations
+      // Localized breadcrumbs
       t_title_1?: { text: string; href: string };
       t_title_2?: { text: string; href: string };
       t_title_3?: { text: string; href: string };
@@ -133,8 +106,6 @@ declare global {
       analytics?: AnalyticsSummary;
       searchMode?: 'semantic' | 'classic';
       totalHits?: number;
-      filters?: FiltersPayload;
-      categories?: CategoryOption[];
       sortOptions?: SortOption[];
       numPageText?: string;
       resultMessage?: string;

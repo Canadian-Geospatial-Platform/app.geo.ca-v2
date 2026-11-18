@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getTranslations, formatTranslation } from '#lib/i18n/index.js';
   import { afterNavigate, goto } from '$app/navigation';
   import { page, updated } from '$app/state';
   import { onMount } from 'svelte';
@@ -11,7 +12,7 @@
   import GoogleTag from '#lib/components/google-tag/google-tag.svelte';
   import AppDialog from '#lib/components/dialog/app-dialog.svelte';
   import { SESSION_INACTIVITY_SECONDS, SESSION_WARNING_SECONDS } from '#lib/config/constants.js';
-  import { getAppLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
 
   interface Props {
     children?: import('svelte').Snippet;
@@ -27,8 +28,9 @@
   let sessionRefreshPending = false;
   let sessionLayoutActive = true;
   let sessionLogoutPending = false;
-  const appLang = getAppLanguage(page.data.lang);
-  const lang = appLang.slice(0, 2);
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const contentLang = $derived(getContentLanguage(appLang));
+  const translations = $derived(getTranslations(appLang));
 
   function endExpiredSession(): void {
     if (!sessionLayoutActive || sessionLogoutPending) return;
@@ -75,7 +77,7 @@
     let previousSignedIn = Boolean(page.data.signedIn);
     lastUserActivityAt = Date.now();
     lastSessionTouchAt = lastUserActivityAt;
-    document.documentElement.lang = lang;
+    document.documentElement.lang = contentLang;
 
     let sessionTimer: ReturnType<typeof setInterval> | undefined;
     let sessionStatusPending = false;
@@ -212,9 +214,7 @@
       role="alert"
       aria-live="assertive"
     >
-      {lang === 'fr'
-        ? 'Impossible de vous connecter pour le moment. Veuillez reessayer. Si le probleme persiste, contactez geoinfo@nrcan-rncan.gc.ca.'
-        : 'Unable to sign you in right now. Please try again. If the issue persists, contact geoinfo@nrcan-rncan.gc.ca.'}
+      {translations.layout.session.signInFailed}
     </div>
   {/if}
   {#if page.data.sessionExpired}
@@ -223,7 +223,7 @@
       role="status"
       aria-live="polite"
     >
-      {lang === 'fr' ? 'Votre session a expiré. Vous avez été déconnecté.' : 'You have been signed out because your session expired.'}
+      {translations.layout.session.expired}
     </div>
   {/if}
   <Breadcrumbs />
@@ -244,26 +244,24 @@
     onclose={() => void staySignedIn()}
   >
     <h2 id="session-warning-title" class="mb-3 text-xl font-bold">
-      {lang === 'fr' ? 'Nous allons fermer votre session pour cause d’inactivité' : 'Your session is about to end due to inactivity'}
+      {translations.layout.session.warningTitle}
     </h2>
     <p id="session-warning-description" class="mb-2">
-      {lang === 'fr'
-        ? 'Si vous ne prolongez pas votre session, celle-ci sera automatiquement fermée.'
-        : 'If you do not continue your session you will be signed out automatically.'}
+      {translations.layout.session.warningDescription}
     </p>
     <p class="mb-4 font-semibold" aria-live="assertive">
-      {lang === 'fr'
-        ? `Temps restant : ${Math.ceil(sessionSecondsRemaining / 60)} minutes`
-        : `Time remaining: ${Math.ceil(sessionSecondsRemaining / 60)} minutes`}
+      {formatTranslation(translations.layout.session.remaining, {
+        minutes: Math.ceil(sessionSecondsRemaining / 60),
+      })}
     </p>
-    <p class="mb-4">{lang === 'fr' ? 'Souhaitez-vous prolonger votre session?' : 'Do you wish to continue your session?'}</p>
+    <p class="mb-4">{translations.layout.session.continuePrompt}</p>
     <div class="flex flex-wrap gap-3">
       <button class="button-action-dark" onclick={staySignedIn}>
-        {lang === 'fr' ? 'Prolonger la session' : 'Stay signed in'}
+        {translations.layout.session.staySignedIn}
       </button>
       <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
       <a class="button-action-light" href={`/${appLang}/sign-in/oidc-logout`}>
-        {lang === 'fr' ? 'Se déconnecter' : 'Sign out'}
+        {translations.general.signOut}
       </a>
     </div>
   </AppDialog>

@@ -2,7 +2,15 @@
  * Test coverage: Unit tests for app-language normalization and path-based language detection.
  */
 import { describe, expect, it } from 'vitest';
-import { getAppLanguage, getLangFromPath, getLanguageSwitchUrl, isAppLanguage, isFrench, pickByLanguage } from '#lib/utils/language.js';
+import {
+  getAppLanguage,
+  getContentLanguage,
+  getLangFromPath,
+  getLanguageSwitchUrl,
+  isAppLanguage,
+  isFrench,
+  pickByLanguage,
+} from '#lib/utils/language.js';
 
 describe('getAppLanguage', () => {
   it('normalizes short codes to full app codes', () => {
@@ -51,6 +59,15 @@ describe('pickByLanguage', () => {
   });
 });
 
+describe('getContentLanguage', () => {
+  it.each([
+    ['en-ca', 'en'],
+    ['fr-ca', 'fr'],
+  ] as const)('converts %s to the content language %s', (appLang, expected) => {
+    expect(getContentLanguage(appLang)).toBe(expected);
+  });
+});
+
 describe('getLangFromPath', () => {
   it('extracts the language segment from a relative path', () => {
     expect(getLangFromPath('/fr-ca/map-browser')).toBe('fr-ca');
@@ -61,8 +78,8 @@ describe('getLangFromPath', () => {
     const pagePaths = [
       '',
       '/map-browser',
-      '/map-browser/record/000183ed-8864-42f0-ae43-c4313a860720',
-      '/map-browser/record/000183ed-8864-42f0-ae43-c4313a860720/map',
+      '/map-browser/record/test-record-id',
+      '/map-browser/record/test-record-id/map',
       '/favourites',
       '/favourites/datasets',
       '/favourites/maps',

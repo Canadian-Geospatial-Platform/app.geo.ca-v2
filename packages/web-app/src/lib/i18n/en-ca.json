@@ -1,0 +1,998 @@
+{
+  "general": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "saveAs": "Save as...",
+    "delete": "Delete",
+    "close": "Close",
+    "search": "Search",
+    "home": "Home",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "continue": "Continue",
+    "myGeo": "My GEO.ca",
+    "catalogue": "Geospatial Data Catalog",
+    "mapTitle": "Map",
+    "searchProducts": "Search Products",
+    "addToFavourites": "Add to Favourites",
+    "east": "East",
+    "format": "Format",
+    "north": "North",
+    "organization": "Organization",
+    "removeFromFavourites": "Remove from Favourites",
+    "south": "South",
+    "west": "West",
+    "windowTooSmall": "The map for this resource is unavailable at your current screen resolution. Please switch to a larger screen to view the map. We apologize for any inconvenience this may cause.",
+    "notAvailable": "Not available",
+    "english": "English",
+    "french": "French",
+    "apply": "Apply",
+    "notApplicable": "N/A"
+  },
+  "components": {
+    "favourites": {
+      "labels": {
+        "add": "Add",
+        "addToSavedMap": "Add to saved map",
+        "chooseSavedMap": "Choose a saved map",
+        "datasetNotMappable": "This dataset has no map layer available.",
+        "noSavedMapsToAdd": "Create a saved map first to use this action.",
+        "openSavedMapFailed": "Unable to open the selected saved map. It may no longer exist. Please return to your datasets and try again.",
+        "addingDataset": "Adding the dataset to the saved map...",
+        "addDatasetFailed": "Unable to load the saved map or add this dataset. Refresh to try again.",
+        "mapLoadFailed": "Unable to load the map. Refresh to try again.",
+        "datasetAlreadyPresent": "This dataset is already included in the saved map. No duplicate was added.",
+        "unsavedMapChanges": "Unsaved map changes",
+        "unsavedDatasetNotice": "This dataset has been added to the current map only. Click Save to keep it in this saved map, or Save as... to create a new saved map.",
+        "description": "Welcome to your favourites list. From here, you can create a custom map using the resources listed below. Use the checkboxes to select the resources you want to include, then click the <span class='font-semibold'>View on map</span> button at the bottom of the table. If a resource doesn’t have an available map layer, it can’t be selected — but you can still view its details by clicking the row in the table to navigate to the corresponding record page. To remove a resource, click the garbage can icon next to its name, or use the <span class='font-semibold'>Remove all</span> button to clear the list.",
+        "datasetsDescription": "Manage your saved datasets here. Select one or more resources with map layers, then click <span class='font-semibold'>View on map</span> to open them together. You can remove individual resources with the garbage can icon or use <span class='font-semibold'>Remove all</span> to clear your list.",
+        "loginInfo": "Save datasets and create personalized maps with your Geo.ca account. Sign in or register with CanadaLogin to get started.",
+        "landingDescription": "Choose where you want to continue. Open your saved datasets or saved maps from this landing page.",
+        "datasetsLandingDescription": "Review and manage your saved dataset resources, then open selected items on the map.",
+        "mapsLandingDescription": "Access your saved map configurations to open, download, upload, or delete them.",
+        "landingTipLabel": "Tip: Use Datasets when you want to build a new map from resources, and Maps when you want to reopen a saved map setup.",
+        "mapsTipLabel": "Tip: To download a PDF, PNG, or JPEG version of your map, click View, wait for the map to load, and then click the export icon (<img src='/img/favourites/export.svg' alt='Export icon' class='inline-block h-4 w-4 align-text-bottom mx-1'/>) on the left side of the map.",
+        "datasetsLinkLabel": "Go to datasets",
+        "mapsLinkLabel": "Go to maps",
+        "datasetsTab": "Datasets",
+        "deleteMapFailed": "Unable to delete this saved map. Please try again.",
+        "deleteMapSuccess": "Saved map deleted.",
+        "downloadMap": "Download",
+        "uploadMap": "Upload",
+        "uploadMapFailed": "Unable to upload the file. Please check the file format and try again.",
+        "uploadMapSuccess": "File imported successfully.",
+        "savedMapsTooLarge": "Your saved maps collection is too large. Please delete some maps before adding a new one.",
+        "findAResource": "Find a resource",
+        "mapLimitReached": "You have reached the maximum number of saved maps (25).",
+        "mapsTab": "Maps",
+        "presentationMode": "Presentation mode",
+        "presentationTipLabel": "Tip: Presentation mode expands the map to fill the screen and hides the page controls for easier viewing. Use your browser's Back button to return.",
+        "presentationNoticeTitle": "Presentation mode",
+        "presentationNotice": "Use your browser's Back button to return.",
+        "mapsDescription": "Manage your saved map configuration files here. Import a map file with <span class='font-semibold'>Upload</span>, open it with <span class='font-semibold'>View</span>, export it with <span class='font-semibold'>Download</span>, or remove it with <span class='font-semibold'>Delete</span>. Downloaded files can be shared with other users.",
+        "remove": "Remove",
+        "removeAll": "Remove all",
+        "resourceFormats": "Resource formats",
+        "resourceListEmpty": "Your favourites list is empty.",
+        "resourceName": "Resource name",
+        "savedDataUnavailable": "Your saved datasets and maps are temporarily unavailable. Please refresh after reconnecting to the database.",
+        "returnToList": "Return to favourites",
+        "saveMapHelp": "Click on <span class='font-semibold'>Save as...</span> to save a new configuration of the map as it currently looks, including open tabs and any panning or zooming.",
+        "overwriteMapHelp": " Click on <span class='font-semibold'>Save</span> to overwrite the loaded configuration without changing its name.",
+        "savedMapNotFound": "The loaded map configuration no longer exists. Use Save as... to save a new copy.",
+        "saveMapFailed": "Unable to save the current map. Please try again.",
+        "saveMapSuccess": "Map saved successfully.",
+        "saveMapPrompt": "Enter a name for this map",
+        "savedMapsEmpty": "You have no saved maps yet.",
+        "searchFor": "Search for additional resources",
+        "title": "Favourites",
+        "viewMap": "View",
+        "viewOnMap": "View on map"
+      },
+      "messages": {
+        "deleteMap": "Are you sure you want to delete this saved map?",
+        "deleteResource": "Are you sure you want to delete the following resource? \n\n{name} ({id})",
+        "deleteResources": "Are you sure you want to delete {count} resources?"
+      },
+      "importedMap": "Imported Map"
+    },
+    "header": {
+      "labels": {
+        "logoAlt": "GEO.CA logo, blue and green globe",
+        "logoHref": "/en-ca",
+        "logoSrc": "https://geo.ca/wp-content/uploads/2023/02/geo-ca-logo.svg",
+        "menuButton": "Menu Button"
+      },
+      "navigation": {
+        "home": {
+          "title": "Home",
+          "href": "https://geo.ca/home"
+        },
+        "discover": {
+          "title": "Discover",
+          "options": [
+            {
+              "colTitle": "By Theme",
+              "links": [
+                {
+                  "title": "Administration",
+                  "href": "https://geo.ca/administration/"
+                },
+                {
+                  "title": "Economy",
+                  "href": "https://geo.ca/economy/"
+                },
+                {
+                  "title": "Emergency",
+                  "href": "https://geo.ca/emergency/"
+                },
+                {
+                  "title": "Environment",
+                  "href": "https://geo.ca/environment/"
+                },
+                {
+                  "title": "Imagery",
+                  "href": "https://geo.ca/imagery/"
+                },
+                {
+                  "title": "Infrastructure",
+                  "href": "https://geo.ca/infrastructure/"
+                },
+                {
+                  "title": "Legal",
+                  "href": "https://geo.ca/legal/"
+                },
+                {
+                  "title": "Science",
+                  "href": "https://geo.ca/science/"
+                },
+                {
+                  "title": "Society",
+                  "href": "https://geo.ca/society/"
+                },
+                {
+                  "title": "Foundation Data",
+                  "href": "https://geo.ca/foundation-data/"
+                }
+              ]
+            },
+            {
+              "colTitle": "By Content Type",
+              "links": [
+                {
+                  "title": "API",
+                  "href": "/en-ca/map-browser?type=api",
+                  "info": "Discover and leverage useful APIs for requesting specific data and information.",
+                  "tipId": "api"
+                },
+                {
+                  "title": "Application",
+                  "href": "/en-ca/map-browser?type=application",
+                  "info": "Discover our collection of pre-built applications that leverage existing APIs, datasets, collections, and web services.",
+                  "tipId": "application"
+                },
+                {
+                  "title": "Collection",
+                  "href": "/en-ca/map-browser?type=collection",
+                  "info": "Discover easily accessible groups of related data and information.",
+                  "tipId": "collection"
+                },
+                {
+                  "title": "Initiatives",
+                  "href": "https://geo.ca/initiatives/"
+                }
+              ]
+            },
+            {
+              "colTitle": "By Organization",
+              "links": [
+                {
+                  "title": "Government of Canada",
+                  "href": "https://geo.ca/government-of-canada/"
+                },
+                {
+                  "title": "Provinces and Territories",
+                  "href": "https://geo.ca/provinces-and-territories/"
+                }
+              ]
+            }
+          ]
+        },
+        "collaborate": {
+          "title": "Collaborate",
+          "options": [
+            {
+              "links": [
+                {
+                  "title": "Contributors",
+                  "href": "https://geo.ca/contributors/"
+                },
+                {
+                  "title": "Communities",
+                  "href": "https://geo.ca/communities/"
+                }
+              ]
+            }
+          ]
+        },
+        "learn": {
+          "title": "Learn",
+          "options": [
+            {
+              "links": [
+                {
+                  "title": "Getting Started",
+                  "href": "https://geo.ca/getting-started/"
+                },
+                {
+                  "title": "About Us",
+                  "href": "https://geo.ca/about-us/"
+                },
+                {
+                  "title": "Behind the Scenes",
+                  "href": "https://geo.ca/behind-the-scenes/"
+                }
+              ]
+            }
+          ]
+        },
+        "favourites": {
+          "title": "Favourites",
+          "href": "/en-ca/favourites",
+          "counter": true,
+          "localStorageKey": "FavouritesResources"
+        },
+        "lang": {
+          "title": "Français",
+          "href": "/fr-ca/map-browser"
+        }
+      },
+      "profile": {
+        "manage": "Manage CanadaLogin",
+        "provider": "with CanadaLogin"
+      },
+      "homeUrl": "https://geo.ca/home",
+      "menu": "MENU"
+    },
+    "footer": {
+      "links": {
+        "0": {
+          "title": "Learn",
+          "links": [
+            {
+              "title": "About Us",
+              "href": "https://geo.ca/about-us/"
+            },
+            {
+              "title": "Getting Started",
+              "href": "https://geo.ca/getting-started/"
+            },
+            {
+              "title": "Behind the Scenes",
+              "href": "https://geo.ca/behind-the-scenes/"
+            },
+            {
+              "title": "Communities",
+              "href": "https://geo.ca/communities/"
+            },
+            {
+              "title": "Contributors",
+              "href": "https://geo.ca/contributors/"
+            },
+            {
+              "title": "GEO News",
+              "href": "https://geo.ca/geo-in-the-news/"
+            },
+            {
+              "title": "Map Gallery",
+              "href": "https://geo.ca/map-gallery/"
+            }
+          ]
+        },
+        "1": {
+          "title": "Discover By Theme",
+          "links": [
+            {
+              "title": "Administration",
+              "href": "https://geo.ca/administration/"
+            },
+            {
+              "title": "Economy",
+              "href": "https://geo.ca/economy/"
+            },
+            {
+              "title": "Emergency",
+              "href": "https://geo.ca/emergency/"
+            },
+            {
+              "title": "Environment",
+              "href": "https://geo.ca/environment/"
+            },
+            {
+              "title": "Imagery",
+              "href": "https://geo.ca/imagery/"
+            },
+            {
+              "title": "Infrastructure",
+              "href": "https://geo.ca/infrastructure/"
+            },
+            {
+              "title": "Legal",
+              "href": "https://geo.ca/legal/"
+            },
+            {
+              "title": "Science",
+              "href": "https://geo.ca/science/"
+            },
+            {
+              "title": "Society",
+              "href": "https://geo.ca/society/"
+            },
+            {
+              "title": "Foundation Data",
+              "href": "https://geo.ca/foundation-data/"
+            }
+          ]
+        },
+        "2": {
+          "title": "Discover By Content Type",
+          "links": [
+            {
+              "title": "API",
+              "href": "https://app.geo.ca/?type=api"
+            },
+            {
+              "title": "Application",
+              "href": "https://app.geo.ca/?type=application"
+            },
+            {
+              "title": "Collection",
+              "href": "https://app.geo.ca/?type=collection"
+            },
+            {
+              "title": "Initiatives",
+              "href": "https://geo.ca/initiatives/"
+            }
+          ]
+        },
+        "3": {
+          "title": "Discover By Organization",
+          "links": [
+            {
+              "title": "Government of Canada",
+              "href": "https://geo.ca/government-of-canada/"
+            },
+            {
+              "title": "Provinces and Territories",
+              "href": "https://geo.ca/provinces-and-territories/"
+            }
+          ]
+        }
+      },
+      "legal": {
+        "ccmeo": "Canada Centre for Mapping and Earth Observation",
+        "cdgi": "GEO.ca is part of the",
+        "cdgiAcronym": "(CGDI)",
+        "cdgiLink": "https://natural-resources.canada.ca/science-and-data/science-and-research/geomatics/canadas-spatial-data-infrastructure/10783",
+        "cdgiLinkText": "Canadian Geospatial Data Infrastructure",
+        "contactUs": "Contact Us",
+        "copyright": "Powered by GEO.ca, Copyright © 2026",
+        "email": "geoinfo@nrcan-rncan.gc.ca",
+        "goc": "Government of Canada",
+        "license": "Terms and Conditions",
+        "licenceUrl": "https://geo.ca/terms-and-conditions/",
+        "logoAlt": "Government of Canada Logo",
+        "logoUrl": "https://geo.ca/wp-content/uploads/2020/05/Canada-Gov-logo.png",
+        "nrcan": "Natural Resources Canada"
+      },
+      "dateModified": "Date Modified"
+    },
+    "share": {
+      "labels": {
+        "shareText": "Share this page:",
+        "facebook": "facebook",
+        "x": "X",
+        "linkedIn": "LinkedIn",
+        "email": "email/courriel"
+      }
+    },
+    "record": {
+      "labels": {
+        "aboutThis": "About this Dataset",
+        "accessAllTime": "All time access",
+        "accessLast30": "Access in last 30 days",
+        "address": "Address",
+        "addToMap": "Add to Map",
+        "addToMapDescription": "View the data in depth by adding it to a map.",
+        "advancedMetadata": "Advanced metadata",
+        "contactData": "Contact",
+        "dataResources": "Data resources",
+        "dateCreated": "Date Created",
+        "datePublished": "Date Published",
+        "description": "Description",
+        "downloadMetadata": "GeoJSON Metadata",
+        "email": "Email",
+        "fax": "Fax",
+        "id": "ID",
+        "individualName": "Individual Name",
+        "keywords": "Related keywords",
+        "label": "Label",
+        "languages": "Languages",
+        "mapNotAvailable": "Map is not available for this dataset.",
+        "maintenance": "Maintenance",
+        "metadata": "Metadata",
+        "name": "Name",
+        "projection": "Projection",
+        "relatedProducts": "Related products",
+        "relatedProductsNotAvailable": "The related products for this record are unavailable.",
+        "resources": "Resources",
+        "resourcesNotAvailable": "The data resources for this record are unavailable.",
+        "role": "Role",
+        "selectCategory": "Select Category",
+        "similarProducts": "Similar records",
+        "sources": "Source(s) and Citation",
+        "spatialRepresentation": "Spatial Representation",
+        "status": "Status",
+        "telephone": "Telephone",
+        "temporalCoverage": "Temporal Coverage",
+        "topicCategory": "Topic Category",
+        "type": "Type",
+        "useLimitations": "Use Limitations",
+        "viewISO1915": "NAP ISO:19115 Metadata",
+        "viewLess": "View Less",
+        "viewMore": "View More",
+        "viewOnMap": "View on Map",
+        "website": "Website"
+      },
+      "present": "Present"
+    },
+    "searchResults": {
+      "labels": {
+        "allLabel": "All (AND)",
+        "anyLabel": "Any (OR)",
+        "apis": "APIs",
+        "applications": "Applications",
+        "categoryOfInterest": "Select Category of Interest",
+        "categorySelectDefault": "Select a Category...",
+        "clearAll": "Clear All",
+        "collections": "Collections",
+        "condition": "Condition",
+        "contributors": "Contributors",
+        "datasets": "Datasets",
+        "degrees": "Degrees",
+        "endDate": "End Date",
+        "filterBy": "Filter By",
+        "filterDescription": "Use the options below to filter your search results. Once you have completed your selection, click on the search button to apply the filters.",
+        "filters": "Filters",
+        "initialDescription": "Welcome to app.geo.ca, the geospatial data catalog that connects you to a world of data. Whether you are looking for maps, satellite imagery, aerial photos, census data, environmental indicators, or any other kind of geospatial information, you can find it here. Browse through our catalog of over 10,000 datasets from hundreds of sources, or use our advanced search tools to find exactly what you need. You can also access our APIs and web services to integrate geo.ca data into your own applications. Geo.ca is your one-stop shop for geospatial data discovery and access. Start exploring today!",
+        "intersects": "Intersects",
+        "mapNotAvailable": "Map not available",
+        "relationInstructions": "Choose the type of spatial query to run. 'Intersects' returns any resource with a bounding box that is at least partially inside of the search area. 'Within' returns any resource with a bounding box completely inside of the search area.",
+        "searchDatasets": "Search datasets",
+        "searchResults": "Results",
+        "spatialInstructions": "Enter the latitude and longitude extent of the search area in degrees. Note: coordinates in the southern and western hemispheres are indicated using negative values.",
+        "startDate": "Start Date",
+        "validatorNorthGreater": "The northern latitude value should be greater than the southern latitude.",
+        "validatorRequired": "Please fill out this field.",
+        "validatorStartGreater": "The start date should be earlier or equal to the end date.",
+        "validatorTooBig": "Value must be less than or equal to ",
+        "validatorTooSmall": "Value must be greater than or equal to ",
+        "within": "Within",
+        "expandToShowMap": "Expand to display map",
+        "collapseToHideMap": "Collapse to hide map"
+      },
+      "filters": [
+        {
+          "section": "spatio-temporal",
+          "label": "Spatio-Temporal",
+          "filterList": [
+            {
+              "label": "Spatial Extent",
+              "value": "spatial-extent"
+            },
+            {
+              "label": "Temporal Extent",
+              "value": "temporal-extent"
+            }
+          ]
+        },
+        {
+          "section": "org",
+          "label": "Organizations",
+          "filterList": [
+            {
+              "label": "Agriculture and Agri-Food Canada",
+              "value": "Agriculture+and+Agri-Food+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Canada Energy Regulator",
+              "value": "Canada+Energy+Regulator",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Canadian Heritage",
+              "value": "Canadian+Heritage",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Canadian Northern Economic Development Agency",
+              "value": "Canadian+Northern+Economic+Development+Agency",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Canadian Nuclear Safety Commission",
+              "value": "Canadian+Nuclear+Safety+Commission",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Canadian Space Agency",
+              "value": "Canadian+Space+Agency",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Elections Canada",
+              "value": "Elections+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Employment and Social Development Canada",
+              "value": "Employment+and+Social+Development+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Environment and Climate Change Canada",
+              "value": "Environment+and+Climate+Change+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Fisheries and Oceans Canada",
+              "value": "Fisheries+and+Oceans+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Government and Municipalities of Québec",
+              "value": "Government+and+Municipalities+of+Québec",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Alberta",
+              "value": "Government+of+Alberta",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of British Columbia",
+              "value": "Government+of+British+Columbia",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Manitoba",
+              "value": "Government+of+Manitoba",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of New Brunswick",
+              "value": "Government+of+New+Brunswick",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Newfoundland and Labrador",
+              "value": "Government+of+Newfoundland+and+Labrador",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Northwest Territories",
+              "value": "Government+of+Northwest+Territories",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Nova Scotia",
+              "value": "Government+of+Nova+Scotia",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Ontario",
+              "value": "Government+of+Ontario",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Prince Edward Island",
+              "value": "Government+of+Prince+Edward+Island",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Saskatchewan",
+              "value": "Government+of+Saskatchewan",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Government of Yukon",
+              "value": "Government+of+Yukon",
+              "subCategory": "prov"
+            },
+            {
+              "label": "Health Canada",
+              "value": "Health+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Impact Assessment Agency of Canada",
+              "value": "Impact+Assessment+Agency+of+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Indigenous Services Canada",
+              "value": "Indigenous+Services+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Indigenous and Northern Affairs Canada",
+              "value": "Indigenous+and+Northern+Affairs+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "National Capital Commission",
+              "value": "National+Capital+Commission",
+              "subCategory": "fed"
+            },
+            {
+              "label": "National Defence",
+              "value": "National+Defence",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Natural Resources Canada",
+              "value": "Natural+Resources+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Parks Canada",
+              "value": "Parks+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Public Health Agency of Canada",
+              "value": "Public+Health+Agency+of+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Statistics Canada",
+              "value": "Statistics+Canada",
+              "subCategory": "fed"
+            },
+            {
+              "label": "Transport Canada",
+              "value": "Transport+Canada",
+              "subCategory": "fed"
+            }
+          ]
+        },
+        {
+          "section": "type",
+          "label": "Types",
+          "filterList": [
+            {
+              "label": "API",
+              "value": "api"
+            },
+            {
+              "label": "Application",
+              "value": "application"
+            },
+            {
+              "label": "Collection",
+              "value": "collection"
+            },
+            {
+              "label": "Dataset",
+              "value": "dataset"
+            },
+            {
+              "label": "Service",
+              "value": "service"
+            }
+          ]
+        },
+        {
+          "section": "theme",
+          "label": "Themes",
+          "filterList": [
+            {
+              "label": "Administration",
+              "value": "administration"
+            },
+            {
+              "label": "Economy",
+              "value": "economy"
+            },
+            {
+              "label": "Emergency",
+              "value": "emergency"
+            },
+            {
+              "label": "Environment",
+              "value": "environment"
+            },
+            {
+              "label": "Imagery",
+              "value": "imagery"
+            },
+            {
+              "label": "Infrastructure",
+              "value": "infrastructure"
+            },
+            {
+              "label": "Legal",
+              "value": "legal"
+            },
+            {
+              "label": "Science",
+              "value": "science"
+            },
+            {
+              "label": "Society",
+              "value": "society"
+            }
+          ]
+        },
+        {
+          "section": "eo_collection",
+          "label": "Earth Observation (EO) Collections",
+          "filterList": [
+            {
+              "label": "Sentinel-1",
+              "value": "sentinel-1"
+            },
+            {
+              "label": "RCM-ARD",
+              "value": "rcm-ard"
+            }
+          ]
+        },
+        {
+          "section": "source_system",
+          "label": "Source System",
+          "filterList": [
+            {
+              "label": "Earth Observation Data Management System (EODMS)",
+              "value": "ccmeo-eodms"
+            },
+            {
+              "label": "Datacube",
+              "value": "ccmeo-datacube"
+            },
+            {
+              "label": "geo.ca",
+              "value": "geo-ca"
+            }
+          ]
+        },
+        {
+          "section": "others",
+          "label": "Other Filters",
+          "filterList": [
+            {
+              "label": "Mappable Resources",
+              "value": "mappable"
+            },
+            {
+              "label": "Foundational Data",
+              "value": "foundational"
+            }
+          ]
+        }
+      ],
+      "categories": [
+        {
+          "value": "biota",
+          "label": "Biota"
+        },
+        {
+          "value": "boundaries",
+          "label": "Boundaries"
+        },
+        {
+          "value": "climatologyMeteorologyAtmosphere",
+          "label": "Climatology, meteorology, and atmosphere"
+        },
+        {
+          "value": "EarthObservation;SyntheticAperatureRadar",
+          "label": "Earth Observation, Synthetic Aperature Radar"
+        },
+        {
+          "value": "economy",
+          "label": "Economy"
+        },
+        {
+          "value": "elevation",
+          "label": "Elevation"
+        },
+        {
+          "value": "environment",
+          "label": "Environment"
+        },
+        {
+          "value": "farming",
+          "label": "Farming"
+        },
+        {
+          "value": "geoscientificInformation",
+          "label": "Geoscientific information"
+        },
+        {
+          "value": "health",
+          "label": "Health"
+        },
+        {
+          "value": "imageryBaseMapsEarthCover",
+          "label": "Imagery, base maps, and earth cover"
+        },
+        {
+          "value": "inlandWaters",
+          "label": "Inland waters"
+        },
+        {
+          "value": "intelligenceMilitary",
+          "label": "Intelligence and military"
+        },
+        {
+          "value": "location",
+          "label": "Location"
+        },
+        {
+          "value": "oceans",
+          "label": "Oceans"
+        },
+        {
+          "value": "planningCadastre",
+          "label": "Planning cadastre"
+        },
+        {
+          "value": "society",
+          "label": "Society"
+        },
+        {
+          "value": "structure",
+          "label": "Structure"
+        },
+        {
+          "value": "transportation",
+          "label": "Transportation"
+        },
+        {
+          "value": "utilitiesCommunication",
+          "label": "Utilities and communication"
+        }
+      ],
+      "sorting": {
+        "classic": [
+          {
+            "value": "date-desc",
+            "label": "Date: newest first"
+          },
+          {
+            "value": "date-asc",
+            "label": "Date: oldest first"
+          },
+          {
+            "value": "popularity-desc",
+            "label": "Popularity: high to low"
+          },
+          {
+            "value": "popularity-asc",
+            "label": "Popularity: low to high"
+          },
+          {
+            "value": "title",
+            "label": "Title"
+          }
+        ],
+        "semantic": [
+          {
+            "value": "date",
+            "label": "Date"
+          },
+          {
+            "value": "popularity",
+            "label": "Popularity"
+          },
+          {
+            "value": "title",
+            "label": "Title A-Z"
+          },
+          {
+            "value": "relevancy",
+            "label": "Relevancy"
+          }
+        ]
+      },
+      "organizations": {
+        "federal": "Organizations - Federal",
+        "provincial": "Organizations - Provincial/Territorial"
+      },
+      "pagination": {
+        "empty": "{count} Datasets",
+        "one": "{count} Dataset, Page {page} of {pages}",
+        "other": "{count} Datasets, Page {page} of {pages}"
+      },
+      "messages": {
+        "keyword": {
+          "one": "We have found {count} dataset for the keyword \"{term}\". You can continue exploring the search results in the list below.",
+          "other": "We have found {count} datasets for the keyword \"{term}\". You can continue exploring the search results in the list below."
+        },
+        "browse": {
+          "one": "We have found {count} dataset. You can refine your search by entering a search term below, or clicking on the Filters button for some advanced options.",
+          "other": "We have found {count} datasets. You can refine your search by entering a search term below, or clicking on the Filters button for some advanced options."
+        }
+      }
+    },
+    "carousel": {
+      "label": "Similar records carousel",
+      "recordPrefix": "Similar record "
+    },
+    "dialog": {
+      "confirmDeletion": "Confirm deletion"
+    },
+    "feedback": {
+      "title": "Tell us what you think!",
+      "description": "GEO.ca is committed to open dialogue and community building around location-based issues and topics that matter to you.",
+      "link": "Please send us your feedback"
+    },
+    "leavingNotice": {
+      "title": "Leaving geo.ca"
+    },
+    "select": {
+      "clear": "Clear selection",
+      "select": "Select option"
+    },
+    "sortableTable": {
+      "selectAll": "Select all",
+      "deleteResource": "Delete resource"
+    },
+    "map": {
+      "visibleExtent": "Set bounding box to visible extent"
+    },
+    "breadcrumbs": {
+      "homeUrl": "https://geo.ca/home"
+    },
+    "microdata": {
+      "catalogueDescription": "This catalog contains open datasets available on the Geo.ca platform.",
+      "catalogueTitle": "Government Of Canada Geo.ca Data Catalog.",
+      "boundary": "Dataset Boundary"
+    }
+  },
+  "pages": {
+    "signIn": {
+      "title": "Signing in",
+      "redirecting": "Redirecting to sign in..."
+    },
+    "signOut": {
+      "title": "Are you sure you want to sign out?",
+      "warning": "Make sure you have saved all your work before you sign out."
+    },
+    "error": {
+      "message": "Oops... There was an error. Feel free to report it by sending us an email to"
+    },
+    "search": {
+      "title": "app.geo.ca - Search Results",
+      "description": "Browse GeoCore records and find the most relevant datasets based on your search terms and selected filters."
+    },
+    "favourites": {
+      "description": "Browse your saved resources and create a custom map."
+    },
+    "record": {
+      "description": "The metadata page and map for the GeoCore record {id}"
+    }
+  },
+  "layout": {
+    "session": {
+      "signInFailed": "Unable to sign you in right now. Please try again. If the issue persists, contact geoinfo@nrcan-rncan.gc.ca.",
+      "expired": "You have been signed out because your session expired.",
+      "warningTitle": "Your session is about to end due to inactivity",
+      "warningDescription": "If you do not continue your session you will be signed out automatically.",
+      "remaining": "Time remaining: {minutes} minutes",
+      "continuePrompt": "Do you wish to continue your session?",
+      "staySignedIn": "Stay signed in"
+    }
+  }
+}

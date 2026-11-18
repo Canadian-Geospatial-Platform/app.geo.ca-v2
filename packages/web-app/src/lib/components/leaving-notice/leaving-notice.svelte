@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { onMount } from 'svelte';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import AppDialog from '#lib/components/dialog/app-dialog.svelte';
 
-  const lang = page.data.lang;
-  const message = pickByLanguage(lang, 'Leaving geo.ca', 'Vous quittez geo.ca');
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const titleText = $derived(getTranslations(appLang).components.leavingNotice.title);
 
   let dots = $state('');
 
@@ -18,5 +19,5 @@
 </script>
 
 <AppDialog open labelledby="leaving-notice-title">
-  <h2 id="leaving-notice-title" class="text-xl font-bold">{message}<span aria-hidden="true">{dots}</span></h2>
+  <h2 id="leaving-notice-title" class="text-xl font-bold">{titleText}<span aria-hidden="true">{dots}</span></h2>
 </AppDialog>

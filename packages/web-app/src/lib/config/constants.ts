@@ -2,7 +2,7 @@
 export const AWS_REGION_FALLBACK = 'ca-central-1';
 
 /** Maximum permitted idle time before an authentication session expires, in seconds. */
-export const SESSION_INACTIVITY_SECONDS = 2 * 60;
+export const SESSION_INACTIVITY_SECONDS = 60 * 60;
 
 /** Time before inactivity expiry when the user is warned, capped for short test timeouts. */
 export const SESSION_WARNING_SECONDS = Math.min(5 * 60, SESSION_INACTIVITY_SECONDS / 4);

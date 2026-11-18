@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
   import { resolve } from '$app/paths';
@@ -8,10 +9,8 @@
   import GarbageCan from '#lib/components/icons/garbage-can.svelte';
   import MapIcon from '#lib/components/icons/map.svelte';
   import UploadIcon from '#lib/components/icons/upload.svelte';
-  import enTranslations from '#lib/components/favourites/i18n/en/translations.json';
   import type { MapConfigFavourite } from '#lib/db/db-types.js';
-  import type { AppLanguage } from '#lib/utils/language.js';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
 
   /**
    * Signed-in favourites maps view.
@@ -19,31 +18,10 @@
    * Manages saved map configurations, including upload, open,
    * download, and delete actions for each saved map.
    */
-  type FavouritesTranslations = typeof enTranslations;
-  const translations: FavouritesTranslations = {
-    ...enTranslations,
-    ...((page.data.t ?? {}) as Partial<FavouritesTranslations>),
-  };
-  const lang = page.data.lang as AppLanguage;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
+  const dateFormatter = $derived(new Intl.DateTimeFormat(appLang, { dateStyle: 'medium', timeStyle: 'short' }));
   const userDataUnavailable = page.data.userDataStatus === 'unavailable';
-
-  // Translations
-  const mapsTabLabel = translations.mapsTab;
-  const mapsDescription = translations.mapsDescription;
-  const mapsTipLabel = translations.mapsTipLabel;
-  const uploadMapLabel = translations.uploadMap;
-  const viewMapLabel = translations.viewMap;
-  const downloadMapLabel = translations.downloadMap;
-  const deleteMapLabel = translations.deleteMap;
-  const savedDataUnavailable = translations.savedDataUnavailable;
-  const savedMapsEmptyLabel = translations.savedMapsEmpty;
-  const uploadMapFailed = translations.uploadMapFailed;
-  const uploadMapSuccess = translations.uploadMapSuccess;
-  const savedMapsTooLarge = translations.savedMapsTooLarge;
-  const mapLimitReached = translations.mapLimitReached;
-  const deleteMapFailed = translations.deleteMapFailed;
-  const deleteMapSuccess = translations.deleteMapSuccess;
-  const datasetsLinkLabel = translations.datasetsLinkLabel;
 
   // State
   let actionDialog: ActionDialog;
@@ -93,10 +71,7 @@
       return value;
     }
 
-    return new Intl.DateTimeFormat(lang, {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(parsed);
+    return dateFormatter.format(parsed);
   }
 
   /**
@@ -120,7 +95,7 @@
    * @param mapConfig - Saved map metadata and config payload.
    */
   function handleOpenSavedMapClick(mapConfig: MapConfigFavourite): void {
-    goto(resolve(`/[lang]/favourites/view?mapId=${encodeURIComponent(mapConfig.id)}&source=maps`, { lang }));
+    goto(resolve(`/[lang]/favourites/view?mapId=${encodeURIComponent(mapConfig.id)}&source=maps`, { lang: appLang }));
   }
 
   /**
@@ -152,17 +127,11 @@
    * @returns Resolves when delete flow completes.
    */
   async function handleDeleteSavedMapClick(id: string): Promise<void> {
-    const permissionText = pickByLanguage(
-      lang,
-      'Are you sure you want to delete this saved map?',
-      'Êtes-vous sûr de vouloir supprimer cette carte enregistrée?'
-    );
-
-    if (!(await actionDialog.confirm(permissionText))) {
+    if (!(await actionDialog.confirm(getTranslations(appLang).components.favourites.messages.deleteMap))) {
       return;
     }
 
-    const response = await fetch(`/${lang}/api/favourites`, {
+    const response = await fetch(`/${appLang}/api/favourites`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'deleteMapConfig', id }),
@@ -170,12 +139,12 @@
 
     const payload = (await response.json()) as { ok: boolean; mapConfigs?: MapConfigFavourite[] };
     if (!response.ok || !payload.ok) {
-      setStatus('error', deleteMapFailed);
+      setStatus('error', translations.components.favourites.labels.deleteMapFailed);
       return;
     }
 
     savedMaps = payload.mapConfigs ?? [];
-    setStatus('success', deleteMapSuccess);
+    setStatus('success', translations.components.favourites.labels.deleteMapSuccess);
   }
 
   /**
@@ -199,14 +168,14 @@
         const config = JSON.parse(text);
 
         if (typeof config !== 'object' || config === null || Array.isArray(config)) {
-          setStatus('error', uploadMapFailed);
+          setStatus('error', translations.components.favourites.labels.uploadMapFailed);
           return;
         }
 
         const fileName = file.name.replace(/\.json$/i, '');
-        const finalName = createUniqueMapName(fileName || 'Imported Map');
+        const finalName = createUniqueMapName(fileName || getTranslations(appLang).components.favourites.importedMap);
 
-        const response = await fetch(`/${lang}/api/favourites`, {
+        const response = await fetch(`/${appLang}/api/favourites`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -219,19 +188,19 @@
         const payload = (await response.json()) as { ok: boolean; mapConfigs?: MapConfigFavourite[]; reason?: string };
         if (!response.ok || !payload.ok) {
           if (payload.reason === 'limit') {
-            setStatus('error', mapLimitReached);
+            setStatus('error', translations.components.favourites.labels.mapLimitReached);
           } else if (payload.reason === 'item-too-large') {
-            setStatus('error', savedMapsTooLarge);
+            setStatus('error', translations.components.favourites.labels.savedMapsTooLarge);
           } else {
-            setStatus('error', uploadMapFailed);
+            setStatus('error', translations.components.favourites.labels.uploadMapFailed);
           }
           return;
         }
 
         savedMaps = payload.mapConfigs ?? savedMaps;
-        setStatus('success', uploadMapSuccess);
+        setStatus('success', translations.components.favourites.labels.uploadMapSuccess);
       } catch {
-        setStatus('error', uploadMapFailed);
+        setStatus('error', translations.components.favourites.labels.uploadMapFailed);
       }
     };
 
@@ -242,18 +211,18 @@
 
 <ActionDialog bind:this={actionDialog} />
 
-<h1 class="page-title-favourites font-custom-style-h1">{mapsTabLabel}</h1>
+<h1 class="page-title-favourites font-custom-style-h1">{translations.components.favourites.labels.mapsTab}</h1>
 
 <div class="page-section-favourites">
   {#if userDataUnavailable}
     <div class="status-alert-error font-custom-style-body-1" role="status" aria-live="polite">
-      {savedDataUnavailable}
+      {translations.components.favourites.labels.savedDataUnavailable}
     </div>
   {:else}
     <p class="page-copy-block">
       <!-- These are our descriptions, no injection risk -->
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-      {@html mapsDescription}
+      {@html translations.components.favourites.labels.mapsDescription}
     </p>
 
     {#if statusType && statusMessage}
@@ -268,7 +237,7 @@
     <div class="pb-3">
       <button class="button-action-light surface-shadow button-width-mobile-full" onclick={handleUploadMapClick}>
         <UploadIcon classes="h-5 button-icon-inline" />
-        {uploadMapLabel}
+        {translations.components.favourites.labels.uploadMap}
       </button>
     </div>
     {#if savedMaps.length > 0}
@@ -290,7 +259,7 @@
                     }}
                   >
                     <MapIcon classes="h-5 button-icon-inline" />
-                    {viewMapLabel}
+                    {translations.components.favourites.labels.viewMap}
                   </button>
                   <button
                     class="button-action-light"
@@ -299,7 +268,7 @@
                     }}
                   >
                     <DownloadIcon classes="h-5 button-icon-inline" />
-                    {downloadMapLabel}
+                    {translations.components.favourites.labels.downloadMap}
                   </button>
                   <button
                     class="button-action-light"
@@ -308,7 +277,7 @@
                     }}
                   >
                     <GarbageCan classes="h-4 button-icon-inline" />
-                    {deleteMapLabel}
+                    {translations.general.delete}
                   </button>
                 </div>
               </div>
@@ -319,18 +288,18 @@
             <p>
               <!-- Translation content is controlled in-repo; safe to render as HTML for inline icon/text formatting. -->
               <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-              {@html mapsTipLabel}
+              {@html translations.components.favourites.labels.mapsTipLabel}
             </p>
           </div>
         </div>
       </Card>
     {:else}
-      <p class="font-custom-style-body-1">{savedMapsEmptyLabel}</p>
+      <p class="font-custom-style-body-1">{translations.components.favourites.labels.savedMapsEmpty}</p>
     {/if}
 
     <div class="mt-9">
-      <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/datasets', { lang })}>
-        {datasetsLinkLabel}
+      <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/datasets', { lang: appLang })}>
+        {translations.components.favourites.labels.datasetsLinkLabel}
       </a>
     </div>
   {/if}

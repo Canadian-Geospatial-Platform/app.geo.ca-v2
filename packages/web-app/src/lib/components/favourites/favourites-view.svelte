@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { onMount } from 'svelte';
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
@@ -7,9 +9,7 @@
   import MycartMap from '#lib/components/map/favourites-map.svelte';
   import ActionDialog from '#lib/components/dialog/action-dialog.svelte';
   import AppDialog from '#lib/components/dialog/app-dialog.svelte';
-  import enTranslations from '#lib/components/favourites/i18n/en/translations.json';
   import type { MapConfigFavourite } from '#lib/db/db-types.js';
-  import type { AppLanguage } from '#lib/utils/language.js';
   import type { DatasetAdditionResult } from '#lib/utils/map-dataset.js';
 
   /**
@@ -18,35 +18,11 @@
    * Opens either selected datasets or a saved map configuration,
    * and allows signed-in users to save the current map state.
    */
-  type FavouritesTranslations = typeof enTranslations;
-  const translations: FavouritesTranslations = {
-    ...enTranslations,
-    ...((page.data.t ?? {}) as Partial<FavouritesTranslations>),
-  };
-  const lang = page.data.lang as AppLanguage;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
   const signedIn = Boolean(page.data.signedIn);
   const userDataUnavailable = page.data.userDataStatus === 'unavailable';
 
-  // Translations
-  const returnToList = translations.returnToList;
-  const goToDatasetsLabel = translations.datasetsLinkLabel;
-  const goToMapsLabel = translations.mapsLinkLabel;
-  const savedDataUnavailable = translations.savedDataUnavailable;
-  const saveMapLabel = translations.saveMap;
-  const saveMapAsLabel = translations.saveMapAs;
-  const saveMapHelp = translations.saveMapHelp;
-  const overwriteMapHelp = translations.overwriteMapHelp;
-  const savedMapNotFound = translations.savedMapNotFound;
-  const saveMapPrompt = translations.saveMapPrompt;
-  const saveMapFailed = translations.saveMapFailed;
-  const saveMapSuccess = translations.saveMapSuccess;
-  const savedMapsTooLarge = translations.savedMapsTooLarge;
-  const mapLimitReached = translations.mapLimitReached;
-  const presentationModeLabel = translations.presentationMode;
-  const presentationTipLabel = translations.presentationTipLabel;
-  const presentationNoticeTitle = translations.presentationNoticeTitle;
-  const presentationNotice = translations.presentationNotice;
-  const dismissPresentationNotice = translations.dismissPresentationNotice;
   // Shallow history updates page.state; the URL fallback supports direct links and refreshes.
   const presentationMode = $derived(page.state.presentationMode ?? page.url.searchParams.get('presentation') === '1');
 
@@ -126,7 +102,7 @@
   function clearAdditionIntent(): void {
     const nextUrl = new URL(page.url.href);
     nextUrl.searchParams.delete('addDatasetId');
-    void goto(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, {
+    void goto(`${resolve('/[lang]/favourites/view', { lang: appLang })}${nextUrl.search}${nextUrl.hash}`, {
       state: { ...page.state },
       shallow: true,
       replace: true,
@@ -142,7 +118,7 @@
     addingDataset = false;
     if (result === 'already-present') {
       clearAdditionIntent();
-      setStatus('success', translations.datasetAlreadyPresent);
+      setStatus('success', translations.components.favourites.labels.datasetAlreadyPresent);
     } else {
       // Retain the query parameter so refresh can replay the addition until a save succeeds.
       showDatasetNotice = true;
@@ -154,28 +130,31 @@
    */
   function handleMapLoadError(): void {
     addingDataset = false;
-    setStatus('error', addDatasetId ? translations.addDatasetFailed : translations.mapLoadFailed);
+    setStatus(
+      'error',
+      addDatasetId ? translations.components.favourites.labels.addDatasetFailed : translations.components.favourites.labels.mapLoadFailed
+    );
   }
 
   /**
    * Returns to datasets or maps, depending on the current view source.
    */
   function handleReturnToListClick(): void {
-    goto(resolve(viewSource === 'maps' ? '/[lang]/favourites/maps' : '/[lang]/favourites/datasets', { lang }));
+    goto(resolve(viewSource === 'maps' ? '/[lang]/favourites/maps' : '/[lang]/favourites/datasets', { lang: appLang }));
   }
 
   /**
    * Navigates back to saved maps.
    */
   function handleGoToMapsClick(): void {
-    goto(resolve('/[lang]/favourites/maps', { lang }));
+    goto(resolve('/[lang]/favourites/maps', { lang: appLang }));
   }
 
   /**
    * Navigates back to favourite datasets.
    */
   function handleGoToDatasetsClick(): void {
-    goto(resolve('/[lang]/favourites/datasets', { lang }));
+    goto(resolve('/[lang]/favourites/datasets', { lang: appLang }));
   }
 
   /**
@@ -196,7 +175,7 @@
 
     const nextUrl = new URL(page.url.href);
     nextUrl.searchParams.set('presentation', '1');
-    void goto(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, {
+    void goto(`${resolve('/[lang]/favourites/view', { lang: appLang })}${nextUrl.search}${nextUrl.hash}`, {
       state: { ...page.state, presentationMode: true },
       shallow: true,
     });
@@ -217,7 +196,7 @@
       const defaultName = createUniqueMapName('My Map');
       let name = defaultName;
       if (mode === 'create') {
-        const requestedName = await actionDialog.prompt(saveMapPrompt, defaultName);
+        const requestedName = await actionDialog.prompt(translations.components.favourites.labels.saveMapPrompt, defaultName);
         if (requestedName === null) {
           return;
         }
@@ -228,12 +207,12 @@
       statusMessage = '';
       const mapStateConfig = mapComponent?.getMapConfigFromCurrentState();
       if (!mapStateConfig) {
-        setStatus('error', saveMapFailed);
+        setStatus('error', translations.components.favourites.labels.saveMapFailed);
         return;
       }
 
       const sanitizedConfig = sanitizeMapConfigForStorage(mapStateConfig);
-      const response = await fetch(`/${lang}/api/favourites`, {
+      const response = await fetch(`/${appLang}/api/favourites`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -250,27 +229,27 @@
       };
       if (!response.ok || !payload.ok) {
         if (payload.reason === 'limit') {
-          setStatus('error', mapLimitReached);
+          setStatus('error', translations.components.favourites.labels.mapLimitReached);
         } else if (payload.reason === 'item-too-large') {
-          setStatus('error', savedMapsTooLarge);
+          setStatus('error', translations.components.favourites.labels.savedMapsTooLarge);
         } else if (payload.reason === 'not-found') {
-          setStatus('error', savedMapNotFound);
+          setStatus('error', translations.components.favourites.labels.savedMapNotFound);
         } else if (payload.reason === 'unavailable') {
-          setStatus('error', savedDataUnavailable);
+          setStatus('error', translations.components.favourites.labels.savedDataUnavailable);
         } else {
-          setStatus('error', saveMapFailed);
+          setStatus('error', translations.components.favourites.labels.saveMapFailed);
         }
         return;
       }
 
       if (!Array.isArray(payload.mapConfigs)) {
-        setStatus('error', saveMapFailed);
+        setStatus('error', translations.components.favourites.labels.saveMapFailed);
         return;
       }
       if (mode === 'create') {
         const createdMap = payload.mapConfigs.find((mapConfig) => mapConfig.id === payload.mapConfigId);
         if (!createdMap) {
-          setStatus('error', saveMapFailed);
+          setStatus('error', translations.components.favourites.labels.saveMapFailed);
           return;
         }
 
@@ -281,7 +260,7 @@
         nextUrl.searchParams.delete('addDatasetId');
         nextUrl.searchParams.set('mapId', createdMap.id);
         nextUrl.searchParams.set('source', 'maps');
-        void goto(`${resolve('/[lang]/favourites/view', { lang })}${nextUrl.search}${nextUrl.hash}`, {
+        void goto(`${resolve('/[lang]/favourites/view', { lang: appLang })}${nextUrl.search}${nextUrl.hash}`, {
           state: { ...page.state },
           shallow: true,
           replace: true,
@@ -290,9 +269,9 @@
       savedMaps = payload.mapConfigs;
       showDatasetNotice = false;
       if (mode === 'update' && page.url.searchParams.has('addDatasetId')) clearAdditionIntent();
-      setStatus('success', saveMapSuccess);
+      setStatus('success', translations.components.favourites.labels.saveMapSuccess);
     } catch {
-      setStatus('error', saveMapFailed);
+      setStatus('error', translations.components.favourites.labels.saveMapFailed);
     } finally {
       saving = false;
     }
@@ -327,7 +306,7 @@
     const requestedDataset = page.url.searchParams.get('addDatasetId')?.trim();
     if (requestedDataset) {
       if (!signedIn || !selectedMapConfig) {
-        setStatus('error', translations.openSavedMapFailed);
+        setStatus('error', translations.components.favourites.labels.openSavedMapFailed);
         loading = false;
         return;
       }
@@ -344,7 +323,7 @@
     }
 
     if (!selectedMapConfig && selectedIds.length === 0) {
-      await goto(resolve('/[lang]/favourites/datasets', { lang }), { replace: true, reset: false });
+      await goto(resolve('/[lang]/favourites/datasets', { lang: appLang }), { replace: true, reset: false });
       return;
     }
 
@@ -376,13 +355,13 @@
       />
     {:else if userDataUnavailable && viewSource === 'maps'}
       <div class="status-alert-error font-custom-style-body-1" role="status" aria-live="polite">
-        {savedDataUnavailable}
+        {translations.components.favourites.labels.savedDataUnavailable}
       </div>
     {/if}
     {#if !presentationMode}
       {#if addingDataset}
         <p class="mt-5 font-custom-style-body-1" role="status">
-          {translations.addingDataset}
+          {translations.components.favourites.labels.addingDataset}
         </p>
       {/if}
       {#if statusType && statusMessage}
@@ -397,10 +376,10 @@
       {#if signedIn && (selectedMapConfig || selectedIds.length > 0)}
         <p class="font-custom-style-body-1 mx-0 pt-5 mb-2">
           <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-          {@html saveMapHelp}
+          {@html translations.components.favourites.labels.saveMapHelp}
           {#if selectedMapConfig}
             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-            {@html overwriteMapHelp}
+            {@html translations.components.favourites.labels.overwriteMapHelp}
           {/if}
         </p>
       {/if}
@@ -412,7 +391,7 @@
               onclick={() => handleSaveMapClick('update')}
               disabled={saving || addingDataset}
             >
-              {saveMapLabel}
+              {translations.general.save}
             </button>
           {/if}
           <button
@@ -420,7 +399,7 @@
             onclick={() => handleSaveMapClick('create')}
             disabled={saving || addingDataset}
           >
-            {saveMapAsLabel}
+            {translations.general.saveAs}
           </button>
         {/if}
         {#if selectedMapConfig || selectedIds.length > 0}
@@ -428,13 +407,13 @@
             class="button-inline-desktop button-action-light surface-shadow button-width-mobile-full"
             onclick={handleEnterPresentationMode}
           >
-            {presentationModeLabel}
+            {translations.components.favourites.labels.presentationMode}
           </button>
         {/if}
       </div>
       <div class="info-tip-card">
         <p>
-          {presentationTipLabel}
+          {translations.components.favourites.labels.presentationTipLabel}
         </p>
       </div>
       <div class="flex flex-wrap gap-3 mt-5 mb-5">
@@ -443,17 +422,17 @@
             class="button-inline-desktop button-action-dark surface-shadow button-width-mobile-full"
             onclick={handleGoToDatasetsClick}
           >
-            {goToDatasetsLabel}
+            {translations.components.favourites.labels.datasetsLinkLabel}
           </button>
           <button class="button-inline-desktop button-action-dark surface-shadow button-width-mobile-full" onclick={handleGoToMapsClick}>
-            {goToMapsLabel}
+            {translations.components.favourites.labels.mapsLinkLabel}
           </button>
         {:else}
           <button
             class="button-inline-desktop button-action-dark surface-shadow button-width-mobile-full"
             onclick={handleReturnToListClick}
           >
-            {returnToList}
+            {translations.components.favourites.labels.returnToList}
           </button>
         {/if}
       </div>
@@ -466,24 +445,24 @@
 <ActionDialog bind:this={actionDialog} />
 <AppDialog
   open={showDatasetNotice}
-  title={translations.unsavedMapChanges}
+  title={translations.components.favourites.labels.unsavedMapChanges}
   describedby="unsaved-dataset-description"
   onclose={() => (showDatasetNotice = false)}
 >
-  <p id="unsaved-dataset-description" class="mb-5">{translations.unsavedDatasetNotice}</p>
+  <p id="unsaved-dataset-description" class="mb-5">{translations.components.favourites.labels.unsavedDatasetNotice}</p>
   <button class="button-action-dark" onclick={() => (showDatasetNotice = false)}>
-    {dismissPresentationNotice}
+    {translations.general.close}
   </button>
 </AppDialog>
 <AppDialog
   open={presentationMode && showPresentationNotice}
-  title={presentationNoticeTitle}
+  title={translations.components.favourites.labels.presentationNoticeTitle}
   describedby="presentation-notice-description"
   onclose={() => (showPresentationNotice = false)}
 >
-  <p id="presentation-notice-description" class="mb-5">{presentationNotice}</p>
+  <p id="presentation-notice-description" class="mb-5">{translations.components.favourites.labels.presentationNotice}</p>
   <button class="button-action-dark" onclick={() => (showPresentationNotice = false)}>
-    {dismissPresentationNotice}
+    {translations.general.close}
   </button>
 </AppDialog>
 

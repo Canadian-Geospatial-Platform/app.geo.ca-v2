@@ -1,5 +1,8 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
+  import { onMount } from 'svelte';
   import { tempCategoryOfInterest, updateTempCategoryOfInterest } from '#lib/components/search-results/store.js';
   import SelectCustomized from '#lib/components/select-customized/select-customized.svelte';
   import type { FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
@@ -8,22 +11,20 @@
   // Note: the list of categories are based on the Topic Categories from ISO 19115-1
   // https://icsm-au.github.io/metadata-working-group/defs/TopicCategory
   const categoriesKey = 'category-of-interest';
-  const categories = page.data.categories ?? [];
-  let selected: SelectOption | undefined = undefined;
-  let categoryStoreVal: string | null = null;
 
-  const selectedValue = page.url.searchParams.get(categoriesKey);
-  let selectedCategory = findCategory(selectedValue);
-  if (selectedCategory && selected !== selectedCategory) {
-    selected = selectedCategory || undefined;
-    updateTempCategoryOfInterest(selected?.value ?? null);
-  }
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const searchResultsTranslations = $derived(getTranslations(appLang).components.searchResults);
+  const categories = $derived(searchResultsTranslations.categories);
+  const selectedCategory = findCategory(page.url.searchParams.get(categoriesKey));
+  let selected = $state<SelectOption | undefined>(selectedCategory ?? undefined);
+  let categoryStoreVal: string | null = selectedCategory?.value ?? null;
 
   /**
    * Resets the filter to the value in the URL parameters.
    */
   export function resetFilters(): void {
-    let catKey = page.url.searchParams.get('category-of-interest');
+    let catKey = page.url.searchParams.get(categoriesKey);
     let selectedCategory = findCategory(catKey);
 
     selected = selectedCategory || undefined;
@@ -38,11 +39,6 @@
   export function getValue(): string | null {
     return categoryStoreVal;
   }
-
-  /************* Translations ***************/
-  const translations = page.data.t;
-  const categoryOfInterestText = translations?.categoryOfInterest ? translations['categoryOfInterest'] : 'Select Category of Interest';
-  const categorySelectDefaultText = translations?.categorySelectDefault ? translations['categorySelectDefault'] : 'Select a Category...';
 
   /************* Filter Data ***************/
   /**
@@ -76,24 +72,25 @@
   }
 
   /************* Subscriptions ***************/
-  tempCategoryOfInterest.subscribe((value: string | null) => {
-    let category = findCategory(value);
-    if (selected !== category) {
+  onMount(() => {
+    resetFilters();
+    return tempCategoryOfInterest.subscribe((value: string | null) => {
+      const category = findCategory(value);
       changeSelection(category);
-    }
-    categoryStoreVal = value;
+      categoryStoreVal = category?.value ?? null;
+    });
   });
 </script>
 
 <div class="w-full">
   <h3 class="font-custom-style-h3 mb-5">
-    {categoryOfInterestText}
+    {searchResultsTranslations.labels.categoryOfInterest}
   </h3>
   <div class="w-full md:max-w-md">
     <SelectCustomized
       optionsData={categories}
       removableSelection={true}
-      defaultLabel={categorySelectDefaultText}
+      defaultLabel={searchResultsTranslations.labels.categorySelectDefault}
       selectType="categoryFilter"
       bind:selected
       selectedChange={handleCategoryOfInterestChange}

@@ -8,15 +8,15 @@ import { getAppLanguage } from '#lib/utils/language.js';
  * @returns Browser destination for starting OIDC sign-in.
  */
 export const load: PageServerLoad = ({ params, url }) => {
-  const lang = getAppLanguage(params.lang);
-  const fallbackState = new URL(`/${lang}/favourites`, url.origin).href;
+  const appLang = getAppLanguage(params.lang);
+  const fallbackState = new URL(`/${appLang}/favourites`, url.origin).href;
   const requestedState = url.searchParams.get('state');
   let state = fallbackState;
 
   if (requestedState) {
     try {
       const candidate = new URL(requestedState, url.origin);
-      if (candidate.origin === url.origin && candidate.pathname.startsWith(`/${lang}/`)) {
+      if (candidate.origin === url.origin && candidate.pathname.startsWith(`/${appLang}/`)) {
         state = candidate.href;
       }
     } catch {
@@ -25,7 +25,7 @@ export const load: PageServerLoad = ({ params, url }) => {
   }
 
   return {
-    lang,
-    signInUrl: `/${lang}/sign-in/send?state=${encodeURIComponent(state)}`,
+    lang: appLang,
+    signInUrl: `/${appLang}/sign-in/send?state=${encodeURIComponent(state)}`,
   };
 };

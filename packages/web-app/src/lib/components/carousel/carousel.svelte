@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { fly } from 'svelte/transition';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import Chevronleft from '#lib/components/icons/chevronleft.svelte';
   import Chevronright from '#lib/components/icons/chevronright.svelte';
 
@@ -17,7 +18,7 @@
 
   let { cardData }: Props = $props();
 
-  let lang = page.data.lang;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
 
   let activeIndex = $state(0);
   let nextIndex = $state(1);
@@ -25,8 +26,7 @@
   let flyLength = $state(0);
 
   /*************** Aria Labels ***************/
-  const carouselLabel = pickByLanguage(lang, 'Similar records carousel', 'Carrousel de dossiers similaires');
-  const similarRecordLabelPrefix = pickByLanguage(lang, 'Similar record ', 'Dossiers similaire ');
+  const carouselTranslations = $derived(getTranslations(appLang).components.carousel);
 
   /*************** Utility methods ***************/
 
@@ -83,7 +83,7 @@
 </script>
 
 <!-- Card Container -->
-<div class="flex flex-col relative w-full mt-4 font-custom-style-body-carousel overflow-x-hidden" aria-label={carouselLabel}>
+<div class="flex flex-col relative w-full mt-4 font-custom-style-body-carousel overflow-x-hidden" aria-label={carouselTranslations.label}>
   <!-- Carousel Cards -->
   <div class="flex gap-6 h-64 w-full">
     <!-- Card 1 -->
@@ -148,7 +148,7 @@
             name={`Button-${card.title}`}
             class="card-index text-lg hover:text-xl text-custom-20"
             onclick={() => handleIndexButtonClick(index)}
-            aria-label={similarRecordLabelPrefix + (index + 1)}
+            aria-label={carouselTranslations.recordPrefix + (index + 1)}
           >
             &#x2B24;
           </button>
@@ -156,7 +156,7 @@
           <button
             class="card-index text-[10px] sm:text-[12px] hover:text-base text-custom-24 hover:text-custom-20"
             onclick={() => handleIndexButtonClick(index)}
-            aria-label={similarRecordLabelPrefix + (index + 1)}
+            aria-label={carouselTranslations.recordPrefix + (index + 1)}
           >
             &#x2B24;
           </button>

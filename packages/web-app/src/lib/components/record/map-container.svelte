@@ -1,13 +1,13 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { onMount } from 'svelte';
   import { page } from '$app/state';
   import Map from '#lib/components/map/map.svelte';
   import NotVisible from '#lib/components/icons/not-visible.svelte';
 
-  const translations = page.data.t;
-  const mapText = translations?.map ? translations['map'] : 'Map';
-  const mapNotAvailableText = translations?.mapNotAvailable ? translations['mapNotAvailable'] : '';
-  const windowTooSmall = translations?.windowTooSmall ? translations['windowTooSmall'] : '';
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
 
   const data = page.data;
   const uuid = data.uuid || '';
@@ -44,7 +44,7 @@
 
 <div class="font-custom-style-body-1">
   <h2 class="font-custom-style-h2 mb-7 mx-5 md:mx-0">
-    {mapText}
+    {translations.general.mapTitle}
   </h2>
   {#if coordinates && showMap}
     <div class="surface-shadow" style="min-height: 300px;">
@@ -52,7 +52,7 @@
     </div>
   {:else if coordinates}
     <p class="mx-5 md:mx-0">
-      {windowTooSmall}
+      {translations.general.windowTooSmall}
     </p>
     <div class="mx-5 mt-5 bg-[url('/map-not-available.png')] bg-cover max-w-full h-60">
       <div class="bg-black/35 w-full h-full flex items-center justify-center">
@@ -61,7 +61,7 @@
     </div>
   {:else}
     <p class="mx-5 md:mx-0">
-      {mapNotAvailableText}
+      {translations.components.record.labels.mapNotAvailable}
     </p>
   {/if}
 </div>

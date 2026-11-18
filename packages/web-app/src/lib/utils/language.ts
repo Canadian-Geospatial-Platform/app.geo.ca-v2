@@ -40,46 +40,56 @@ export function isAppLanguage(input?: string | null): input is AppLanguage {
 /**
  * Convenience predicate for French-language branching.
  *
- * @param lang Normalized app language.
+ * @param appLang Normalized app language.
  * @returns True when the language is French Canadian.
  */
-export function isFrench(lang: AppLanguage): boolean {
-  return lang === 'fr-ca';
+export function isFrench(appLang: AppLanguage): boolean {
+  return appLang === 'fr-ca';
 }
 
 /**
  * Picks between English and French values based on app language.
  *
- * @param lang Normalized app language.
+ * @param appLang Normalized app language.
  * @param enValue Value to use for English.
  * @param frValue Value to use for French.
  * @returns The value corresponding to the provided language.
  */
-export function pickByLanguage<T>(lang: AppLanguage, enValue: T, frValue: T): T {
-  return isFrench(lang) ? frValue : enValue;
+export function pickByLanguage<T>(appLang: AppLanguage, enValue: T, frValue: T): T {
+  return isFrench(appLang) ? frValue : enValue;
+}
+
+/**
+ * Converts an application locale to the short code required by APIs and bilingual data fields.
+ *
+ * @param appLang - Normalized application language; normalize raw input with getAppLanguage.
+ * @returns The corresponding content language. Keep the full locale for URLs and formatting.
+ */
+export function getContentLanguage(appLang: AppLanguage): 'en' | 'fr' {
+  return pickByLanguage(appLang, 'en', 'fr');
 }
 
 /**
  * Changes a localized URL's language while preserving its query and fragment.
  */
-export function getLanguageSwitchUrl(currentUrl: URL, lang: AppLanguage): string {
+export function getLanguageSwitchUrl(currentUrl: URL, appLang: AppLanguage): string {
   const url = new URL(currentUrl);
-  url.pathname = url.pathname.replace(/\/(?:en-ca|fr-ca)(?=\/|$)/, `/${lang}`);
+  url.pathname = url.pathname.replace(/\/(?:en-ca|fr-ca)(?=\/|$)/, `/${appLang}`);
 
-  if (url.pathname === `/${lang}/sign-in/oidc-logout`) {
+  if (url.pathname === `/${appLang}/sign-in/oidc-logout`) {
     const returnTo = url.searchParams.get('returnTo');
     if (returnTo === '/en-ca/favourites' || returnTo === '/fr-ca/favourites') {
-      url.searchParams.set('returnTo', `/${lang}/favourites`);
+      url.searchParams.set('returnTo', `/${appLang}/favourites`);
     }
   }
 
-  if (url.pathname === `/${lang}/sign-in/launch`) {
+  if (url.pathname === `/${appLang}/sign-in/launch`) {
     const state = url.searchParams.get('state');
     if (state) {
       try {
         const destination = new URL(state, url.origin);
         if (destination.origin === url.origin && /^\/(?:en-ca|fr-ca)\//.test(destination.pathname)) {
-          destination.pathname = destination.pathname.replace(/^\/(?:en-ca|fr-ca)\//, `/${lang}/`);
+          destination.pathname = destination.pathname.replace(/^\/(?:en-ca|fr-ca)\//, `/${appLang}/`);
           url.searchParams.set('state', destination.href);
         }
       } catch {
@@ -110,6 +120,6 @@ export function getLangFromPath(pathOrUrl?: string | null): AppLanguage {
     // Not an absolute URL; treat input as a path directly.
   }
 
-  const langSegment = pathname.split('/').find((segment) => isAppLanguage(segment));
-  return getAppLanguage(langSegment);
+  const appLangSegment = pathname.split('/').find((segment) => isAppLanguage(segment));
+  return getAppLanguage(appLangSegment);
 }

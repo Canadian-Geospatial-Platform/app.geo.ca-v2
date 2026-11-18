@@ -1,17 +1,13 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { onDestroy } from 'svelte';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
   import AppDialog from './app-dialog.svelte';
 
   const id = $props.id();
   let pending = $state<{ mode: 'confirm' | 'prompt'; message: string; resolve: (value: string | null) => void } | null>(null);
   let value = $state('');
-  const cancelLabel = $derived(pickByLanguage(page.data.lang, 'Cancel', 'Annuler'));
-  const confirmLabel = $derived(pickByLanguage(page.data.lang, 'Delete', 'Supprimer'));
-  const saveLabel = $derived(pickByLanguage(page.data.lang, 'Save', 'Enregistrer'));
-  const confirmTitle = $derived(pickByLanguage(page.data.lang, 'Confirm deletion', 'Confirmer la suppression'));
-  const promptTitle = $derived(pickByLanguage(page.data.lang, 'Save as...', 'Enregistrer sous...'));
+  const translations = $derived(getTranslations(page.data.lang));
 
   /**
    * Opens a dialog and resolves when the user submits or cancels it.
@@ -65,7 +61,7 @@
 
 <AppDialog
   open={pending !== null}
-  title={pending?.mode === 'prompt' ? promptTitle : confirmTitle}
+  title={pending?.mode === 'prompt' ? translations.general.saveAs : translations.components.dialog.confirmDeletion}
   describedby={pending?.mode === 'confirm' ? `${id}-message` : undefined}
   onclose={() => finish(null)}
 >
@@ -90,10 +86,10 @@
       {/if}
       <div class="flex flex-wrap gap-3">
         <button type="button" class="button-action-light" onclick={() => finish(null)}>
-          {cancelLabel}
+          {translations.general.cancel}
         </button>
         <button type="submit" class="button-action-dark">
-          {pending.mode === 'prompt' ? saveLabel : confirmLabel}
+          {pending.mode === 'prompt' ? translations.general.save : translations.general.delete}
         </button>
       </div>
     </form>

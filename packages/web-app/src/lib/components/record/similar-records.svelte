@@ -1,17 +1,16 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { pickByLanguage, getAppLanguage } from '#lib/utils/language.js';
   import Carousel from '#lib/components/carousel/carousel.svelte';
   import type { SimilarityRecord } from '#lib/db/db-types.js';
 
-  const translations = page.data.t;
-  const similarRecordsText = translations?.similarProducts ? translations['similarProducts'] : 'Similar records';
-
   const data = page.data;
-  const lang = data.lang;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const similarRecordsText = $derived(getTranslations(appLang).components.record.labels.similarProducts);
   const recordId = data.item_v2!.id;
-  const urlPrefix = `${page.url.origin}/${lang}/map-browser/record/`;
+  const urlPrefix = $derived(`${page.url.origin}/${appLang}/map-browser/record/`);
   const similarRecords = data.similar || [];
   const similarDescriptions: Record<string, string> = $state({});
 
@@ -21,7 +20,7 @@
 
   const cardData = $derived(
     similarRecords.map((record: SimilarityRecord) => {
-      const title = pickByLanguage(lang, record.features_properties_title_en, record.features_properties_title_fr);
+      const title = pickByLanguage(appLang, record.features_properties_title_en, record.features_properties_title_fr);
       const id: string = record.features_properties_id;
 
       // Todo: Change description when it becomes available from the similarity query.
@@ -44,9 +43,9 @@
   // the 'similarity' list in the record data
   onMount(async (): Promise<void> => {
     // Get record data for each of the similar records
-    const response = await fetch(`/${lang}/map-browser/record/${recordId}`, {
+    const response = await fetch(`/${appLang}/map-browser/record/${recordId}`, {
       method: 'POST',
-      body: JSON.stringify({ ids: similarRecordIs, lang: lang }),
+      body: JSON.stringify({ ids: similarRecordIs, lang: appLang }),
       headers: { 'Content-Type': 'application/json' },
     });
 

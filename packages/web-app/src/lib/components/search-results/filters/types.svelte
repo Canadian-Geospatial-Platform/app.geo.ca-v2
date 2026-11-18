@@ -1,27 +1,28 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import CheckboxCustomized from '#lib/components/checkbox-customized/checkbox-customized.svelte';
   import SelectCustomized from '#lib/components/select-customized/select-customized.svelte';
   import type { SelectOption } from '#lib/components/select-customized/selected-types.d.ts';
   import type { Filter, FilterItem } from '#lib/components/search-results/filters/filter-types.d.ts';
 
-  /************* Filter Data ***************/
-  const filters = page.data.filters?.filters;
-  const types = filters?.find((filter: Filter) => filter.section === 'type');
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const searchResultsTranslations = $derived(getTranslations(appLang).components.searchResults);
+
+  // Types filter data
+  const types = $derived(searchResultsTranslations.filters.find((filter: Filter) => filter.section === 'type'));
   let checkedStates = $state<Record<string, boolean>>({});
 
-  /************* Translations ***************/
-  const translations = page.data.t;
-  const conditionLabel = translations?.condition ?? 'Condition:';
-  const anyLabel = translations?.anyLabel ?? 'Any (OR)';
-  const allLabel = translations?.allLabel ?? 'All (AND)';
-  const logicOptions: SelectOption[] = [
-    { value: 'any', label: anyLabel },
-    { value: 'all', label: allLabel },
-  ];
+  // Logic options for type filter
+  const logicOptions: SelectOption[] = $derived([
+    { value: 'any', label: searchResultsTranslations.labels.anyLabel },
+    { value: 'all', label: searchResultsTranslations.labels.allLabel },
+  ]);
 
   let typeLogic = $state<'any' | 'all'>('any');
-  let selectedLogic = $state<SelectOption | undefined>(logicOptions[0]);
+  let selectedLogic = $derived(logicOptions.find((option) => option.value === typeLogic));
 
   /**
    * Resets from URL (this is what restores state when reopening)
@@ -73,7 +74,7 @@
 
 <!-- Condition dropdown -->
 <div class="mb-2 flex items-center gap-2">
-  <span class="text-base text-gray-600">{conditionLabel}</span>
+  <span class="text-base text-gray-600">{searchResultsTranslations.labels.condition}</span>
   <div class="w-full max-w-52">
     <SelectCustomized optionsData={logicOptions} bind:selected={selectedLogic} selectedChange={onTypeLogicChange} />
   </div>

@@ -1,29 +1,11 @@
-<!-----------------------------------------------------------------
-  When a selection is made, a custom 'selectedChange' event is
-  dispatched with the option's 'SelectOption' object as the 
-  event's value. So, it is up to the parent component to
-  handle the select change like this:
-
-  <SelectCustomized
-    ...
-    selectedChange={myHandler}
-  />
-
-  <script>
-    ...
-
-    function myHandler(event) {
-      selected = event;
-      ...
-    }
-  </script>
------------------------------------------------------------------->
+<!-- Calls selectedChange with the selected option, or null when the selection is cleared. -->
 
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { tick } from 'svelte';
   import { fly } from 'svelte/transition';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import Chevrondown from '#lib/components/icons/chevrondown.svelte';
   import Chevronup from '#lib/components/icons/chevronup.svelte';
   import Close from '#lib/components/icons/close.svelte';
@@ -48,9 +30,8 @@
     selectedChange,
   }: Props = $props();
 
-  const lang = page.data.lang;
-  let clearAriaLabel = pickByLanguage(lang, 'Clear selection', 'Effacer la sélection');
-  let selectAriaLabel = pickByLanguage(lang, 'Select option', 'Selectionner une option');
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const selectTranslations = $derived(getTranslations(appLang).components.select);
 
   let expanded = $state(false);
   let customTriggerEl = $state<HTMLButtonElement>();
@@ -59,7 +40,10 @@
   const isResultList = $derived(selectType === 'resultList');
   const isTabCard = $derived(selectType === 'tabCard');
   const isDefault = $derived(selectType === 'default');
-  const selectedLabel = $derived(selected?.label ?? defaultLabel ?? optionsData[0]?.label ?? '');
+  // Resolve by stable value so a language switch refreshes the label without changing the selection.
+  const selectedLabel = $derived(
+    optionsData.find((option) => option.value === selected?.value)?.label ?? selected?.label ?? defaultLabel ?? optionsData[0]?.label ?? ''
+  );
 
   const triggerClasses = $derived.by(() => {
     return [
@@ -186,7 +170,7 @@
     {#if selected && removableSelection}
       <button
         type="button"
-        aria-label={clearAriaLabel}
+        aria-label={selectTranslations.clear}
         class="clear-btn focus-visible-standard absolute top-1/4 right-10 md:right-14 z-10 text-gray-400 rounded-full p-1.5 cursor-pointer"
         onclick={handleRemoveSelect}
       >
@@ -197,7 +181,7 @@
     <button
       type="button"
       class={[...triggerClasses, 'focus-visible-standard']}
-      aria-label={selectAriaLabel}
+      aria-label={selectTranslations.select}
       aria-haspopup="listbox"
       aria-expanded={expanded ? 'true' : 'false'}
       onclick={handleCustomSelectClick}
@@ -217,7 +201,7 @@
         class={menuClasses}
         style={menuStyle}
         role="listbox"
-        aria-label={selectAriaLabel}
+        aria-label={selectTranslations.select}
         bind:this={customMenuEl}
         transition:fly={{ y: 4, duration: 140 }}
       >

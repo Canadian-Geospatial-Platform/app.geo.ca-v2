@@ -1,4 +1,6 @@
 import type { DistributionOption } from '#lib/db/db-types.js';
+import { getTranslations } from '#lib/i18n/index.js';
+import { getAppLanguage } from '#lib/utils/language.js';
 
 /**
  * Parsed representation of a distribution option row.
@@ -16,47 +18,33 @@ export type ParsedDataResource = {
  * Parses raw data resources from a metadata record into a structured array.
  *
  * @param dataResourcesRaw - Raw data resources array from the metadata record.
- * @param lang - Language code ('en' or 'fr').
- * @returns Parsed data resources array.
+ * @param contentLang - Short language code ('en' or 'fr') used to select external bilingual fields.
+ * @returns Rows with external names/URLs and localized ENG, FRA, and ZXX language labels.
  */
-export function parseDataResources(dataResourcesRaw: DistributionOption[], lang: 'en' | 'fr'): ParsedDataResource[] {
-  type Translation = {
-    en: string;
-    fr: string;
+export function parseDataResources(dataResourcesRaw: DistributionOption[], contentLang: 'en' | 'fr'): ParsedDataResource[] {
+  const translations = getTranslations(getAppLanguage(contentLang));
+  const languageReplacements: Record<string, string> = {
+    eng: translations.general.english,
+    fra: translations.general.french,
+    zxx: translations.general.notAvailable,
   };
 
-  type LanguageReplacements = {
-    eng: Translation;
-    fra: Translation;
-    zxx: Translation;
-  };
-
-  const languageReplacements: LanguageReplacements = {
-    eng: { en: 'English', fr: 'Anglais' },
-    fra: { en: 'French', fr: 'Français' },
-    zxx: { en: 'Not available', fr: 'Pas disponible' },
-  };
-
-  const translationLang: keyof Translation = lang === 'fr' ? 'fr' : 'en';
   const dataResources: ParsedDataResource[] = [];
 
   for (const resource of dataResourcesRaw) {
-    // Some entries have the string 'null' (i.e. not the value null)
-    // for all values in the resource object. In these cases, we can skip the resource.
     if (!resource.url) {
       continue;
     }
 
-    const description = (resource.description?.[lang] ?? '').split(';');
-    const name = resource.name?.[lang] ?? '';
+    const description = (resource.description?.[contentLang] ?? '').split(';');
+    const name = resource.name?.[contentLang] ?? '';
     const url = resource.url;
 
     const type = description[0] ?? '';
     const format = description[1] ?? '';
     const languageRaw = (description[2] ?? '').replaceAll(',', ', ');
     const language = languageRaw.replaceAll(/eng|fra|zxx/gi, (x: string) => {
-      const key = x.toLowerCase() as keyof LanguageReplacements;
-      return languageReplacements[key]?.[translationLang] ?? x;
+      return languageReplacements[x.toLowerCase()] ?? x;
     });
 
     dataResources.push({

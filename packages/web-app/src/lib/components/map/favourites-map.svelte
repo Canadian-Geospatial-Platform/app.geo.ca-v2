@@ -11,6 +11,7 @@
   import { loadCGPVScript } from '#lib/components/map/loadCGPVScript.js';
   import type { GeoviewConfig } from './map-types';
   import { addDatasetToMap, type DatasetAdditionResult } from '#lib/utils/map-dataset.js';
+  import { getAppLanguage, getContentLanguage } from '#lib/utils/language.js';
 
   interface Props {
     layerIds: string[];
@@ -26,7 +27,7 @@
   let { layerIds, mapConfig = null, addDatasetId = null, onDatasetAdded, onLoadError }: Props = $props();
 
   let mapId = 'map-favourites-resources';
-  let mapLang = page.data.lang.split('-')[0] as 'en' | 'fr';
+  let contentLang = getContentLanguage(getAppLanguage(page.data.lang));
 
   /***************** Map config *****************/
   const interaction = 'dynamic';
@@ -157,6 +158,6 @@
   id={mapId}
   class="bg-blue-500/5 w-full aspect-video surface-shadow"
   data-config={sConfig}
-  data-lang={mapLang}
+  data-lang={contentLang}
   style="border: gray 1px solid;"
 ></div>

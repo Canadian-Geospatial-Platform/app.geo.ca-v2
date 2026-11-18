@@ -1,13 +1,13 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
-  import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import Share from '#lib/components/share/share.svelte';
 
-  const lang = getAppLanguage(page.data.lang);
-  const dateModifiedText: string = pickByLanguage(lang, 'Date Modified', 'Date modifiée');
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const dateModifiedText: string = $derived(getTranslations(appLang).components.footer.dateModified);
 
-  //TODO: Date should not be hardcoded
-  const dateModified: string = '2025-05-29';
+  const dateModified: string = __APP_DATE_MODIFIED__;
 </script>
 
 <div

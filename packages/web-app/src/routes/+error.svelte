@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import '../app.css';
   import { navigating, page } from '$app/state';
   import Header from '#lib/components/header/header.svelte';
@@ -6,6 +8,9 @@
   import Feedback from '#lib/components/feedback/feedback.svelte';
   import LoadingMask from '#lib/components/loading-mask/loading-mask.svelte';
   import Breadcrumbs from '#lib/components/breadcrumbs/breadcrumbs.svelte';
+
+  const appLang = getAppLanguage(page.data.lang ?? page.params.lang);
+  const errorMessageText = $derived(getTranslations(appLang).pages.error.message);
 </script>
 
 {#if navigating.type !== null}
@@ -16,17 +21,10 @@
 <div class="flex flex-col content-width space-y-7 bg-custom-1 min-h-screen pt-7">
   <Breadcrumbs />
   <div>
-    {#if page.data.lang === 'fr-ca'}
-      Oups... Une erreur s'est produite. N'hésitez pas à le signaler en nous envoyant un email à
-      <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca"
-        >geoinfo@nrcan-rncan.gc.ca</a
-      >.
-    {:else}
-      Oops... There was an error. Feel free to report it by sending us an email to
-      <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca"
-        >geoinfo@nrcan-rncan.gc.ca</a
-      >.
-    {/if}
+    {errorMessageText}
+    <a class="text-custom-16 underline hover:no-underline" href="mailto:geoinfo@nrcan-rncan.gc.ca?subject=app.geo.ca"
+      >geoinfo@nrcan-rncan.gc.ca</a
+    >.
   </div>
   <Feedback />
 </div>

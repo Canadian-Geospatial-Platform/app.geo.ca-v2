@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import TabCard from '#lib/components/tab-card/tab-card.svelte';
   import DataResources from './data-resources.svelte';
@@ -7,36 +9,33 @@
   import RelatedProducts from './related-products.svelte';
   import type { SelectOption } from '#lib/components/select-customized/selected-types.d.ts';
 
-  /******************* Translations *******************/
-  const translations = page.data.t;
-  const dataResources: string = translations?.dataResources ? translations['dataResources'] : 'Data resources';
-  const advancedMetadata: string = translations?.advancedMetadata ? translations['advancedMetadata'] : 'Advanced metadata';
-  const contactData: string = translations?.contactData ? translations['contactData'] : 'Contact';
-  const relatedProducts: string = translations?.relatedProducts ? translations['relatedProducts'] : 'Related products';
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
 
-  /******************* Data *******************/
-  const tabContentArray: SelectOption[] = [
+  // Tab content array
+  const tabContentArray: SelectOption[] = $derived([
     {
-      label: dataResources,
+      label: translations.components.record.labels.dataResources,
       value: '1',
       component: DataResources,
     },
     {
-      label: advancedMetadata,
+      label: translations.components.record.labels.advancedMetadata,
       value: '2',
       component: AdvancedMetadata,
     },
     {
-      label: contactData,
+      label: translations.components.record.labels.contactData,
       value: '3',
       component: Contact,
     },
     {
-      label: relatedProducts,
+      label: translations.components.record.labels.relatedProducts,
       value: '4',
       component: RelatedProducts,
     },
-  ];
+  ]);
 </script>
 
 <div class="flex flex-col space-y-3">

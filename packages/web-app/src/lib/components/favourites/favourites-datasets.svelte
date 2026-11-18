@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getTranslations, formatTranslation } from '#lib/i18n/index.js';
   import { onMount } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
   import { page } from '$app/state';
@@ -15,10 +16,8 @@
   import Checkmark from '#lib/components/icons/checkmark.svelte';
   import GarbageCan from '#lib/components/icons/garbage-can.svelte';
   import SearchBarSimplified from '#lib/components/search-results/search-bar-simplified.svelte';
-  import enTranslations from '#lib/components/favourites/i18n/en/translations.json';
   import type { FavouritesRecord, FavouritesRow } from '#lib/db/db-types.js';
-  import type { AppLanguage } from '#lib/utils/language.js';
-  import { isFrench, pickByLanguage } from '#lib/utils/language.js';
+  import { getContentLanguage, getAppLanguage } from '#lib/utils/language.js';
 
   /**
    * Signed-in favourites datasets view.
@@ -26,31 +25,13 @@
    * Renders saved dataset records, supports selection and deletion,
    * and opens selected records in the map view route.
    */
-  type FavouritesTranslations = typeof enTranslations;
-  const translations: FavouritesTranslations = {
-    ...enTranslations,
-    ...((page.data.t ?? {}) as Partial<FavouritesTranslations>),
-  };
-  const lang = page.data.lang as AppLanguage;
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
   const signedIn = Boolean(page.data.signedIn);
   const userDataUnavailable = page.data.userDataStatus === 'unavailable';
 
-  // Translations
-  const datasetsTabLabel = translations.datasetsTab;
-  const datasetsDescription = translations.datasetsDescription || translations.description;
-  const remove = translations.remove;
-  const removeAll = translations.removeAll;
-  const resourceFormatsLabel = translations.resourceFormats;
-  const resourceListEmpty = translations.resourceListEmpty;
-  const resourceNameLabel = translations.resourceName;
-  const savedDataUnavailable = translations.savedDataUnavailable;
-  const searchFor = translations.searchFor;
-  const viewOnMapLabel = translations.viewOnMap;
-  const findAResource = translations.findAResource;
-  const mapsLinkLabel = translations.mapsLinkLabel;
-
-  const langShort = pickByLanguage(lang, 'en', 'fr');
-  const titleKey = `title_${langShort}` as 'title_en' | 'title_fr';
+  const contentLang = $derived(getContentLanguage(appLang));
+  const titleKey = $derived(`title_${contentLang}` as 'title_en' | 'title_fr');
 
   // State
   let actionDialog: ActionDialog;
@@ -65,6 +46,7 @@
   const savedMaps = $derived(page.data.userData?.mapConfigs ?? []);
   let datasetToAdd: string | null = $state(null);
   let pickerError = $state(false);
+  let openingSavedMap = $state(false);
 
   /**
    * Explains why a dataset cannot be added to a saved map.
@@ -73,29 +55,36 @@
    * @returns Localized disabled-state explanation, or an empty string when eligible.
    */
   function addDisabledReason(unmappable: boolean): string {
-    if (unmappable) return translations.datasetNotMappable;
-    if (userDataUnavailable) return savedDataUnavailable;
-    if (savedMaps.length === 0) return translations.noSavedMapsToAdd;
+    if (unmappable) return translations.components.favourites.labels.datasetNotMappable;
+    if (userDataUnavailable) return translations.components.favourites.labels.savedDataUnavailable;
+    if (savedMaps.length === 0) return translations.components.favourites.labels.noSavedMapsToAdd;
     return '';
   }
 
   /**
    * Opens the chosen saved map with a pending, unsaved dataset addition.
    *
-   * Keeps the picker open with an error if navigation fails, allowing a retry.
+   * Closes the picker immediately, blocks further additions during navigation,
+   * and restores the original dataset selection with an error if navigation fails.
    *
    * @param mapId - Identifier of the saved map selected in the picker.
+   * @returns Resolves after navigation succeeds or the picker is restored for retry.
    */
   async function handleSelectSavedMap(mapId: string): Promise<void> {
-    if (!datasetToAdd) return;
+    if (!datasetToAdd || openingSavedMap) return;
+    const datasetId = datasetToAdd;
     pickerError = false;
-    const query = new URLSearchParams({ mapId, addDatasetId: datasetToAdd, source: 'maps' });
+    openingSavedMap = true;
+    datasetToAdd = null;
+    const query = new URLSearchParams({ mapId, addDatasetId: datasetId, source: 'maps' });
     try {
-      await goto(resolve(`/[lang]/favourites/view?${query}`, { lang }));
-      datasetToAdd = null;
+      await goto(resolve(`/[lang]/favourites/view?${query}`, { lang: appLang }));
     } catch (error) {
       console.error('Unable to open the saved map:', error);
+      datasetToAdd = datasetId;
       pickerError = true;
+    } finally {
+      openingSavedMap = false;
     }
   }
 
@@ -103,10 +92,10 @@
     tableDataArray.length > 0 && tableDataArray.every((row) => selectedIds.includes(row.id) || row.disableCheckbox)
   );
 
-  const tableLabels: Record<string, string> = {
-    name: resourceNameLabel,
-    formats: resourceFormatsLabel,
-  };
+  const tableLabels: Record<string, string> = $derived({
+    name: translations.components.favourites.labels.resourceName,
+    formats: translations.components.favourites.labels.resourceFormats,
+  });
 
   /**
    * Deletes one favourite resource after user confirmation.
@@ -118,14 +107,15 @@
    */
   async function handleDeleteResource(id: string): Promise<void> {
     const resource = tableDataArray.find((tableData: FavouritesRow) => tableData.id === id);
-    const resourceName = resource?.name;
-    const permissionText = isFrench(lang)
-      ? `Êtes-vous sûr de vouloir supprimer la ressource suivante? \n\n${resourceName} (${id})`
-      : `Are you sure you want to delete the following resource? \n\n${resourceName} (${id})`;
+    const resourceName = resource?.name ?? id;
+    const permissionText = formatTranslation(getTranslations(appLang).components.favourites.messages.deleteResource, {
+      name: resourceName,
+      id: id,
+    });
 
     if (await actionDialog.confirm(permissionText)) {
       if (signedIn) {
-        const response = await fetch(`/${lang}/api/favourites`, {
+        const response = await fetch(`/${appLang}/api/favourites`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id }),
@@ -156,13 +146,13 @@
    * resetting local records, selection, and local-storage state.
    */
   async function handleRemoveAllClick(): Promise<void> {
-    const permissionText = isFrench(lang)
-      ? `Êtes-vous certain de vouloir supprimer ${favouriteRecordList.length} ressources?`
-      : `Are you sure you want to delete ${favouriteRecordList.length} resources?`;
+    const permissionText = formatTranslation(getTranslations(appLang).components.favourites.messages.deleteResources, {
+      count: favouriteRecordList.length,
+    });
 
     if (await actionDialog.confirm(permissionText)) {
       if (signedIn) {
-        const response = await fetch(`/${lang}/api/favourites`, {
+        const response = await fetch(`/${appLang}/api/favourites`, {
           method: 'PUT',
         });
         if (!response.ok) {
@@ -192,7 +182,7 @@
     }
 
     const ids = selectedIds.join(',');
-    goto(resolve(`/[lang]/favourites/view?ids=${encodeURIComponent(ids)}&source=datasets`, { lang }));
+    goto(resolve(`/[lang]/favourites/view?ids=${encodeURIComponent(ids)}&source=datasets`, { lang: appLang }));
   }
 
   /**
@@ -210,9 +200,9 @@
     }
 
     if (favouriteRecordList.length > 0) {
-      const response = await fetch(`/${lang}/favourites`, {
+      const response = await fetch(`/${appLang}/favourites`, {
         method: 'POST',
-        body: JSON.stringify({ ids: favouriteRecordList, lang: lang }),
+        body: JSON.stringify({ ids: favouriteRecordList, lang: appLang }),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -224,7 +214,7 @@
           id: record.id,
           formats: record.formats.join(', '),
           name: record[titleKey],
-          url: `${page.url.origin}/${lang}/map-browser/record/${record.id}`,
+          url: `${page.url.origin}/${appLang}/map-browser/record/${record.id}`,
         };
       });
 
@@ -236,7 +226,11 @@
 </script>
 
 <ActionDialog bind:this={actionDialog} />
-<AppDialog open={datasetToAdd !== null} title={translations.chooseSavedMap} onclose={() => (datasetToAdd = null)}>
+<AppDialog
+  open={datasetToAdd !== null}
+  title={translations.components.favourites.labels.chooseSavedMap}
+  onclose={() => (datasetToAdd = null)}
+>
   <ul class="max-h-80 overflow-y-auto space-y-3 mb-5">
     {#each savedMaps as savedMap (savedMap.id)}
       <li>
@@ -247,24 +241,26 @@
     {/each}
   </ul>
   {#if pickerError}
-    <p class="status-alert-error mb-5" role="alert">{translations.openSavedMapFailed}</p>
+    <p class="status-alert-error mb-5" role="alert">{translations.components.favourites.labels.openSavedMapFailed}</p>
   {/if}
-  <button class="button-action-dark" onclick={() => (datasetToAdd = null)}>{translations.cancel}</button>
+  <button class="button-action-dark" onclick={() => (datasetToAdd = null)}>{translations.general.cancel}</button>
 </AppDialog>
 
 {#snippet addToSavedMapButton(id: string, unmappable: boolean, mobile = false)}
   {@const reason = addDisabledReason(unmappable)}
   <button
     class="button-action-light"
-    disabled={Boolean(reason)}
-    title={reason || translations.addToSavedMap}
+    disabled={Boolean(reason) || openingSavedMap}
+    aria-busy={openingSavedMap}
+    title={reason || translations.components.favourites.labels.addToSavedMap}
     aria-describedby={reason ? `add-map-reason-${id}-${mobile}` : undefined}
     onclick={() => {
+      if (openingSavedMap) return;
       pickerError = false;
       datasetToAdd = id;
     }}
   >
-    {translations.add}
+    {translations.components.favourites.labels.add}
   </button>
   {#if reason}
     <span id={`add-map-reason-${id}-${mobile}`} class="sr-only">{reason}</span>
@@ -275,19 +271,19 @@
   {@render addToSavedMapButton(row.id, Boolean(row.disableCheckbox))}
 {/snippet}
 
-<h1 class="page-title-favourites font-custom-style-h1">{datasetsTabLabel}</h1>
+<h1 class="page-title-favourites font-custom-style-h1">{translations.components.favourites.labels.datasetsTab}</h1>
 
 <div class="page-section-favourites">
   {#if userDataUnavailable}
     <div class="status-alert-error font-custom-style-body-1" role="status" aria-live="polite">
-      {savedDataUnavailable}
+      {translations.components.favourites.labels.savedDataUnavailable}
     </div>
   {:else if !loading}
     {#if tableDataArray.length > 0}
       <p class="page-copy-block">
         <!-- These are our descriptions, no injection risk -->
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html datasetsDescription}
+        {@html translations.components.favourites.labels.datasetsDescription}
       </p>
 
       <Card>
@@ -304,7 +300,7 @@
             deleteResource={handleDeleteResource}
             bind:this={sortableTable}
             bind:selectedIds
-            actionColumnLabel={translations.addToSavedMap}
+            actionColumnLabel={translations.components.favourites.labels.addToSavedMap}
             rowAction={signedIn ? savedMapAction : undefined}
           />
         </div>
@@ -334,7 +330,10 @@
               </div>
 
               <div class="flex-1">
-                <a href={resolve('/[lang]/map-browser/record/[uuid]', { lang, uuid: item.id })} class="font-custom-style-h2-2 block">
+                <a
+                  href={resolve('/[lang]/map-browser/record/[uuid]', { lang: appLang, uuid: item.id })}
+                  class="font-custom-style-h2-2 block"
+                >
                   {item.name}
                 </a>
                 <p class="font-custom-style-body-9">{item.id}</p>
@@ -346,7 +345,7 @@
                 {/if}
                 <button class="button-action-light button-action-remove" onclick={() => handleDeleteResource(item.id)}>
                   <GarbageCan classes="h-4 button-icon-inline" />
-                  {remove}
+                  {translations.components.favourites.labels.remove}
                 </button>
               </div>
             </div>
@@ -361,25 +360,25 @@
               disabled={!canOpenMap}
               aria-disabled={!canOpenMap}
             >
-              {viewOnMapLabel} ({numSelected})
+              {translations.components.favourites.labels.viewOnMap} ({numSelected})
             </button>
           </div>
 
           <button class="button-inline-desktop button-action-light button-width-mobile-full" onclick={handleRemoveAllClick}>
             <GarbageCan classes="h-4 button-icon-inline" />
-            {removeAll}
+            {translations.components.favourites.labels.removeAll}
           </button>
         </div>
       </Card>
 
       <div class="mt-9">
-        <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/maps', { lang })}>
-          {mapsLinkLabel}
+        <a class="button-action-dark button-cta-link-dark" href={resolve('/[lang]/favourites/maps', { lang: appLang })}>
+          {translations.components.favourites.labels.mapsLinkLabel}
         </a>
       </div>
 
       <h2 class="mb-4 mt-9 mx-0 font-custom-style-h2 md:mr-auto">
-        {searchFor}
+        {translations.components.favourites.labels.searchFor}
       </h2>
       <SearchBarSimplified />
     {:else}
@@ -387,11 +386,11 @@
         <NoMap classes="text-custom-19 m-auto h-48 md:h-80 lg:h-96" />
 
         <p class="block m-auto w-fit font-custom-style-h2 text-center">
-          {resourceListEmpty}
+          {translations.components.favourites.labels.resourceListEmpty}
         </p>
 
-        <a class="button-action-dark button-cta-link-dark block m-auto mt-5" href={resolve('/[lang]/map-browser', { lang })}>
-          {findAResource}
+        <a class="button-action-dark button-cta-link-dark block m-auto mt-5" href={resolve('/[lang]/map-browser', { lang: appLang })}>
+          {translations.components.favourites.labels.findAResource}
         </a>
       </div>
     {/if}

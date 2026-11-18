@@ -1,3 +1,5 @@
+import { getAppLanguage } from '#lib/utils/language.js';
+import { getTranslations } from '#lib/i18n/index.js';
 import type { PageServerLoad } from './$types';
 import { getRecord } from '#lib/db/record.js';
 import { normalizeCoordinates } from '#lib/utils/normalize-coordinates.js';
@@ -47,11 +49,11 @@ export const load: PageServerLoad = async ({ params, url }) => {
 
   return {
     tTitle1: {
-      text: params.lang === 'en-ca' ? 'Geospatial Data Catalog' : 'Catalogue de données géospatiales',
+      text: getTranslations(getAppLanguage(params.lang)).general.catalogue,
       href: `${url.origin}/${params.lang}/map-browser`,
     },
     tTitle2: {
-      text: params.lang === 'en-ca' ? 'Metadata' : 'Métadonnées',
+      text: getTranslations(getAppLanguage(params.lang)).components.record.labels.metadata,
       href: `${url.origin}/${params.lang}/map-browser/record/${params.uuid}`,
     },
     tTitle3: {

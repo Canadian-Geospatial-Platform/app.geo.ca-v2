@@ -45,8 +45,8 @@ export const load: PageServerLoad = async ({ cookies, url }: Parameters<PageServ
   const callbackState = url.searchParams.get('state');
   // Consume state before validation so a callback cannot replay the one-time auth transaction.
   const { stateToken: expectedStateToken, returnTo } = consumeOidcStateCookies(cookies);
-  const lang = getLangFromState(returnTo ?? callbackState);
-  const fallbackPath = `/${lang}/map-browser`;
+  const appLang = getLangFromState(returnTo ?? callbackState);
+  const fallbackPath = `/${appLang}/map-browser`;
 
   /**
    * Marks the failed callback and redirects to the localized sign-in fallback.
@@ -112,5 +112,5 @@ export const load: PageServerLoad = async ({ cookies, url }: Parameters<PageServ
     // Keep auth redirect resilient even if favourites merge fails.
   }
 
-  throw redirect(303, getPostAuthRedirect(url, returnTo ?? callbackState, lang));
+  throw redirect(303, getPostAuthRedirect(url, returnTo ?? callbackState, appLang));
 };

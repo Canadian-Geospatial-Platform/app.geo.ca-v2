@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { load } from '../../routes/[lang]/sign-in/launch/+page.server';
 import { getLanguageSwitchUrl } from '#lib/utils/language.js';
 
-function loadLaunch(lang: string, url: string) {
+function loadLaunch(appLang: string, url: string) {
   return load({
-    params: { lang },
+    params: { lang: appLang },
     url: new URL(url),
   } as unknown as Parameters<typeof load>[0]);
 }

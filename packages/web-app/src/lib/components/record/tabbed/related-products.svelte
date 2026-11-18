@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage, pickByLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import SortableTable from '#lib/components/sortable-table/sortable-table.svelte';
   import Pagination from '#lib/components/pagination/pagination.svelte';
@@ -15,41 +17,35 @@
     type: string;
   };
 
-  /******************* Translations *******************/
-  const translations = page.data.t;
-  const relatedProductsNotAvailable = translations?.relatedProductsNotAvailable
-    ? translations['relatedProductsNotAvailable']
-    : 'The related products for this record are unavailable.';
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
 
-  // Row labels
-  const nameText = translations?.name ? translations['name'] : 'Name';
-  const typeText = translations?.type ? translations['type'] : 'Type';
-
-  /******************* Data *******************/
+  // Data and page context
   const data = page.data;
-  const lang = data.lang;
-  const langShort = lang.slice(0, 2);
-  const descriptionLang = `description_${langShort}`;
+  const descriptionLang = $derived(pickByLanguage(appLang, 'description_en', 'description_fr'));
 
   const url = page.url;
 
   const relatedRecords = data.related ?? [];
-  let tableDataArray: Array<RelatedProductsRow> = relatedRecords.map((relatedRecord) => {
-    const recordUrl = `${url.origin}/${lang}/map-browser/record/${relatedRecord.id}`;
-    const row = {
-      id: relatedRecord.id,
-      name: relatedRecord[descriptionLang as 'description_en' | 'description_fr'],
-      type: relatedRecord.type,
-      url: recordUrl,
-    };
-    return row;
-  });
+  let tableDataArray: Array<RelatedProductsRow> = $derived(
+    relatedRecords.map((relatedRecord) => {
+      const recordUrl = `${url.origin}/${appLang}/map-browser/record/${relatedRecord.id}`;
+      const row = {
+        id: relatedRecord.id,
+        name: relatedRecord[descriptionLang],
+        type: relatedRecord.type,
+        url: recordUrl,
+      };
+      return row;
+    })
+  );
 
   // Only data fields should be table columns; id/url are internal row metadata.
-  const tableLabels: RelatedProductsTableLabels = {
-    name: nameText,
-    type: typeText,
-  };
+  const tableLabels: RelatedProductsTableLabels = $derived({
+    name: translations.components.record.labels.name,
+    type: translations.components.record.labels.type,
+  });
 
   /****************** Pagination ******************/
   // Keep pagination size local to this view unless reused elsewhere.
@@ -69,7 +65,7 @@
 
 {#if tableDataArray.length === 0}
   <div>
-    {relatedProductsNotAvailable}
+    {translations.components.record.labels.relatedProductsNotAvailable}
   </div>
 {:else}
   <SortableTable tableContent={tableDataArray} {tableLabels} clickableRows={true} paginated={true} {currentPage} {itemsPerPage} />

@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
   import { page } from '$app/state';
-  import { pickByLanguage } from '#lib/utils/language.js';
+  import { getContentLanguage, getAppLanguage } from '#lib/utils/language.js';
   import { parseDataResources } from '#lib/components/record/tabbed/parseDataResources.js';
   import SortableTable from '#lib/components/sortable-table/sortable-table.svelte';
 
@@ -11,37 +12,26 @@
     languages: string;
   };
 
-  /******************* Translations *******************/
-  const translations = page.data.t;
+  // App language and translations
+  const appLang = $derived(getAppLanguage(page.data.lang ?? page.params.lang));
+  const translations = $derived(getTranslations(appLang));
 
-  // Buttons
-  const downloadMetadataText = translations?.downloadMetadata ? translations['downloadMetadata'] : 'Download Metadata';
-  const viewISO1915Text = translations?.viewISO1915 ? translations['viewISO1915'] : 'View ISO1915 Record';
-
-  // Row labels
-  const nameText = translations?.name ? translations['name'] : 'Name';
-  const typeText = translations?.type ? translations['type'] : 'Type';
-  const formatText = translations?.format ? translations['format'] : 'Format';
-  const languagesText = translations?.languages ? translations['languages'] : 'Languages';
-  const resourcesNotAvailable = translations?.resourcesNotAvailable ? translations['resourcesNotAvailable'] : '';
-
-  /******************* Data *******************/
+  // Data from the page
   const data = page.data;
-  const lang = data.lang;
-  const langShort: 'en' | 'fr' = pickByLanguage(lang, 'en', 'fr');
+  const contentLang = $derived(getContentLanguage(appLang));
   const items = data.item_v2!;
   const dataResourcesRaw = items.options;
 
-  const dataResourcesList = parseDataResources(dataResourcesRaw, langShort);
+  const dataResourcesList = $derived(parseDataResources(dataResourcesRaw, contentLang));
   const uuid = items.id;
 
   // Translation of table column labels
-  const tableLabels: DataResourcesRow = {
-    name: nameText,
-    type: typeText,
-    format: formatText,
-    languages: languagesText,
-  };
+  const tableLabels: DataResourcesRow = $derived({
+    name: translations.components.record.labels.name,
+    type: translations.components.record.labels.type,
+    format: translations.general.format,
+    languages: translations.components.record.labels.languages,
+  });
 
   /**
    * Handles the click event for the download metadata button. Opens the Geocore metadata download URL in a new window.
@@ -80,7 +70,7 @@
         <!-- Resource Type -->
         <div class="block sm:inline pr-3">
           <h3 class="font-custom-style-h3-2 inline">
-            {typeText}:
+            {translations.components.record.labels.type}:
           </h3>
           <p class="font-custom-style-body-9 inline">
             {dataResource.type}
@@ -90,7 +80,7 @@
         <!-- Resource format -->
         <div class="block sm:inline pr-3">
           <h3 class="font-custom-style-h3-2 inline">
-            {formatText}:
+            {translations.general.format}:
           </h3>
           <p class="font-custom-style-body-9 inline">
             {dataResource.format}
@@ -100,7 +90,7 @@
         <!-- Resource Languages -->
         <div class="block sm:inline pr-3">
           <h3 class="font-custom-style-h3-2 inline">
-            {languagesText}:
+            {translations.components.record.labels.languages}:
           </h3>
           <p class="font-custom-style-body-9 inline">
             {dataResource.languages}
@@ -111,17 +101,17 @@
   </div>
 {:else}
   <div>
-    {resourcesNotAvailable}
+    {translations.components.record.labels.resourcesNotAvailable}
   </div>
 {/if}
 
 <!-- Geocore and HNAP buttons -->
 <div class="flex flex-col sm:flex-row gap-4 pt-2">
-  <button class="w-full sm:w-auto button-utility-dark" on:click={handleDownloadButtonClick}>
-    {downloadMetadataText}
+  <button class="w-full sm:w-auto button-utility-dark" onclick={handleDownloadButtonClick}>
+    {translations.components.record.labels.downloadMetadata}
   </button>
-  <button class="w-full sm:w-auto button-utility-light" on:click={handleViewISO1915ButtonClick}>
-    {viewISO1915Text}
+  <button class="w-full sm:w-auto button-utility-light" onclick={handleViewISO1915ButtonClick}>
+    {translations.components.record.labels.viewISO1915}
   </button>
 </div>
 

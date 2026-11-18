@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTranslations } from '#lib/i18n/index.js';
+  import { getAppLanguage } from '#lib/utils/language.js';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { invalidate } from '$app/navigation';
@@ -8,14 +10,12 @@
   import HeartFilled from '#lib/components/icons/heart-filled.svelte';
 
   const data = page.data;
-  const translations = data.t;
+  const translations = $derived(getTranslations(getAppLanguage(page.data.lang ?? page.params.lang)));
   const items = data.item_v2!;
   const properties = items;
 
   const title = properties.title;
   const description = properties.description;
-  const addToFavourites = translations?.addToFavourites ? translations.addToFavourites : 'Add to Favourites';
-  const removeFromFavourites = translations?.removeFromFavourites ? translations.removeFromFavourites : 'Remove from Favourites';
   const signedIn = Boolean(data?.signedIn);
 
   /****************** Favourites Resources ******************/
@@ -96,12 +96,12 @@
   {#if favouriteRecordList.includes(properties.id)}
     <button class="button-utility-dark button-favourite" onclick={() => handleFavouriteClick(properties.id)}>
       <HeartFilled classes="h-6 inline my-2 mr-1" />
-      {removeFromFavourites}
+      {translations.general.removeFromFavourites}
     </button>
   {:else}
     <button class="button-utility-light button-favourite" onclick={() => handleFavouriteClick(properties.id)}>
       <Heart classes="h-6 inline my-2 mr-1" />
-      {addToFavourites}
+      {translations.general.addToFavourites}
     </button>
   {/if}
 </div>

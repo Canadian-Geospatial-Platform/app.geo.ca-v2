@@ -11,11 +11,11 @@ import { loadFavouritesPageData } from '#lib/utils/favourites/page-load.server.j
  * @returns Localized favourites page data and metadata.
  */
 export const load: PageServerLoad = async ({ fetch, params, url, cookies }) => {
-  const lang = getAppLanguage(params.lang);
-  const pageData = await loadFavouritesPageData({ fetch, url, cookies, lang });
+  const appLang = getAppLanguage(params.lang);
+  const pageData = await loadFavouritesPageData({ fetch, url, cookies, lang: appLang });
 
   return {
-    lang,
+    lang: appLang,
     ...pageData,
   };
 };
